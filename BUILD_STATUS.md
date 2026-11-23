@@ -11,7 +11,7 @@
 | 단위 테스트 | 완료 | `npm test` 11개 통과(진도 합치기, 표 채점 규칙, 빈칸 조립, 저장 키 분리, 보기 섞기) |
 | 운영 빌드 | 완료 | `BASE_PATH=/saicerti/ node scripts/verify-dist.mjs dist` 통과 |
 | 서버 과목 목록(pyb·pya) | 완료 | Supabase SQL Editor에 saiedu `20261026000000_courses.sql` 실행(내용 SHA-256 c8e4fc1d… 일치), 제약·두 함수에 pyb·pya 들어간 것 조회로 확인 |
-| GitHub 배포 | 대기 | Claude 앱 저장소 권한·Pages·Actions 변수 설정 필요 |
+| GitHub 배포 | 완료 | Actions(타입·린트·단위 테스트·문제 검수·빌드 검증) 통과 후 Pages 배포. 첫 배포는 워크플로 YAML 오류(단계 이름의 콜론)로 실패해 고침 |
 
 ## 미검증
 - 실제 Google 로그인 → 서버 저장 → 선생님 화면(배포 후 확인)
