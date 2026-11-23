@@ -54,12 +54,24 @@ export interface TypeFile {
   problems: Problem[];
 }
 
+/** 모의고사 한 회: 원본 유형 1~10이 한 문제씩(같은 유형의 1·2·3회는 예시·테스트만 다름) */
+export interface MockItem {
+  type: TypeFile;
+  problem: Problem;
+}
+export interface MockSet {
+  n: number;
+  key: string;
+  items: MockItem[];
+}
+
 export interface Course {
   id: CourseId;
   name: string;
   exam: string;
   blurb: string;
   types: TypeFile[];
+  mocks: MockSet[];
 }
 
 export const KIND_LABEL: Record<ProblemKind, string> = {

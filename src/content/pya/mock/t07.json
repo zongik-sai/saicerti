@@ -1,0 +1,696 @@
+{
+ "course": "pya",
+ "type": 7,
+ "typeTitle": "조건문 고치기",
+ "kind": "fix",
+ "skills": [
+  "그래프 탐색(DFS)",
+  "재귀 함수",
+  "방문 표시 리스트",
+  "참/거짓 조건",
+  "보조 함수 나누기"
+ ],
+ "intro": "여러 보조 함수로 나뉜 프로그램에서 참/거짓을 판단하는 조건문 한 줄이 뒤집힌 곳을 찾아 고쳐요. 재귀로 이어진 대상을 찾아 방문 표시를 하고, 표시된 결과에서 원하는 것만 골라내는 흐름을 익혀요.",
+ "problems": [
+  {
+   "id": "pya-m1-t07",
+   "version": 1,
+   "title": "탁구팀 도시락 준비",
+   "statement": "ㅇㅇ도시락 업체가 'A' 선수가 속한 ㅁㅁ탁구팀의 점심 도시락 준비를 주문받았습니다. 그런데 탁구팀의 인원수가 적힌 주문서가 훼손되어 알아볼 수 없게 되었습니다. 그 대신 ㅁㅁ탁구팀이 연습하는 체육관의 연습경기 대진표를 손에 넣었고, 이 대진표를 보고 ㅁㅁ탁구팀의 전체 인원이 몇 명인지 알아내려고 합니다. 이 체육관에서는 모두 2개의 탁구팀이 연습하고 있습니다. 대진표에는 두 팀의 경기가 섞여 있지만, 경기는 언제나 같은 팀 선수끼리만 하도록 짜여 있습니다. 따라서 다른 팀의 선수까지 세지 않도록 'A' 선수가 속한 ㅁㅁ탁구팀의 선수만 세어야 합니다.\n\n예를 들어 A와 C가 경기하고, B와 D가 경기하고, C와 E가 경기하고, D와 F가 경기한다면 'A' 선수와 같은 팀 선수는 A, C, E로 모두 3명입니다. 연습경기 대진표를 담은 리스트 `matches`가 solution 함수의 매개변수로 주어질 때, 도시락을 몇 개 준비해야 하는지, 즉 ㅁㅁ탁구팀의 선수 수를 return 하려 합니다.\n\nsolution 함수와 func1, func2, func3 중 잘못된 부분 한 줄을 찾아, 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "연습경기 대진표를 담은 리스트 `matches`가 solution 함수의 매개변수로 주어집니다.",
+    "`matches`의 원소는 같은 팀인 두 선수의 이름을 이어 붙인 두 글자 문자열입니다.",
+    "두 선수의 이름은 각각 알파벳 대문자 한 글자입니다.",
+    "원소가 `XY`일 때, X의 이름은 항상 Y의 이름보다 사전 순으로 앞섭니다.",
+    "`matches`는 X의 이름을 기준으로 사전 순으로 정렬되어 있습니다.",
+    "`matches`의 길이는 3 이상 10 이하입니다.",
+    "'A' 선수는 대진표에 한 번 이상 나오며, 같은 팀 선수끼리는 대진표의 경기를 따라 직접 또는 다른 팀원을 거쳐 모두 이어져 있습니다."
+   ],
+   "returns": [
+    "'A' 선수와 같은 팀인 선수의 수('A' 선수 자신도 포함)를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "matches"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       "AC",
+       "BD",
+       "CE",
+       "DF"
+      ]
+     ],
+     "expected": 3,
+     "explain": "AC → CE로 A, C, E가 같은 팀입니다. BD → DF로 이어진 B, D, F는 다른 팀이므로 세지 않아 3을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "AE",
+       "CD",
+       "EG",
+       "GH"
+      ]
+     ],
+     "expected": 5,
+     "explain": "AB, AE → EG → GH로 A, B, E, G, H가 같은 팀입니다. C, D는 다른 팀이므로 5를 return 합니다."
+    }
+   ],
+   "code": "ALPHANUM = 26\n\n\ndef func1(number, arr1, arr2):\n    arr2[number] = True\n    for i in range(ALPHANUM):\n        if arr1[number][i] and not arr2[i]:\n            func1(i, arr1, arr2)\n\ndef func2(arr):\n    answer = 0\n    for value in arr:\n        if not value:\n            answer += 1\n    return answer\n\ndef func3(arr1, arr2):\n    for elem1, elem2 in arr1:\n        num1, num2 = ord(elem1) - ord('A'), ord(elem2) - ord('A')\n        arr2[num1][num2] = True\n        arr2[num2][num1] = True\n\n\ndef solution(matches):\n    graph = [[False for _ in range(ALPHANUM)] for _ in range(ALPHANUM)]\n    visited = [False] * ALPHANUM\n\n    func3(matches, graph)\n    visited[0] = True\n    for node in range(ALPHANUM):\n        if graph[0][node] and not visited[node]:\n            func1(node, graph, visited)\n    return func2(visited)",
+   "bugLine": 13,
+   "solution": "ALPHANUM = 26\n\n\ndef func1(number, arr1, arr2):\n    arr2[number] = True\n    for i in range(ALPHANUM):\n        if arr1[number][i] and not arr2[i]:\n            func1(i, arr1, arr2)\n\ndef func2(arr):\n    answer = 0\n    for value in arr:\n        if value:\n            answer += 1\n    return answer\n\ndef func3(arr1, arr2):\n    for elem1, elem2 in arr1:\n        num1, num2 = ord(elem1) - ord('A'), ord(elem2) - ord('A')\n        arr2[num1][num2] = True\n        arr2[num2][num1] = True\n\n\ndef solution(matches):\n    graph = [[False for _ in range(ALPHANUM)] for _ in range(ALPHANUM)]\n    visited = [False] * ALPHANUM\n\n    func3(matches, graph)\n    visited[0] = True\n    for node in range(ALPHANUM):\n        if graph[0][node] and not visited[node]:\n            func1(node, graph, visited)\n    return func2(visited)",
+   "tests": [
+    {
+     "args": [
+      [
+       "AB",
+       "CD",
+       "DE"
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "AC",
+       "DE"
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "BC",
+       "CD",
+       "DE",
+       "EF",
+       "FG",
+       "GH",
+       "HI",
+       "IJ",
+       "YZ"
+      ]
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       "AZ",
+       "BC",
+       "CD",
+       "DE",
+       "EF",
+       "FG",
+       "GH",
+       "HI",
+       "IJ",
+       "JK"
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "AC",
+       "AD",
+       "BC",
+       "BD",
+       "CD",
+       "EF",
+       "EG",
+       "FG",
+       "GH"
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       "AM",
+       "BC",
+       "BM",
+       "CX",
+       "DE"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "AC",
+       "AD",
+       "AE",
+       "FG"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AK",
+       "AT",
+       "BK",
+       "KT",
+       "LQ",
+       "QV"
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       "AY",
+       "BH",
+       "BX",
+       "BY",
+       "FO",
+       "HV",
+       "OW",
+       "OZ",
+       "WZ"
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       "AL",
+       "AN",
+       "DF",
+       "DY",
+       "KY",
+       "LN",
+       "QR",
+       "RY"
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       "AL",
+       "CN",
+       "CP",
+       "LN",
+       "LZ",
+       "MV",
+       "NR"
+      ]
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      [
+       "AG",
+       "AS",
+       "BF",
+       "BI",
+       "BY",
+       "EF",
+       "EI",
+       "GR",
+       "GW",
+       "RS"
+      ]
+     ],
+     "expected": 5
+    }
+   ],
+   "inputCheck": "def valid(matches):\n    if not isinstance(matches, list) or not (3 <= len(matches) <= 10):\n        return False\n    for m in matches:\n        if not isinstance(m, str) or len(m) != 2:\n            return False\n        if not all('A' <= ch <= 'Z' for ch in m) or not m[0] < m[1]:\n            return False\n    firsts = [m[0] for m in matches]\n    if firsts != sorted(firsts):\n        return False\n    adj = {}\n    for m in matches:\n        adj.setdefault(m[0], set()).add(m[1])\n        adj.setdefault(m[1], set()).add(m[0])\n    if 'A' not in adj:\n        return False\n    seen = set()\n    teams = 0\n    for s in adj:\n        if s in seen:\n            continue\n        teams += 1\n        seen.add(s)\n        stack = [s]\n        while stack:\n            x = stack.pop()\n            for y in adj[x]:\n                if y not in seen:\n                    seen.add(y)\n                    stack.append(y)\n    return teams == 2",
+   "steps": [],
+   "explain": "func3은 대진표를 인접 행렬 graph에 양쪽 방향으로 표시하고, func1은 재귀(DFS)로 'A'와 직접·간접으로 이어진 선수를 visited에 True로 표시해요. func2는 visited에서 True인 칸, 즉 'A' 팀 선수만 세야 하는데, `if not value:`는 방문하지 않은 칸을 세어 26에서 팀원 수를 뺀 값을 돌려줘요. not을 빼서 `if value:`로 고치면 돼요. 참/거짓 리스트를 셀 때는 무엇을 세야 하는지 문제 문장과 꼭 맞춰 보세요."
+  },
+  {
+   "id": "pya-m2-t07",
+   "version": 1,
+   "title": "탁구팀 도시락 준비",
+   "statement": "ㅇㅇ도시락 업체가 'A' 선수가 속한 ㅁㅁ탁구팀의 점심 도시락 준비를 주문받았습니다. 그런데 탁구팀의 인원수가 적힌 주문서가 훼손되어 알아볼 수 없게 되었습니다. 그 대신 ㅁㅁ탁구팀이 연습하는 체육관의 연습경기 대진표를 손에 넣었고, 이 대진표를 보고 ㅁㅁ탁구팀의 전체 인원이 몇 명인지 알아내려고 합니다. 이 체육관에서는 모두 2개의 탁구팀이 연습하고 있습니다. 대진표에는 두 팀의 경기가 섞여 있지만, 경기는 언제나 같은 팀 선수끼리만 하도록 짜여 있습니다. 따라서 다른 팀의 선수까지 세지 않도록 'A' 선수가 속한 ㅁㅁ탁구팀의 선수만 세어야 합니다.\n\n예를 들어 A와 D가 경기하고, B와 C가 경기하고, B와 E가 경기하고, D와 G가 경기하고, G와 K가 경기한다면 'A' 선수와 같은 팀 선수는 A, D, G, K로 모두 4명입니다. 연습경기 대진표를 담은 리스트 `matches`가 solution 함수의 매개변수로 주어질 때, 도시락을 몇 개 준비해야 하는지, 즉 ㅁㅁ탁구팀의 선수 수를 return 하려 합니다.\n\nsolution 함수와 func1, func2, func3 중 잘못된 부분 한 줄을 찾아, 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "연습경기 대진표를 담은 리스트 `matches`가 solution 함수의 매개변수로 주어집니다.",
+    "`matches`의 원소는 같은 팀인 두 선수의 이름을 이어 붙인 두 글자 문자열입니다.",
+    "두 선수의 이름은 각각 알파벳 대문자 한 글자입니다.",
+    "원소가 `XY`일 때, X의 이름은 항상 Y의 이름보다 사전 순으로 앞섭니다.",
+    "`matches`는 X의 이름을 기준으로 사전 순으로 정렬되어 있습니다.",
+    "`matches`의 길이는 3 이상 10 이하입니다.",
+    "'A' 선수는 대진표에 한 번 이상 나오며, 같은 팀 선수끼리는 대진표의 경기를 따라 직접 또는 다른 팀원을 거쳐 모두 이어져 있습니다."
+   ],
+   "returns": [
+    "'A' 선수와 같은 팀인 선수의 수('A' 선수 자신도 포함)를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "matches"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       "AD",
+       "BC",
+       "BE",
+       "DG",
+       "GK"
+      ]
+     ],
+     "expected": 4,
+     "explain": "AD → DG → GK로 A, D, G, K가 같은 팀입니다. BC, BE로 이어진 B, C, E는 다른 팀이므로 세지 않아 4를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "BC",
+       "CD",
+       "DE",
+       "PQ",
+       "QR"
+      ]
+     ],
+     "expected": 5,
+     "explain": "AB → BC → CD → DE로 A, B, C, D, E가 같은 팀입니다. P, Q, R은 다른 팀이므로 5를 return 합니다."
+    }
+   ],
+   "code": "ALPHANUM = 26\n\n\ndef func1(number, arr1, arr2):\n    arr2[number] = True\n    for i in range(ALPHANUM):\n        if arr1[number][i] and not arr2[i]:\n            func1(i, arr1, arr2)\n\ndef func2(arr):\n    answer = 0\n    for value in arr:\n        if not value:\n            answer += 1\n    return answer\n\ndef func3(arr1, arr2):\n    for elem1, elem2 in arr1:\n        num1, num2 = ord(elem1) - ord('A'), ord(elem2) - ord('A')\n        arr2[num1][num2] = True\n        arr2[num2][num1] = True\n\n\ndef solution(matches):\n    graph = [[False for _ in range(ALPHANUM)] for _ in range(ALPHANUM)]\n    visited = [False] * ALPHANUM\n\n    func3(matches, graph)\n    visited[0] = True\n    for node in range(ALPHANUM):\n        if graph[0][node] and not visited[node]:\n            func1(node, graph, visited)\n    return func2(visited)",
+   "bugLine": 13,
+   "solution": "ALPHANUM = 26\n\n\ndef func1(number, arr1, arr2):\n    arr2[number] = True\n    for i in range(ALPHANUM):\n        if arr1[number][i] and not arr2[i]:\n            func1(i, arr1, arr2)\n\ndef func2(arr):\n    answer = 0\n    for value in arr:\n        if value:\n            answer += 1\n    return answer\n\ndef func3(arr1, arr2):\n    for elem1, elem2 in arr1:\n        num1, num2 = ord(elem1) - ord('A'), ord(elem2) - ord('A')\n        arr2[num1][num2] = True\n        arr2[num2][num1] = True\n\n\ndef solution(matches):\n    graph = [[False for _ in range(ALPHANUM)] for _ in range(ALPHANUM)]\n    visited = [False] * ALPHANUM\n\n    func3(matches, graph)\n    visited[0] = True\n    for node in range(ALPHANUM):\n        if graph[0][node] and not visited[node]:\n            func1(node, graph, visited)\n    return func2(visited)",
+   "tests": [
+    {
+     "args": [
+      [
+       "AY",
+       "BX",
+       "XZ"
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       "AC",
+       "BD",
+       "CE"
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       "AC",
+       "AE",
+       "AG",
+       "CK",
+       "EM",
+       "GP",
+       "KQ",
+       "MR",
+       "PS",
+       "TU"
+      ]
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "CD",
+       "CE",
+       "CF",
+       "CG",
+       "CH",
+       "CI",
+       "CJ",
+       "CK",
+       "CL"
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "AE",
+       "BE",
+       "CD",
+       "DF",
+       "EK",
+       "FG",
+       "KM"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AZ",
+       "BY",
+       "CY",
+       "CZ",
+       "DE"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AD",
+       "BC",
+       "DF",
+       "DG",
+       "DH"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AC",
+       "AH",
+       "CH",
+       "GM",
+       "MO",
+       "MV"
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       "AW",
+       "AZ",
+       "BL",
+       "BS",
+       "HW",
+       "LS",
+       "MW",
+       "MZ"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AI",
+       "CE",
+       "CP",
+       "DE",
+       "EP",
+       "IM",
+       "IP",
+       "KV",
+       "MP",
+       "NP"
+      ]
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       "AL",
+       "CJ",
+       "CQ",
+       "CX",
+       "IJ",
+       "IM",
+       "JX",
+       "QX",
+       "VX"
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       "AM",
+       "AU",
+       "GN",
+       "IN",
+       "MT",
+       "NS",
+       "TU"
+      ]
+     ],
+     "expected": 4
+    }
+   ],
+   "inputCheck": "def valid(matches):\n    if not isinstance(matches, list) or not (3 <= len(matches) <= 10):\n        return False\n    for m in matches:\n        if not isinstance(m, str) or len(m) != 2:\n            return False\n        if not all('A' <= ch <= 'Z' for ch in m) or not m[0] < m[1]:\n            return False\n    firsts = [m[0] for m in matches]\n    if firsts != sorted(firsts):\n        return False\n    adj = {}\n    for m in matches:\n        adj.setdefault(m[0], set()).add(m[1])\n        adj.setdefault(m[1], set()).add(m[0])\n    if 'A' not in adj:\n        return False\n    seen = set()\n    teams = 0\n    for s in adj:\n        if s in seen:\n            continue\n        teams += 1\n        seen.add(s)\n        stack = [s]\n        while stack:\n            x = stack.pop()\n            for y in adj[x]:\n                if y not in seen:\n                    seen.add(y)\n                    stack.append(y)\n    return teams == 2",
+   "steps": [],
+   "explain": "func3은 대진표를 인접 행렬 graph에 양쪽 방향으로 표시하고, func1은 재귀(DFS)로 'A'와 직접·간접으로 이어진 선수를 visited에 True로 표시해요. func2는 visited에서 True인 칸, 즉 'A' 팀 선수만 세야 하는데, `if not value:`는 방문하지 않은 칸을 세어 26에서 팀원 수를 뺀 값을 돌려줘요. not을 빼서 `if value:`로 고치면 돼요. 참/거짓 리스트를 셀 때는 무엇을 세야 하는지 문제 문장과 꼭 맞춰 보세요."
+  },
+  {
+   "id": "pya-m3-t07",
+   "version": 1,
+   "title": "탁구팀 도시락 준비",
+   "statement": "ㅇㅇ도시락 업체가 'A' 선수가 속한 ㅁㅁ탁구팀의 점심 도시락 준비를 주문받았습니다. 그런데 탁구팀의 인원수가 적힌 주문서가 훼손되어 알아볼 수 없게 되었습니다. 그 대신 ㅁㅁ탁구팀이 연습하는 체육관의 연습경기 대진표를 손에 넣었고, 이 대진표를 보고 ㅁㅁ탁구팀의 전체 인원이 몇 명인지 알아내려고 합니다. 이 체육관에서는 모두 2개의 탁구팀이 연습하고 있습니다. 대진표에는 두 팀의 경기가 섞여 있지만, 경기는 언제나 같은 팀 선수끼리만 하도록 짜여 있습니다. 따라서 다른 팀의 선수까지 세지 않도록 'A' 선수가 속한 ㅁㅁ탁구팀의 선수만 세어야 합니다.\n\n예를 들어 A와 E가 경기하고, A와 H가 경기하고, B와 C가 경기하고, C와 W가 경기하고, E와 H가 경기하고, H와 M이 경기하고, M과 T가 경기한다면 'A' 선수와 같은 팀 선수는 A, E, H, M, T로 모두 5명입니다. 연습경기 대진표를 담은 리스트 `matches`가 solution 함수의 매개변수로 주어질 때, 도시락을 몇 개 준비해야 하는지, 즉 ㅁㅁ탁구팀의 선수 수를 return 하려 합니다.\n\nsolution 함수와 func1, func2, func3 중 잘못된 부분 한 줄을 찾아, 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "연습경기 대진표를 담은 리스트 `matches`가 solution 함수의 매개변수로 주어집니다.",
+    "`matches`의 원소는 같은 팀인 두 선수의 이름을 이어 붙인 두 글자 문자열입니다.",
+    "두 선수의 이름은 각각 알파벳 대문자 한 글자입니다.",
+    "원소가 `XY`일 때, X의 이름은 항상 Y의 이름보다 사전 순으로 앞섭니다.",
+    "`matches`는 X의 이름을 기준으로 사전 순으로 정렬되어 있습니다.",
+    "`matches`의 길이는 3 이상 10 이하입니다.",
+    "'A' 선수는 대진표에 한 번 이상 나오며, 같은 팀 선수끼리는 대진표의 경기를 따라 직접 또는 다른 팀원을 거쳐 모두 이어져 있습니다."
+   ],
+   "returns": [
+    "'A' 선수와 같은 팀인 선수의 수('A' 선수 자신도 포함)를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "matches"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       "AE",
+       "AH",
+       "BC",
+       "CW",
+       "EH",
+       "HM",
+       "MT"
+      ]
+     ],
+     "expected": 5,
+     "explain": "AE, AH, EH → HM → MT로 A, E, H, M, T가 같은 팀입니다. BC → CW로 이어진 B, C, W는 다른 팀이므로 세지 않아 5를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       "AZ",
+       "BY",
+       "CY",
+       "DZ"
+      ]
+     ],
+     "expected": 3,
+     "explain": "AZ → DZ로 A, Z, D가 같은 팀입니다. BY, CY로 이어진 B, Y, C는 다른 팀이므로 3을 return 합니다."
+    }
+   ],
+   "code": "ALPHANUM = 26\n\n\ndef func1(number, arr1, arr2):\n    arr2[number] = True\n    for i in range(ALPHANUM):\n        if arr1[number][i] and not arr2[i]:\n            func1(i, arr1, arr2)\n\ndef func2(arr):\n    answer = 0\n    for value in arr:\n        if not value:\n            answer += 1\n    return answer\n\ndef func3(arr1, arr2):\n    for elem1, elem2 in arr1:\n        num1, num2 = ord(elem1) - ord('A'), ord(elem2) - ord('A')\n        arr2[num1][num2] = True\n        arr2[num2][num1] = True\n\n\ndef solution(matches):\n    graph = [[False for _ in range(ALPHANUM)] for _ in range(ALPHANUM)]\n    visited = [False] * ALPHANUM\n\n    func3(matches, graph)\n    visited[0] = True\n    for node in range(ALPHANUM):\n        if graph[0][node] and not visited[node]:\n            func1(node, graph, visited)\n    return func2(visited)",
+   "bugLine": 13,
+   "solution": "ALPHANUM = 26\n\n\ndef func1(number, arr1, arr2):\n    arr2[number] = True\n    for i in range(ALPHANUM):\n        if arr1[number][i] and not arr2[i]:\n            func1(i, arr1, arr2)\n\ndef func2(arr):\n    answer = 0\n    for value in arr:\n        if value:\n            answer += 1\n    return answer\n\ndef func3(arr1, arr2):\n    for elem1, elem2 in arr1:\n        num1, num2 = ord(elem1) - ord('A'), ord(elem2) - ord('A')\n        arr2[num1][num2] = True\n        arr2[num2][num1] = True\n\n\ndef solution(matches):\n    graph = [[False for _ in range(ALPHANUM)] for _ in range(ALPHANUM)]\n    visited = [False] * ALPHANUM\n\n    func3(matches, graph)\n    visited[0] = True\n    for node in range(ALPHANUM):\n        if graph[0][node] and not visited[node]:\n            func1(node, graph, visited)\n    return func2(visited)",
+   "tests": [
+    {
+     "args": [
+      [
+       "AM",
+       "NO",
+       "OP"
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "BZ",
+       "CD"
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "BD",
+       "DF",
+       "FH",
+       "HJ",
+       "JL",
+       "LN",
+       "NP",
+       "PR",
+       "SU"
+      ]
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       "AP",
+       "BC",
+       "BD",
+       "BE",
+       "BF",
+       "BG",
+       "BH",
+       "BI",
+       "BJ",
+       "BK"
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "AC",
+       "BC",
+       "CQ",
+       "DE",
+       "DF",
+       "EF",
+       "FG"
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       "AW",
+       "BW",
+       "BX",
+       "CX",
+       "DE",
+       "EF"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AV",
+       "BC",
+       "CD",
+       "DE",
+       "VW",
+       "WX",
+       "XY"
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       "AK",
+       "AO",
+       "BV",
+       "CH",
+       "HL",
+       "HO",
+       "IV",
+       "LO"
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       "AM",
+       "CP",
+       "CS",
+       "MN",
+       "PS"
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       "AC",
+       "AO",
+       "BC",
+       "BO",
+       "GJ",
+       "GR",
+       "GY",
+       "MY",
+       "RS",
+       "RY"
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       "AS",
+       "CK",
+       "ES",
+       "EW",
+       "EZ",
+       "KO",
+       "KP",
+       "PW",
+       "UY"
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       "AM",
+       "HU",
+       "RT",
+       "TU"
+      ]
+     ],
+     "expected": 2
+    }
+   ],
+   "inputCheck": "def valid(matches):\n    if not isinstance(matches, list) or not (3 <= len(matches) <= 10):\n        return False\n    for m in matches:\n        if not isinstance(m, str) or len(m) != 2:\n            return False\n        if not all('A' <= ch <= 'Z' for ch in m) or not m[0] < m[1]:\n            return False\n    firsts = [m[0] for m in matches]\n    if firsts != sorted(firsts):\n        return False\n    adj = {}\n    for m in matches:\n        adj.setdefault(m[0], set()).add(m[1])\n        adj.setdefault(m[1], set()).add(m[0])\n    if 'A' not in adj:\n        return False\n    seen = set()\n    teams = 0\n    for s in adj:\n        if s in seen:\n            continue\n        teams += 1\n        seen.add(s)\n        stack = [s]\n        while stack:\n            x = stack.pop()\n            for y in adj[x]:\n                if y not in seen:\n                    seen.add(y)\n                    stack.append(y)\n    return teams == 2",
+   "steps": [],
+   "explain": "func3은 대진표를 인접 행렬 graph에 양쪽 방향으로 표시하고, func1은 재귀(DFS)로 'A'와 직접·간접으로 이어진 선수를 visited에 True로 표시해요. func2는 visited에서 True인 칸, 즉 'A' 팀 선수만 세야 하는데, `if not value:`는 방문하지 않은 칸을 세어 26에서 팀원 수를 뺀 값을 돌려줘요. not을 빼서 `if value:`로 고치면 돼요. 참/거짓 리스트를 셀 때는 무엇을 세야 하는지 문제 문장과 꼭 맞춰 보세요."
+  }
+ ]
+}

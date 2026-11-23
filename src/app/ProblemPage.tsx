@@ -3,12 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { Course, Problem, TypeFile } from '../content/types';
 import { KIND_LABEL, KIND_TASK } from '../content/types';
 import { courseMeta } from '../content';
-import { Bullets, Rich, inline } from '../components/Rich';
+import { inline } from '../components/Rich';
 import { StepView } from '../components/Steps';
 import { BlankCode, countBlanks, fillBlanks } from '../components/BlankCode';
 import { CodeView } from '../components/pyHighlight';
-import { ExamplesTable, ResultsView, type Shown } from '../components/Results';
-import { py, type EngineStatus } from '../grader/client';
+import { ResultsView, type Shown } from '../components/Results';
+import { py } from '../grader/client';
+import { changedLines, engineText, fixBlockReason, StatementBody, useEngine } from './solveParts';
 import { clearDraft, readDraft, useCourseProgress, writeDraft } from '../features/progress/store';
 import type { ProbState } from '../features/progress/model';
 
@@ -22,31 +23,6 @@ interface Props {
   index: number;
   learnerKey: string;
   remote: boolean;
-}
-
-function useEngine(): EngineStatus {
-  const [s, setS] = useState<EngineStatus>(py().status);
-  useEffect(() => {
-    const off = py().subscribe(setS);
-    setS(py().status);
-    void py()
-      .ensure()
-      .catch(() => undefined);
-    return off;
-  }, []);
-  return s;
-}
-
-/** 처음 코드와 다른 줄 번호(1부터). 줄 수가 다르면 null */
-function changedLines(orig: string, now: string): number[] | null {
-  const a = orig.replace(/\s+$/, '').split('\n').map((l) => l.replace(/\s+$/, ''));
-  const b = now.replace(/\s+$/, '').split('\n').map((l) => l.replace(/\s+$/, ''));
-  if (a.length !== b.length) return null;
-  const out: number[] = [];
-  a.forEach((l, i) => {
-    if (l !== b[i]) out.push(i + 1);
-  });
-  return out;
 }
 
 export function ProblemPage({ course, type, problem, index, learnerKey, remote }: Props) {
@@ -96,33 +72,7 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
             {ps?.solved && <span className="badge write">해결</span>}
           </div>
           <h1 style={{ marginTop: '0.4rem' }}>{problem.title}</h1>
-          <div className="sec">
-            <h3>문제 설명</h3>
-            <Rich text={problem.statement} />
-          </div>
-          <div className="sec">
-            <h3>매개변수 설명</h3>
-            <Bullets items={problem.params} />
-          </div>
-          <div className="sec">
-            <h3>return 값 설명</h3>
-            <Bullets items={problem.returns} />
-          </div>
-          <div className="sec">
-            <h3>예시</h3>
-            <ExamplesTable problem={problem} />
-            {problem.examples.some((e) => e.explain) && (
-              <div style={{ marginTop: '0.5rem' }}>
-                {problem.examples.map((e, i) =>
-                  e.explain ? (
-                    <p key={i} className="muted" style={{ fontSize: '0.92rem' }}>
-                      <strong>예시 {i + 1} 설명</strong> {inline(e.explain)}
-                    </p>
-                  ) : null,
-                )}
-              </div>
-            )}
-          </div>
+          <StatementBody problem={problem} />
         </section>
 
         <section aria-label="풀이">
@@ -244,11 +194,7 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
       const empty = blanks.findIndex((b) => b.trim() === '');
       if (empty >= 0) return `빈칸 ${empty + 1}을 채워 주세요.`;
     }
-    if (kind === 'fix' && forSubmit) {
-      if (changed === null) return '줄을 더하거나 지우면 안 돼요. 틀린 한 줄만 고쳐 주세요(‘처음 코드로’로 되돌릴 수 있어요).';
-      if (changed.length === 0) return '아직 고친 줄이 없어요. 틀린 한 줄을 찾아 고쳐 주세요.';
-      if (changed.length > 1) return `${changed.length}줄을 바꿨어요(${changed.join(', ')}번째 줄). 한 줄만 고쳐야 채점할 수 있어요.`;
-    }
+    if (kind === 'fix' && forSubmit) return fixBlockReason(changed);
     return null;
   };
 
@@ -278,7 +224,6 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
   };
 
   const solvedNow = !!ps?.solved;
-  const engineText = engine === 'loading' ? '파이썬 준비 중… (처음 한 번은 약 10MB를 내려받아요)' : engine === 'error' ? '파이썬을 불러오지 못했어요. 인터넷을 확인하고 실행을 다시 눌러 보세요.' : engine === 'ready' ? '파이썬 준비됨 · 코드는 이 브라우저 안에서만 실행돼요' : '';
 
   return (
     <div className="card">
@@ -322,7 +267,7 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
         )}
       </div>
       <p className="engine" aria-live="polite">
-        {engineText}
+        {engineText(engine)}
       </p>
       {notice && (
         <p className="notice warn" role="alert">

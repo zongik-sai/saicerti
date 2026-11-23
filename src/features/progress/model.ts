@@ -21,9 +21,28 @@ export interface ProbState {
   lastAt: string;
 }
 
+/** 모의고사 한 문제의 결과(마지막 제출 기준). 학생 코드는 넣지 않는다 */
+export interface MockResult {
+  /** 마지막 제출의 테스트 통과율(0~100) */
+  score: number;
+  solved: boolean;
+  tries: number;
+  at: string;
+}
+
+/** 모의고사 한 회(m1~m3)의 응시 기록. round: '다시 풀기'마다 1씩 늘어남(높은 round가 이긴다) */
+export interface MockState {
+  round: number;
+  startedAt: string;
+  endedAt?: string;
+  /** 키: 유형 t01~t10 */
+  results: Record<string, MockResult>;
+}
+
 export interface CourseState {
   v: 1;
   probs: Record<string, ProbState>;
+  mocks?: Record<string, MockState>;
 }
 
 export const emptyState = (): CourseState => ({ v: 1, probs: {} });
@@ -58,13 +77,42 @@ function mergeProb(a: ProbState | undefined, b: ProbState | undefined): ProbStat
   return out;
 }
 
-/** 두 기기의 기록 합치기: 무엇도 잃지 않는다(합집합·최댓값). */
+function mergeMock(a: MockState | undefined, b: MockState | undefined): MockState {
+  if (!a) return b!;
+  if (!b) return a;
+  if (a.round !== b.round) return a.round > b.round ? a : b;
+  const results: Record<string, MockResult> = {};
+  for (const k of new Set([...Object.keys(a.results), ...Object.keys(b.results)])) {
+    const x = a.results[k];
+    const y = b.results[k];
+    if (!x || !y) {
+      results[k] = (x ?? y)!;
+      continue;
+    }
+    const later = x.at >= y.at ? x : y;
+    results[k] = { score: later.score, solved: x.solved || y.solved, tries: Math.max(x.tries, y.tries), at: later.at };
+  }
+  const out: MockState = { round: a.round, startedAt: minIso(a.startedAt, b.startedAt)!, results };
+  const ended = minIso(a.endedAt, b.endedAt);
+  if (ended) out.endedAt = ended;
+  return out;
+}
+
+/** 두 기기의 기록 합치기: 무엇도 잃지 않는다(합집합·최댓값). 모의고사는 높은 round(다시 풀기)가 이긴다. */
 export function mergeState(a: CourseState | null | undefined, b: CourseState | null | undefined): CourseState {
-  const pa = sanitize(a).probs;
-  const pb = sanitize(b).probs;
+  const sa = sanitize(a);
+  const sb = sanitize(b);
   const probs: Record<string, ProbState> = {};
-  for (const id of new Set([...Object.keys(pa), ...Object.keys(pb)])) probs[id] = mergeProb(pa[id], pb[id]);
-  return { v: 1, probs };
+  for (const id of new Set([...Object.keys(sa.probs), ...Object.keys(sb.probs)])) probs[id] = mergeProb(sa.probs[id], sb.probs[id]);
+  const out: CourseState = { v: 1, probs };
+  const ma = sa.mocks ?? {};
+  const mb = sb.mocks ?? {};
+  const keys = new Set([...Object.keys(ma), ...Object.keys(mb)]);
+  if (keys.size) {
+    out.mocks = {};
+    for (const k of [...keys].sort()) out.mocks[k] = mergeMock(ma[k], mb[k]);
+  }
+  return out;
 }
 
 const PID = /^(pyb|pya)-t\d{2}-[a-e]$/;
@@ -96,6 +144,30 @@ export function sanitize(raw: unknown): CourseState {
     const saw = ISO(p.sawAnswerAt);
     if (saw) ps.sawAnswerAt = saw;
     out.probs[id] = ps;
+  }
+  const mocks = (raw as { mocks?: unknown }).mocks;
+  if (mocks && typeof mocks === 'object') {
+    for (const [k, v] of Object.entries(mocks as Record<string, unknown>)) {
+      if (!/^m[1-3]$/.test(k) || !v || typeof v !== 'object') continue;
+      const m = v as Record<string, unknown>;
+      const startedAt = ISO(m.startedAt);
+      if (!startedAt) continue;
+      const ms: MockState = { round: typeof m.round === 'number' && m.round >= 1 && m.round < 10000 ? Math.floor(m.round) : 1, startedAt, results: {} };
+      const endedAt = ISO(m.endedAt);
+      if (endedAt) ms.endedAt = endedAt;
+      const res = m.results && typeof m.results === 'object' ? (m.results as Record<string, unknown>) : {};
+      for (const [t, r] of Object.entries(res)) {
+        if (!/^t(0[1-9]|10)$/.test(t) || !r || typeof r !== 'object') continue;
+        const x = r as Record<string, unknown>;
+        ms.results[t] = {
+          score: typeof x.score === 'number' && x.score >= 0 && x.score <= 100 ? Math.round(x.score) : 0,
+          solved: x.solved === true,
+          tries: typeof x.tries === 'number' && x.tries >= 0 ? Math.min(Math.floor(x.tries), 100000) : 0,
+          at: ISO(x.at) ?? new Date(0).toISOString(),
+        };
+      }
+      (out.mocks ??= {})[k] = ms;
+    }
   }
   return out;
 }

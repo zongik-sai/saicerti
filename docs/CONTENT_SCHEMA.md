@@ -3,6 +3,8 @@
 과정 ID: `pyb` = 프로그래밍 Python 기본(COS Pro 2급 Python 유형), `pya` = 프로그래밍 Python 심화(COS Pro 1급 Python 유형).
 유형(원본 문제 번호) 1~10마다 파일 하나: `src/content/<과정>/tNN.json` (예: `src/content/pyb/t01.json`). 파일마다 유사 문제 **정확히 5개**(a~e).
 
+모의고사: `src/content/<과정>/mock/tNN.json`에 문제 3개(id `<과정>-m1-tNN`~`-m3-tNN`, 1·2·3회), `steps`는 `[]`(중간 점검 없음). 만드는 법은 `docs/MOCK_BRIEF.md`.
+
 검수: `python3 tools/validate.py src/content/pyb/t01.json` → `✓ … 검수 통과`가 나와야 한다. 브라우저 채점과 검수 도구는 같은 `src/grader/harness.py`를 쓴다.
 
 ## 파일

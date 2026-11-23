@@ -1,4 +1,4 @@
-import type { Course, CourseId, Problem, TypeFile } from './types';
+import type { Course, CourseId, MockSet, Problem, TypeFile } from './types';
 
 export interface CourseMeta {
   id: CourseId;
@@ -34,6 +34,23 @@ const loaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   pya: import.meta.glob<TypeFile>('./pya/t*.json', { import: 'default' }),
 };
 
+const mockLoaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
+  pyb: import.meta.glob<TypeFile>('./pyb/mock/t*.json', { import: 'default' }),
+  pya: import.meta.glob<TypeFile>('./pya/mock/t*.json', { import: 'default' }),
+};
+
+export const MOCK_SETS = 3;
+
+/** 유형별 모의고사 파일(문제 3개: 1·2·3회) → 회별 묶음 */
+export function buildMocks(files: TypeFile[]): MockSet[] {
+  const sorted = files.filter((t) => t && Array.isArray(t.problems)).sort((a, b) => a.type - b.type);
+  return Array.from({ length: MOCK_SETS }, (_, i) => ({
+    n: i + 1,
+    key: `m${i + 1}`,
+    items: sorted.filter((t) => t.problems[i]).map((t) => ({ type: t, problem: t.problems[i] })),
+  }));
+}
+
 const cache = new Map<CourseId, Promise<Course>>();
 
 /** 과정의 문제를 불러온다(과정마다 한 번, 필요할 때). */
@@ -41,12 +58,13 @@ export function loadCourse(id: CourseId): Promise<Course> {
   let p = cache.get(id);
   if (!p) {
     const meta = courseMeta(id)!;
-    p = Promise.all(Object.values(loaders[id]).map((l) => l())).then((types) => ({
+    p = Promise.all([Promise.all(Object.values(loaders[id]).map((l) => l())), Promise.all(Object.values(mockLoaders[id]).map((l) => l()))]).then(([types, mocks]) => ({
       id,
       name: meta.name,
       exam: meta.exam,
       blurb: meta.blurb,
       types: types.filter((t) => t && Array.isArray(t.problems)).sort((a, b) => a.type - b.type),
+      mocks: buildMocks(mocks),
     }));
     cache.set(id, p);
     p.catch(() => cache.delete(id));

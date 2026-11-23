@@ -1,0 +1,441 @@
+{
+ "course": "pya",
+ "type": 8,
+ "typeTitle": "만들 수 있는 합 찾기",
+ "kind": "write",
+ "skills": [
+  "가능 여부 리스트(True/False)",
+  "중복 없이 세기",
+  "동적 계획법 기초",
+  "리스트 범위 확인"
+ ],
+ "intro": "주어진 수들을 더해 만들 수 있는 합을 True/False 리스트(또는 모음)에 표시해 가며 답을 구하는 유형입니다. 0에서 시작해 \"이미 만들 수 있는 합 + 새 수\"를 차례로 표시하는 방법(작은 답을 모아 큰 답을 만드는 동적 계획법의 기초)을 연습합니다. 같은 합은 한 번만 세고, 제한값을 넘는 합은 버리는 처리가 핵심입니다.",
+ "problems": [
+  {
+   "id": "pya-m1-t08",
+   "version": 1,
+   "title": "두 수를 더해 만드는 자연수",
+   "statement": "두 자연수 `numberA`와 `numberB`를 더해서 만들 수 있는 자연수 가운데 `limit` 이하인 수가 몇 개인지 구하려 합니다. 수는 numberA와 numberB 중 하나를 골라 더하는 일을 한 번 이상 되풀이해서 만듭니다. 한 번 더할 때마다 두 수를 함께 쓰지 않고 둘 중 하나만 고르지만, 같은 수를 여러 번 골라도 되고 numberA와 numberB를 섞어서 골라도 됩니다. 한 번만 고른 경우(numberA나 numberB 그 자체)도 만들 수 있는 수에 들어가며, 서로 다른 방법으로 같은 수가 만들어지면 한 번만 셉니다.\n\n예를 들어 3과 6으로 14 이하의 수를 만드는 방법은 다음과 같습니다.\n\n- 3 = 3 → 1번째 수\n- 6 = 6 → 2번째 수\n- 3 + 3 = 6 → 중복 제외\n- 3 + 6 = 9 → 3번째 수\n- 6 + 6 = 12 → 4번째 수\n- 3 + 3 + 3 = 9 → 중복 제외\n- 3 + 3 + 6 = 12 → 중복 제외\n- 3 + 6 + 6 = 15 → 14보다 커서 제외\n\n이 밖의 방법은 모두 이미 센 수이거나 14보다 큰 수를 만듭니다. 따라서 만들 수 있는 수는 3, 6, 9, 12로 총 4개입니다.\n\n두 자연수 numberA, numberB와 limit가 solution 함수의 매개변수로 주어질 때, numberA와 numberB를 더해 만들 수 있는 자연수 중 limit 이하인 수의 개수를 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "numberA와 numberB는 1 이상 100 이하인 자연수입니다. 두 수는 서로 같을 수도 있습니다.",
+    "limit는 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "numberA와 numberB를 더해 만들 수 있는 서로 다른 자연수 중 limit 이하인 수의 개수를 return 합니다. 그런 수가 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "numberA",
+    "numberB",
+    "limit"
+   ],
+   "examples": [
+    {
+     "args": [
+      3,
+      6,
+      14
+     ],
+     "expected": 4,
+     "explain": "위의 설명과 같습니다. 3, 6, 9, 12로 총 4개입니다."
+    },
+    {
+     "args": [
+      5,
+      2,
+      12
+     ],
+     "expected": 10,
+     "explain": "5, 2로 만들 수 있는 수 중 12 이하인 수는 2, 4(2 + 2), 5, 6(2 + 2 + 2), 7(2 + 5), 8(2 + 2 + 2 + 2), 9(2 + 2 + 5), 10(5 + 5), 11(2 + 2 + 2 + 5), 12(2 + 5 + 5)로 총 10개입니다. 1, 3은 만들 수 없습니다."
+    }
+   ],
+   "code": "def solution(numberA, numberB, limit):\n    # 여기에 코드를 작성해 주세요.\n    answer = [0] * 1001\n    return sum(answer[1:])",
+   "solution": "def solution(numberA, numberB, limit):\n    answer = [0] * 1001\n    answer[0] = 1\n    for i in range(limit + 1):\n        if answer[i] == 1:\n            if i + numberA <= limit:\n                answer[i + numberA] = 1\n            if i + numberB <= limit:\n                answer[i + numberB] = 1\n    return sum(answer[1:])",
+   "tests": [
+    {
+     "args": [
+      1,
+      1,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      100,
+      100,
+      99
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      7,
+      9,
+      6
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1,
+      100,
+      1000
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      100,
+      100,
+      1000
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      99,
+      100,
+      1000
+     ],
+     "expected": 65
+    },
+    {
+     "args": [
+      2,
+      3,
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      2,
+      2
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      10,
+      15,
+      100
+     ],
+     "expected": 19
+    },
+    {
+     "args": [
+      37,
+      53,
+      1000
+     ],
+     "expected": 278
+    },
+    {
+     "args": [
+      6,
+      4,
+      30
+     ],
+     "expected": 14
+    },
+    {
+     "args": [
+      13,
+      26,
+      200
+     ],
+     "expected": 15
+    }
+   ],
+   "inputCheck": "def valid(numberA, numberB, limit):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (numberA, numberB, limit)) and 1 <= numberA <= 100 and 1 <= numberB <= 100 and 1 <= limit <= 1000",
+   "steps": [],
+   "explain": "answer[i]에 '수 i를 만들 수 있는가'를 1(만들 수 있음)과 0(만들 수 없음)으로 적어 두고, answer[0] = 1에서 시작해 만들 수 있는 수 i에 numberA나 numberB를 더한 수를 1로 표시해 나가요. 같은 수는 칸 하나에만 표시되니 중복이 저절로 빠지고, limit를 넘는 수는 표시하지 않아요. 마지막에 0번 칸을 뺀 answer[1:]의 합이 답이에요. 한 가지 수만 여러 번 더한 경우만 세고 두 수를 섞은 합을 빠뜨리는 실수에 주의하세요."
+  },
+  {
+   "id": "pya-m2-t08",
+   "version": 1,
+   "title": "두 수를 더해 만드는 자연수",
+   "statement": "두 자연수 `numberA`와 `numberB`를 더해서 만들 수 있는 자연수 가운데 `limit` 이하인 수가 몇 개인지 구하려 합니다. 수는 numberA와 numberB 중 하나를 골라 더하는 일을 한 번 이상 되풀이해서 만듭니다. 한 번 더할 때마다 두 수를 함께 쓰지 않고 둘 중 하나만 고르지만, 같은 수를 여러 번 골라도 되고 numberA와 numberB를 섞어서 골라도 됩니다. 한 번만 고른 경우(numberA나 numberB 그 자체)도 만들 수 있는 수에 들어가며, 서로 다른 방법으로 같은 수가 만들어지면 한 번만 셉니다.\n\n예를 들어 4와 6으로 15 이하의 수를 만드는 방법은 다음과 같습니다.\n\n- 4 = 4 → 1번째 수\n- 6 = 6 → 2번째 수\n- 4 + 4 = 8 → 3번째 수\n- 4 + 6 = 10 → 4번째 수\n- 6 + 6 = 12 → 5번째 수\n- 4 + 4 + 4 = 12 → 중복 제외\n- 4 + 4 + 6 = 14 → 6번째 수\n- 4 + 6 + 6 = 16 → 15보다 커서 제외\n\n이 밖의 방법은 모두 이미 센 수이거나 15보다 큰 수를 만듭니다. 따라서 만들 수 있는 수는 4, 6, 8, 10, 12, 14로 총 6개입니다.\n\n두 자연수 numberA, numberB와 limit가 solution 함수의 매개변수로 주어질 때, numberA와 numberB를 더해 만들 수 있는 자연수 중 limit 이하인 수의 개수를 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "numberA와 numberB는 1 이상 100 이하인 자연수입니다. 두 수는 서로 같을 수도 있습니다.",
+    "limit는 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "numberA와 numberB를 더해 만들 수 있는 서로 다른 자연수 중 limit 이하인 수의 개수를 return 합니다. 그런 수가 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "numberA",
+    "numberB",
+    "limit"
+   ],
+   "examples": [
+    {
+     "args": [
+      4,
+      6,
+      15
+     ],
+     "expected": 6,
+     "explain": "위의 설명과 같습니다. 4, 6, 8, 10, 12, 14로 총 6개입니다."
+    },
+    {
+     "args": [
+      3,
+      7,
+      17
+     ],
+     "expected": 11,
+     "explain": "3, 7로 만들 수 있는 수 중 17 이하인 수는 3, 6(3 + 3), 7, 9(3 + 3 + 3), 10(3 + 7), 12(3 + 3 + 3 + 3), 13(3 + 3 + 7), 14(7 + 7), 15(3 + 3 + 3 + 3 + 3), 16(3 + 3 + 3 + 7), 17(3 + 7 + 7)로 총 11개입니다. 1, 2, 4, 5, 8, 11은 만들 수 없습니다."
+    }
+   ],
+   "code": "def solution(numberA, numberB, limit):\n    # 여기에 코드를 작성해 주세요.\n    answer = [0] * 1001\n    return sum(answer[1:])",
+   "solution": "def solution(numberA, numberB, limit):\n    answer = [0] * 1001\n    answer[0] = 1\n    for i in range(limit + 1):\n        if answer[i] == 1:\n            if i + numberA <= limit:\n                answer[i + numberA] = 1\n            if i + numberB <= limit:\n                answer[i + numberB] = 1\n    return sum(answer[1:])",
+   "tests": [
+    {
+     "args": [
+      1,
+      2,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      100,
+      1,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      50,
+      60,
+      49
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      99,
+      1000
+     ],
+     "expected": 65
+    },
+    {
+     "args": [
+      1,
+      1,
+      1000
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      100,
+      50,
+      1000
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      5,
+      5,
+      24
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      8,
+      12,
+      100
+     ],
+     "expected": 24
+    },
+    {
+     "args": [
+      41,
+      59,
+      1000
+     ],
+     "expected": 227
+    },
+    {
+     "args": [
+      9,
+      6,
+      50
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      2,
+      100,
+      1000
+     ],
+     "expected": 500
+    },
+    {
+     "args": [
+      11,
+      7,
+      60
+     ],
+     "expected": 30
+    }
+   ],
+   "inputCheck": "def valid(numberA, numberB, limit):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (numberA, numberB, limit)) and 1 <= numberA <= 100 and 1 <= numberB <= 100 and 1 <= limit <= 1000",
+   "steps": [],
+   "explain": "answer[i]에 '수 i를 만들 수 있는가'를 1(만들 수 있음)과 0(만들 수 없음)으로 적어 두고, answer[0] = 1에서 시작해 만들 수 있는 수 i에 numberA나 numberB를 더한 수를 1로 표시해 나가요. 같은 수는 칸 하나에만 표시되니 중복이 저절로 빠지고, limit를 넘는 수는 표시하지 않아요. 마지막에 0번 칸을 뺀 answer[1:]의 합이 답이에요. 한 가지 수만 여러 번 더한 경우만 세고 두 수를 섞은 합을 빠뜨리는 실수에 주의하세요."
+  },
+  {
+   "id": "pya-m3-t08",
+   "version": 1,
+   "title": "두 수를 더해 만드는 자연수",
+   "statement": "두 자연수 `numberA`와 `numberB`를 더해서 만들 수 있는 자연수 가운데 `limit` 이하인 수가 몇 개인지 구하려 합니다. 수는 numberA와 numberB 중 하나를 골라 더하는 일을 한 번 이상 되풀이해서 만듭니다. 한 번 더할 때마다 두 수를 함께 쓰지 않고 둘 중 하나만 고르지만, 같은 수를 여러 번 골라도 되고 numberA와 numberB를 섞어서 골라도 됩니다. 한 번만 고른 경우(numberA나 numberB 그 자체)도 만들 수 있는 수에 들어가며, 서로 다른 방법으로 같은 수가 만들어지면 한 번만 셉니다.\n\n예를 들어 4와 10으로 20 이하의 수를 만드는 방법은 다음과 같습니다.\n\n- 4 = 4 → 1번째 수\n- 10 = 10 → 2번째 수\n- 4 + 4 = 8 → 3번째 수\n- 4 + 10 = 14 → 4번째 수\n- 10 + 10 = 20 → 5번째 수\n- 4 + 4 + 4 = 12 → 6번째 수\n- 4 + 4 + 10 = 18 → 7번째 수\n- 4 + 4 + 4 + 4 = 16 → 8번째 수\n- 4 + 4 + 4 + 4 + 4 = 20 → 중복 제외\n\n이 밖의 방법은 모두 이미 센 수이거나 20보다 큰 수를 만듭니다. 따라서 만들 수 있는 수는 4, 8, 10, 12, 14, 16, 18, 20으로 총 8개입니다.\n\n두 자연수 numberA, numberB와 limit가 solution 함수의 매개변수로 주어질 때, numberA와 numberB를 더해 만들 수 있는 자연수 중 limit 이하인 수의 개수를 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "numberA와 numberB는 1 이상 100 이하인 자연수입니다. 두 수는 서로 같을 수도 있습니다.",
+    "limit는 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "numberA와 numberB를 더해 만들 수 있는 서로 다른 자연수 중 limit 이하인 수의 개수를 return 합니다. 그런 수가 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "numberA",
+    "numberB",
+    "limit"
+   ],
+   "examples": [
+    {
+     "args": [
+      4,
+      10,
+      20
+     ],
+     "expected": 8,
+     "explain": "위의 설명과 같습니다. 4, 8, 10, 12, 14, 16, 18, 20으로 총 8개입니다."
+    },
+    {
+     "args": [
+      7,
+      2,
+      15
+     ],
+     "expected": 12,
+     "explain": "7, 2로 만들 수 있는 수 중 15 이하인 수는 2, 4(2 + 2), 6(2 + 2 + 2), 7, 8(2 + 2 + 2 + 2), 9(2 + 7), 10(2 + 2 + 2 + 2 + 2), 11(2 + 2 + 7), 12(2 + 2 + 2 + 2 + 2 + 2), 13(2 + 2 + 2 + 7), 14(7 + 7), 15(2 + 2 + 2 + 2 + 7)로 총 12개입니다. 1, 3, 5는 만들 수 없습니다."
+    }
+   ],
+   "code": "def solution(numberA, numberB, limit):\n    # 여기에 코드를 작성해 주세요.\n    answer = [0] * 1001\n    return sum(answer[1:])",
+   "solution": "def solution(numberA, numberB, limit):\n    answer = [0] * 1001\n    answer[0] = 1\n    for i in range(limit + 1):\n        if answer[i] == 1:\n            if i + numberA <= limit:\n                answer[i + numberA] = 1\n            if i + numberB <= limit:\n                answer[i + numberB] = 1\n    return sum(answer[1:])",
+   "tests": [
+    {
+     "args": [
+      1,
+      3,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3,
+      1,
+      2
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      100,
+      100,
+      100
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      80,
+      90,
+      79
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      98,
+      99,
+      1000
+     ],
+     "expected": 65
+    },
+    {
+     "args": [
+      100,
+      3,
+      1000
+     ],
+     "expected": 901
+    },
+    {
+     "args": [
+      12,
+      18,
+      100
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      6,
+      6,
+      37
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      29,
+      31,
+      1000
+     ],
+     "expected": 580
+    },
+    {
+     "args": [
+      15,
+      10,
+      75
+     ],
+     "expected": 14
+    },
+    {
+     "args": [
+      2,
+      2,
+      1000
+     ],
+     "expected": 500
+    },
+    {
+     "args": [
+      8,
+      5,
+      40
+     ],
+     "expected": 26
+    }
+   ],
+   "inputCheck": "def valid(numberA, numberB, limit):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (numberA, numberB, limit)) and 1 <= numberA <= 100 and 1 <= numberB <= 100 and 1 <= limit <= 1000",
+   "steps": [],
+   "explain": "answer[i]에 '수 i를 만들 수 있는가'를 1(만들 수 있음)과 0(만들 수 없음)으로 적어 두고, answer[0] = 1에서 시작해 만들 수 있는 수 i에 numberA나 numberB를 더한 수를 1로 표시해 나가요. 같은 수는 칸 하나에만 표시되니 중복이 저절로 빠지고, limit를 넘는 수는 표시하지 않아요. 마지막에 0번 칸을 뺀 answer[1:]의 합이 답이에요. 한 가지 수만 여러 번 더한 경우만 세고 두 수를 섞은 합을 빠뜨리는 실수에 주의하세요."
+  }
+ ]
+}

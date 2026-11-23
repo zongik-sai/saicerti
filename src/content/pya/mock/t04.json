@@ -1,0 +1,474 @@
+{
+ "course": "pya",
+ "type": 4,
+ "typeTitle": "자릿수 재배열하기",
+ "kind": "blank",
+ "skills": [
+  "자릿수 분리 list(str())",
+  "sort(reverse=True)",
+  "\"\".join과 int 변환",
+  "함수 나누기"
+ ],
+ "intro": "정수를 str()로 문자열로 바꾸고 list()로 자릿수를 하나씩 나눈 뒤, 정렬해서 가장 큰 수와 가장 작은 수를 만드는 유형이에요. 정렬한 글자들을 \"\".join()으로 이어 붙이고 int()로 다시 정수로 바꾸는 흐름을 연습해요.",
+ "problems": [
+  {
+   "id": "pya-m1-t04",
+   "version": 1,
+   "title": "가장 큰 수와 가장 작은 수의 차이",
+   "statement": "네 자리 자연수의 각 자리 숫자 네 개를 모두 한 번씩 써서 순서를 바꾸어 늘어놓으면 여러 가지 수를 만들 수 있습니다. 이렇게 만든 수 가운데 가장 큰 수와 가장 작은 수의 차이를 구하려 합니다.\n\n예를 들어 자연수 `7352`가 주어지면 만들 수 있는 가장 큰 수는 `7532`, 가장 작은 수는 `2357`이고, 두 수의 차이는 `5175`입니다.\n\n숫자를 늘어놓았을 때 맨 앞에 0이 오면 앞쪽의 0은 지우고 정수로 읽습니다. 예를 들어 숫자 0, 1, 4, 7을 `0147`로 늘어놓은 수는 `147`로 봅니다.\n\n네 자리 자연수 `num`이 solution 함수의 매개변수로 주어질 때, 가장 큰 수와 가장 작은 수의 차이를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "num은 1000 이상 9999 이하인 네 자리 자연수입니다.",
+    "num에는 같은 숫자가 여러 번 나올 수 있고, 0이 들어 있을 수도 있습니다."
+   ],
+   "returns": [
+    "num의 각 자리 숫자를 재배열하여 만든 가장 큰 수에서 가장 작은 수를 뺀 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "num"
+   ],
+   "examples": [
+    {
+     "args": [
+      7352
+     ],
+     "expected": 5175,
+     "explain": "7352의 각 자리 숫자를 재배열하면 가장 큰 수는 7532, 가장 작은 수는 2357이고, 차이는 5175입니다."
+    },
+    {
+     "args": [
+      8406
+     ],
+     "expected": 8172,
+     "explain": "8406의 각 자리 숫자를 재배열하면 가장 큰 수는 8640, 가장 작은 수는 0468, 즉 468이고, 차이는 8172입니다."
+    }
+   ],
+   "code": "def maxNumber(value):\n    digits = ⟦1⟧\n    digits.sort(⟦2⟧)\n    return ⟦3⟧\n\ndef minNumber(value):\n    digits = ⟦4⟧\n    digits.sort(⟦5⟧)\n    return ⟦6⟧\n\ndef solution(num):\n    answer = 0\n    maxNum = maxNumber(num)\n    minNum = minNumber(num)\n\n    answer = ⟦7⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(str(value))",
+     "alts": [
+      "[d for d in str(value)]"
+     ]
+    },
+    {
+     "answer": "reverse=True",
+     "alts": [
+      "reverse = True"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "list(str(value))",
+     "alts": [
+      "[d for d in str(value)]"
+     ]
+    },
+    {
+     "answer": "reverse=False",
+     "alts": [
+      "reverse = False"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "maxNum - minNum"
+    }
+   ],
+   "solution": "def maxNumber(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef minNumber(value):\n    digits = list(str(value))\n    digits.sort(reverse=False)\n    return int(\"\".join(digits))\n\ndef solution(num):\n    answer = 0\n    maxNum = maxNumber(num)\n    minNum = minNumber(num)\n\n    answer = maxNum - minNum\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1000
+     ],
+     "expected": 999
+    },
+    {
+     "args": [
+      9999
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      3333
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2002
+     ],
+     "expected": 2178
+    },
+    {
+     "args": [
+      9100
+     ],
+     "expected": 9081
+    },
+    {
+     "args": [
+      1234
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      8765
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      4440
+     ],
+     "expected": 3996
+    },
+    {
+     "args": [
+      6174
+     ],
+     "expected": 6174
+    },
+    {
+     "args": [
+      5021
+     ],
+     "expected": 5085
+    },
+    {
+     "args": [
+      7007
+     ],
+     "expected": 7623
+    },
+    {
+     "args": [
+      3898
+     ],
+     "expected": 5994
+    }
+   ],
+   "inputCheck": "def valid(num):\n    return isinstance(num, int) and not isinstance(num, bool) and 1000 <= num <= 9999",
+   "steps": [],
+   "explain": "list(str(value))로 각 자리 숫자를 글자 하나씩 나눈 뒤, sort(reverse=True)로 내림차순 정렬하면 가장 큰 수, sort(reverse=False)로 오름차순 정렬하면 가장 작은 수가 돼요. reverse=False는 기본값이라 sort()와 같지만, 빈칸은 비워 둘 수 없으니 reverse=False라고 써요. 정렬한 글자를 \"\".join()으로 이어 int()로 바꾸면 '0468'의 맨 앞 0이 저절로 사라져 468로 바뀌어요. 마지막에는 maxNum - minNum처럼 큰 수에서 작은 수를 빼야 해요."
+  },
+  {
+   "id": "pya-m2-t04",
+   "version": 1,
+   "title": "가장 큰 수와 가장 작은 수의 차이",
+   "statement": "네 자리 자연수의 각 자리 숫자 네 개를 모두 한 번씩 써서 순서를 바꾸어 늘어놓으면 여러 가지 수를 만들 수 있습니다. 이렇게 만든 수 가운데 가장 큰 수와 가장 작은 수의 차이를 구하려 합니다.\n\n예를 들어 자연수 `1739`가 주어지면 만들 수 있는 가장 큰 수는 `9731`, 가장 작은 수는 `1379`이고, 두 수의 차이는 `8352`입니다.\n\n숫자를 늘어놓았을 때 맨 앞에 0이 오면 앞쪽의 0은 지우고 정수로 읽습니다. 예를 들어 숫자 0, 2, 5, 8을 `0258`로 늘어놓은 수는 `258`로 봅니다.\n\n네 자리 자연수 `num`이 solution 함수의 매개변수로 주어질 때, 가장 큰 수와 가장 작은 수의 차이를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "num은 1000 이상 9999 이하인 네 자리 자연수입니다.",
+    "num에는 같은 숫자가 여러 번 나올 수 있고, 0이 들어 있을 수도 있습니다."
+   ],
+   "returns": [
+    "num의 각 자리 숫자를 재배열하여 만든 가장 큰 수에서 가장 작은 수를 뺀 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "num"
+   ],
+   "examples": [
+    {
+     "args": [
+      1739
+     ],
+     "expected": 8352,
+     "explain": "1739의 각 자리 숫자를 재배열하면 가장 큰 수는 9731, 가장 작은 수는 1379이고, 차이는 8352입니다."
+    },
+    {
+     "args": [
+      9071
+     ],
+     "expected": 9531,
+     "explain": "9071의 각 자리 숫자를 재배열하면 가장 큰 수는 9710, 가장 작은 수는 0179, 즉 179이고, 차이는 9531입니다."
+    }
+   ],
+   "code": "def maxNumber(value):\n    digits = ⟦1⟧\n    digits.sort(⟦2⟧)\n    return ⟦3⟧\n\ndef minNumber(value):\n    digits = ⟦4⟧\n    digits.sort(⟦5⟧)\n    return ⟦6⟧\n\ndef solution(num):\n    answer = 0\n    maxNum = maxNumber(num)\n    minNum = minNumber(num)\n\n    answer = ⟦7⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(str(value))",
+     "alts": [
+      "[d for d in str(value)]"
+     ]
+    },
+    {
+     "answer": "reverse=True",
+     "alts": [
+      "reverse = True"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "list(str(value))",
+     "alts": [
+      "[d for d in str(value)]"
+     ]
+    },
+    {
+     "answer": "reverse=False",
+     "alts": [
+      "reverse = False"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "maxNum - minNum"
+    }
+   ],
+   "solution": "def maxNumber(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef minNumber(value):\n    digits = list(str(value))\n    digits.sort(reverse=False)\n    return int(\"\".join(digits))\n\ndef solution(num):\n    answer = 0\n    maxNum = maxNumber(num)\n    minNum = minNumber(num)\n\n    answer = maxNum - minNum\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1000
+     ],
+     "expected": 999
+    },
+    {
+     "args": [
+      9999
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      7777
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      4004
+     ],
+     "expected": 4356
+    },
+    {
+     "args": [
+      9900
+     ],
+     "expected": 9801
+    },
+    {
+     "args": [
+      2345
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      9876
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      1110
+     ],
+     "expected": 999
+    },
+    {
+     "args": [
+      3087
+     ],
+     "expected": 8352
+    },
+    {
+     "args": [
+      6060
+     ],
+     "expected": 6534
+    },
+    {
+     "args": [
+      8001
+     ],
+     "expected": 8082
+    },
+    {
+     "args": [
+      2929
+     ],
+     "expected": 7623
+    }
+   ],
+   "inputCheck": "def valid(num):\n    return isinstance(num, int) and not isinstance(num, bool) and 1000 <= num <= 9999",
+   "steps": [],
+   "explain": "list(str(value))로 각 자리 숫자를 글자 하나씩 나눈 뒤, sort(reverse=True)로 내림차순 정렬하면 가장 큰 수, sort(reverse=False)로 오름차순 정렬하면 가장 작은 수가 돼요. reverse=False는 기본값이라 sort()와 같지만, 빈칸은 비워 둘 수 없으니 reverse=False라고 써요. 정렬한 글자를 \"\".join()으로 이어 int()로 바꾸면 '0179'의 맨 앞 0이 저절로 사라져 179로 바뀌어요. 마지막에는 maxNum - minNum처럼 큰 수에서 작은 수를 빼야 해요."
+  },
+  {
+   "id": "pya-m3-t04",
+   "version": 1,
+   "title": "가장 큰 수와 가장 작은 수의 차이",
+   "statement": "네 자리 자연수의 각 자리 숫자 네 개를 모두 한 번씩 써서 순서를 바꾸어 늘어놓으면 여러 가지 수를 만들 수 있습니다. 이렇게 만든 수 가운데 가장 큰 수와 가장 작은 수의 차이를 구하려 합니다.\n\n예를 들어 자연수 `7215`가 주어지면 만들 수 있는 가장 큰 수는 `7521`, 가장 작은 수는 `1257`이고, 두 수의 차이는 `6264`입니다.\n\n숫자를 늘어놓았을 때 맨 앞에 0이 오면 앞쪽의 0은 지우고 정수로 읽습니다. 예를 들어 숫자 0, 1, 3, 6을 `0136`으로 늘어놓은 수는 `136`으로 봅니다.\n\n네 자리 자연수 `num`이 solution 함수의 매개변수로 주어질 때, 가장 큰 수와 가장 작은 수의 차이를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "num은 1000 이상 9999 이하인 네 자리 자연수입니다.",
+    "num에는 같은 숫자가 여러 번 나올 수 있고, 0이 들어 있을 수도 있습니다."
+   ],
+   "returns": [
+    "num의 각 자리 숫자를 재배열하여 만든 가장 큰 수에서 가장 작은 수를 뺀 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "num"
+   ],
+   "examples": [
+    {
+     "args": [
+      7215
+     ],
+     "expected": 6264,
+     "explain": "7215의 각 자리 숫자를 재배열하면 가장 큰 수는 7521, 가장 작은 수는 1257이고, 차이는 6264입니다."
+    },
+    {
+     "args": [
+      6390
+     ],
+     "expected": 9261,
+     "explain": "6390의 각 자리 숫자를 재배열하면 가장 큰 수는 9630, 가장 작은 수는 0369, 즉 369이고, 차이는 9261입니다."
+    }
+   ],
+   "code": "def maxNumber(value):\n    digits = ⟦1⟧\n    digits.sort(⟦2⟧)\n    return ⟦3⟧\n\ndef minNumber(value):\n    digits = ⟦4⟧\n    digits.sort(⟦5⟧)\n    return ⟦6⟧\n\ndef solution(num):\n    answer = 0\n    maxNum = maxNumber(num)\n    minNum = minNumber(num)\n\n    answer = ⟦7⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(str(value))",
+     "alts": [
+      "[d for d in str(value)]"
+     ]
+    },
+    {
+     "answer": "reverse=True",
+     "alts": [
+      "reverse = True"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "list(str(value))",
+     "alts": [
+      "[d for d in str(value)]"
+     ]
+    },
+    {
+     "answer": "reverse=False",
+     "alts": [
+      "reverse = False"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "maxNum - minNum"
+    }
+   ],
+   "solution": "def maxNumber(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef minNumber(value):\n    digits = list(str(value))\n    digits.sort(reverse=False)\n    return int(\"\".join(digits))\n\ndef solution(num):\n    answer = 0\n    maxNum = maxNumber(num)\n    minNum = minNumber(num)\n\n    answer = maxNum - minNum\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1000
+     ],
+     "expected": 999
+    },
+    {
+     "args": [
+      9999
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2222
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      9000
+     ],
+     "expected": 8991
+    },
+    {
+     "args": [
+      1001
+     ],
+     "expected": 1089
+    },
+    {
+     "args": [
+      3456
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      5432
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      8880
+     ],
+     "expected": 7992
+    },
+    {
+     "args": [
+      1089
+     ],
+     "expected": 9621
+    },
+    {
+     "args": [
+      7300
+     ],
+     "expected": 7263
+    },
+    {
+     "args": [
+      6996
+     ],
+     "expected": 3267
+    },
+    {
+     "args": [
+      4517
+     ],
+     "expected": 6084
+    }
+   ],
+   "inputCheck": "def valid(num):\n    return isinstance(num, int) and not isinstance(num, bool) and 1000 <= num <= 9999",
+   "steps": [],
+   "explain": "list(str(value))로 각 자리 숫자를 글자 하나씩 나눈 뒤, sort(reverse=True)로 내림차순 정렬하면 가장 큰 수, sort(reverse=False)로 오름차순 정렬하면 가장 작은 수가 돼요. reverse=False는 기본값이라 sort()와 같지만, 빈칸은 비워 둘 수 없으니 reverse=False라고 써요. 정렬한 글자를 \"\".join()으로 이어 int()로 바꾸면 '0369'의 맨 앞 0이 저절로 사라져 369로 바뀌어요. 마지막에는 maxNum - minNum처럼 큰 수에서 작은 수를 빼야 해요."
+  }
+ ]
+}

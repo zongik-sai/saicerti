@@ -8,7 +8,7 @@ import type { CourseId } from '../../content/types';
 import { isSupabaseConfigured } from '../../lib/config';
 import { learnerPrefix, readJson, removeRaw, UNSYNCED_SUFFIX, writeJson, writeRaw } from '../../lib/storage';
 import { supabase } from '../auth/supabase';
-import { emptyProb, emptyState, mergeState, sameState, sanitize, type CourseState, type ProbState } from './model';
+import { emptyProb, emptyState, mergeState, sameState, sanitize, type CourseState, type MockState, type ProbState } from './model';
 
 export type SyncStatus = 'local' | 'loading' | 'saving' | 'saved' | 'offline' | 'not-ready';
 
@@ -180,6 +180,8 @@ export interface CourseProgress {
   sync: SyncStatus;
   syncError?: string;
   update: (pid: string, ver: number, fn: (p: ProbState) => ProbState) => void;
+  /** 모의고사 한 회(m1~m3) 기록 바꾸기 */
+  updateMock: (key: string, fn: (m: MockState | undefined) => MockState) => void;
   retry: () => void;
 }
 
@@ -201,7 +203,14 @@ export function useCourseProgress(learnerKey: string, course: CourseId, remote: 
       const cur = e.state.probs[pid];
       const base = cur && cur.ver === ver ? cur : { ...emptyProb(ver, now), solved: cur?.solved ?? false, tries: cur?.tries ?? 0, solvedAt: cur?.solvedAt };
       const next = { ...fn(base), lastAt: now };
-      e.state = { v: 1, probs: { ...e.state.probs, [pid]: next } };
+      e.state = { ...e.state, probs: { ...e.state.probs, [pid]: next } };
+      persistLocal(e, e.remote);
+      emit(e);
+      schedule(e);
+    },
+    updateMock: (key, fn) => {
+      const next = fn(e.state.mocks?.[key]);
+      e.state = { ...e.state, mocks: { ...(e.state.mocks ?? {}), [key]: next } };
       persistLocal(e, e.remote);
       emit(e);
       schedule(e);

@@ -35,7 +35,26 @@ export function CourseHome({ course, learnerKey, remote }: { course: Course; lea
         </p>
         {prog.syncError && <p className="notice warn" style={{ margin: '0.5rem 0 0' }}>{prog.syncError}</p>}
       </div>
-      <div className="types">
+      <h2 style={{ marginTop: '1.4rem' }}>모의고사</h2>
+      <p className="faint" style={{ marginTop: 0 }}>
+        원본 기출 10문항과 같은 유형·같은 코드(예시만 다름) · 중간 점검 없이 실전처럼 · 결과는 시험을 끝낸 뒤 공개
+      </p>
+      <div className="mock-cards">
+        {course.mocks.map((m) => {
+          const st = prog.state.mocks?.[m.key];
+          const solvedN = st ? Object.values(st.results).filter((r) => r.solved).length : 0;
+          const label = !m.items.length ? '준비 중' : !st ? '시작 전' : st.endedAt ? `해결 ${solvedN}/${m.items.length}` : `진행 중 · 제출 ${Object.keys(st.results).length}/${m.items.length}`;
+          return (
+            <Link key={m.key} to={`${meta.path}/mock/${m.n}`} className={`card mock-card${st?.endedAt ? ' done' : st ? ' going' : ''}`}>
+              <strong>모의고사 {m.n}회</strong>
+              <span className="faint">{m.items.length}문항</span>
+              <span className="mock-state">{label}</span>
+            </Link>
+          );
+        })}
+      </div>
+      <h2 style={{ marginTop: '1.4rem' }}>유형별 연습</h2>
+      <div className="types" style={{ marginTop: '0.4rem' }}>
         {course.types.map((ty) => (
           <article className="card type-card" key={ty.type}>
             <div className="type-no">{String(ty.type).padStart(2, '0')}</div>

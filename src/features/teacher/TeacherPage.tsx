@@ -80,6 +80,11 @@ export function TeacherPage() {
                     유형 {t.type}
                   </th>
                 ))}
+                {course.mocks.map((m) => (
+                  <th key={m.key} title={`모의고사 ${m.n}회: 해결 문항 수(끝낸 경우)`}>
+                    모의 {m.n}
+                  </th>
+                ))}
                 <th>채점 횟수</th>
                 <th>답 확인</th>
                 <th>마지막 기록</th>
@@ -109,6 +114,15 @@ export function TeacherPage() {
                         </td>
                       );
                     })}
+                    {course.mocks.map((m) => {
+                      const ms = r.state.mocks?.[m.key];
+                      const sol = ms ? Object.values(ms.results).filter((x) => x.solved).length : 0;
+                      return (
+                        <td key={m.key} className={ms?.endedAt ? (sol === m.items.length ? 'full' : 'part') : ''} title={ms ? `${ms.round}번째 응시${ms.endedAt ? '' : ' · 진행 중'}` : '응시 전'}>
+                          {!ms ? '-' : ms.endedAt ? `${sol}/${m.items.length}` : '진행 중'}
+                        </td>
+                      );
+                    })}
                     <td>{tries}</td>
                     <td>{saw}</td>
                     <td>{new Date(r.updated_at).toLocaleString('ko-KR', { dateStyle: 'short', timeStyle: 'short' })}</td>
@@ -120,7 +134,7 @@ export function TeacherPage() {
         </div>
       )}
       <p className="faint" style={{ marginTop: '0.75rem' }}>
-        칸 = 유형별 해결 문제 수(5문제 중). 점수는 학생 브라우저가 기록한 자기 학습 기록이며 평가 근거가 아니에요. 학생 코드는 서버에 저장하지 않아요.
+        유형 칸 = 유형별 해결 문제 수(5문제 중), 모의 칸 = 모의고사 해결 문항 수(시험을 끝낸 경우). 점수는 학생 브라우저가 기록한 자기 학습 기록이며 평가 근거가 아니에요. 학생 코드는 서버에 저장하지 않아요.
       </p>
     </div>
   );

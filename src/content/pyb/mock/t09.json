@@ -1,0 +1,615 @@
+{
+ "course": "pyb",
+ "type": 9,
+ "typeTitle": "조건 빼고 평균 구하기",
+ "kind": "write",
+ "skills": [
+  "리스트 순회",
+  "합계 누적",
+  "최솟값·최댓값 찾기",
+  "정수 나눗셈 //"
+ ],
+ "intro": "여러 기록 중 가장 낮은 값, 가장 높은 값, 조건에 맞지 않는 값을 빼고 나머지의 평균을 정수로 구하는 유형이에요. 반복문 하나로 합계와 최솟값·최댓값을 함께 구하고, 나누는 개수를 정확히 세고, //로 소수점 아래를 버리는 연습을 합니다.",
+ "problems": [
+  {
+   "id": "pyb-m1-t09",
+   "version": 1,
+   "title": "가장 낮은 점수 빼고 평균",
+   "statement": "시험을 n번 본 뒤, 가장 낮은 시험 점수 하나를 뺀 나머지 점수들의 평균으로 최종 성적을 정하려고 합니다. 평균의 소수점 아래는 버립니다. 그리고 가장 낮은 시험 점수가 여러 개이면 그 가운데 한 개만 뺍니다.\n\n예를 들어 시험 점수가 [85, 60, 92, 74, 88, 79]이면, 이 가운데 가장 낮은 점수는 60점입니다. 이 점수를 뺀 나머지 점수들의 평균은 83.6입니다. 소수점 아래를 버리면 최종 성적은 83입니다.\n\n시험 점수를 담은 리스트 `scores`가 매개변수로 주어질 때, 최종 성적을 return 하도록 solution 함수를 작성해 주세요.",
+   "params": [
+    "scores는 n번 본 시험의 점수를 담은 리스트입니다.",
+    "scores의 길이 n은 2 이상 10 이하입니다.",
+    "scores의 원소는 0 이상 100 이하인 정수이며, 같은 점수가 여러 번 있을 수 있습니다."
+   ],
+   "returns": [
+    "가장 낮은 점수 하나를 뺀 나머지 점수들의 평균에서 소수점 아래를 버린 정수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "scores"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       85,
+       60,
+       92,
+       74,
+       88,
+       79
+      ]
+     ],
+     "expected": 83,
+     "explain": "가장 낮은 60점을 빼면 나머지 점수 5개의 합은 418이고, 418 ÷ 5 = 83.6에서 소수점 아래를 버려 83입니다."
+    },
+    {
+     "args": [
+      [
+       45,
+       93,
+       67,
+       81,
+       30,
+       58,
+       72
+      ]
+     ],
+     "expected": 69,
+     "explain": "가장 낮은 30점을 빼면 나머지 점수 6개의 합은 416이고, 416 ÷ 6 = 69.333…에서 소수점 아래를 버려 69입니다."
+    }
+   ],
+   "code": "def solution(scores):\n    answer = 0\n    return answer",
+   "solution": "def solution(scores):\n    total = 0\n    low = scores[0]\n    for s in scores:\n        total += s\n        if s < low:\n            low = s\n    answer = (total - low) // (len(scores) - 1)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       57,
+       92
+      ]
+     ],
+     "expected": 92
+    },
+    {
+     "args": [
+      [
+       64,
+       64
+      ]
+     ],
+     "expected": 64
+    },
+    {
+     "args": [
+      [
+       0,
+       100
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       35,
+       80,
+       35,
+       90
+      ]
+     ],
+     "expected": 68
+    },
+    {
+     "args": [
+      [
+       12,
+       75,
+       68,
+       91,
+       54
+      ]
+     ],
+     "expected": 72
+    },
+    {
+     "args": [
+      [
+       88,
+       72,
+       95,
+       61,
+       79,
+       47
+      ]
+     ],
+     "expected": 79
+    },
+    {
+     "args": [
+      [
+       0,
+       1,
+       2
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       73,
+       100,
+       86,
+       59,
+       92,
+       100,
+       64,
+       81,
+       77,
+       95
+      ]
+     ],
+     "expected": 85
+    },
+    {
+     "args": [
+      [
+       50,
+       99,
+       98,
+       98
+      ]
+     ],
+     "expected": 98
+    },
+    {
+     "args": [
+      [
+       20,
+       20,
+       20,
+       70
+      ]
+     ],
+     "expected": 36
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(scores):\n    return isinstance(scores, list) and 2 <= len(scores) <= 10 and all(type(x) is int and 0 <= x <= 100 for x in scores)",
+   "steps": [],
+   "explain": "반복문 하나로 점수의 합계(total)와 가장 낮은 점수(low)를 함께 구한 뒤, 합계에서 low 하나만 빼고 남은 개수 len(scores) - 1로 나눠요. / 로 나누면 결과가 실수(소수)로 나오므로, 소수점 아래를 버린 정수를 얻으려면 //를 써야 해요. 가장 낮은 점수가 여러 개여도 하나만 빼야 하고, low의 처음 값은 scores[0]으로 두면 안전해요."
+  },
+  {
+   "id": "pyb-m2-t09",
+   "version": 1,
+   "title": "가장 낮은 점수 빼고 평균",
+   "statement": "시험을 n번 본 뒤, 가장 낮은 시험 점수 하나를 뺀 나머지 점수들의 평균으로 최종 성적을 정하려고 합니다. 평균의 소수점 아래는 버립니다. 그리고 가장 낮은 시험 점수가 여러 개이면 그 가운데 한 개만 뺍니다.\n\n예를 들어 시험 점수가 [70, 95, 88, 65, 100, 78]이면, 이 가운데 가장 낮은 점수는 65점입니다. 이 점수를 뺀 나머지 점수들의 평균은 86.2입니다. 소수점 아래를 버리면 최종 성적은 86입니다.\n\n시험 점수를 담은 리스트 `scores`가 매개변수로 주어질 때, 최종 성적을 return 하도록 solution 함수를 작성해 주세요.",
+   "params": [
+    "scores는 n번 본 시험의 점수를 담은 리스트입니다.",
+    "scores의 길이 n은 2 이상 10 이하입니다.",
+    "scores의 원소는 0 이상 100 이하인 정수이며, 같은 점수가 여러 번 있을 수 있습니다."
+   ],
+   "returns": [
+    "가장 낮은 점수 하나를 뺀 나머지 점수들의 평균에서 소수점 아래를 버린 정수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "scores"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       70,
+       95,
+       88,
+       65,
+       100,
+       78
+      ]
+     ],
+     "expected": 86,
+     "explain": "가장 낮은 65점을 빼면 나머지 점수 5개의 합은 431이고, 431 ÷ 5 = 86.2에서 소수점 아래를 버려 86입니다."
+    },
+    {
+     "args": [
+      [
+       55,
+       82,
+       40,
+       91,
+       40,
+       73,
+       68
+      ]
+     ],
+     "expected": 68,
+     "explain": "가장 낮은 점수 40점이 2개이지만 하나만 뺍니다. 남은 점수 6개의 합은 409이고, 409 ÷ 6 = 68.166…에서 소수점 아래를 버려 68입니다."
+    }
+   ],
+   "code": "def solution(scores):\n    answer = 0\n    return answer",
+   "solution": "def solution(scores):\n    total = 0\n    low = scores[0]\n    for s in scores:\n        total += s\n        if s < low:\n            low = s\n    answer = (total - low) // (len(scores) - 1)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       83,
+       46
+      ]
+     ],
+     "expected": 83
+    },
+    {
+     "args": [
+      [
+       100,
+       100
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       100,
+       0
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       3,
+       3,
+       3,
+       3
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       62,
+       18,
+       90,
+       18,
+       77
+      ]
+     ],
+     "expected": 61
+    },
+    {
+     "args": [
+      [
+       9,
+       66,
+       71,
+       58
+      ]
+     ],
+     "expected": 65
+    },
+    {
+     "args": [
+      [
+       93,
+       84,
+       76,
+       99,
+       70,
+       51,
+       88,
+       43
+      ]
+     ],
+     "expected": 80
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       58,
+       64,
+       100,
+       37,
+       81,
+       95,
+       72,
+       69,
+       88,
+       100
+      ]
+     ],
+     "expected": 80
+    },
+    {
+     "args": [
+      [
+       10,
+       100,
+       99,
+       99,
+       99,
+       99,
+       99,
+       99,
+       99,
+       99
+      ]
+     ],
+     "expected": 99
+    },
+    {
+     "args": [
+      [
+       45,
+       45,
+       45,
+       100
+      ]
+     ],
+     "expected": 63
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(scores):\n    return isinstance(scores, list) and 2 <= len(scores) <= 10 and all(type(x) is int and 0 <= x <= 100 for x in scores)",
+   "steps": [],
+   "explain": "반복문 하나로 점수의 합계(total)와 가장 낮은 점수(low)를 함께 구한 뒤, 합계에서 low 하나만 빼고 남은 개수 len(scores) - 1로 나눠요. / 로 나누면 결과가 실수(소수)로 나오므로, 소수점 아래를 버린 정수를 얻으려면 //를 써야 해요. 가장 낮은 점수가 여러 개여도 하나만 빼야 하고, low의 처음 값은 scores[0]으로 두면 안전해요."
+  },
+  {
+   "id": "pyb-m3-t09",
+   "version": 1,
+   "title": "가장 낮은 점수 빼고 평균",
+   "statement": "시험을 n번 본 뒤, 가장 낮은 시험 점수 하나를 뺀 나머지 점수들의 평균으로 최종 성적을 정하려고 합니다. 평균의 소수점 아래는 버립니다. 그리고 가장 낮은 시험 점수가 여러 개이면 그 가운데 한 개만 뺍니다.\n\n예를 들어 시험 점수가 [64, 99, 83, 50, 91, 76]이면, 이 가운데 가장 낮은 점수는 50점입니다. 이 점수를 뺀 나머지 점수들의 평균은 82.6입니다. 소수점 아래를 버리면 최종 성적은 82입니다.\n\n시험 점수를 담은 리스트 `scores`가 매개변수로 주어질 때, 최종 성적을 return 하도록 solution 함수를 작성해 주세요.",
+   "params": [
+    "scores는 n번 본 시험의 점수를 담은 리스트입니다.",
+    "scores의 길이 n은 2 이상 10 이하입니다.",
+    "scores의 원소는 0 이상 100 이하인 정수이며, 같은 점수가 여러 번 있을 수 있습니다."
+   ],
+   "returns": [
+    "가장 낮은 점수 하나를 뺀 나머지 점수들의 평균에서 소수점 아래를 버린 정수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "scores"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       64,
+       99,
+       83,
+       50,
+       91,
+       76
+      ]
+     ],
+     "expected": 82,
+     "explain": "가장 낮은 50점을 빼면 나머지 점수 5개의 합은 413이고, 413 ÷ 5 = 82.6에서 소수점 아래를 버려 82입니다."
+    },
+    {
+     "args": [
+      [
+       20,
+       95,
+       63,
+       78,
+       84,
+       59,
+       72
+      ]
+     ],
+     "expected": 75,
+     "explain": "가장 낮은 20점을 빼면 나머지 점수 6개의 합은 451이고, 451 ÷ 6 = 75.166…에서 소수점 아래를 버려 75입니다."
+    }
+   ],
+   "code": "def solution(scores):\n    answer = 0\n    return answer",
+   "solution": "def solution(scores):\n    total = 0\n    low = scores[0]\n    for s in scores:\n        total += s\n        if s < low:\n            low = s\n    answer = (total - low) // (len(scores) - 1)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       100,
+       37
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       41,
+       41
+      ]
+     ],
+     "expected": 41
+    },
+    {
+     "args": [
+      [
+       0,
+       99
+      ]
+     ],
+     "expected": 99
+    },
+    {
+     "args": [
+      [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       99
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       52,
+       97,
+       52,
+       66,
+       80,
+       71
+      ]
+     ],
+     "expected": 73
+    },
+    {
+     "args": [
+      [
+       5,
+       49,
+       88,
+       63
+      ]
+     ],
+     "expected": 66
+    },
+    {
+     "args": [
+      [
+       77,
+       90,
+       68,
+       94,
+       85,
+       32
+      ]
+     ],
+     "expected": 82
+    },
+    {
+     "args": [
+      [
+       10,
+       11,
+       12,
+       13
+      ]
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      [
+       91,
+       46,
+       73,
+       100,
+       58,
+       84,
+       67,
+       100,
+       79,
+       62
+      ]
+     ],
+     "expected": 79
+    },
+    {
+     "args": [
+      [
+       0,
+       97,
+       98
+      ]
+     ],
+     "expected": 97
+    },
+    {
+     "args": [
+      [
+       30,
+       30,
+       30,
+       30,
+       95
+      ]
+     ],
+     "expected": 46
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(scores):\n    return isinstance(scores, list) and 2 <= len(scores) <= 10 and all(type(x) is int and 0 <= x <= 100 for x in scores)",
+   "steps": [],
+   "explain": "반복문 하나로 점수의 합계(total)와 가장 낮은 점수(low)를 함께 구한 뒤, 합계에서 low 하나만 빼고 남은 개수 len(scores) - 1로 나눠요. / 로 나누면 결과가 실수(소수)로 나오므로, 소수점 아래를 버린 정수를 얻으려면 //를 써야 해요. 가장 낮은 점수가 여러 개여도 하나만 빼야 하고, low의 처음 값은 scores[0]으로 두면 안전해요."
+  }
+ ]
+}

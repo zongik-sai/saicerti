@@ -160,7 +160,7 @@ def check_steps(where, p):
         err(where, '객관식(mcq) 단계가 하나 이상 필요')
 
 
-def check_problem(where, p, course, tnum, kind, letter, seen):
+def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
     req = ['id', 'version', 'title', 'statement', 'params', 'returns', 'funcName', 'argNames', 'examples', 'code', 'solution', 'tests', 'inputCheck', 'steps', 'explain']
     for k in req:
         if k not in p:
@@ -168,8 +168,8 @@ def check_problem(where, p, course, tnum, kind, letter, seen):
     if any(k not in p for k in req):
         return
     pid = p['id']
-    if pid != f'{course}-t{tnum:02d}-{letter}':
-        err(where, f'id는 {course}-t{tnum:02d}-{letter} 이어야 함(지금 {pid})')
+    if pid != expected_id:
+        err(where, f'id는 {expected_id} 이어야 함(지금 {pid})')
     if pid in seen:
         err(where, f'id 중복 {pid}')
     seen.add(pid)
@@ -298,6 +298,8 @@ def check_problem(where, p, course, tnum, kind, letter, seen):
             err(where, '함수 작성 코드에 빈칸 표시가 있음')
         if not re.search(rf'def\s+{p["funcName"]}\s*\(', code):
             err(where, '처음 코드에 funcName 함수 정의 없음')
+    if mock and p.get('steps') == []:
+        return  # 모의고사: 중간 점검 없이 실전처럼
     check_steps(where, p)
 
 
@@ -308,9 +310,10 @@ def check_file(path, seen):
     except Exception as e:
         err(where, f'JSON 오류: {e}')
         return 0
-    m = re.search(r'(pyb|pya)[/\\]t(\d{2})\.json$', path)
+    mock = bool(re.search(r'[/\\]mock[/\\]t\d{2}\.json$', path))
+    m = re.search(r'(pyb|pya)[/\\](?:mock[/\\])?t(\d{2})\.json$', path)
     if not m:
-        err(where, '파일 경로는 src/content/<pyb|pya>/tNN.json')
+        err(where, '파일 경로는 src/content/<pyb|pya>/tNN.json 또는 src/content/<pyb|pya>/mock/tNN.json')
         return 0
     course, tnum = m.group(1), int(m.group(2))
     if d.get('course') != course or d.get('type') != tnum:
@@ -326,11 +329,19 @@ def check_file(path, seen):
     if not isinstance(d.get('intro'), str) or len(d['intro']) < 20:
         err(where, 'intro(유형 소개 2~3문장) 필요')
     probs = d.get('problems')
+    if mock:
+        # 모의고사: 원본 유형마다 3세트(m1~m3)
+        if not isinstance(probs, list) or len(probs) != 3:
+            err(where, '모의고사 problems는 3개(1~3회)')
+            return 0
+        for i, p in enumerate(probs):
+            check_problem(f'{where} #{i + 1}', p, course, tnum, kind, f'{course}-m{i + 1}-t{tnum:02d}', seen, mock=True)
+        return len(probs)
     if not isinstance(probs, list) or len(probs) != 5:
         err(where, 'problems는 5개')
         return 0
     for i, p in enumerate(probs):
-        check_problem(f'{where} #{i + 1}', p, course, tnum, kind, 'abcde'[i], seen)
+        check_problem(f'{where} #{i + 1}', p, course, tnum, kind, f'{course}-t{tnum:02d}-{"abcde"[i]}', seen)
     return len(probs)
 
 

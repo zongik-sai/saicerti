@@ -385,3 +385,23 @@ table.data.acc-table .acc-date, table.data.acc-table .acc-email { white-space: n
   .acc-btns { min-width: 0; max-width: none; }
   .acc-toasts { left: 1rem; right: 1rem; max-width: none; }
 }
+
+/* ---- 모의고사 ---- */
+.mock-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+.mock-card { display: flex; flex-direction: column; gap: 0.15rem; text-decoration: none; color: inherit; }
+.mock-card:hover { border-color: var(--accent); }
+.mock-card .mock-state { font-size: 0.88rem; font-weight: 600; color: var(--soft); margin-top: 0.3rem; }
+.mock-card.going { border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.mock-card.going .mock-state { color: var(--accent); }
+.mock-card.done .mock-state { color: var(--ok); }
+.mock-bar { position: sticky; top: 3.4rem; z-index: 10; display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; align-items: center; margin-bottom: 0.9rem; padding: 0.6rem 0.9rem; }
+.mock-nav { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+.mock-nav button { min-width: 2.2rem; min-height: 32px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface-2); cursor: pointer; font-family: var(--mono); font-size: 0.85rem; }
+.mock-nav button.cur { border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+.mock-nav button.done { background: var(--ok-soft); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+.mock-nav button.cur.done { border-color: var(--accent); }
+.mock-big { font-size: 1.8rem; font-weight: 700; line-height: 1.2; }
+.mock-big small { font-size: 1rem; color: var(--faint); font-weight: 600; }
+.mock-big.small-big { font-size: 1.2rem; }
+.mock-table td.name { text-align: left; white-space: normal; }
+@media (max-width: 640px) { .mock-bar { position: static; } }

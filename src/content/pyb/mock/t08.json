@@ -1,0 +1,388 @@
+{
+ "course": "pyb",
+ "type": 8,
+ "typeTitle": "연산자 고치기",
+ "kind": "fix",
+ "skills": [
+  "몫 //",
+  "나머지 %",
+  "단위 나누기",
+  "자릿수 다루기",
+  "한 줄 수정"
+ ],
+ "intro": "몫을 구하는 `//`와 나머지를 구하는 `%`를 헷갈려 쓴 한 줄을 찾아 고칩니다. 큰 단위부터 개수를 세고 남은 양을 다음 단위로 넘기는 계산과, 시각·자릿수 계산에서 두 연산자의 쓰임을 연습합니다.",
+ "problems": [
+  {
+   "id": "pyb-m1-t08",
+   "version": 1,
+   "title": "전자레인지 버튼 누르기",
+   "statement": "어떤 전자레인지에는 버튼이 5개 있습니다. 버튼을 한 번 누를 때마다 전자레인지의 작동 시간이 버튼에 따라 각각 1초, 5초, 10초, 30초, 60초만큼 늘어나며, 같은 버튼을 여러 번 눌러도 됩니다.\n\n전자레인지가 `t`초 동안 작동하도록 하려면 버튼을 적어도 몇 번 눌러야 하는지 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 몇몇 입력에 대해 올바르게 동작하지 않습니다. 주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "t는 전자레인지를 작동할 시간(초)이며, 1 이상 10,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "t초를 맞추기 위해 버튼을 눌러야 하는 최소 횟수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "t"
+   ],
+   "examples": [
+    {
+     "args": [
+      97
+     ],
+     "expected": 5,
+     "explain": "97초는 60초 버튼 1번, 30초 버튼 1번, 5초 버튼 1번, 1초 버튼 2번으로 채울 수 있어 모두 5번 누릅니다."
+    },
+    {
+     "args": [
+      44
+     ],
+     "expected": 6,
+     "explain": "44초는 30초 버튼 1번, 10초 버튼 1번, 1초 버튼 4번으로 채울 수 있어 모두 6번 누릅니다."
+    }
+   ],
+   "code": "def solution(t):\n    answer = 0\n    button = [60, 30, 10, 5, 1]\n    for b in button:\n        answer += t // b\n        t //= b\n    return answer",
+   "bugLine": 6,
+   "solution": "def solution(t):\n    answer = 0\n    button = [60, 30, 10, 5, 1]\n    for b in button:\n        answer += t // b\n        t %= b\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      4
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      5
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      9
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      59
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      60
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      61
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      119
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      150
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      365
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      1234
+     ],
+     "expected": 25
+    },
+    {
+     "args": [
+      3599
+     ],
+     "expected": 67
+    },
+    {
+     "args": [
+      9999
+     ],
+     "expected": 172
+    },
+    {
+     "args": [
+      10000
+     ],
+     "expected": 168
+    }
+   ],
+   "inputCheck": "def valid(t):\n    return isinstance(t, int) and not isinstance(t, bool) and 1 <= t <= 10000",
+   "steps": [],
+   "explain": "큰 버튼부터 누를 수 있는 만큼 누르고(몫 `//`), 그러고 남은 시간(나머지 `%`)을 다음 버튼으로 넘겨요. 틀린 코드는 `t //= b`로 남은 시간 자리에 몫을 넣어서, 60초 버튼을 센 뒤 남은 시간이 엉뚱하게 바뀌었어요. `t %= b`(`t = t % b`의 줄임말)로 고치면 됩니다."
+  },
+  {
+   "id": "pyb-m2-t08",
+   "version": 1,
+   "title": "전자레인지 버튼 누르기",
+   "statement": "어떤 전자레인지에는 버튼이 5개 있습니다. 버튼을 한 번 누를 때마다 전자레인지의 작동 시간이 버튼에 따라 각각 1초, 5초, 10초, 30초, 60초만큼 늘어나며, 같은 버튼을 여러 번 눌러도 됩니다.\n\n전자레인지가 `t`초 동안 작동하도록 하려면 버튼을 적어도 몇 번 눌러야 하는지 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 몇몇 입력에 대해 올바르게 동작하지 않습니다. 주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "t는 전자레인지를 작동할 시간(초)이며, 1 이상 10,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "t초를 맞추기 위해 버튼을 눌러야 하는 최소 횟수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "t"
+   ],
+   "examples": [
+    {
+     "args": [
+      156
+     ],
+     "expected": 5,
+     "explain": "156초는 60초 버튼 2번, 30초 버튼 1번, 5초 버튼 1번, 1초 버튼 1번으로 채울 수 있어 모두 5번 누릅니다."
+    },
+    {
+     "args": [
+      29
+     ],
+     "expected": 7,
+     "explain": "29초는 10초 버튼 2번, 5초 버튼 1번, 1초 버튼 4번으로 채울 수 있어 모두 7번 누릅니다."
+    }
+   ],
+   "code": "def solution(t):\n    answer = 0\n    button = [60, 30, 10, 5, 1]\n    for b in button:\n        answer += t // b\n        t //= b\n    return answer",
+   "bugLine": 6,
+   "solution": "def solution(t):\n    answer = 0\n    button = [60, 30, 10, 5, 1]\n    for b in button:\n        answer += t // b\n        t %= b\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      6
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      14
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      30
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      89
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      90
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      121
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      299
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      777
+     ],
+     "expected": 18
+    },
+    {
+     "args": [
+      2468
+     ],
+     "expected": 45
+    },
+    {
+     "args": [
+      5000
+     ],
+     "expected": 85
+    },
+    {
+     "args": [
+      10000
+     ],
+     "expected": 168
+    }
+   ],
+   "inputCheck": "def valid(t):\n    return isinstance(t, int) and not isinstance(t, bool) and 1 <= t <= 10000",
+   "steps": [],
+   "explain": "큰 버튼부터 누를 수 있는 만큼 누르고(몫 `//`), 그러고 남은 시간(나머지 `%`)을 다음 버튼으로 넘겨요. 틀린 코드는 `t //= b`로 남은 시간 자리에 몫을 넣어서, 60초 버튼을 센 뒤 남은 시간이 엉뚱하게 바뀌었어요. `t %= b`(`t = t % b`의 줄임말)로 고치면 됩니다."
+  },
+  {
+   "id": "pyb-m3-t08",
+   "version": 1,
+   "title": "전자레인지 버튼 누르기",
+   "statement": "어떤 전자레인지에는 버튼이 5개 있습니다. 버튼을 한 번 누를 때마다 전자레인지의 작동 시간이 버튼에 따라 각각 1초, 5초, 10초, 30초, 60초만큼 늘어나며, 같은 버튼을 여러 번 눌러도 됩니다.\n\n전자레인지가 `t`초 동안 작동하도록 하려면 버튼을 적어도 몇 번 눌러야 하는지 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 몇몇 입력에 대해 올바르게 동작하지 않습니다. 주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "t는 전자레인지를 작동할 시간(초)이며, 1 이상 10,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "t초를 맞추기 위해 버튼을 눌러야 하는 최소 횟수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "t"
+   ],
+   "examples": [
+    {
+     "args": [
+      213
+     ],
+     "expected": 7,
+     "explain": "213초는 60초 버튼 3번, 30초 버튼 1번, 1초 버튼 3번으로 채울 수 있어 모두 7번 누릅니다."
+    },
+    {
+     "args": [
+      85
+     ],
+     "expected": 4,
+     "explain": "85초는 60초 버튼 1번, 10초 버튼 2번, 5초 버튼 1번으로 채울 수 있어 모두 4번 누릅니다."
+    }
+   ],
+   "code": "def solution(t):\n    answer = 0\n    button = [60, 30, 10, 5, 1]\n    for b in button:\n        answer += t // b\n        t //= b\n    return answer",
+   "bugLine": 6,
+   "solution": "def solution(t):\n    answer = 0\n    button = [60, 30, 10, 5, 1]\n    for b in button:\n        answer += t // b\n        t %= b\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      7
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      15
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      35
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      49
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      58
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      180
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      241
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      444
+     ],
+     "expected": 13
+    },
+    {
+     "args": [
+      999
+     ],
+     "expected": 22
+    },
+    {
+     "args": [
+      3600
+     ],
+     "expected": 60
+    },
+    {
+     "args": [
+      8888
+     ],
+     "expected": 152
+    },
+    {
+     "args": [
+      10000
+     ],
+     "expected": 168
+    }
+   ],
+   "inputCheck": "def valid(t):\n    return isinstance(t, int) and not isinstance(t, bool) and 1 <= t <= 10000",
+   "steps": [],
+   "explain": "큰 버튼부터 누를 수 있는 만큼 누르고(몫 `//`), 그러고 남은 시간(나머지 `%`)을 다음 버튼으로 넘겨요. 틀린 코드는 `t //= b`로 남은 시간 자리에 몫을 넣어서, 60초 버튼을 센 뒤 남은 시간이 엉뚱하게 바뀌었어요. `t %= b`(`t = t % b`의 줄임말)로 고치면 됩니다."
+  }
+ ]
+}

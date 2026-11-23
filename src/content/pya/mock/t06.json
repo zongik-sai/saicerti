@@ -1,0 +1,907 @@
+{
+ "course": "pya",
+ "type": 6,
+ "typeTitle": "초깃값 고치기",
+ "kind": "fix",
+ "skills": [
+  "최솟값·최댓값 찾기",
+  "초깃값 정하기",
+  "if/elif/else 분기",
+  "음수 비교"
+ ],
+ "intro": "반복문으로 가장 작은 값과 가장 큰 값을 찾는 코드에서, 반복 전에 넣어 두는 초깃값 한 줄이 잘못된 버그를 고치는 유형이에요. 초깃값이 실제 값들보다 작거나(최솟값) 크면(최댓값) 반복하는 동안 한 번도 바뀌지 않아 몇몇 입력에서만 틀린 답이 나와요. 틀린 코드를 직접 따라가 보며 어떤 초깃값이 언제나 안전한지 익혀요.",
+ "problems": [
+  {
+   "id": "pya-m1-t06",
+   "version": 1,
+   "title": "아이템 모으기 최소 이동",
+   "statement": "게임 속 아이템을 모으는 데 필요한 이동 값을 계산하려 합니다. 캐릭터는 x축 위에서 왼쪽이나 오른쪽으로 움직일 수 있으며, x축의 정해진 위치마다 놓여 있는 아이템을 모두 얻으려면 그 위치까지 이동해야 합니다. 캐릭터가 처음 서 있는 위치가 주어질 때, 아이템을 모두 얻기 위해 캐릭터가 이동해야 하는 최소 이동 값을 구하려고 합니다.\n\n캐릭터의 처음 위치 `start`와 아이템들의 위치를 담은 리스트 `locations`가 solution 함수의 매개변수로 주어질 때, 캐릭터의 최소 이동 값을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "locations는 아이템들의 위치를 담은 리스트이며, 길이는 1 이상 100 이하입니다.",
+    "locations의 원소는 1보다 크고 100 이하인 자연수입니다.",
+    "start는 캐릭터의 처음 위치이며, 1보다 크고 100 이하인 자연수입니다."
+   ],
+   "returns": [
+    "캐릭터의 최소 이동 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "start",
+    "locations"
+   ],
+   "examples": [
+    {
+     "args": [
+      40,
+      [
+       25,
+       90,
+       58
+      ]
+     ],
+     "expected": 80,
+     "explain": "캐릭터의 처음 위치 40에서 25, 58, 90 위치에 있는 아이템을 순서대로 얻으면 15 + 65 = 80만큼 이동하므로 80을 return 합니다."
+    },
+    {
+     "args": [
+      7,
+      [
+       30,
+       12,
+       45,
+       21
+      ]
+     ],
+     "expected": 38,
+     "explain": "아이템이 모두 처음 위치 7의 오른쪽에 있으므로 가장 오른쪽 아이템이 있는 45까지 이동한 38을 return 합니다."
+    }
+   ],
+   "code": "def solution(start, locations):\n    answer = 0\n    min = 0\n    max = 0\n    for i in locations:\n        if i < min:\n            min = i\n        if i > max:\n            max = i\n\n    if start <= min:\n        answer = max - start\n    elif start >= max:\n        answer = start - min\n    else:\n        if start - min < max - start:\n            answer = start - min + (max - min)\n        else:\n            answer = max - start + (max - min)\n\n    return answer",
+   "bugLine": 3,
+   "solution": "def solution(start, locations):\n    answer = 0\n    min = locations[0]\n    max = 0\n    for i in locations:\n        if i < min:\n            min = i\n        if i > max:\n            max = i\n\n    if start <= min:\n        answer = max - start\n    elif start >= max:\n        answer = start - min\n    else:\n        if start - min < max - start:\n            answer = start - min + (max - min)\n        else:\n            answer = max - start + (max - min)\n\n    return answer",
+   "tests": [
+    {
+     "args": [
+      2,
+      [
+       2
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      [
+       2,
+       100
+      ]
+     ],
+     "expected": 98
+    },
+    {
+     "args": [
+      3,
+      [
+       2,
+       100
+      ]
+     ],
+     "expected": 99
+    },
+    {
+     "args": [
+      50,
+      [
+       30,
+       70
+      ]
+     ],
+     "expected": 60
+    },
+    {
+     "args": [
+      45,
+      [
+       60,
+       60,
+       60
+      ]
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      33,
+      [
+       33,
+       33
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      88,
+      [
+       61,
+       95,
+       70,
+       88
+      ]
+     ],
+     "expected": 41
+    },
+    {
+     "args": [
+      12,
+      [
+       99
+      ]
+     ],
+     "expected": 87
+    },
+    {
+     "args": [
+      26,
+      [
+       89,
+       74,
+       71,
+       95,
+       6,
+       15,
+       61,
+       95,
+       50,
+       65,
+       2,
+       7,
+       47,
+       60,
+       87,
+       86,
+       78,
+       87,
+       68,
+       46,
+       87,
+       87,
+       90,
+       28,
+       32,
+       62,
+       43,
+       73,
+       36,
+       52,
+       89,
+       92,
+       83,
+       30,
+       32,
+       100,
+       58,
+       85,
+       7,
+       94,
+       51,
+       33,
+       76,
+       2,
+       6,
+       88,
+       10,
+       52,
+       48,
+       66,
+       26,
+       79,
+       34,
+       64,
+       69,
+       10,
+       13,
+       90,
+       33,
+       15,
+       36,
+       85,
+       79,
+       43,
+       59,
+       29,
+       80,
+       5,
+       8,
+       85,
+       49,
+       33,
+       44,
+       9,
+       97,
+       57,
+       11,
+       81,
+       6,
+       45,
+       12,
+       89,
+       96,
+       37,
+       83,
+       78,
+       9,
+       27,
+       42,
+       39,
+       81,
+       73,
+       95,
+       36,
+       49,
+       70,
+       19,
+       34,
+       85,
+       44
+      ]
+     ],
+     "expected": 122
+    },
+    {
+     "args": [
+      67,
+      [
+       86,
+       25,
+       44,
+       51,
+       54,
+       51,
+       53,
+       87,
+       34,
+       29,
+       50,
+       63,
+       25,
+       88
+      ]
+     ],
+     "expected": 84
+    },
+    {
+     "args": [
+      96,
+      [
+       26,
+       68,
+       28,
+       13,
+       49,
+       11,
+       69,
+       34,
+       97,
+       80,
+       17,
+       20,
+       81,
+       31,
+       69
+      ]
+     ],
+     "expected": 87
+    },
+    {
+     "args": [
+      24,
+      [
+       6,
+       100,
+       88,
+       77,
+       87,
+       98
+      ]
+     ],
+     "expected": 112
+    }
+   ],
+   "inputCheck": "def valid(start, locations):\n    def nat(x):\n        return isinstance(x, int) and not isinstance(x, bool) and 1 < x <= 100\n    return isinstance(locations, list) and 1 <= len(locations) <= 100 and all(nat(x) for x in locations) and nat(start)",
+   "steps": [],
+   "explain": "가장 왼쪽 아이템 위치(min)를 찾을 때 초깃값을 0으로 두면, 아이템 위치는 모두 2 이상이라 `i < min`이 한 번도 참이 되지 않아 min이 계속 0으로 남아요. 그래서 `min = locations[0]`처럼 실제 아이템 위치 하나로 초깃값을 잡아야 해요. 나머지 코드는 처음 위치가 아이템들의 왼쪽·오른쪽·사이 중 어디에 있는지 나누고, 사이에 있으면 더 가까운 끝을 먼저 들렀다가 반대쪽 끝까지 가는 거리를 계산해요."
+  },
+  {
+   "id": "pya-m2-t06",
+   "version": 1,
+   "title": "아이템 모으기 최소 이동",
+   "statement": "게임 속 아이템을 모으는 데 필요한 이동 값을 계산하려 합니다. 캐릭터는 x축 위에서 왼쪽이나 오른쪽으로 움직일 수 있으며, x축의 정해진 위치마다 놓여 있는 아이템을 모두 얻으려면 그 위치까지 이동해야 합니다. 캐릭터가 처음 서 있는 위치가 주어질 때, 아이템을 모두 얻기 위해 캐릭터가 이동해야 하는 최소 이동 값을 구하려고 합니다.\n\n캐릭터의 처음 위치 `start`와 아이템들의 위치를 담은 리스트 `locations`가 solution 함수의 매개변수로 주어질 때, 캐릭터의 최소 이동 값을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "locations는 아이템들의 위치를 담은 리스트이며, 길이는 1 이상 100 이하입니다.",
+    "locations의 원소는 1보다 크고 100 이하인 자연수입니다.",
+    "start는 캐릭터의 처음 위치이며, 1보다 크고 100 이하인 자연수입니다."
+   ],
+   "returns": [
+    "캐릭터의 최소 이동 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "start",
+    "locations"
+   ],
+   "examples": [
+    {
+     "args": [
+      70,
+      [
+       35,
+       82,
+       50,
+       96
+      ]
+     ],
+     "expected": 87,
+     "explain": "캐릭터의 처음 위치 70에서 82, 96 위치에 있는 아이템을 먼저 얻고 왼쪽으로 돌아가 50, 35 위치에 있는 아이템을 순서대로 얻으면 26 + 61 = 87만큼 이동하므로 87을 return 합니다."
+    },
+    {
+     "args": [
+      64,
+      [
+       18,
+       41,
+       33
+      ]
+     ],
+     "expected": 46,
+     "explain": "아이템이 모두 처음 위치 64의 왼쪽에 있으므로 가장 왼쪽 아이템이 있는 18까지 이동한 46을 return 합니다."
+    }
+   ],
+   "code": "def solution(start, locations):\n    answer = 0\n    min = 0\n    max = 0\n    for i in locations:\n        if i < min:\n            min = i\n        if i > max:\n            max = i\n\n    if start <= min:\n        answer = max - start\n    elif start >= max:\n        answer = start - min\n    else:\n        if start - min < max - start:\n            answer = start - min + (max - min)\n        else:\n            answer = max - start + (max - min)\n\n    return answer",
+   "bugLine": 3,
+   "solution": "def solution(start, locations):\n    answer = 0\n    min = locations[0]\n    max = 0\n    for i in locations:\n        if i < min:\n            min = i\n        if i > max:\n            max = i\n\n    if start <= min:\n        answer = max - start\n    elif start >= max:\n        answer = start - min\n    else:\n        if start - min < max - start:\n            answer = start - min + (max - min)\n        else:\n            answer = max - start + (max - min)\n\n    return answer",
+   "tests": [
+    {
+     "args": [
+      100,
+      [
+       100
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      [
+       2,
+       100
+      ]
+     ],
+     "expected": 98
+    },
+    {
+     "args": [
+      99,
+      [
+       2,
+       100
+      ]
+     ],
+     "expected": 99
+    },
+    {
+     "args": [
+      51,
+      [
+       2,
+       100
+      ]
+     ],
+     "expected": 147
+    },
+    {
+     "args": [
+      20,
+      [
+       9,
+       9,
+       9
+      ]
+     ],
+     "expected": 11
+    },
+    {
+     "args": [
+      72,
+      [
+       72,
+       72,
+       72
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      15,
+      [
+       15,
+       4,
+       40
+      ]
+     ],
+     "expected": 47
+    },
+    {
+     "args": [
+      100,
+      [
+       3
+      ]
+     ],
+     "expected": 97
+    },
+    {
+     "args": [
+      53,
+      [
+       25,
+       44,
+       69,
+       96,
+       40,
+       61,
+       94,
+       79,
+       63,
+       50,
+       15,
+       71,
+       75,
+       7,
+       47,
+       59,
+       80,
+       58,
+       29,
+       96,
+       84,
+       42,
+       32,
+       66,
+       19,
+       18,
+       19,
+       66,
+       9,
+       64,
+       33,
+       84,
+       23,
+       53,
+       92,
+       13,
+       6,
+       99,
+       21,
+       20,
+       71,
+       47,
+       52,
+       14,
+       26,
+       99,
+       6,
+       92,
+       97,
+       85,
+       86,
+       10,
+       50,
+       25,
+       10,
+       65,
+       86,
+       82,
+       46,
+       31,
+       99,
+       48,
+       56,
+       56,
+       27,
+       13,
+       77,
+       96,
+       38,
+       33,
+       3,
+       98,
+       59,
+       94,
+       82,
+       91,
+       21,
+       17,
+       95,
+       45,
+       65,
+       68,
+       92,
+       97,
+       17,
+       44,
+       62,
+       57,
+       78,
+       82,
+       84,
+       5,
+       88,
+       46,
+       61,
+       2,
+       32,
+       77,
+       68,
+       52
+      ]
+     ],
+     "expected": 143
+    },
+    {
+     "args": [
+      57,
+      [
+       75,
+       56,
+       59,
+       42,
+       60,
+       38,
+       64,
+       54,
+       51,
+       39,
+       38,
+       50,
+       36,
+       75
+      ]
+     ],
+     "expected": 57
+    },
+    {
+     "args": [
+      86,
+      [
+       91,
+       10,
+       100,
+       48,
+       34,
+       82,
+       72,
+       77,
+       83,
+       3
+      ]
+     ],
+     "expected": 111
+    },
+    {
+     "args": [
+      15,
+      [
+       28,
+       68,
+       20,
+       67,
+       92
+      ]
+     ],
+     "expected": 77
+    }
+   ],
+   "inputCheck": "def valid(start, locations):\n    def nat(x):\n        return isinstance(x, int) and not isinstance(x, bool) and 1 < x <= 100\n    return isinstance(locations, list) and 1 <= len(locations) <= 100 and all(nat(x) for x in locations) and nat(start)",
+   "steps": [],
+   "explain": "가장 왼쪽 아이템 위치(min)를 찾을 때 초깃값을 0으로 두면, 아이템 위치는 모두 2 이상이라 `i < min`이 한 번도 참이 되지 않아 min이 계속 0으로 남아요. 그래서 `min = locations[0]`처럼 실제 아이템 위치 하나로 초깃값을 잡아야 해요. 나머지 코드는 처음 위치가 아이템들의 왼쪽·오른쪽·사이 중 어디에 있는지 나누고, 사이에 있으면 더 가까운 끝을 먼저 들렀다가 반대쪽 끝까지 가는 거리를 계산해요."
+  },
+  {
+   "id": "pya-m3-t06",
+   "version": 1,
+   "title": "아이템 모으기 최소 이동",
+   "statement": "게임 속 아이템을 모으는 데 필요한 이동 값을 계산하려 합니다. 캐릭터는 x축 위에서 왼쪽이나 오른쪽으로 움직일 수 있으며, x축의 정해진 위치마다 놓여 있는 아이템을 모두 얻으려면 그 위치까지 이동해야 합니다. 캐릭터가 처음 서 있는 위치가 주어질 때, 아이템을 모두 얻기 위해 캐릭터가 이동해야 하는 최소 이동 값을 구하려고 합니다.\n\n캐릭터의 처음 위치 `start`와 아이템들의 위치를 담은 리스트 `locations`가 solution 함수의 매개변수로 주어질 때, 캐릭터의 최소 이동 값을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "locations는 아이템들의 위치를 담은 리스트이며, 길이는 1 이상 100 이하입니다.",
+    "locations의 원소는 1보다 크고 100 이하인 자연수입니다.",
+    "start는 캐릭터의 처음 위치이며, 1보다 크고 100 이하인 자연수입니다."
+   ],
+   "returns": [
+    "캐릭터의 최소 이동 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "start",
+    "locations"
+   ],
+   "examples": [
+    {
+     "args": [
+      31,
+      [
+       44,
+       9,
+       77,
+       16
+      ]
+     ],
+     "expected": 90,
+     "explain": "캐릭터의 처음 위치 31에서 16, 9 위치에 있는 아이템을 먼저 얻고 오른쪽으로 돌아가 44, 77 위치에 있는 아이템을 순서대로 얻으면 22 + 68 = 90만큼 이동하므로 90을 return 합니다."
+    },
+    {
+     "args": [
+      23,
+      [
+       23,
+       58,
+       40
+      ]
+     ],
+     "expected": 35,
+     "explain": "처음 위치 23에 아이템이 하나 있고 나머지 아이템은 모두 오른쪽에 있으므로 가장 오른쪽 아이템이 있는 58까지 이동한 35를 return 합니다."
+    }
+   ],
+   "code": "def solution(start, locations):\n    answer = 0\n    min = 0\n    max = 0\n    for i in locations:\n        if i < min:\n            min = i\n        if i > max:\n            max = i\n\n    if start <= min:\n        answer = max - start\n    elif start >= max:\n        answer = start - min\n    else:\n        if start - min < max - start:\n            answer = start - min + (max - min)\n        else:\n            answer = max - start + (max - min)\n\n    return answer",
+   "bugLine": 3,
+   "solution": "def solution(start, locations):\n    answer = 0\n    min = locations[0]\n    max = 0\n    for i in locations:\n        if i < min:\n            min = i\n        if i > max:\n            max = i\n\n    if start <= min:\n        answer = max - start\n    elif start >= max:\n        answer = start - min\n    else:\n        if start - min < max - start:\n            answer = start - min + (max - min)\n        else:\n            answer = max - start + (max - min)\n\n    return answer",
+   "tests": [
+    {
+     "args": [
+      57,
+      [
+       57
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      [
+       100
+      ]
+     ],
+     "expected": 98
+    },
+    {
+     "args": [
+      100,
+      [
+       100,
+       2
+      ]
+     ],
+     "expected": 98
+    },
+    {
+     "args": [
+      26,
+      [
+       6,
+       46
+      ]
+     ],
+     "expected": 60
+    },
+    {
+     "args": [
+      80,
+      [
+       80,
+       20,
+       95
+      ]
+     ],
+     "expected": 90
+    },
+    {
+     "args": [
+      40,
+      [
+       75,
+       75
+      ]
+     ],
+     "expected": 35
+    },
+    {
+     "args": [
+      64,
+      [
+       64,
+       64
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      98,
+      [
+       2,
+       100
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      23,
+      [
+       72,
+       74,
+       43,
+       59,
+       3,
+       75,
+       86,
+       68,
+       99,
+       8,
+       96,
+       11,
+       60,
+       9,
+       69,
+       88,
+       82,
+       61,
+       86,
+       19,
+       54,
+       25,
+       96,
+       42,
+       13,
+       33,
+       24,
+       63,
+       14,
+       89,
+       72,
+       3,
+       2,
+       10,
+       25,
+       25,
+       39,
+       58,
+       98,
+       84,
+       41,
+       39,
+       6,
+       91,
+       2,
+       45,
+       30,
+       93,
+       35,
+       33,
+       13,
+       62,
+       73,
+       30,
+       61,
+       30,
+       37,
+       42,
+       47,
+       59,
+       18,
+       8,
+       42,
+       49,
+       88,
+       52,
+       34,
+       60,
+       13,
+       54,
+       16,
+       66,
+       77,
+       46,
+       76,
+       43,
+       81,
+       97,
+       42,
+       30,
+       75,
+       55,
+       86,
+       45,
+       100,
+       90,
+       44,
+       89,
+       71,
+       73,
+       7,
+       26,
+       19,
+       83,
+       54,
+       8,
+       28,
+       62,
+       26,
+       66
+      ]
+     ],
+     "expected": 119
+    },
+    {
+     "args": [
+      68,
+      [
+       78,
+       69,
+       66,
+       73,
+       54,
+       36,
+       35,
+       93,
+       56,
+       92,
+       34,
+       27,
+       94
+      ]
+     ],
+     "expected": 93
+    },
+    {
+     "args": [
+      43,
+      [
+       27,
+       67,
+       20,
+       56,
+       77,
+       16,
+       5
+      ]
+     ],
+     "expected": 106
+    },
+    {
+     "args": [
+      25,
+      [
+       7,
+       96,
+       87,
+       21,
+       25,
+       76,
+       65,
+       79,
+       37
+      ]
+     ],
+     "expected": 107
+    }
+   ],
+   "inputCheck": "def valid(start, locations):\n    def nat(x):\n        return isinstance(x, int) and not isinstance(x, bool) and 1 < x <= 100\n    return isinstance(locations, list) and 1 <= len(locations) <= 100 and all(nat(x) for x in locations) and nat(start)",
+   "steps": [],
+   "explain": "가장 왼쪽 아이템 위치(min)를 찾을 때 초깃값을 0으로 두면, 아이템 위치는 모두 2 이상이라 `i < min`이 한 번도 참이 되지 않아 min이 계속 0으로 남아요. 그래서 `min = locations[0]`처럼 실제 아이템 위치 하나로 초깃값을 잡아야 해요. 나머지 코드는 처음 위치가 아이템들의 왼쪽·오른쪽·사이 중 어디에 있는지 나누고, 사이에 있으면 더 가까운 끝을 먼저 들렀다가 반대쪽 끝까지 가는 거리를 계산해요."
+  }
+ ]
+}

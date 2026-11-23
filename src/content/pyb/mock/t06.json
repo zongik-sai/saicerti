@@ -1,0 +1,399 @@
+{
+ "course": "pyb",
+ "type": 6,
+ "typeTitle": "반환 값 고치기",
+ "kind": "fix",
+ "skills": [
+  "곱셈 누적",
+  "경우의 수",
+  "for 반복문과 range",
+  "return 문"
+ ],
+ "intro": "반복문으로 수를 계속 곱해 쌓아 가며(곱셈 누적) 경우의 수나 늘어나는 양을 구하는 코드예요. 계산은 맞는데 마지막 return 문이 엉뚱한 값을 돌려주는 버그를 찾아, 한 줄만 고쳐 바로잡는 연습을 해요.",
+ "problems": [
+  {
+   "id": "pyb-m1-t06",
+   "version": 1,
+   "title": "구내식당 점심 메뉴",
+   "statement": "XX 구내식당에서는 점심 메뉴를 `foods`가지 준비합니다. 이 식당에서 `days`일 동안 날마다 메뉴 하나를 골라 점심을 먹을 때, 메뉴를 고르는 방법이 모두 몇 가지인지 알아보려 합니다. 단, 이틀 연속으로 같은 메뉴를 먹지는 않습니다.\n\n메뉴 가짓수 `foods`와 점심을 먹는 날 수 `days`가 매개변수로 주어질 때, `days`일 동안 점심을 먹는 방법의 수를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "foods는 메뉴 가짓수이며, 2 이상 10 이하인 정수입니다.",
+    "days는 점심을 먹는 날 수이며, 1 이상 10 이하인 정수입니다."
+   ],
+   "returns": [
+    "days일 동안 이틀 연속 같은 메뉴를 먹지 않고 점심을 먹는 방법의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "foods",
+    "days"
+   ],
+   "examples": [
+    {
+     "args": [
+      5,
+      4
+     ],
+     "expected": 320,
+     "explain": "첫날은 5가지 메뉴 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 4가지 중 하나를 고릅니다. 따라서 5 × 4 × 4 × 4 = 320가지입니다."
+    },
+    {
+     "args": [
+      3,
+      6
+     ],
+     "expected": 96,
+     "explain": "첫날은 3가지 메뉴 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 2가지 중 하나를 고릅니다. 따라서 3 × 2 × 2 × 2 × 2 × 2 = 96가지입니다."
+    }
+   ],
+   "code": "def solution(foods, days):\n    answer = foods\n    for i in range(1, days):\n        answer *= foods - 1\n\n    return foods * ((foods - 1) * (days - 1))",
+   "bugLine": 6,
+   "solution": "def solution(foods, days):\n    answer = foods\n    for i in range(1, days):\n        answer *= foods - 1\n\n    return answer",
+   "tests": [
+    {
+     "args": [
+      2,
+      1
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10,
+      10
+     ],
+     "expected": 3874204890
+    },
+    {
+     "args": [
+      2,
+      10
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10,
+      1
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      6,
+      2
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      3,
+      3
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      4,
+      4
+     ],
+     "expected": 108
+    },
+    {
+     "args": [
+      7,
+      5
+     ],
+     "expected": 9072
+    },
+    {
+     "args": [
+      9,
+      3
+     ],
+     "expected": 576
+    },
+    {
+     "args": [
+      5,
+      8
+     ],
+     "expected": 81920
+    },
+    {
+     "args": [
+      8,
+      6
+     ],
+     "expected": 134456
+    },
+    {
+     "args": [
+      3,
+      10
+     ],
+     "expected": 1536
+    }
+   ],
+   "inputCheck": "def valid(foods, days):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (foods, days)) and 2 <= foods <= 10 and 1 <= days <= 10",
+   "steps": [],
+   "explain": "첫날은 foods가지 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 foods - 1가지 중 하나를 고르므로 foods × (foods - 1) × … 처럼 곱해 나가면 돼요. 반복문은 이미 answer에 foods - 1을 days - 1번 곱해 정답을 만들고 있는데, 마지막 return 문이 그 값을 버리고 거듭제곱(**) 대신 곱셈(*)으로 잘못 계산한 값을 돌려줘요. return 문을 `return answer`로 고치면 돼요."
+  },
+  {
+   "id": "pyb-m2-t06",
+   "version": 1,
+   "title": "구내식당 점심 메뉴",
+   "statement": "XX 구내식당에서는 점심 메뉴를 `foods`가지 준비합니다. 이 식당에서 `days`일 동안 날마다 메뉴 하나를 골라 점심을 먹을 때, 메뉴를 고르는 방법이 모두 몇 가지인지 알아보려 합니다. 단, 이틀 연속으로 같은 메뉴를 먹지는 않습니다.\n\n메뉴 가짓수 `foods`와 점심을 먹는 날 수 `days`가 매개변수로 주어질 때, `days`일 동안 점심을 먹는 방법의 수를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "foods는 메뉴 가짓수이며, 2 이상 10 이하인 정수입니다.",
+    "days는 점심을 먹는 날 수이며, 1 이상 10 이하인 정수입니다."
+   ],
+   "returns": [
+    "days일 동안 이틀 연속 같은 메뉴를 먹지 않고 점심을 먹는 방법의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "foods",
+    "days"
+   ],
+   "examples": [
+    {
+     "args": [
+      6,
+      3
+     ],
+     "expected": 150,
+     "explain": "첫날은 6가지 메뉴 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 5가지 중 하나를 고릅니다. 따라서 6 × 5 × 5 = 150가지입니다."
+    },
+    {
+     "args": [
+      4,
+      6
+     ],
+     "expected": 972,
+     "explain": "첫날은 4가지 메뉴 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 3가지 중 하나를 고릅니다. 따라서 4 × 3 × 3 × 3 × 3 × 3 = 972가지입니다."
+    }
+   ],
+   "code": "def solution(foods, days):\n    answer = foods\n    for i in range(1, days):\n        answer *= foods - 1\n\n    return foods * ((foods - 1) * (days - 1))",
+   "bugLine": 6,
+   "solution": "def solution(foods, days):\n    answer = foods\n    for i in range(1, days):\n        answer *= foods - 1\n\n    return answer",
+   "tests": [
+    {
+     "args": [
+      2,
+      1
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10,
+      10
+     ],
+     "expected": 3874204890
+    },
+    {
+     "args": [
+      2,
+      7
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      9,
+      1
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      5,
+      2
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      3,
+      4
+     ],
+     "expected": 24
+    },
+    {
+     "args": [
+      7,
+      3
+     ],
+     "expected": 252
+    },
+    {
+     "args": [
+      8,
+      5
+     ],
+     "expected": 19208
+    },
+    {
+     "args": [
+      4,
+      9
+     ],
+     "expected": 26244
+    },
+    {
+     "args": [
+      6,
+      7
+     ],
+     "expected": 93750
+    },
+    {
+     "args": [
+      10,
+      4
+     ],
+     "expected": 7290
+    },
+    {
+     "args": [
+      5,
+      10
+     ],
+     "expected": 1310720
+    }
+   ],
+   "inputCheck": "def valid(foods, days):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (foods, days)) and 2 <= foods <= 10 and 1 <= days <= 10",
+   "steps": [],
+   "explain": "첫날은 foods가지 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 foods - 1가지 중 하나를 고르므로 foods × (foods - 1) × … 처럼 곱해 나가면 돼요. 반복문은 이미 answer에 foods - 1을 days - 1번 곱해 정답을 만들고 있는데, 마지막 return 문이 그 값을 버리고 거듭제곱(**) 대신 곱셈(*)으로 잘못 계산한 값을 돌려줘요. return 문을 `return answer`로 고치면 돼요."
+  },
+  {
+   "id": "pyb-m3-t06",
+   "version": 1,
+   "title": "구내식당 점심 메뉴",
+   "statement": "XX 구내식당에서는 점심 메뉴를 `foods`가지 준비합니다. 이 식당에서 `days`일 동안 날마다 메뉴 하나를 골라 점심을 먹을 때, 메뉴를 고르는 방법이 모두 몇 가지인지 알아보려 합니다. 단, 이틀 연속으로 같은 메뉴를 먹지는 않습니다.\n\n메뉴 가짓수 `foods`와 점심을 먹는 날 수 `days`가 매개변수로 주어질 때, `days`일 동안 점심을 먹는 방법의 수를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "foods는 메뉴 가짓수이며, 2 이상 10 이하인 정수입니다.",
+    "days는 점심을 먹는 날 수이며, 1 이상 10 이하인 정수입니다."
+   ],
+   "returns": [
+    "days일 동안 이틀 연속 같은 메뉴를 먹지 않고 점심을 먹는 방법의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "foods",
+    "days"
+   ],
+   "examples": [
+    {
+     "args": [
+      7,
+      4
+     ],
+     "expected": 1512,
+     "explain": "첫날은 7가지 메뉴 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 6가지 중 하나를 고릅니다. 따라서 7 × 6 × 6 × 6 = 1512가지입니다."
+    },
+    {
+     "args": [
+      3,
+      5
+     ],
+     "expected": 48,
+     "explain": "첫날은 3가지 메뉴 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 2가지 중 하나를 고릅니다. 따라서 3 × 2 × 2 × 2 × 2 = 48가지입니다."
+    }
+   ],
+   "code": "def solution(foods, days):\n    answer = foods\n    for i in range(1, days):\n        answer *= foods - 1\n\n    return foods * ((foods - 1) * (days - 1))",
+   "bugLine": 6,
+   "solution": "def solution(foods, days):\n    answer = foods\n    for i in range(1, days):\n        answer *= foods - 1\n\n    return answer",
+   "tests": [
+    {
+     "args": [
+      2,
+      1
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10,
+      10
+     ],
+     "expected": 3874204890
+    },
+    {
+     "args": [
+      2,
+      9
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10,
+      1
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      4,
+      2
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      3,
+      3
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      6,
+      4
+     ],
+     "expected": 750
+    },
+    {
+     "args": [
+      9,
+      6
+     ],
+     "expected": 294912
+    },
+    {
+     "args": [
+      5,
+      7
+     ],
+     "expected": 20480
+    },
+    {
+     "args": [
+      8,
+      3
+     ],
+     "expected": 392
+    },
+    {
+     "args": [
+      3,
+      9
+     ],
+     "expected": 768
+    },
+    {
+     "args": [
+      7,
+      10
+     ],
+     "expected": 70543872
+    }
+   ],
+   "inputCheck": "def valid(foods, days):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (foods, days)) and 2 <= foods <= 10 and 1 <= days <= 10",
+   "steps": [],
+   "explain": "첫날은 foods가지 중 하나를 고르고, 둘째 날부터는 전날 먹은 메뉴를 뺀 foods - 1가지 중 하나를 고르므로 foods × (foods - 1) × … 처럼 곱해 나가면 돼요. 반복문은 이미 answer에 foods - 1을 days - 1번 곱해 정답을 만들고 있는데, 마지막 return 문이 그 값을 버리고 거듭제곱(**) 대신 곱셈(*)으로 잘못 계산한 값을 돌려줘요. return 문을 `return answer`로 고치면 돼요."
+  }
+ ]
+}

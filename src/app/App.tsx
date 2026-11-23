@@ -7,6 +7,7 @@ import { isDemoEnabled, isSupabaseConfigured, BASE_URL } from '../lib/config';
 import { forgetLearner, useCourseProgress } from '../features/progress/store';
 import { CourseHome } from './CourseHome';
 import { ProblemPage } from './ProblemPage';
+import { MockPage } from './MockPage';
 import { TeacherPage } from '../features/teacher/TeacherPage';
 import { AdminPage } from '../features/admin/AdminPage';
 import { useRoles } from '../features/admin/roles';
@@ -236,9 +237,17 @@ function CourseRoute({ meta }: { meta: CourseMeta }) {
   return (
     <Routes>
       <Route index element={<CourseHome course={course} learnerKey={identity.learnerKey} remote={identity.kind === 'user'} />} />
+      <Route path="mock/:n" element={<MockRoute course={course} learnerKey={identity.learnerKey} remote={identity.kind === 'user'} />} />
       <Route path=":pid" element={<ProblemRoute course={course} learnerKey={identity.learnerKey} remote={identity.kind === 'user'} />} />
     </Routes>
   );
+}
+
+function MockRoute({ course, learnerKey, remote }: { course: Course; learnerKey: string; remote: boolean }) {
+  const { n = '' } = useParams();
+  const set = course.mocks.find((m) => String(m.n) === n);
+  if (!set) return <Navigate to={courseMeta(course.id)!.path} replace />;
+  return <MockPage key={set.key} course={course} set={set} learnerKey={learnerKey} remote={remote} />;
 }
 
 function ProblemRoute({ course, learnerKey, remote }: { course: Course; learnerKey: string; remote: boolean }) {

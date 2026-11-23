@@ -77,3 +77,29 @@ describe('객관식 보기 섞기', () => {
     expect(pos[0] / total).toBeLessThan(0.45);
   });
 });
+
+describe('모의고사 데이터', () => {
+  const mocks: TypeFile[] = [];
+  for (const c of ['pyb', 'pya']) for (const f of readdirSync(join(root, c, 'mock')).filter((x) => x.endsWith('.json')).sort()) mocks.push(JSON.parse(readFileSync(join(root, c, 'mock', f), 'utf8')));
+  it('과정마다 10유형 × 3회, 연습 문제와 같은 형식(kind)', () => {
+    for (const c of ['pyb', 'pya']) {
+      const ms = mocks.filter((m) => m.course === c);
+      expect(ms.map((m) => m.type)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+      for (const m of ms) {
+        expect(m.problems.map((p) => p.id)).toEqual([1, 2, 3].map((n) => `${c}-m${n}-t${String(m.type).padStart(2, '0')}`));
+        expect(m.kind).toBe(files.find((f) => f.course === c && f.type === m.type)!.kind);
+      }
+    }
+  });
+  it('같은 유형의 1·2·3회는 코드·정답이 같고 예시는 서로 다르다', () => {
+    for (const m of mocks) {
+      const [a, b, c] = m.problems;
+      expect(b.code, a.id).toBe(a.code);
+      expect(c.code, a.id).toBe(a.code);
+      expect(b.solution, a.id).toBe(a.solution);
+      expect(c.solution, a.id).toBe(a.solution);
+      const ex = m.problems.map((p) => JSON.stringify(p.examples.map((e) => e.args)));
+      expect(new Set(ex).size, a.id).toBe(3);
+    }
+  });
+});
