@@ -16,7 +16,7 @@
    "id": "pya-m1-t02",
    "version": 1,
    "title": "운행 거리가 가장 긴 차량",
-   "statement": "홍길동 씨는 차량을 한 대 사려고 합니다. 요즘 유류비가 많이 올라서 운행 가능 거리가 가장 긴 차량을 사려고 합니다. 그래서 차량마다 한 달 동안 똑같은 금액으로 유류를 사고, 산 유류를 모두 썼을 때 달릴 수 있는 거리를 비교하려 합니다.\n\n연비는 유류 1L로 달릴 수 있는 거리이고, 유류비는 유류 1L의 가격입니다. 유류는 1L 단위로만 살 수 있으므로, 살 수 있는 유류의 양(L)은 `money ÷ 유류비`에서 소수점 아래를 버린 정수입니다. 차량의 운행 가능 거리는 `살 수 있는 유류의 양 × 연비`입니다. 운행 가능 거리가 가장 긴 차량이 여러 대이면 `name`에서 가장 앞에 있는 차량의 이름을 return 합니다.\n\n사려고 하는 차량의 이름 리스트 `name`, 한 달 동안 차량 운행에 쓸 수 있는 금액 `money`, 차량별 연비와 유류비를 담은 리스트 `cost`가 solution 함수의 매개변수로 주어집니다. 운행 가능 거리가 가장 긴 차량의 이름을 return 하도록 solution 함수를 완성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "statement": "홍길동 씨는 차량을 한 대 사려는데, 요즘 유류비가 많이 올라서 운행 가능 거리가 가장 긴 차량을 고르려고 합니다. 그래서 차량마다 한 달 동안 똑같은 금액으로 유류를 사고, 산 유류를 모두 썼을 때 달릴 수 있는 거리를 비교하려 합니다.\n\n연비는 유류 1L로 달릴 수 있는 거리이고, 유류비는 유류 1L의 가격입니다. 유류는 1L 단위로만 살 수 있으므로, 살 수 있는 유류의 양(L)은 `money ÷ 유류비`에서 소수점 아래를 버린 정수입니다. 차량의 운행 가능 거리는 `살 수 있는 유류의 양 × 연비`입니다. 운행 가능 거리가 가장 긴 차량이 여러 대이면 `name`에서 가장 앞에 있는 차량의 이름을 return 합니다.\n\nsolution 함수의 매개변수로 사려는 차량들의 이름을 담은 리스트 `name`, 한 달 동안 차량 운행에 쓸 수 있는 금액 `money`, 차량마다 연비와 유류비를 담은 리스트 `cost`가 주어집니다. 이때 운행 가능 거리가 가장 긴 차량의 이름을 return 하는 solution 함수를 만들려고 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
    "params": [
     "money는 한 달 동안 차량 운행에 쓸 수 있는 금액(원)이며, 1,000 이상 500,000 이하인 정수입니다.",
     "name은 차량 이름 리스트이며, 길이는 3 이상 100 이하입니다. 차량 이름은 1자 이상 10자 이하의 문자열이며 서로 다릅니다.",
@@ -1449,13 +1449,13 @@
    "compare": "exact",
    "inputCheck": "def valid(money, cost, name):\n    if not (type(money) is int and 1000 <= money <= 500000):\n        return False\n    if not (isinstance(cost, list) and isinstance(name, list) and 3 <= len(cost) <= 100 and len(name) == len(cost)):\n        return False\n    for c in cost:\n        if not (isinstance(c, list) and len(c) == 2 and all(type(x) is int for x in c)):\n            return False\n        if not (10 <= c[0] <= 100 and 1000 <= c[1] <= 10000):\n            return False\n    if len(set(c[1] for c in cost)) > 2:\n        return False\n    if not any(money >= c[1] for c in cost):\n        return False\n    return all(isinstance(n, str) and 1 <= len(n) <= 10 for n in name) and len(set(name)) == len(name)",
    "steps": [],
-   "explain": "차량마다 `math.trunc(money / cost[i][1])`로 살 수 있는 유류의 양을 구하고, 여기에 연비 `cost[i][0]`를 곱해 운행 가능 거리를 냅니다. 지금까지 가장 긴 거리 `max_distance`보다 길 때만 `max_distance`와 `answer`를 함께 바꿉니다. answer에는 거리가 아니라 차량 이름 `name[i]`를 넣어야 하고, `>`를 쓰므로 거리가 같으면 앞에 있는 차량이 그대로 남습니다."
+   "explain": "차량마다 `math.trunc(money / cost[i][1])`로 살 수 있는 유류의 양을 구하고, 여기에 연비 `cost[i][0]`를 곱해 운행 가능 거리를 내요. 지금까지 가장 긴 거리 `max_distance`보다 길 때만 `max_distance`와 `answer`를 함께 바꿔요. answer에는 거리가 아니라 차량 이름 `name[i]`를 넣어야 하고, `>`를 쓰므로 거리가 같으면 앞에 있는 차량이 그대로 남아요."
   },
   {
    "id": "pya-m2-t02",
    "version": 1,
    "title": "운행 거리가 가장 긴 차량",
-   "statement": "홍길동 씨는 차량을 한 대 사려고 합니다. 요즘 유류비가 많이 올라서 운행 가능 거리가 가장 긴 차량을 사려고 합니다. 그래서 차량마다 한 달 동안 똑같은 금액으로 유류를 사고, 산 유류를 모두 썼을 때 달릴 수 있는 거리를 비교하려 합니다.\n\n연비는 유류 1L로 달릴 수 있는 거리이고, 유류비는 유류 1L의 가격입니다. 유류는 1L 단위로만 살 수 있으므로, 살 수 있는 유류의 양(L)은 `money ÷ 유류비`에서 소수점 아래를 버린 정수입니다. 차량의 운행 가능 거리는 `살 수 있는 유류의 양 × 연비`입니다. 운행 가능 거리가 가장 긴 차량이 여러 대이면 `name`에서 가장 앞에 있는 차량의 이름을 return 합니다.\n\n사려고 하는 차량의 이름 리스트 `name`, 한 달 동안 차량 운행에 쓸 수 있는 금액 `money`, 차량별 연비와 유류비를 담은 리스트 `cost`가 solution 함수의 매개변수로 주어집니다. 운행 가능 거리가 가장 긴 차량의 이름을 return 하도록 solution 함수를 완성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "statement": "홍길동 씨는 차량을 한 대 사려는데, 요즘 유류비가 많이 올라서 운행 가능 거리가 가장 긴 차량을 고르려고 합니다. 그래서 차량마다 한 달 동안 똑같은 금액으로 유류를 사고, 산 유류를 모두 썼을 때 달릴 수 있는 거리를 비교하려 합니다.\n\n연비는 유류 1L로 달릴 수 있는 거리이고, 유류비는 유류 1L의 가격입니다. 유류는 1L 단위로만 살 수 있으므로, 살 수 있는 유류의 양(L)은 `money ÷ 유류비`에서 소수점 아래를 버린 정수입니다. 차량의 운행 가능 거리는 `살 수 있는 유류의 양 × 연비`입니다. 운행 가능 거리가 가장 긴 차량이 여러 대이면 `name`에서 가장 앞에 있는 차량의 이름을 return 합니다.\n\nsolution 함수의 매개변수로 사려는 차량들의 이름을 담은 리스트 `name`, 한 달 동안 차량 운행에 쓸 수 있는 금액 `money`, 차량마다 연비와 유류비를 담은 리스트 `cost`가 주어집니다. 이때 운행 가능 거리가 가장 긴 차량의 이름을 return 하는 solution 함수를 만들려고 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
    "params": [
     "money는 한 달 동안 차량 운행에 쓸 수 있는 금액(원)이며, 1,000 이상 500,000 이하인 정수입니다.",
     "name은 차량 이름 리스트이며, 길이는 3 이상 100 이하입니다. 차량 이름은 1자 이상 10자 이하의 문자열이며 서로 다릅니다.",
@@ -2698,13 +2698,13 @@
    "compare": "exact",
    "inputCheck": "def valid(money, cost, name):\n    if not (type(money) is int and 1000 <= money <= 500000):\n        return False\n    if not (isinstance(cost, list) and isinstance(name, list) and 3 <= len(cost) <= 100 and len(name) == len(cost)):\n        return False\n    for c in cost:\n        if not (isinstance(c, list) and len(c) == 2 and all(type(x) is int for x in c)):\n            return False\n        if not (10 <= c[0] <= 100 and 1000 <= c[1] <= 10000):\n            return False\n    if len(set(c[1] for c in cost)) > 2:\n        return False\n    if not any(money >= c[1] for c in cost):\n        return False\n    return all(isinstance(n, str) and 1 <= len(n) <= 10 for n in name) and len(set(name)) == len(name)",
    "steps": [],
-   "explain": "차량마다 `math.trunc(money / cost[i][1])`로 살 수 있는 유류의 양을 구하고, 여기에 연비 `cost[i][0]`를 곱해 운행 가능 거리를 냅니다. 지금까지 가장 긴 거리 `max_distance`보다 길 때만 `max_distance`와 `answer`를 함께 바꿉니다. answer에는 거리가 아니라 차량 이름 `name[i]`를 넣어야 하고, `>`를 쓰므로 거리가 같으면 앞에 있는 차량이 그대로 남습니다."
+   "explain": "차량마다 `math.trunc(money / cost[i][1])`로 살 수 있는 유류의 양을 구하고, 여기에 연비 `cost[i][0]`를 곱해 운행 가능 거리를 내요. 지금까지 가장 긴 거리 `max_distance`보다 길 때만 `max_distance`와 `answer`를 함께 바꿔요. answer에는 거리가 아니라 차량 이름 `name[i]`를 넣어야 하고, `>`를 쓰므로 거리가 같으면 앞에 있는 차량이 그대로 남아요."
   },
   {
    "id": "pya-m3-t02",
    "version": 1,
    "title": "운행 거리가 가장 긴 차량",
-   "statement": "홍길동 씨는 차량을 한 대 사려고 합니다. 요즘 유류비가 많이 올라서 운행 가능 거리가 가장 긴 차량을 사려고 합니다. 그래서 차량마다 한 달 동안 똑같은 금액으로 유류를 사고, 산 유류를 모두 썼을 때 달릴 수 있는 거리를 비교하려 합니다.\n\n연비는 유류 1L로 달릴 수 있는 거리이고, 유류비는 유류 1L의 가격입니다. 유류는 1L 단위로만 살 수 있으므로, 살 수 있는 유류의 양(L)은 `money ÷ 유류비`에서 소수점 아래를 버린 정수입니다. 차량의 운행 가능 거리는 `살 수 있는 유류의 양 × 연비`입니다. 운행 가능 거리가 가장 긴 차량이 여러 대이면 `name`에서 가장 앞에 있는 차량의 이름을 return 합니다.\n\n사려고 하는 차량의 이름 리스트 `name`, 한 달 동안 차량 운행에 쓸 수 있는 금액 `money`, 차량별 연비와 유류비를 담은 리스트 `cost`가 solution 함수의 매개변수로 주어집니다. 운행 가능 거리가 가장 긴 차량의 이름을 return 하도록 solution 함수를 완성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "statement": "홍길동 씨는 차량을 한 대 사려는데, 요즘 유류비가 많이 올라서 운행 가능 거리가 가장 긴 차량을 고르려고 합니다. 그래서 차량마다 한 달 동안 똑같은 금액으로 유류를 사고, 산 유류를 모두 썼을 때 달릴 수 있는 거리를 비교하려 합니다.\n\n연비는 유류 1L로 달릴 수 있는 거리이고, 유류비는 유류 1L의 가격입니다. 유류는 1L 단위로만 살 수 있으므로, 살 수 있는 유류의 양(L)은 `money ÷ 유류비`에서 소수점 아래를 버린 정수입니다. 차량의 운행 가능 거리는 `살 수 있는 유류의 양 × 연비`입니다. 운행 가능 거리가 가장 긴 차량이 여러 대이면 `name`에서 가장 앞에 있는 차량의 이름을 return 합니다.\n\nsolution 함수의 매개변수로 사려는 차량들의 이름을 담은 리스트 `name`, 한 달 동안 차량 운행에 쓸 수 있는 금액 `money`, 차량마다 연비와 유류비를 담은 리스트 `cost`가 주어집니다. 이때 운행 가능 거리가 가장 긴 차량의 이름을 return 하는 solution 함수를 만들려고 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
    "params": [
     "money는 한 달 동안 차량 운행에 쓸 수 있는 금액(원)이며, 1,000 이상 500,000 이하인 정수입니다.",
     "name은 차량 이름 리스트이며, 길이는 3 이상 100 이하입니다. 차량 이름은 1자 이상 10자 이하의 문자열이며 서로 다릅니다.",
@@ -4002,7 +4002,7 @@
    "compare": "exact",
    "inputCheck": "def valid(money, cost, name):\n    if not (type(money) is int and 1000 <= money <= 500000):\n        return False\n    if not (isinstance(cost, list) and isinstance(name, list) and 3 <= len(cost) <= 100 and len(name) == len(cost)):\n        return False\n    for c in cost:\n        if not (isinstance(c, list) and len(c) == 2 and all(type(x) is int for x in c)):\n            return False\n        if not (10 <= c[0] <= 100 and 1000 <= c[1] <= 10000):\n            return False\n    if len(set(c[1] for c in cost)) > 2:\n        return False\n    if not any(money >= c[1] for c in cost):\n        return False\n    return all(isinstance(n, str) and 1 <= len(n) <= 10 for n in name) and len(set(name)) == len(name)",
    "steps": [],
-   "explain": "차량마다 `math.trunc(money / cost[i][1])`로 살 수 있는 유류의 양을 구하고, 여기에 연비 `cost[i][0]`를 곱해 운행 가능 거리를 냅니다. 지금까지 가장 긴 거리 `max_distance`보다 길 때만 `max_distance`와 `answer`를 함께 바꿉니다. answer에는 거리가 아니라 차량 이름 `name[i]`를 넣어야 하고, `>`를 쓰므로 거리가 같으면 앞에 있는 차량이 그대로 남습니다."
+   "explain": "차량마다 `math.trunc(money / cost[i][1])`로 살 수 있는 유류의 양을 구하고, 여기에 연비 `cost[i][0]`를 곱해 운행 가능 거리를 내요. 지금까지 가장 긴 거리 `max_distance`보다 길 때만 `max_distance`와 `answer`를 함께 바꿔요. answer에는 거리가 아니라 차량 이름 `name[i]`를 넣어야 하고, `>`를 쓰므로 거리가 같으면 앞에 있는 차량이 그대로 남아요."
   }
  ]
 }
