@@ -60,3 +60,20 @@ describe('표시·채점 도우미', () => {
     expect(AUTH_STORAGE_KEY).toBe('saicerti-auth');
   });
 });
+
+describe('객관식 보기 섞기', () => {
+  it('정답이 한 자리(①)에 몰리지 않는다', async () => {
+    const { optionOrder, refersToPosition } = await import('../../src/components/Steps');
+    const pos: number[] = [0, 0, 0, 0, 0];
+    for (const f of files)
+      for (const p of f.problems)
+        for (const s of p.steps)
+          if (s.kind === 'mcq') {
+            const order = optionOrder(s.options, `${p.id}:${s.id}`, refersToPosition(s.q + s.explain));
+            expect([...order].sort()).toEqual(s.options.map((_, i) => i));
+            pos[order.indexOf(s.answer)]++;
+          }
+    const total = pos.reduce((a, b) => a + b, 0);
+    expect(pos[0] / total).toBeLessThan(0.45);
+  });
+});

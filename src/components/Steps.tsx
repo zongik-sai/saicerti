@@ -7,6 +7,8 @@ const KIND: Record<Step['kind'], string> = { mcq: '객관식', table: '표 채�
 const REVEAL_AFTER = 3;
 
 interface Props {
+  /** 보기 섞기 씨앗(문제 id) */
+  seed: string;
   step: Step;
   index: number;
   total: number;
@@ -19,6 +21,24 @@ interface Props {
 }
 
 const isInput = (c: TableCell): c is InputCell => typeof c === 'object' && c !== null;
+
+/** 질문·해설이 보기 위치(②, 두 번째 보기 등)를 말하면 순서를 바꾸지 않는다 */
+export const refersToPosition = (text: string) => /[①②③④⑤]|번째 보기|마지막 보기|첫 보기/.test(text);
+
+/** 보기 순서: 위치를 말하는 문항은 그대로, 모두 숫자면 작은 순, 아니면 문제·단계마다 고정된 순서로 섞는다(정답이 늘 ①에 있지 않게). */
+export function optionOrder(options: string[], seed: string, fixed = false): number[] {
+  const idx = options.map((_, i) => i);
+  if (fixed) return idx;
+  if (options.every((o) => /^-?\d+(\.\d+)?$/.test(o.trim()))) return idx.sort((a, b) => Number(options[a]) - Number(options[b]));
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) h = Math.imul(h ^ seed.charCodeAt(i), 16777619) >>> 0;
+  for (let i = idx.length - 1; i > 0; i--) {
+    h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0;
+    const j = h % (i + 1);
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  return idx;
+}
 
 /** 중간 점검 한 단계. 맞혀야 다음으로(세 번 틀리면 정답 보기). */
 export function StepView(p: Props) {
@@ -65,7 +85,8 @@ function Footer({ ok, revealed, explain, wrong, onReveal, onNext, isLast, onChec
   );
 }
 
-function Mcq({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'mcq' }> }) {
+function Mcq({ step, seed, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'mcq' }> }) {
+  const order = optionOrder(step.options, `${seed}:${step.id}`, refersToPosition(step.q + step.explain));
   const [sel, setSel] = useState<number | null>(done ? step.answer : null);
   const [wrongPick, setWrongPick] = useState<number | null>(null);
   const [wrong, setWrong] = useState(0);
@@ -91,7 +112,8 @@ function Mcq({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Prop
         <Rich text={step.q} />
       </div>
       <div className="opts" role="radiogroup" aria-label="보기">
-        {step.options.map((o, i) => {
+        {order.map((i, pos) => {
+          const o = step.options[i];
           const cls = ok && i === step.answer ? 'right' : wrongPick === i ? 'wrong' : sel === i ? 'sel' : '';
           return (
             <button
@@ -105,7 +127,7 @@ function Mcq({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Prop
                 setWrongPick(null);
               }}
             >
-              <span className="mk">{'①②③④⑤'[i]}</span>
+              <span className="mk">{'①②③④⑤'[pos]}</span>
               <span>{/[=()[\]:%]|\b(if|for|return|def)\b/.test(o) && !/[가-힣]/.test(o) ? <code>{o}</code> : inline(o)}</span>
             </button>
           );

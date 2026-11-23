@@ -3829,7 +3829,9 @@
      "kind": "short",
      "q": "`parcels`가 [[5, 0, 10, 3], [2, 0, 10, 3], [9, 0, 10, 3]]이면 무엇을 return 해야 할까요? 리스트로 써 보세요.",
      "a": "[2, 5, 9]",
-     "alts": [],
+     "alts": [
+      "2, 5, 9"
+     ],
      "check": "def solution(parcels):\n    parcels.sort(key=lambda p: (-p[1], p[2], -p[3], p[0]))\n    answer = [p[0] for p in parcels]\n    return answer\n\ndef answers():\n    return [solution(*[[[5, 0, 10, 3], [2, 0, 10, 3], [9, 0, 10, 3]]])]",
      "explain": "세 상품은 당일 배송 여부·거리·무게가 모두 같아서 마지막 기준인 송장 번호가 작은 순서로 [2, 5, 9]가 돼요. 마지막 기준을 빠뜨리면 입력 순서 [5, 2, 9]가 그대로 남아 틀려요."
     }
@@ -5369,7 +5371,9 @@
      "kind": "short",
      "q": "`bookings`가 [[8, 2, 4, 3], [5, 2, 4, 3], [6, 2, 4, 5]]이면 무엇을 return 해야 할까요? 리스트로 써 보세요.",
      "a": "[6, 5, 8]",
-     "alts": [],
+     "alts": [
+      "6, 5, 8"
+     ],
      "check": "def solution(bookings):\n    bookings.sort(key=lambda b: (b[1], b[2], -b[3], b[0]))\n    answer = [b[0] for b in bookings]\n    return answer\n\ndef answers():\n    return [solution(*[[[8, 2, 4, 3], [5, 2, 4, 3], [6, 2, 4, 5]]])]",
      "explain": "세 예약은 등급과 신청한 날이 같아서 인원이 많은 6번이 먼저예요. 8번과 5번은 모두 같으니 번호가 작은 5번이 앞이라 [6, 5, 8]이에요."
     }

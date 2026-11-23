@@ -3,6 +3,20 @@
 // Playwright 브라우저가 설치된 환경에서 실행한다.
 const { chromium } = require('playwright');
 const fs = require('fs');
+// src/components/Steps.tsx optionOrder와 같아야 한다(보기 섞기)
+function optionOrder(options, seed, fixed = false) {
+  const idx = options.map((_, i) => i);
+  if (fixed) return idx;
+  if (options.every((o) => /^-?\d+(\.\d+)?$/.test(o.trim()))) return idx.sort((a, b) => Number(options[a]) - Number(options[b]));
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) h = Math.imul(h ^ seed.charCodeAt(i), 16777619) >>> 0;
+  for (let i = idx.length - 1; i > 0; i--) {
+    h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0;
+    const j = h % (i + 1);
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  return idx;
+}
 // 사용: node flow.cjs <shots dir> <course> <pid...>  (pid 생략 시 전체)
 (async () => {
   const [S, course, ...pids] = process.argv.slice(2);
@@ -27,7 +41,7 @@ const fs = require('fs');
       for (let i = 0; i < p.steps.length; i++) {
         const s = p.steps[i];
         if (s.kind === 'mcq') {
-          await page.locator('.opt').nth(s.answer).click();
+          await page.locator('.opt').nth(optionOrder(s.options, `${p.id}:${s.id}`, /[①②③④⑤]|번째 보기|마지막 보기|첫 보기/.test(s.q + s.explain)).indexOf(s.answer)).click();
         } else if (s.kind === 'table') {
           const cells = s.rows.flat().filter((c) => typeof c === 'object');
           const inputs = page.locator('.trace input');

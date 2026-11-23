@@ -205,12 +205,12 @@
      "kind": "mcq",
      "q": "색별 개수를 딕셔너리 `count = {'r': 3, 'g': 2, 'b': 3}`처럼 다 세었어요. answer에 넣을 값을 구하는 코드로 알맞은 것은?",
      "options": [
-      "min(count.values())",
       "max(count.values())",
       "sum(count.values()) // 3",
+      "min(count.values())",
       "len(count)"
      ],
-     "answer": 0,
+     "answer": 2,
      "explain": "딕셔너리(dict)는 '이름표(키): 값'을 짝지어 모아 두는 자료형이에요. count.values()는 값 3, 2, 3만 모은 것이고, min()은 그중 가장 작은 값 2를 돌려줘요."
     }
    ],
@@ -687,12 +687,12 @@
      "kind": "mcq",
      "q": "리스트 `members`에 'v'가 몇 개 있는지 구하는 코드로 알맞은 것은?",
      "options": [
-      "members.count('v')",
       "members.index('v')",
       "len('v')",
+      "members.count('v')",
       "members['v']"
      ],
-     "answer": 0,
+     "answer": 2,
      "explain": "리스트.count(값)은 리스트 안에 그 값이 몇 개 있는지 세어 줘요. index('v')는 'v'가 처음 나오는 자리 번호(인덱스, 0부터 셈)를 알려 줄 뿐이고, len('v')는 글자 'v'의 길이 1이에요."
     },
     {
@@ -852,7 +852,8 @@
        {
         "a": "True",
         "alts": [
-         "true"
+         "true",
+         "참"
         ]
        },
        {
@@ -864,7 +865,8 @@
        {
         "a": "True",
         "alts": [
-         "true"
+         "true",
+         "참"
         ]
        },
        {
@@ -876,7 +878,8 @@
        {
         "a": "True",
         "alts": [
-         "true"
+         "true",
+         "참"
         ]
        },
        {
@@ -888,7 +891,8 @@
        {
         "a": "True",
         "alts": [
-         "true"
+         "true",
+         "참"
         ]
        },
        {
@@ -900,7 +904,8 @@
        {
         "a": "True",
         "alts": [
-         "true"
+         "true",
+         "참"
         ]
        },
        {
@@ -912,7 +917,8 @@
        {
         "a": "True",
         "alts": [
-         "true"
+         "true",
+         "참"
         ]
        },
        {
@@ -924,7 +930,8 @@
        {
         "a": "True",
         "alts": [
-         "true"
+         "true",
+         "참"
         ]
        },
        {
@@ -936,7 +943,8 @@
        {
         "a": "False",
         "alts": [
-         "false"
+         "false",
+         "거짓"
         ]
        },
        "(세지 않음)"
@@ -950,12 +958,12 @@
      "kind": "mcq",
      "q": "`for ch in cards:` 반복문 안에 들어갈 코드로 알맞은 것은?",
      "options": [
-      "if ch in count: count[ch] += 1",
       "count[ch] += 1",
       "if ch in count: count[ch] = 1",
-      "if ch not in count: count[ch] += 1"
+      "if ch not in count: count[ch] += 1",
+      "if ch in count: count[ch] += 1"
      ],
-     "answer": 0,
+     "answer": 3,
      "explain": "조건 없이 count[ch] += 1을 하면 'H'처럼 키가 없는 글자에서 KeyError(키 오류)가 나요. count[ch] = 1은 누적(값을 계속 더해 감)이 아니라 1로 덮어쓰기라서 개수가 늘지 않아요."
     },
     {
@@ -1595,12 +1603,12 @@
      "kind": "mcq",
      "q": "`nums = [2, 5, 1, 5, 3, 4, 5]`이면 무엇을 return 해야 할까요?",
      "options": [
-      "[1, 2]",
       "[3, 2]",
       "[1, 6]",
+      "[1, 2]",
       "[1, 0]"
      ],
-     "answer": 0,
+     "answer": 2,
      "explain": "5 카드가 3장이어도 1~4 카드가 1장씩뿐이라 묶음은 1개예요. 묶음 1개에 카드 5장을 쓰니 7 - 5 = 2장이 남아요."
     },
     {
@@ -1664,12 +1672,12 @@
      "kind": "mcq",
      "q": "`count[0]`은 쓰지 않는 칸이라 항상 0이에요. 묶음 수를 구하는 코드로 알맞은 것은?",
      "options": [
-      "min(count[1:])",
       "min(count)",
+      "min(count[1:])",
       "max(count[1:])",
       "sum(count) // 5"
      ],
-     "answer": 0,
+     "answer": 1,
      "explain": "count[1:]은 슬라이싱(리스트의 일부를 잘라 냄)으로 인덱스 1부터 끝까지만 가져와요. min(count)는 쓰지 않는 count[0] = 0까지 포함해서 늘 0이 되고, sum(count) // 5는 한 숫자가 모자란 경우를 놓쳐요."
     },
     {
@@ -1677,12 +1685,12 @@
      "kind": "mcq",
      "q": "묶음 수를 sets라고 할 때, 남는 카드 수를 구하는 식으로 알맞은 것은?",
      "options": [
-      "len(nums) - sets * 5",
       "len(nums) % 5",
       "len(nums) - sets",
-      "sets * 5"
+      "sets * 5",
+      "len(nums) - sets * 5"
      ],
-     "answer": 0,
+     "answer": 3,
      "explain": "묶음 하나에 카드 5장이 들어가요. len(nums) % 5는 예시 1에서는 우연히 1로 맞지만, 예시 2처럼 묶음을 못 만들면 8 % 5 = 3이 되어 틀려요."
     }
    ],
@@ -1894,12 +1902,12 @@
      "kind": "mcq",
      "q": "재료별 개수를 딕셔너리 count에 다 세었어요. answer에 넣을 코드로 알맞은 것은?",
      "options": [
-      "min(count['b'] // 2, count['h'], count['c'], count['l'] // 2)",
       "min(count['b'], count['h'], count['c'], count['l'])",
+      "min(count['b'] // 2, count['h'], count['c'], count['l'] // 2)",
       "min(count.values()) // 2",
       "len(box) // 6"
      ],
-     "answer": 0,
+     "answer": 1,
      "explain": "필요량이 재료마다 달라서 빵과 양상추는 2로 나눈 몫을 써야 해요. 그냥 개수의 최솟값을 쓰면 예시 1에서 3이 나오고, 전체 재료 수를 6으로 나누면 한 재료가 모자란 경우를 놓쳐요."
     },
     {

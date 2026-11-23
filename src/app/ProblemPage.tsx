@@ -152,6 +152,7 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
                 })}
               </div>
               <StepView
+                seed={problem.id}
                 key={`${problem.id}-${problem.steps[stepIdx].id}`}
                 step={problem.steps[stepIdx]}
                 index={stepIdx}

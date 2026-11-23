@@ -515,12 +515,12 @@
      "kind": "mcq",
      "q": "일교차가 가장 작은 날이 2일째와 5일째, 두 날이라면 어떤 번호를 돌려줘야 할까요?",
      "options": [
-      "2 (번호가 더 작은 날)",
       "5 (번호가 더 큰 날)",
       "2와 5를 모두 돌려준다",
-      "아무 번호나 괜찮다"
+      "아무 번호나 괜찮다",
+      "2 (번호가 더 작은 날)"
      ],
-     "answer": 0,
+     "answer": 3,
      "explain": "문제에서 '번호가 가장 작은 날을 고릅니다'라고 했어요. 그래서 코드는 더 작을 때(<)만 위치를 바꾸고, 같은 값이면 먼저 찾은 날을 그대로 둬요."
     },
     {
@@ -630,12 +630,12 @@
      "kind": "mcq",
      "q": "어느 줄을 어떻게 고쳐야 할까요?",
      "options": [
-      "func_c의 `answer += 1`을 `answer = i`로 바꾼다",
       "func_c의 `answer = 0`을 `answer = 1`로 바꾼다",
+      "func_c의 `answer += 1`을 `answer = i`로 바꾼다",
       "func_c의 `if arr[i] < arr[answer]:`를 `if arr[i] <= arr[answer]:`로 바꾼다",
       "solution의 `answer = [big + 1, small + 1]`을 `answer = [big, small]`로 바꾼다"
      ],
-     "answer": 0,
+     "answer": 1,
      "explain": "더 작은 값을 찾았을 때 저장해야 하는 것은 \"그 값을 찾은 위치 i\"예요. func_b의 같은 자리(`answer = i`)와 비교해 보면 알 수 있어요. `<=`로 바꾸면 같은 값일 때 뒤의 날로 바뀌어 규칙에도 어긋나요."
     }
    ],
@@ -1583,12 +1583,12 @@
      "kind": "mcq",
      "q": "두 상품의 판매 개수 합이 같다면 어느 상품이 더 높은 순위일까요?",
      "options": [
-      "items에서 앞에 있는 상품",
       "items에서 뒤에 있는 상품",
       "records에 먼저 기록된 상품",
+      "items에서 앞에 있는 상품",
       "판매 기록 건수가 더 많은 상품"
      ],
-     "answer": 0,
+     "answer": 2,
      "explain": "문제에서 '상품 목록에서 앞에 있는 상품을 더 높은 순위로' 본다고 했어요. 그래서 func_a와 func_c는 더 클 때(<)만 위치를 바꿔서, 같으면 앞의 상품을 그대로 둬요."
     },
     {
@@ -1638,7 +1638,7 @@
      "id": "s3",
      "kind": "table",
      "title": "틀린 func_c 따라가기",
-     "prompt": "totals = [3, 1, 8, 6], skip = 2(1위 위치)로 주어진(틀린) func_c를 따라가 보세요. `for idx, elem in enumerate(arr)`는 리스트의 위치(idx)와 값(elem)을 함께 하나씩 꺼내요. idx == skip이면 continue로 건너뛰니 answer가 그대로예요. 각 줄을 처리한 뒤 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 skip을 뺀 가장 큰 값의 위치)를 적어요.",
+     "prompt": "totals = [3, 1, 8, 6], skip = 2(1위 위치)로 주어진(틀린) func_c를 따라가 보세요. `for idx, elem in enumerate(arr)`는 리스트의 위치(idx)와 값(elem)을 함께 하나씩 꺼내요. idx == skip이면 continue로 건너뛰니 answer가 그대로예요. idx 하나를 처리할 때마다 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 skip을 뺀 가장 큰 값의 위치)를 적어요.",
      "columns": [
       "idx",
       "elem",
@@ -2070,12 +2070,12 @@
      "kind": "mcq",
      "q": "기록 \"9:59\"와 \"10:00\" 중 누가 빠른지 알맞게 비교하는 방법은?",
      "options": [
-      "둘 다 초로 바꿔서(분 × 60 + 초) 작은 쪽을 고른다",
       "문자열 그대로 비교해서 작은 쪽을 고른다",
+      "둘 다 초로 바꿔서(분 × 60 + 초) 작은 쪽을 고른다",
       "분만 비교한다",
       "초만 비교한다"
      ],
-     "answer": 0,
+     "answer": 1,
      "explain": "문자열끼리 비교하면 앞 글자부터 비교해서 \"10:00\"이 \"9:59\"보다 작다고 나와요(\"1\" < \"9\"). 그래서 func_a가 기록을 초 단위 정수로 바꿔 줘요. 599초 < 600초이니 \"9:59\"가 빨라요."
     },
     {
@@ -2138,7 +2138,7 @@
      "id": "s3",
      "kind": "table",
      "title": "틀린 func_c 따라가기",
-     "prompt": "secs = [432, 408, 481, 415, 410], best = 408로 주어진(틀린) func_c를 따라가 보세요. 각 줄을 처리한 뒤 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 best를 뺀 가장 작은 값의 위치)를 적어요. 처음 answer는 -1이에요.",
+     "prompt": "secs = [432, 408, 481, 415, 410], best = 408로 주어진(틀린) func_c를 따라가 보세요. idx 하나를 처리할 때마다 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 best를 뺀 가장 작은 값의 위치)를 적어요. 처음 answer는 -1이에요.",
      "columns": [
       "idx",
       "sec",
@@ -2205,12 +2205,12 @@
      "kind": "mcq",
      "q": "어느 줄을 어떻게 고쳐야 할까요?",
      "options": [
-      "func_c의 `answer += 1`을 `answer = idx`로 바꾼다",
       "func_c의 `if sec == best:`를 `if sec != best:`로 바꾼다",
       "func_c의 `answer = -1`을 `answer = 0`으로 바꾼다",
-      "func_b의 `for i in range(1, len(arr)):`를 `for i in range(len(arr)):`로 바꾼다"
+      "func_b의 `for i in range(1, len(arr)):`를 `for i in range(len(arr)):`로 바꾼다",
+      "func_c의 `answer += 1`을 `answer = idx`로 바꾼다"
      ],
-     "answer": 0,
+     "answer": 3,
      "explain": "조건을 만족했을 때 기억해야 하는 것은 \"지금 본 기록의 위치 idx\"예요. func_b의 range(1, …)는 0번을 처음 후보로 두었으니 1번부터 비교하는 것이라 틀리지 않았어요."
     }
    ],
@@ -2910,7 +2910,7 @@
      "id": "s3",
      "kind": "table",
      "title": "틀린 func_c 따라가기",
-     "prompt": "totals = [20, 35, 27, 15, 27, 9, 30], peak = 1로 주어진(틀린) func_c를 idx = 2부터 따라가 보세요. 각 줄을 처리한 뒤 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 본 값 중 가장 작은 값의 위치)를 적어요.",
+     "prompt": "totals = [20, 35, 27, 15, 27, 9, 30], peak = 1로 주어진(틀린) func_c를 idx = 2부터 따라가 보세요. idx 하나를 처리할 때마다 틀린 코드의 answer와, 원래 있어야 할 answer(peak 뒤에서 지금까지 본 값 중 가장 작은 값의 위치)를 적어요.",
      "columns": [
       "idx",
       "cnt",
@@ -2977,12 +2977,12 @@
      "kind": "mcq",
      "q": "어느 줄을 어떻게 고쳐야 할까요?",
      "options": [
-      "func_c의 elif 아래 `answer += 1`을 `answer = idx`로 바꾼다",
       "func_c의 `if idx <= peak:`를 `if idx < peak:`로 바꾼다",
       "func_c의 `elif cnt < arr[answer]:`를 `elif cnt > arr[answer]:`로 바꾼다",
+      "func_c의 elif 아래 `answer += 1`을 `answer = idx`로 바꾼다",
       "solution의 `answer = [start + busy, start + quiet]`를 `answer = [busy, quiet]`로 바꾼다"
      ],
-     "answer": 0,
+     "answer": 2,
      "explain": "더 적은 인원을 찾았을 때는 그 시각의 위치 idx를 저장해야 해요. `idx < peak`로 바꾸면 붐빈 시각까지 비교 대상에 들어가 버려요."
     }
    ],
@@ -3777,12 +3777,12 @@
      "kind": "mcq",
      "q": "예시 1에서 curry는 평균이 5.0으로 가장 높은데 1위가 아니에요. 왜 그럴까요?",
      "options": [
-      "점수를 받은 횟수(2번)가 min_cnt(3)보다 적어 순위에 오르지 못해서",
       "평균이 같은 메뉴가 있어서",
+      "점수를 받은 횟수(2번)가 min_cnt(3)보다 적어 순위에 오르지 못해서",
       "메뉴 목록에서 뒤에 있어서",
       "점수의 합이 가장 작아서"
      ],
-     "answer": 0,
+     "answer": 1,
      "explain": "min_cnt 이상 점수를 받은 메뉴만 순위에 올라요. func_b는 그렇지 않은 메뉴의 자리에 -1을 넣고, func_c는 -1인 자리를 건너뛰어요."
     },
     {
@@ -3858,7 +3858,7 @@
      "id": "s3",
      "kind": "table",
      "title": "틀린 func_c로 1위 찾기",
-     "prompt": "solution은 1위를 찾을 때 first = func_c(avgs, -1)처럼 skip에 -1을 넣어요(어떤 인덱스도 -1이 아니니 아무것도 건너뛰지 않아요). avgs = [4.0, -1, 3.25, 4.5, 2.5]로 주어진(틀린) func_c를 따라가며, 각 줄을 처리한 뒤 틀린 코드의 answer와 원래 있어야 할 answer를 적어요.",
+     "prompt": "solution은 1위를 찾을 때 first = func_c(avgs, -1)처럼 skip에 -1을 넣어요(어떤 인덱스도 -1이 아니니 skip으로는 아무것도 건너뛰지 않아요. 단, avg가 -1인 자리는 `if avg == -1 or …`에서 건너뛰어요). avgs = [4.0, -1, 3.25, 4.5, 2.5]로 주어진(틀린) func_c를 따라가며, idx 하나를 처리할 때마다 틀린 코드의 answer와 원래 있어야 할 answer를 적어요.",
      "columns": [
       "idx",
       "avg",
