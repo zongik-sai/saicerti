@@ -1,0 +1,235 @@
+import { useEffect, useState } from 'react';
+import type { InputCell, Step, TableCell } from '../content/types';
+import { cellOk } from '../lib/pyrepr';
+import { inline, Rich } from './Rich';
+
+const KIND: Record<Step['kind'], string> = { mcq: '객관식', table: '표 채우기', short: '단답' };
+const REVEAL_AFTER = 3;
+
+interface Props {
+  step: Step;
+  index: number;
+  total: number;
+  done: boolean;
+  revealed: boolean;
+  onCorrect: () => void;
+  onReveal: () => void;
+  onNext: () => void;
+  isLast: boolean;
+}
+
+const isInput = (c: TableCell): c is InputCell => typeof c === 'object' && c !== null;
+
+/** 중간 점검 한 단계. 맞혀야 다음으로(세 번 틀리면 정답 보기). */
+export function StepView(p: Props) {
+  return (
+    <div className="card" aria-live="polite">
+      <div className="step-kind">
+        중간 점검 {p.index + 1}/{p.total} · {KIND[p.step.kind]}
+      </div>
+      {p.step.kind === 'mcq' && <Mcq {...p} step={p.step} />}
+      {p.step.kind === 'table' && <Table {...p} step={p.step} />}
+      {p.step.kind === 'short' && <Short {...p} step={p.step} />}
+    </div>
+  );
+}
+
+function Footer({ ok, revealed, explain, wrong, onReveal, onNext, isLast, onCheck, canCheck }: { ok: boolean; revealed: boolean; explain: string; wrong: number; onReveal: () => void; onNext: () => void; isLast: boolean; onCheck: () => void; canCheck: boolean }) {
+  return (
+    <>
+      {!ok && wrong > 0 && <p className="feedback bad">다시 생각해 보세요. ({wrong}번 틀림)</p>}
+      {ok && (
+        <div className={`explain${revealed ? ' revealed' : ''}`}>
+          <strong>{revealed ? '정답을 확인했어요. ' : '맞았어요! '}</strong>
+          {inline(explain)}
+        </div>
+      )}
+      <div className="actions">
+        {!ok && (
+          <button className="btn primary" onClick={onCheck} disabled={!canCheck}>
+            확인
+          </button>
+        )}
+        {!ok && wrong >= REVEAL_AFTER && (
+          <button className="btn ghost" onClick={onReveal}>
+            정답 보기
+          </button>
+        )}
+        {ok && (
+          <button className="btn primary" onClick={onNext}>
+            {isLast ? '코드 풀러 가기 →' : '다음 단계 →'}
+          </button>
+        )}
+      </div>
+    </>
+  );
+}
+
+function Mcq({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'mcq' }> }) {
+  const [sel, setSel] = useState<number | null>(done ? step.answer : null);
+  const [wrongPick, setWrongPick] = useState<number | null>(null);
+  const [wrong, setWrong] = useState(0);
+  useEffect(() => {
+    setSel(done ? step.answer : null);
+    setWrong(0);
+    setWrongPick(null);
+  }, [step.id, step.answer, done]);
+  const ok = done;
+  const check = () => {
+    if (sel === null) return;
+    if (sel === step.answer) {
+      setWrongPick(null);
+      onCorrect();
+    } else {
+      setWrongPick(sel);
+      setWrong((w) => w + 1);
+    }
+  };
+  return (
+    <>
+      <div className="step-q">
+        <Rich text={step.q} />
+      </div>
+      <div className="opts" role="radiogroup" aria-label="보기">
+        {step.options.map((o, i) => {
+          const cls = ok && i === step.answer ? 'right' : wrongPick === i ? 'wrong' : sel === i ? 'sel' : '';
+          return (
+            <button
+              key={i}
+              role="radio"
+              aria-checked={sel === i}
+              className={`opt ${cls}`}
+              disabled={ok}
+              onClick={() => {
+                setSel(i);
+                setWrongPick(null);
+              }}
+            >
+              <span className="mk">{'①②③④⑤'[i]}</span>
+              <span>{/[=()[\]:%]|\b(if|for|return|def)\b/.test(o) && !/[가-힣]/.test(o) ? <code>{o}</code> : inline(o)}</span>
+            </button>
+          );
+        })}
+      </div>
+      <Footer ok={ok} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} onCheck={check} canCheck={sel !== null} />
+    </>
+  );
+}
+
+function Table({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'table' }> }) {
+  const cells: InputCell[] = step.rows.flat().filter(isInput);
+  const [vals, setVals] = useState<string[]>(() => (done ? cells.map((c) => c.a) : cells.map(() => '')));
+  const [marks, setMarks] = useState<(boolean | null)[]>(() => cells.map(() => null));
+  const [wrong, setWrong] = useState(0);
+  useEffect(() => {
+    setVals(done ? cells.map((c) => c.a) : cells.map(() => ''));
+    setMarks(cells.map(() => null));
+    setWrong(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step.id, done]);
+  const check = () => {
+    const m = cells.map((c, i) => cellOk(vals[i] ?? '', c.a, c.alts));
+    setMarks(m);
+    if (m.every(Boolean)) onCorrect();
+    else setWrong((w) => w + 1);
+  };
+  let k = -1;
+  return (
+    <>
+      {step.title && <h3 style={{ marginTop: '0.3rem' }}>{step.title}</h3>}
+      <div className="step-q">
+        <Rich text={step.prompt} />
+      </div>
+      <div className="scroll-x">
+        <table className="trace">
+          <thead>
+            <tr>
+              {step.columns.map((c, i) => (
+                <th key={i} scope="col">
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {step.rows.map((r, ri) => (
+              <tr key={ri}>
+                {r.map((c, ci) => {
+                  if (!isInput(c)) return <td key={ci}>{c}</td>;
+                  k++;
+                  const idx = k;
+                  const mk = done ? true : marks[idx];
+                  return (
+                    <td key={ci}>
+                      <input
+                        aria-label={`${ri + 1}행 ${step.columns[ci]}`}
+                        className={mk === true ? 'right' : mk === false ? 'wrong' : ''}
+                        value={vals[idx] ?? ''}
+                        disabled={done}
+                        spellCheck={false}
+                        autoCapitalize="off"
+                        autoComplete="off"
+                        style={{ width: `${Math.max(4.2, (vals[idx]?.length ?? 0) + 1.5)}ch` }}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setVals((old) => old.map((x, j) => (j === idx ? v : x)));
+                          setMarks((old) => old.map((x, j) => (j === idx ? null : x)));
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') check();
+                        }}
+                      />
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {!done && <p className="faint">참/거짓은 True·False, 글자는 따옴표('a')로 써요. 빈칸 없이 모두 채운 뒤 확인을 눌러요.</p>}
+      <Footer ok={done} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} onCheck={check} canCheck={vals.every((v) => v.trim() !== '')} />
+    </>
+  );
+}
+
+function Short({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'short' }> }) {
+  const [v, setV] = useState(done ? step.a : '');
+  const [mark, setMark] = useState<boolean | null>(null);
+  const [wrong, setWrong] = useState(0);
+  useEffect(() => {
+    setV(done ? step.a : '');
+    setMark(null);
+    setWrong(0);
+  }, [step.id, step.a, done]);
+  const check = () => {
+    const ok = cellOk(v, step.a, step.alts);
+    setMark(ok);
+    if (ok) onCorrect();
+    else setWrong((w) => w + 1);
+  };
+  return (
+    <>
+      <div className="step-q">
+        <Rich text={step.q} />
+      </div>
+      <input
+        className={`short-input ${done || mark === true ? 'right' : mark === false ? 'wrong' : ''}`}
+        aria-label="답"
+        value={v}
+        disabled={done}
+        spellCheck={false}
+        autoCapitalize="off"
+        autoComplete="off"
+        onChange={(e) => {
+          setV(e.target.value);
+          setMark(null);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && v.trim()) check();
+        }}
+      />
+      <Footer ok={done} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} onCheck={check} canCheck={v.trim() !== ''} />
+    </>
+  );
+}

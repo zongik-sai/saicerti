@@ -1,0 +1,1608 @@
+{
+ "course": "pya",
+ "type": 8,
+ "typeTitle": "만들 수 있는 합 찾기",
+ "kind": "write",
+ "skills": [
+  "가능 여부 리스트(True/False)",
+  "중복 없이 세기",
+  "동적 계획법 기초",
+  "리스트 범위 확인"
+ ],
+ "intro": "주어진 수들을 더해 만들 수 있는 합을 True/False 리스트(또는 모음)에 표시해 가며 답을 구하는 유형입니다. 0에서 시작해 \"이미 만들 수 있는 합 + 새 수\"를 차례로 표시하는 방법(작은 답을 모아 큰 답을 만드는 동적 계획법의 기초)을 연습합니다. 같은 합은 한 번만 세고, 제한값을 넘는 합은 버리는 처리가 핵심입니다.",
+ "problems": [
+  {
+   "id": "pya-t08-a",
+   "version": 1,
+   "title": "딱 맞는 높이의 블록 탑",
+   "statement": "높이가 `a` cm인 블록과 `b` cm인 블록이 각각 충분히 많이 있습니다. 블록을 한 줄로 쌓아 탑을 만들 때 같은 블록을 몇 개든 쓸 수 있고, 한 종류만 써도 되고 두 종류를 섞어 써도 됩니다.\n\n예를 들어 a = 3, b = 5이면 3, 5, 6(3 + 3), 8(3 + 5), 9(3 + 3 + 3), 10(5 + 5) cm 높이의 탑은 만들 수 있지만, 4 cm나 7 cm 높이의 탑은 만들 수 없습니다.\n\n블록의 높이 `a`, `b`와 원하는 탑의 높이 `height`가 solution 함수의 매개변수로 주어질 때, 높이가 정확히 height cm인 탑을 만들 수 있으면 True를, 만들 수 없으면 False를 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "a와 b는 1 이상 100 이하인 자연수이며, 서로 같을 수도 있습니다.",
+    "height는 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "높이가 정확히 height cm인 탑을 만들 수 있으면 True, 만들 수 없으면 False를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "a",
+    "b",
+    "height"
+   ],
+   "code": "def solution(a, b, height):\n    answer = False\n    return answer",
+   "solution": "def solution(a, b, height):\n    can = [False] * (height + 1)\n    can[0] = True\n    for h in range(height + 1):\n        if can[h]:\n            if h + a <= height:\n                can[h + a] = True\n            if h + b <= height:\n                can[h + b] = True\n    answer = can[height]\n    return answer",
+   "inputCheck": "def valid(a, b, height):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (a, b, height)) and 1 <= a <= 100 and 1 <= b <= 100 and 1 <= height <= 1000",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "a = 3, b = 5일 때 높이 9 cm 탑은 어떻게 될까요?",
+     "options": [
+      "3 cm 블록 3개(3 + 3 + 3)로 만들 수 있다",
+      "두 종류를 모두 써야 하므로 만들 수 없다",
+      "3 + 5 = 8보다 높으므로 만들 수 없다"
+     ],
+     "answer": 0,
+     "explain": "같은 블록을 몇 개든 쓸 수 있고, 한 종류만 써도 돼요. 그래서 3 + 3 + 3 = 9로 만들 수 있어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기 (a = 3, b = 5, height = 11)",
+     "prompt": "can[h]는 높이 h cm 탑을 만들 수 있는지를 True/False로 적어 두는 리스트예요(h는 리스트 안의 위치 번호, 곧 인덱스예요). 블록을 하나도 안 쌓은 높이 0은 만들 수 있으니 can[0] = True로 시작해요. h를 0부터 차례로 보며 can[h]가 True이면 can[h + 3]과 can[h + 5]를 True로 바꿔요. 높이 1부터 11까지 can[h]를 채워 보세요.",
+     "columns": [
+      "높이 h",
+      "can[h]"
+     ],
+     "rows": [
+      [
+       "0",
+       "True (시작)"
+      ],
+      [
+       "1",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "7",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "10",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "11",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    a, b, height = 3, 5, 11\n    can = [False] * (height + 1)\n    can[0] = True\n    for h in range(height + 1):\n        if can[h]:\n            if h + a <= height:\n                can[h + a] = True\n            if h + b <= height:\n                can[h + b] = True\n    return can[1:]",
+     "explain": "0 → 3, 5 → 6, 8 → 9, 10, 11 … 처럼 True가 퍼져 나가요. 1, 2, 4, 7은 끝까지 False라서 그 높이의 탑은 만들 수 없어요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "can[0] = True로 시작하는 까닭으로 알맞은 것은?",
+     "options": [
+      "높이 0(블록 0개)은 만들 수 있고, 여기에 a나 b를 더해 a, b 높이를 표시하기 위해",
+      "0번 칸은 쓰지 않으니 아무 값이나 넣어도 되기 때문에",
+      "height가 0일 때 True를 return 하기 위해",
+      "can[0]이 False이면 오류가 나기 때문에"
+     ],
+     "answer": 0,
+     "explain": "모든 탑은 \"아무것도 없는 상태(0)\"에서 블록을 하나씩 올려 만들어요. can[0] = True가 있어야 can[a], can[b]가 True로 바뀌며 표시가 시작돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "h를 0부터 height까지 차례로 볼 때, can[h]가 True라면 해야 할 일은?",
+     "options": [
+      "h + a, h + b가 height 이하이면 can[h + a], can[h + b]를 True로 바꾼다",
+      "can[h - a], can[h - b]를 True로 바꾼다",
+      "can[a + b]만 True로 바꾼다",
+      "바로 True를 return 한다"
+     ],
+     "answer": 0,
+     "explain": "만들 수 있는 높이 위에 블록을 한 개 더 올리면 새 높이가 돼요. height를 넘는 칸은 리스트에 없으니 범위를 꼭 확인해야 인덱스 오류가 나지 않아요. 바로 return 하면 can[0]이 늘 True라서 항상 True가 나와요."
+    }
+   ],
+   "explain": "can 리스트에 \"이 높이를 만들 수 있는가\"를 적어 두고, 높이 0에서 시작해 만들 수 있는 높이에 a 또는 b를 더한 높이를 True로 표시해 나갑니다. 다 채운 뒤 can[height]를 return 하면 돼요. h + a가 height를 넘으면 리스트 범위를 벗어나니 조건을 꼭 확인하세요.",
+   "examples": [
+    {
+     "args": [
+      3,
+      5,
+      11
+     ],
+     "expected": true,
+     "explain": "3 + 3 + 5 = 11이므로 True를 return 합니다."
+    },
+    {
+     "args": [
+      4,
+      6,
+      9
+     ],
+     "expected": false,
+     "explain": "4와 6은 모두 짝수라서 어떻게 쌓아도 홀수 높이는 만들 수 없습니다. 따라서 False를 return 합니다."
+    }
+   ],
+   "tests": [
+    {
+     "args": [
+      1,
+      100,
+      1
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      100,
+      1000
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      99,
+      1
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      7,
+      11,
+      59
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      7,
+      11,
+      60
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      2,
+      999
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      13,
+      17,
+      1000
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      50,
+      30,
+      110
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      6,
+      9,
+      20
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      6,
+      9,
+      21
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      99,
+      97,
+      1000
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      5,
+      100,
+      5
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      12,
+      4
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      3,
+      5,
+      4
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      97,
+      89,
+      735
+     ],
+     "expected": false
+    }
+   ]
+  },
+  {
+   "id": "pya-t08-b",
+   "version": 1,
+   "title": "밟을 수 있는 계단 세기",
+   "statement": "계단 맨 아래(0번 칸)에서 출발해 위로만 올라가는 놀이를 합니다. 한 번에 오를 수 있는 칸 수들이 리스트 `steps`에 들어 있고, 한 번 오를 때마다 steps 중 하나를 골라 그 칸 수만큼 올라갑니다. 같은 칸 수를 여러 번 골라도 됩니다.\n\n어떤 방법으로든 정확히 멈출 수 있는 칸을 **밟을 수 있는 칸**이라고 합니다. 예를 들어 steps = [3, 4]이면 3, 4, 6(3 + 3), 7(3 + 4), 8(4 + 4)번 칸 등은 밟을 수 있지만 5번 칸은 밟을 수 없습니다. 한 칸을 밟는 방법이 여러 가지여도 그 칸은 한 번만 셉니다.\n\n한 번에 오를 수 있는 칸 수 목록 `steps`와 꼭대기 칸 번호 `top`이 solution 함수의 매개변수로 주어질 때, 1번 칸부터 top번 칸까지 중 밟을 수 있는 칸의 개수를 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "steps의 길이는 1 이상 5 이하입니다.",
+    "steps의 원소는 1 이상 100 이하인 서로 다른 자연수입니다.",
+    "top은 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "1번 칸부터 top번 칸까지 중 밟을 수 있는 칸의 개수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "steps",
+    "top"
+   ],
+   "code": "def solution(steps, top):\n    answer = 0\n    return answer",
+   "solution": "def solution(steps, top):\n    reach = [False] * (top + 1)\n    reach[0] = True\n    for i in range(top + 1):\n        if reach[i]:\n            for s in steps:\n                if i + s <= top:\n                    reach[i + s] = True\n    answer = 0\n    for i in range(1, top + 1):\n        if reach[i]:\n            answer += 1\n    return answer",
+   "inputCheck": "def valid(steps, top):\n    return isinstance(steps, list) and 1 <= len(steps) <= 5 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 100 for x in steps) and len(set(steps)) == len(steps) and isinstance(top, int) and not isinstance(top, bool) and 1 <= top <= 1000",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "steps = [3, 4]일 때 7번 칸은 3 → 4 순서로도, 4 → 3 순서로도 밟을 수 있어요. 개수를 셀 때 7번 칸은 어떻게 셀까요?",
+     "options": [
+      "1개로 센다",
+      "방법이 두 가지이므로 2개로 센다",
+      "방법이 여러 가지인 칸은 세지 않는다"
+     ],
+     "answer": 0,
+     "explain": "문제는 \"밟을 수 있는 칸의 개수\"를 물어요. 방법의 수가 아니라 칸을 세므로, 방법이 몇 가지든 7번 칸은 1개예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기 (steps = [3, 4], top = 10)",
+     "prompt": "reach[i]는 i번 칸을 밟을 수 있는지 적는 True/False 리스트예요. reach[0] = True(출발 칸)로 시작해, 밟을 수 있는 칸 i마다 reach[i + 3]과 reach[i + 4]를 True로 바꿔요. 1번부터 8번 칸까지 reach[i]와, 1번 칸부터 그 칸까지 밟을 수 있는 칸을 센 수(answer)를 채워 보세요.",
+     "columns": [
+      "칸 i",
+      "reach[i]",
+      "answer"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "7",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "5"
+       }
+      ]
+     ],
+     "check": "def answers():\n    steps, top = [3, 4], 10\n    reach = [False] * (top + 1)\n    reach[0] = True\n    for i in range(top + 1):\n        if reach[i]:\n            for s in steps:\n                if i + s <= top:\n                    reach[i + s] = True\n    out = []\n    answer = 0\n    for i in range(1, 9):\n        if reach[i]:\n            answer += 1\n        out += [reach[i], answer]\n    return out",
+     "explain": "0번 칸에서 3, 4번 칸이, 3번 칸에서 6, 7번 칸이, 4번 칸에서 7, 8번 칸이 True가 돼요. 7번 칸은 두 번 True로 바뀌지만 True는 하나라서 answer에는 한 번만 더해져요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "밟을 수 있는 칸 i(reach[i]가 True)에서 해야 할 일로 알맞은 것은?",
+     "options": [
+      "steps의 각 s에 대해 i + s가 top 이하이면 reach[i + s]를 True로 바꾼다",
+      "steps의 각 s에 대해 reach[s]만 True로 바꾼다",
+      "reach[i + 1]을 True로 바꾼다",
+      "answer에 s를 더한다"
+     ],
+     "answer": 0,
+     "explain": "i번 칸에서 s칸 오르면 i + s번 칸에 멈춰요. steps의 값마다 반복문으로 표시하되, top을 넘는 칸은 리스트 범위 밖이니 건너뛰어요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "steps = [6], top = 20이면 답은 얼마일까요?",
+     "a": "3",
+     "alts": [],
+     "check": "def solution(steps, top):\n    reach = [False] * (top + 1)\n    reach[0] = True\n    for i in range(top + 1):\n        if reach[i]:\n            for s in steps:\n                if i + s <= top:\n                    reach[i + s] = True\n    answer = 0\n    for i in range(1, top + 1):\n        if reach[i]:\n            answer += 1\n    return answer\n\ndef answers():\n    return [solution([6], 20)]",
+     "explain": "6, 12, 18번 칸만 밟을 수 있어요. 다음 칸인 24번은 top보다 위라서 세지 않아요. 그래서 답은 3이에요."
+    }
+   ],
+   "explain": "reach 리스트에 칸마다 밟을 수 있는지를 적어 두면, 같은 칸을 여러 방법으로 밟아도 True 하나로 남아 저절로 한 번만 세져요. 0번 칸에서 시작해 밟을 수 있는 칸에 steps의 각 값을 더한 칸을 표시하고, 마지막에 1번부터 top번까지 True의 개수를 셉니다. 출발 칸인 0번 칸은 세지 않는다는 점에 주의하세요.",
+   "examples": [
+    {
+     "args": [
+      [
+       3,
+       4
+      ],
+      10
+     ],
+     "expected": 7,
+     "explain": "3, 4, 6, 7, 8, 9(3 + 3 + 3), 10(3 + 3 + 4)번 칸을 밟을 수 있습니다. 1, 2, 5번 칸은 밟을 수 없으므로 7을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       5,
+       7,
+       9
+      ],
+      20
+     ],
+     "expected": 12,
+     "explain": "5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19, 20번 칸의 12개를 밟을 수 있습니다. 예를 들어 19번 칸은 5 + 7 + 7로 밟습니다."
+    }
+   ],
+   "tests": [
+    {
+     "args": [
+      [
+       1
+      ],
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       100
+      ],
+      1000
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       100,
+       99
+      ],
+      98
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       2,
+       4,
+       6
+      ],
+      999
+     ],
+     "expected": 499
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5
+      ],
+      1000
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      [
+       7,
+       11
+      ],
+      59
+     ],
+     "expected": 29
+    },
+    {
+     "args": [
+      [
+       6,
+       10,
+       15
+      ],
+      100
+     ],
+     "expected": 85
+    },
+    {
+     "args": [
+      [
+       50
+      ],
+      49
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       3,
+       4
+      ],
+      2
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       9,
+       12,
+       15
+      ],
+      300
+     ],
+     "expected": 98
+    },
+    {
+     "args": [
+      [
+       97,
+       98,
+       99,
+       100,
+       89
+      ],
+      1000
+     ],
+     "expected": 497
+    },
+    {
+     "args": [
+      [
+       10,
+       25
+      ],
+      1000
+     ],
+     "expected": 198
+    },
+    {
+     "args": [
+      [
+       4,
+       9
+      ],
+      9
+     ],
+     "expected": 3
+    }
+   ]
+  },
+  {
+   "id": "pya-t08-c",
+   "version": 1,
+   "title": "딱 맞게 포장할 수 없는 주문",
+   "statement": "과자 공장에서는 과자를 상자에 담아 팝니다. 상자 종류마다 담기는 과자 개수가 정해져 있고, 그 개수들이 리스트 `boxes`에 들어 있습니다. 상자는 종류마다 원하는 만큼 쓸 수 있지만, 쓰는 상자는 모두 가득 채워야 하고 남는 과자가 있으면 안 됩니다. 이렇게 포장하는 것을 **딱 맞게 포장한다**고 합니다.\n\n예를 들어 boxes = [4, 7]이면 과자 11개는 4개짜리 1상자와 7개짜리 1상자로 딱 맞게 포장할 수 있지만, 과자 5개는 어떻게 해도 딱 맞게 포장할 수 없습니다.\n\n주문은 과자 1개부터 `limit`개까지 들어올 수 있습니다. 상자 크기 목록 boxes와 limit이 solution 함수의 매개변수로 주어질 때, 1개부터 limit개까지의 과자 개수 중 딱 맞게 포장할 수 **없는** 개수는 모두 몇 가지인지 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "boxes의 길이는 1 이상 4 이하입니다.",
+    "boxes의 원소는 1 이상 100 이하인 서로 다른 자연수입니다.",
+    "limit은 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "1 이상 limit 이하의 과자 개수 중 딱 맞게 포장할 수 없는 개수가 몇 가지인지 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "boxes",
+    "limit"
+   ],
+   "code": "def solution(boxes, limit):\n    answer = 0\n    return answer",
+   "solution": "def solution(boxes, limit):\n    ok = [False] * (limit + 1)\n    ok[0] = True\n    for n in range(1, limit + 1):\n        for b in boxes:\n            if n - b >= 0 and ok[n - b]:\n                ok[n] = True\n    answer = 0\n    for n in range(1, limit + 1):\n        if not ok[n]:\n            answer += 1\n    return answer",
+   "inputCheck": "def valid(boxes, limit):\n    return isinstance(boxes, list) and 1 <= len(boxes) <= 4 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 100 for x in boxes) and len(set(boxes)) == len(boxes) and isinstance(limit, int) and not isinstance(limit, bool) and 1 <= limit <= 1000",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "boxes = [4, 7]일 때 딱 맞게 포장할 수 있는 과자 개수는?",
+     "options": [
+      "5개",
+      "10개",
+      "13개",
+      "15개"
+     ],
+     "answer": 3,
+     "explain": "15 = 4 + 4 + 7이에요. 5, 10, 13은 4와 7을 어떻게 더해도 만들 수 없어요(예: 10 - 7 = 3, 10은 4의 배수도 아니에요)."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "ok 리스트 채우기 (boxes = [4, 7])",
+     "prompt": "ok[n]은 과자 n개를 딱 맞게 포장할 수 있는지 적는 True/False 리스트예요. 과자 n개를 포장할 수 있으려면, 상자 하나를 뺀 n - 4개나 n - 7개를 포장할 수 있어야 해요. ok[0]부터 ok[7]까지는 ok[0], ok[4], ok[7]만 True예요. n = 8부터 12까지 칸을 채워 보세요.",
+     "columns": [
+      "n",
+      "ok[n - 4]",
+      "ok[n - 7]",
+      "ok[n]"
+     ],
+     "rows": [
+      [
+       "8",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "10",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "11",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    boxes, limit = [4, 7], 12\n    ok = [False] * (limit + 1)\n    ok[0] = True\n    for n in range(1, limit + 1):\n        for b in boxes:\n            if n - b >= 0 and ok[n - b]:\n                ok[n] = True\n    out = []\n    for n in range(8, 13):\n        out += [ok[n - 4], ok[n - 7], ok[n]]\n    return out",
+     "explain": "ok[n - 4]나 ok[n - 7] 중 하나라도 True이면 ok[n]도 True예요. 9개와 10개는 둘 다 False라서 포장할 수 없어요. 11개는 두 가지 방법(4 + 7, 7 + 4)이 있지만 True 하나로 남아요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "ok 리스트를 다 채운 뒤 답을 구하는 방법으로 알맞은 것은?",
+     "options": [
+      "1부터 limit까지 보면서 ok[n]이 False인 n을 센다",
+      "1부터 limit까지 보면서 ok[n]이 True인 n을 센다",
+      "boxes의 원소 b마다 limit // b를 구해 더한다",
+      "limit에서 boxes 원소의 합을 뺀다"
+     ],
+     "answer": 0,
+     "explain": "문제는 포장할 수 \"없는\" 개수를 물어요. 그래서 False인 칸을 세요. 0개는 주문이 아니므로 1부터 셉니다."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "boxes = [2, 5], limit = 10이면 답은 얼마일까요?",
+     "a": "2",
+     "alts": [],
+     "check": "def solution(boxes, limit):\n    ok = [False] * (limit + 1)\n    ok[0] = True\n    for n in range(1, limit + 1):\n        for b in boxes:\n            if n - b >= 0 and ok[n - b]:\n                ok[n] = True\n    answer = 0\n    for n in range(1, limit + 1):\n        if not ok[n]:\n            answer += 1\n    return answer\n\ndef answers():\n    return [solution([2, 5], 10)]",
+     "explain": "2, 4, 5, 6, 7(2 + 5), 8, 9(2 + 2 + 5), 10은 포장할 수 있어요. 포장할 수 없는 것은 1개와 3개뿐이라 답은 2예요."
+    }
+   ],
+   "explain": "ok[n]을 \"과자 n개를 딱 맞게 포장할 수 있는가\"로 정하면, ok[n - 상자 크기]가 True인 상자가 하나라도 있을 때 ok[n]도 True예요. ok[0] = True에서 시작해 n을 1부터 limit까지 차례로 채운 뒤 False인 칸을 셉니다. n - b가 음수인 경우를 먼저 걸러야 해요. 파이썬에서 음수 인덱스는 리스트의 뒤에서부터 읽어서 엉뚱한 값이 나오기 때문이에요.",
+   "examples": [
+    {
+     "args": [
+      [
+       4,
+       7
+      ],
+      20
+     ],
+     "expected": 9,
+     "explain": "포장할 수 없는 개수는 1, 2, 3, 5, 6, 9, 10, 13, 17개의 9가지입니다. 예를 들어 18개는 4 + 7 + 7로 포장할 수 있습니다."
+    },
+    {
+     "args": [
+      [
+       3,
+       6
+      ],
+      10
+     ],
+     "expected": 7,
+     "explain": "3과 6으로는 3의 배수만 만들 수 있으므로, 1~10 중 3, 6, 9를 뺀 7가지는 포장할 수 없습니다."
+    }
+   ],
+   "tests": [
+    {
+     "args": [
+      [
+       1
+      ],
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       2
+      ],
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       100
+      ],
+      1000
+     ],
+     "expected": 990
+    },
+    {
+     "args": [
+      [
+       100,
+       99,
+       98,
+       97
+      ],
+      1000
+     ],
+     "expected": 825
+    },
+    {
+     "args": [
+      [
+       6,
+       9,
+       20
+      ],
+      100
+     ],
+     "expected": 22
+    },
+    {
+     "args": [
+      [
+       3,
+       5
+      ],
+      1000
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       2,
+       4
+      ],
+      999
+     ],
+     "expected": 500
+    },
+    {
+     "args": [
+      [
+       7
+      ],
+      7
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       11,
+       13
+      ],
+      200
+     ],
+     "expected": 60
+    },
+    {
+     "args": [
+      [
+       5,
+       8,
+       12
+      ],
+      50
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       50,
+       51
+      ],
+      1000
+     ],
+     "expected": 790
+    },
+    {
+     "args": [
+      [
+       4,
+       7
+      ],
+      3
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       1,
+       100
+      ],
+      1000
+     ],
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "id": "pya-t08-d",
+   "version": 1,
+   "title": "엘리베이터에 가장 무겁게 싣기",
+   "statement": "화물 엘리베이터에 무게가 `a` kg인 상자와 `b` kg인 상자를 싣습니다. 두 종류의 상자는 각각 충분히 많고, 종류마다 원하는 개수만큼(0개도 됩니다) 실을 수 있습니다. 단, 실은 상자 무게의 합이 `limit` kg을 넘으면 안 됩니다.\n\n예를 들어 a = 4, b = 10, limit = 23이면 4 + 4 + 4 + 10 = 22 kg까지 실을 수 있고, 23 kg은 4와 10을 어떻게 더해도 만들 수 없으므로 실을 수 있는 가장 큰 무게 합은 22 kg입니다.\n\n상자 무게 a, b와 limit이 solution 함수의 매개변수로 주어질 때, 실을 수 있는 무게 합 중 가장 큰 값을 return 하도록 solution 함수를 완성해 주세요. 상자를 한 개도 실을 수 없으면 0을 return 합니다.",
+   "params": [
+    "a와 b는 1 이상 100 이하인 자연수이며, 서로 같을 수도 있습니다.",
+    "limit은 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "무게 합이 limit 이하가 되도록 상자를 실을 때, 가능한 무게 합의 최댓값을 return 합니다. 한 개도 실을 수 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "a",
+    "b",
+    "limit"
+   ],
+   "code": "def solution(a, b, limit):\n    answer = 0\n    return answer",
+   "solution": "def solution(a, b, limit):\n    can = [False] * (limit + 1)\n    can[0] = True\n    for w in range(limit + 1):\n        if can[w]:\n            if w + a <= limit:\n                can[w + a] = True\n            if w + b <= limit:\n                can[w + b] = True\n    answer = 0\n    for w in range(limit, -1, -1):\n        if can[w]:\n            answer = w\n            break\n    return answer",
+   "inputCheck": "def valid(a, b, limit):\n    return all(isinstance(x, int) and not isinstance(x, bool) for x in (a, b, limit)) and 1 <= a <= 100 and 1 <= b <= 100 and 1 <= limit <= 1000",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "a = 5, b = 8, limit = 21일 때 5 + 8 + 8 = 21 kg은 어떻게 볼까요?",
+     "options": [
+      "limit과 같으므로 실을 수 있다",
+      "limit과 같으면 넘은 것으로 보아 실을 수 없다",
+      "두 종류를 섞었으므로 실을 수 없다"
+     ],
+     "answer": 0,
+     "explain": "\"넘으면 안 된다\"는 limit 이하라는 뜻이라 limit과 같은 무게는 괜찮아요. 이 경우 답은 21이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "can 리스트 채우기 (a = 5, b = 7, limit = 18)",
+     "prompt": "can[w]는 무게 합 w kg을 정확히 만들 수 있는지 적는 True/False 리스트예요. can[0] = True(아무것도 안 실음)에서 시작해, 만들 수 있는 w마다 can[w + 5]와 can[w + 7]을 True로 바꿔요. can[0]부터 can[9]까지는 can[0], can[5], can[7]만 True예요. w = 10부터 18까지 채워 보세요.",
+     "columns": [
+      "무게 w",
+      "can[w]"
+     ],
+     "rows": [
+      [
+       "10",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "11",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "13",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "14",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "15",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "16",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "17",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "18",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    a, b, limit = 5, 7, 18\n    can = [False] * (limit + 1)\n    can[0] = True\n    for w in range(limit + 1):\n        if can[w]:\n            if w + a <= limit:\n                can[w + a] = True\n            if w + b <= limit:\n                can[w + b] = True\n    return can[10:19]",
+     "explain": "10 = 5 + 5, 12 = 5 + 7, 14 = 7 + 7, 15 = 5 + 5 + 5, 17 = 5 + 5 + 7이에요. 11, 13, 16, 18은 만들 수 없어요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 표의 경우(a = 5, b = 7, limit = 18) 답은 얼마일까요?",
+     "a": "17",
+     "alts": [],
+     "check": "def solution(a, b, limit):\n    can = [False] * (limit + 1)\n    can[0] = True\n    for w in range(limit + 1):\n        if can[w]:\n            if w + a <= limit:\n                can[w + a] = True\n            if w + b <= limit:\n                can[w + b] = True\n    answer = 0\n    for w in range(limit, -1, -1):\n        if can[w]:\n            answer = w\n            break\n    return answer\n\ndef answers():\n    return [solution(5, 7, 18)]",
+     "explain": "can[18]은 False이고 can[17]이 True예요. limit 이하에서 만들 수 있는 가장 큰 무게는 17이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "can 리스트를 다 채운 뒤 답을 찾는 방법으로 알맞은 것은?",
+     "options": [
+      "w를 limit부터 0까지 거꾸로 보며 처음으로 can[w]가 True인 w",
+      "w를 0부터 limit까지 차례로 보며 처음으로 can[w]가 True인 w",
+      "can에서 True인 칸의 개수",
+      "(limit // a) * a와 (limit // b) * b 중 큰 값"
+     ],
+     "answer": 0,
+     "explain": "가장 큰 값을 찾으니 큰 쪽부터 보다가 처음 True를 만나면 멈추면 돼요. 0부터 보면 can[0]이 늘 True라서 0이 나와요. 한 종류만 싣는 마지막 보기는 예시 1에서 36이 나와 틀려요(정답 39)."
+    }
+   ],
+   "explain": "can 리스트로 limit 이하에서 만들 수 있는 무게 합을 모두 표시한 뒤, limit부터 거꾸로 보며 처음 True인 무게를 답으로 합니다. can[0] = True이므로 한 개도 못 실으면 자연스럽게 0이 나와요. 한 종류만 가득 싣는 방법이 늘 가장 무겁지는 않다는 점에 주의하세요.",
+   "examples": [
+    {
+     "args": [
+      6,
+      15,
+      40
+     ],
+     "expected": 39,
+     "explain": "6 + 6 + 6 + 6 + 15 = 39 kg이 가장 무겁습니다. 6 kg 상자만 6개 실으면 36 kg이라 더 가볍습니다."
+    },
+    {
+     "args": [
+      7,
+      9,
+      100
+     ],
+     "expected": 100,
+     "explain": "7 × 4 + 9 × 8 = 100이므로 limit과 같은 100 kg을 실을 수 있습니다."
+    },
+    {
+     "args": [
+      30,
+      50,
+      25
+     ],
+     "expected": 0,
+     "explain": "두 상자 모두 25 kg보다 무거워 한 개도 실을 수 없으므로 0을 return 합니다."
+    }
+   ],
+   "tests": [
+    {
+     "args": [
+      1,
+      1,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      100,
+      100,
+      1000
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      100,
+      99,
+      98
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      2,
+      999
+     ],
+     "expected": 998
+    },
+    {
+     "args": [
+      7,
+      11,
+      59
+     ],
+     "expected": 58
+    },
+    {
+     "args": [
+      60,
+      70,
+      199
+     ],
+     "expected": 190
+    },
+    {
+     "args": [
+      99,
+      100,
+      1000
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      8,
+      12,
+      999
+     ],
+     "expected": 996
+    },
+    {
+     "args": [
+      45,
+      70,
+      100
+     ],
+     "expected": 90
+    },
+    {
+     "args": [
+      13,
+      1,
+      5
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      50,
+      51,
+      150
+     ],
+     "expected": 150
+    },
+    {
+     "args": [
+      34,
+      33,
+      65
+     ],
+     "expected": 34
+    },
+    {
+     "args": [
+      100,
+      1,
+      1000
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      17,
+      23,
+      30
+     ],
+     "expected": 23
+    }
+   ]
+  },
+  {
+   "id": "pya-t08-e",
+   "version": 1,
+   "title": "상품권으로 낼 수 있는 금액",
+   "statement": "상품권 여러 장이 있고, 각 상품권의 금액(천 원 단위)이 리스트 `cards`에 들어 있습니다. 같은 금액의 상품권이 여러 장 있을 수도 있습니다. 상품권 몇 장을 골라 금액을 합해서 물건값을 거스름돈 없이 딱 맞게 내려고 합니다. 단, **상품권 한 장은 한 번만 쓸 수 있습니다.**\n\n예를 들어 cards = [2, 3, 3]이면 2, 3, 5(2 + 3), 6(3 + 3), 8(2 + 3 + 3)을 낼 수 있지만, 2짜리 상품권은 한 장뿐이므로 4(2 + 2)는 낼 수 없습니다. 같은 금액을 내는 방법이 여러 가지여도 그 금액은 한 번만 셉니다.\n\n상품권 금액 목록 cards와 `limit`이 solution 함수의 매개변수로 주어질 때, 1 이상 limit 이하의 금액 중 상품권으로 딱 맞게 낼 수 있는 금액은 모두 몇 가지인지 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "cards의 길이는 1 이상 10 이하입니다.",
+    "cards의 원소는 1 이상 100 이하인 자연수이며, 같은 값이 여러 개 있을 수 있습니다.",
+    "limit은 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "1 이상 limit 이하의 금액 중 상품권으로 딱 맞게 낼 수 있는 금액이 몇 가지인지 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "cards",
+    "limit"
+   ],
+   "code": "def solution(cards, limit):\n    answer = 0\n    return answer",
+   "solution": "def solution(cards, limit):\n    can = [False] * (limit + 1)\n    can[0] = True\n    for c in cards:\n        for m in range(limit, c - 1, -1):\n            if can[m - c]:\n                can[m] = True\n    answer = 0\n    for m in range(1, limit + 1):\n        if can[m]:\n            answer += 1\n    return answer",
+   "inputCheck": "def valid(cards, limit):\n    return isinstance(cards, list) and 1 <= len(cards) <= 10 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 100 for x in cards) and isinstance(limit, int) and not isinstance(limit, bool) and 1 <= limit <= 1000",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "cards = [1, 4, 4]일 때 낼 수 없는 금액은?",
+     "options": [
+      "5",
+      "8",
+      "9",
+      "2"
+     ],
+     "answer": 3,
+     "explain": "5 = 1 + 4, 8 = 4 + 4, 9 = 1 + 4 + 4예요. 2는 1짜리 상품권을 두 번 써야 하는데 1짜리는 한 장뿐이라 낼 수 없어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "가능한 금액 모음 키우기 (예시 1: cards = [2, 3, 3], limit = 10)",
+     "prompt": "상품권을 한 장씩 차례로 넣으며 낼 수 있는 금액의 모음을 키워 가요. 0은 \"아무것도 안 낸 상태\"예요. 새 상품권 c를 넣으면, 지금까지 낼 수 있던 금액 각각에 c를 더한 금액이 생겨요. \"새로 생긴 금액\"에는 limit 이하이면서 전에 없던 금액만, 작은 수부터 리스트로 적어 보세요.",
+     "columns": [
+      "넣은 상품권",
+      "새로 생긴 금액",
+      "낼 수 있는 금액(0 포함)"
+     ],
+     "rows": [
+      [
+       "처음",
+       "-",
+       "[0]"
+      ],
+      [
+       "2",
+       {
+        "a": "[2]"
+       },
+       {
+        "a": "[0, 2]"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "[3, 5]"
+       },
+       {
+        "a": "[0, 2, 3, 5]"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "[6, 8]"
+       },
+       {
+        "a": "[0, 2, 3, 5, 6, 8]"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    sums = {0}\n    for c in [2, 3, 3]:\n        new = {s + c for s in sums if s + c <= 10} - sums\n        sums = sums | new\n        out += [sorted(new), sorted(sums)]\n    return out",
+     "explain": "두 번째 3을 넣으면 0, 2, 3, 5에 3을 더한 3, 5, 6, 8이 생기는데, 3과 5는 이미 있으니 새로 생긴 것은 6과 8이에요. 4는 끝까지 생기지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "can 리스트(can[m]: 금액 m을 낼 수 있는가)로 풀 때, 상품권 c 한 장을 반영하는 반복으로 알맞은 것은?",
+     "options": [
+      "m을 limit부터 c까지 거꾸로 보며 can[m - c]가 True이면 can[m]을 True로 바꾼다",
+      "m을 c부터 limit까지 차례로 보며 can[m - c]가 True이면 can[m]을 True로 바꾼다",
+      "m을 c부터 limit까지 보며 can[m]이 True이면 can[m - c]를 True로 바꾼다",
+      "can[c]만 True로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "작은 m부터 채우면 c = 2일 때 can[2]를 True로 바꾼 뒤 곧바로 can[4]도 can[2]를 보고 True가 돼요. 같은 상품권을 두 번 쓴 셈이죠. 큰 m부터 거꾸로 보면 이번 상품권으로 바꾼 칸을 다시 쓰지 않아요. can[c]만 바꾸면 c를 다른 상품권과 합한 금액이 빠져요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "cards = [4, 4], limit = 10이면 답은 얼마일까요?",
+     "a": "2",
+     "alts": [],
+     "check": "def solution(cards, limit):\n    can = [False] * (limit + 1)\n    can[0] = True\n    for c in cards:\n        for m in range(limit, c - 1, -1):\n            if can[m - c]:\n                can[m] = True\n    answer = 0\n    for m in range(1, limit + 1):\n        if can[m]:\n            answer += 1\n    return answer\n\ndef answers():\n    return [solution([4, 4], 10)]",
+     "explain": "4와 8(4 + 4)만 낼 수 있어요. 4짜리가 두 장이라 8은 되지만, 세 번 쓸 수는 없어 12는 못 내고 limit보다도 커요. 그래서 답은 2예요."
+    }
+   ],
+   "explain": "상품권마다 \"쓴다/안 쓴다\"를 정하므로, 지금까지 낼 수 있던 금액에 새 상품권 금액을 더한 금액을 추가하며 모음을 키워 갑니다. can 리스트로 풀 때는 m을 limit부터 거꾸로 돌려야 방금 True로 바꾼 칸을 같은 상품권으로 또 쓰는 일이 없어요. 마지막에 1부터 limit까지 True인 금액을 셉니다.",
+   "examples": [
+    {
+     "args": [
+      [
+       2,
+       3,
+       3
+      ],
+      10
+     ],
+     "expected": 5,
+     "explain": "2, 3, 5, 6, 8의 5가지 금액을 낼 수 있습니다. 5는 2 + 3으로 내는 방법이 두 가지(서로 다른 3짜리)지만 한 번만 셉니다."
+    },
+    {
+     "args": [
+      [
+       5,
+       10,
+       20
+      ],
+      30
+     ],
+     "expected": 6,
+     "explain": "5, 10, 15, 20, 25, 30의 6가지입니다. 35(5 + 10 + 20)는 limit보다 커서 세지 않습니다."
+    }
+   ],
+   "tests": [
+    {
+     "args": [
+      [
+       1
+      ],
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       100
+      ],
+      99
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ],
+      1000
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       4,
+       8,
+       16,
+       32,
+       64,
+       100,
+       100,
+       100
+      ],
+      1000
+     ],
+     "expected": 427
+    },
+    {
+     "args": [
+      [
+       3,
+       3,
+       3
+      ],
+      8
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ],
+      5
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       50,
+       30,
+       20
+      ],
+      60
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       7,
+       11,
+       13,
+       17
+      ],
+      30
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       2,
+       3,
+       3
+      ],
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       99,
+       98,
+       97,
+       96,
+       95,
+       94,
+       93,
+       92,
+       91,
+       90
+      ],
+      1000
+     ],
+     "expected": 175
+    },
+    {
+     "args": [
+      [
+       10,
+       20,
+       30,
+       40
+      ],
+      100
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       6,
+       6,
+       9
+      ],
+      13
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       25,
+       1,
+       50
+      ],
+      1000
+     ],
+     "expected": 7
+    }
+   ]
+  }
+ ]
+}

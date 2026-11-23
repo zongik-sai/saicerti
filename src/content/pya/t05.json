@@ -1,0 +1,3940 @@
+{
+ "course": "pya",
+ "type": 5,
+ "typeTitle": "보조 함수 속 한 줄 고치기",
+ "kind": "fix",
+ "skills": [
+  "함수 나누기",
+  "최댓값·최솟값의 위치 찾기",
+  "enumerate",
+  "한 줄 디버깅"
+ ],
+ "intro": "여러 보조 함수로 나뉜 코드에서, 가장 크거나 작은 값의 위치(인덱스)를 찾는 함수의 틀린 한 줄을 고칩니다. 함수들이 서로 어떤 값을 주고받는지 따라가고, 더 좋은 값을 찾았을 때 위치 변수에 무엇을 저장해야 하는지 연습합니다.",
+ "problems": [
+  {
+   "id": "pya-t05-a",
+   "version": 1,
+   "title": "일교차가 가장 큰 날과 작은 날",
+   "statement": "과학 동아리에서 며칠 동안 날마다 최고 기온과 최저 기온을 기록했습니다. 하루의 **일교차**는 그날의 최고 기온에서 최저 기온을 뺀 값입니다. 날에는 첫째 날부터 1, 2, 3, … 순서로 번호를 붙입니다.\n\n일교차가 가장 큰 날의 번호와 일교차가 가장 작은 날의 번호를 구하려 합니다. 일교차가 가장 큰(또는 가장 작은) 날이 여러 날이면 그중 번호가 가장 작은 날을 고릅니다.\n\n날마다의 최고 기온을 담은 리스트 `high`와 최저 기온을 담은 리스트 `low`가 solution 함수의 매개변수로 주어질 때, `[일교차가 가장 큰 날의 번호, 일교차가 가장 작은 날의 번호]`를 return 하도록 코드를 작성했습니다.\n\n주어진 코드는 일부 입력에서 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "high와 low의 길이는 같으며, 2 이상 30 이하입니다.",
+    "high[i]와 low[i]는 (i + 1)번째 날의 최고 기온과 최저 기온이며, -20 이상 40 이하인 정수입니다.",
+    "같은 날의 최고 기온은 최저 기온보다 낮지 않습니다."
+   ],
+   "returns": [
+    "[일교차가 가장 큰 날의 번호, 일교차가 가장 작은 날의 번호]를 return 합니다. 번호는 1부터 셉니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "high",
+    "low"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       15,
+       20,
+       18,
+       9,
+       17
+      ],
+      [
+       7,
+       10,
+       6,
+       6,
+       8
+      ]
+     ],
+     "expected": [
+      3,
+      4
+     ],
+     "explain": "일교차는 차례로 8, 10, 12, 3, 9입니다. 가장 큰 12는 셋째 날, 가장 작은 3은 넷째 날이므로 [3, 4]를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       5,
+       9,
+       7,
+       9
+      ],
+      [
+       1,
+       1,
+       3,
+       1
+      ]
+     ],
+     "expected": [
+      2,
+      1
+     ],
+     "explain": "일교차는 4, 8, 4, 8입니다. 가장 큰 8은 둘째·넷째 날 중 번호가 작은 2, 가장 작은 4는 첫째·셋째 날 중 번호가 작은 1입니다."
+    },
+    {
+     "args": [
+      [
+       -2,
+       3,
+       1
+      ],
+      [
+       -9,
+       -4,
+       -1
+      ]
+     ],
+     "expected": [
+      1,
+      3
+     ],
+     "explain": "일교차는 7, 7, 2입니다. 가장 큰 7은 첫째 날, 가장 작은 2는 셋째 날입니다."
+    }
+   ],
+   "code": "def func_a(high, low):\n    answer = []\n    for i in range(len(high)):\n        answer.append(high[i] - low[i])\n    return answer\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_c(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[i] < arr[answer]:\n            answer += 1\n    return answer\n\n\ndef solution(high, low):\n    gaps = func_a(high, low)\n    big = func_b(gaps)\n    small = func_c(gaps)\n    answer = [big + 1, small + 1]\n    return answer",
+   "bugLine": 20,
+   "solution": "def func_a(high, low):\n    answer = []\n    for i in range(len(high)):\n        answer.append(high[i] - low[i])\n    return answer\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_c(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[i] < arr[answer]:\n            answer = i\n    return answer\n\n\ndef solution(high, low):\n    gaps = func_a(high, low)\n    big = func_b(gaps)\n    small = func_c(gaps)\n    answer = [big + 1, small + 1]\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       10,
+       10
+      ],
+      [
+       0,
+       5
+      ]
+     ],
+     "expected": [
+      1,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       7,
+       9
+      ],
+      [
+       2,
+       4
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       3,
+       3,
+       3
+      ],
+      [
+       3,
+       3,
+       3
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       12,
+       14,
+       16,
+       18,
+       5
+      ],
+      [
+       7,
+       8,
+       9,
+       10,
+       4
+      ]
+     ],
+     "expected": [
+      4,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       20,
+       21,
+       25,
+       19,
+       30,
+       22
+      ],
+      [
+       2,
+       5,
+       6,
+       10,
+       3,
+       18
+      ]
+     ],
+     "expected": [
+      5,
+      6
+     ]
+    },
+    {
+     "args": [
+      [
+       40,
+       0,
+       10
+      ],
+      [
+       -20,
+       -1,
+       0
+      ]
+     ],
+     "expected": [
+      1,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       8,
+       15,
+       9,
+       15,
+       9
+      ],
+      [
+       8,
+       3,
+       9,
+       3,
+       9
+      ]
+     ],
+     "expected": [
+      2,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       25,
+       24,
+       23,
+       22
+      ],
+      [
+       5,
+       6,
+       7,
+       8
+      ]
+     ],
+     "expected": [
+      1,
+      4
+     ]
+    },
+    {
+     "args": [
+      [
+       -5,
+       -3,
+       -10,
+       2
+      ],
+      [
+       -15,
+       -4,
+       -12,
+       -6
+      ]
+     ],
+     "expected": [
+      1,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       30,
+       31,
+       29,
+       33,
+       28,
+       35,
+       27
+      ],
+      [
+       20,
+       19,
+       22,
+       18,
+       25,
+       17,
+       26
+      ]
+     ],
+     "expected": [
+      6,
+      7
+     ]
+    },
+    {
+     "args": [
+      [
+       10,
+       30,
+       22,
+       25,
+       9
+      ],
+      [
+       5,
+       2,
+       4,
+       1,
+       6
+      ]
+     ],
+     "expected": [
+      2,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       -1,
+       1,
+       10,
+       18,
+       26,
+       -8,
+       40,
+       -8,
+       20,
+       29,
+       18,
+       22,
+       22,
+       10,
+       28,
+       11,
+       38,
+       8,
+       5,
+       24,
+       0,
+       3,
+       19,
+       14,
+       -7,
+       24,
+       25,
+       7,
+       17,
+       -7
+      ],
+      [
+       -19,
+       -13,
+       0,
+       8,
+       3,
+       -14,
+       22,
+       -20,
+       10,
+       4,
+       2,
+       13,
+       14,
+       4,
+       15,
+       -11,
+       29,
+       5,
+       -4,
+       23,
+       -4,
+       -20,
+       18,
+       5,
+       -20,
+       9,
+       24,
+       6,
+       11,
+       -19
+      ]
+     ],
+     "expected": [
+      10,
+      20
+     ]
+    },
+    {
+     "args": [
+      [
+       11,
+       36,
+       22,
+       30,
+       13,
+       30,
+       23,
+       -11,
+       40,
+       40,
+       13,
+       9
+      ],
+      [
+       -12,
+       12,
+       15,
+       26,
+       -7,
+       13,
+       13,
+       -11,
+       25,
+       20,
+       -3,
+       2
+      ]
+     ],
+     "expected": [
+      2,
+      8
+     ]
+    },
+    {
+     "args": [
+      [
+       31,
+       37,
+       18,
+       -8,
+       12,
+       3,
+       30,
+       11,
+       36,
+       33,
+       8,
+       23,
+       21,
+       23,
+       19,
+       34,
+       35,
+       40
+      ],
+      [
+       23,
+       14,
+       6,
+       -12,
+       -2,
+       -20,
+       8,
+       -3,
+       30,
+       29,
+       3,
+       21,
+       -4,
+       1,
+       0,
+       17,
+       20,
+       16
+      ]
+     ],
+     "expected": [
+      13,
+      12
+     ]
+    },
+    {
+     "args": [
+      [
+       3,
+       40,
+       30,
+       0,
+       14,
+       26,
+       -3,
+       35
+      ],
+      [
+       -3,
+       30,
+       26,
+       0,
+       6,
+       9,
+       -7,
+       19
+      ]
+     ],
+     "expected": [
+      6,
+      4
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(high, low):\n    if not isinstance(high, list) or not isinstance(low, list):\n        return False\n    if len(high) != len(low) or not (2 <= len(high) <= 30):\n        return False\n    for h, l in zip(high, low):\n        if type(h) is not int or type(l) is not int:\n            return False\n        if not (-20 <= l <= h <= 40):\n            return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "일교차가 가장 작은 날이 2일째와 5일째, 두 날이라면 어떤 번호를 돌려줘야 할까요?",
+     "options": [
+      "2 (번호가 더 작은 날)",
+      "5 (번호가 더 큰 날)",
+      "2와 5를 모두 돌려준다",
+      "아무 번호나 괜찮다"
+     ],
+     "answer": 0,
+     "explain": "문제에서 '번호가 가장 작은 날을 고릅니다'라고 했어요. 그래서 코드는 더 작을 때(<)만 위치를 바꾸고, 같은 값이면 먼저 찾은 날을 그대로 둬요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 func_c 따라가기",
+     "prompt": "예시 1의 일교차는 gaps = [8, 10, 12, 3, 9]예요. answer는 \"지금까지 가장 작은 값이 있는 위치(인덱스)\"를 기억하는 변수이고, 인덱스는 리스트에서 0부터 세는 자리 번호예요. 주어진(틀린) func_c를 i = 1부터 따라가며 칸을 채워 보세요(i = 0일 때는 아무 일도 없어 answer = 0이에요). True(참)·False(거짓)로 적어요.",
+     "columns": [
+      "i",
+      "arr[i]",
+      "arr[i] < arr[answer]",
+      "실행 후 answer",
+      "실행 후 arr[answer]"
+     ],
+     "rows": [
+      [
+       "1",
+       "10",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓",
+         "X",
+         "x"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "8"
+       }
+      ],
+      [
+       "2",
+       "12",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓",
+         "X",
+         "x"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "8"
+       }
+      ],
+      [
+       "3",
+       "3",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참",
+         "O",
+         "o"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "10"
+       }
+      ],
+      [
+       "4",
+       "9",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참",
+         "O",
+         "o"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "12"
+       }
+      ]
+     ],
+     "check": "def answers():\n    arr = [8, 10, 12, 3, 9]\n    out = []\n    answer = 0\n    for i in range(1, len(arr)):\n        cond = arr[i] < arr[answer]\n        if cond:\n            answer += 1\n        out += [cond, answer, arr[answer]]\n    return out",
+     "explain": "i = 3에서 더 작은 값 3을 찾았는데, answer += 1은 위치를 한 칸 옮길 뿐이라 answer가 1(값 10)이 돼요. 그 뒤로도 진짜 최솟값 3의 위치(3)를 가리키지 못해 결국 2(값 12)를 돌려줘요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "틀린 코드로 예시 1을 실행하면 solution은 무엇을 return 할까요? 리스트 모양으로 적어 보세요.",
+     "a": "[3, 3]",
+     "alts": [],
+     "check": "def func_a(high, low):\n    answer = []\n    for i in range(len(high)):\n        answer.append(high[i] - low[i])\n    return answer\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_c(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[i] < arr[answer]:\n            answer += 1\n    return answer\n\n\ndef solution(high, low):\n    gaps = func_a(high, low)\n    big = func_b(gaps)\n    small = func_c(gaps)\n    answer = [big + 1, small + 1]\n    return answer\n\n\ndef answers():\n    return [solution([15, 20, 18, 9, 17], [7, 10, 6, 6, 8])]",
+     "explain": "func_c가 2를 돌려주니 작은 날의 번호가 2 + 1 = 3이 되어 [3, 3]이 나와요. 올바른 답은 일교차 3인 넷째 날이라 [3, 4]예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 `answer += 1`을 `answer = i`로 바꾼다",
+      "func_c의 `answer = 0`을 `answer = 1`로 바꾼다",
+      "func_c의 `if arr[i] < arr[answer]:`를 `if arr[i] <= arr[answer]:`로 바꾼다",
+      "solution의 `answer = [big + 1, small + 1]`을 `answer = [big, small]`로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "더 작은 값을 찾았을 때 저장해야 하는 것은 \"그 값을 찾은 위치 i\"예요. func_b의 같은 자리(`answer = i`)와 비교해 보면 알 수 있어요. `<=`로 바꾸면 같은 값일 때 뒤의 날로 바뀌어 규칙에도 어긋나요."
+    }
+   ],
+   "explain": "가장 작은 값의 위치를 찾을 때는 더 작은 값을 만날 때마다 위치 변수에 \"지금 위치 i\"를 그대로 저장해야 해요. `answer += 1`처럼 한 칸씩 옮기면 우연히 맞을 때도 있지만, 최솟값이 멀리 떨어져 있으면 엉뚱한 위치를 가리켜요. 반환된 인덱스에 1을 더해 날 번호로 바꾸는 것도 잊지 마세요."
+  },
+  {
+   "id": "pya-t05-b",
+   "version": 1,
+   "title": "가장 많이 팔린 두 상품",
+   "statement": "한 문구점에서 하루 동안의 판매 기록을 정리하려 합니다. 판매 기록 한 건에는 팔린 상품의 이름과 그때 팔린 개수가 적혀 있으며, 같은 상품이 여러 번 기록될 수 있습니다.\n\n상품마다 팔린 개수를 모두 더한 뒤, 합이 가장 큰 상품을 1위, 1위를 뺀 나머지 중 합이 가장 큰 상품을 2위로 정합니다. 합이 같은 상품끼리는 상품 목록에서 앞에 있는 상품을 더 높은 순위로 봅니다. 한 번도 팔리지 않은 상품의 합은 0입니다.\n\n상품 이름 목록 `items`와 판매 기록 `records`가 solution 함수의 매개변수로 주어질 때, `[1위 상품 이름, 2위 상품 이름]`을 return 하도록 코드를 작성했습니다.\n\n주어진 코드는 일부 입력에서 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "items의 길이는 2 이상 10 이하이며, 상품 이름은 서로 다릅니다.",
+    "상품 이름은 알파벳 소문자로 이루어진 길이 1 이상 10 이하의 문자열입니다.",
+    "records의 길이는 1 이상 50 이하이며, records의 원소는 `[상품 이름, 개수]` 형태의 리스트입니다.",
+    "기록의 상품 이름은 항상 items에 있는 이름이고, 개수는 1 이상 20 이하인 정수입니다."
+   ],
+   "returns": [
+    "[1위 상품 이름, 2위 상품 이름]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "items",
+    "records"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       "pen",
+       "eraser",
+       "note",
+       "ruler"
+      ],
+      [
+       [
+        "note",
+        3
+       ],
+       [
+        "pen",
+        2
+       ],
+       [
+        "ruler",
+        4
+       ],
+       [
+        "note",
+        5
+       ],
+       [
+        "eraser",
+        1
+       ],
+       [
+        "ruler",
+        2
+       ],
+       [
+        "pen",
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      "note",
+      "ruler"
+     ],
+     "explain": "상품별 합계는 pen 3, eraser 1, note 8, ruler 6입니다. note가 1위, ruler가 2위입니다."
+    },
+    {
+     "args": [
+      [
+       "glue",
+       "tape",
+       "clip"
+      ],
+      [
+       [
+        "tape",
+        4
+       ],
+       [
+        "clip",
+        6
+       ],
+       [
+        "glue",
+        2
+       ],
+       [
+        "tape",
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      "tape",
+      "clip"
+     ],
+     "explain": "합계는 glue 2, tape 6, clip 6입니다. tape와 clip이 같으므로 목록에서 앞에 있는 tape가 1위, clip이 2위입니다."
+    }
+   ],
+   "code": "def func_a(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_b(names, records):\n    answer = [0] * len(names)\n    for i in range(len(names)):\n        for rec in records:\n            if rec[0] == names[i]:\n                answer[i] += rec[1]\n    return answer\n\n\ndef func_c(arr, skip):\n    answer = -1\n    for idx, elem in enumerate(arr):\n        if idx == skip:\n            continue\n        if answer == -1:\n            answer = idx\n        elif arr[answer] < elem:\n            answer += 1\n    return answer\n\n\ndef solution(items, records):\n    totals = func_b(items, records)\n    first = func_a(totals)\n    second = func_c(totals, first)\n    answer = [items[first], items[second]]\n    return answer",
+   "bugLine": 26,
+   "solution": "def func_a(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_b(names, records):\n    answer = [0] * len(names)\n    for i in range(len(names)):\n        for rec in records:\n            if rec[0] == names[i]:\n                answer[i] += rec[1]\n    return answer\n\n\ndef func_c(arr, skip):\n    answer = -1\n    for idx, elem in enumerate(arr):\n        if idx == skip:\n            continue\n        if answer == -1:\n            answer = idx\n        elif arr[answer] < elem:\n            answer = idx\n    return answer\n\n\ndef solution(items, records):\n    totals = func_b(items, records)\n    first = func_a(totals)\n    second = func_c(totals, first)\n    answer = [items[first], items[second]]\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       "pen",
+       "note"
+      ],
+      [
+       [
+        "note",
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      "note",
+      "pen"
+     ]
+    },
+    {
+     "args": [
+      [
+       "glue",
+       "tape",
+       "clip"
+      ],
+      [
+       [
+        "clip",
+        3
+       ]
+      ]
+     ],
+     "expected": [
+      "clip",
+      "glue"
+     ]
+    },
+    {
+     "args": [
+      [
+       "pen",
+       "note"
+      ],
+      [
+       [
+        "pen",
+        4
+       ],
+       [
+        "note",
+        4
+       ]
+      ]
+     ],
+     "expected": [
+      "pen",
+      "note"
+     ]
+    },
+    {
+     "args": [
+      [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      [
+       [
+        "a",
+        2
+       ],
+       [
+        "b",
+        2
+       ],
+       [
+        "c",
+        2
+       ],
+       [
+        "d",
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      "a",
+      "b"
+     ]
+    },
+    {
+     "args": [
+      [
+       "marker",
+       "clip",
+       "tape",
+       "pen",
+       "glue"
+      ],
+      [
+       [
+        "pen",
+        20
+       ],
+       [
+        "glue",
+        19
+       ],
+       [
+        "marker",
+        1
+       ],
+       [
+        "clip",
+        2
+       ],
+       [
+        "tape",
+        3
+       ]
+      ]
+     ],
+     "expected": [
+      "pen",
+      "glue"
+     ]
+    },
+    {
+     "args": [
+      [
+       "x",
+       "y",
+       "z"
+      ],
+      [
+       [
+        "x",
+        20
+       ],
+       [
+        "x",
+        20
+       ],
+       [
+        "y",
+        7
+       ],
+       [
+        "z",
+        10
+       ],
+       [
+        "y",
+        3
+       ]
+      ]
+     ],
+     "expected": [
+      "x",
+      "y"
+     ]
+    },
+    {
+     "args": [
+      [
+       "sticker",
+       "ruler",
+       "pen"
+      ],
+      [
+       [
+        "ruler",
+        5
+       ],
+       [
+        "ruler",
+        5
+       ],
+       [
+        "sticker",
+        3
+       ],
+       [
+        "pen",
+        2
+       ],
+       [
+        "pen",
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      "ruler",
+      "pen"
+     ]
+    },
+    {
+     "args": [
+      [
+       "a",
+       "b",
+       "c",
+       "d",
+       "e"
+      ],
+      [
+       [
+        "a",
+        5
+       ],
+       [
+        "b",
+        1
+       ],
+       [
+        "c",
+        2
+       ],
+       [
+        "d",
+        9
+       ],
+       [
+        "e",
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      "d",
+      "e"
+     ]
+    },
+    {
+     "args": [
+      [
+       "w",
+       "x",
+       "y",
+       "z"
+      ],
+      [
+       [
+        "w",
+        9
+       ],
+       [
+        "x",
+        4
+       ],
+       [
+        "y",
+        1
+       ],
+       [
+        "z",
+        8
+       ]
+      ]
+     ],
+     "expected": [
+      "w",
+      "z"
+     ]
+    },
+    {
+     "args": [
+      [
+       "pen",
+       "eraser",
+       "glue",
+       "note",
+       "ruler"
+      ],
+      [
+       [
+        "pen",
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      "pen",
+      "eraser"
+     ]
+    },
+    {
+     "args": [
+      [
+       "glue",
+       "sticker",
+       "clip",
+       "ruler",
+       "note",
+       "tape",
+       "eraser",
+       "stapler",
+       "marker",
+       "pen"
+      ],
+      [
+       [
+        "stapler",
+        20
+       ],
+       [
+        "note",
+        14
+       ],
+       [
+        "note",
+        1
+       ],
+       [
+        "clip",
+        6
+       ],
+       [
+        "glue",
+        16
+       ],
+       [
+        "sticker",
+        8
+       ],
+       [
+        "clip",
+        12
+       ],
+       [
+        "marker",
+        7
+       ],
+       [
+        "clip",
+        19
+       ],
+       [
+        "clip",
+        18
+       ],
+       [
+        "clip",
+        7
+       ],
+       [
+        "sticker",
+        17
+       ],
+       [
+        "clip",
+        9
+       ],
+       [
+        "ruler",
+        10
+       ],
+       [
+        "marker",
+        7
+       ],
+       [
+        "pen",
+        8
+       ],
+       [
+        "pen",
+        20
+       ],
+       [
+        "pen",
+        14
+       ],
+       [
+        "ruler",
+        16
+       ],
+       [
+        "pen",
+        5
+       ],
+       [
+        "sticker",
+        12
+       ],
+       [
+        "sticker",
+        13
+       ],
+       [
+        "stapler",
+        7
+       ],
+       [
+        "note",
+        5
+       ],
+       [
+        "stapler",
+        15
+       ],
+       [
+        "eraser",
+        9
+       ],
+       [
+        "clip",
+        15
+       ],
+       [
+        "sticker",
+        4
+       ],
+       [
+        "eraser",
+        9
+       ],
+       [
+        "ruler",
+        19
+       ],
+       [
+        "stapler",
+        16
+       ],
+       [
+        "marker",
+        15
+       ],
+       [
+        "glue",
+        4
+       ],
+       [
+        "marker",
+        14
+       ],
+       [
+        "eraser",
+        9
+       ],
+       [
+        "glue",
+        6
+       ],
+       [
+        "tape",
+        18
+       ],
+       [
+        "ruler",
+        17
+       ],
+       [
+        "stapler",
+        6
+       ],
+       [
+        "eraser",
+        3
+       ],
+       [
+        "tape",
+        17
+       ],
+       [
+        "note",
+        13
+       ],
+       [
+        "stapler",
+        1
+       ],
+       [
+        "marker",
+        12
+       ],
+       [
+        "stapler",
+        10
+       ],
+       [
+        "ruler",
+        20
+       ],
+       [
+        "note",
+        12
+       ],
+       [
+        "stapler",
+        3
+       ],
+       [
+        "tape",
+        1
+       ],
+       [
+        "tape",
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      "clip",
+      "ruler"
+     ]
+    },
+    {
+     "args": [
+      [
+       "pen",
+       "glue",
+       "note",
+       "tape",
+       "ruler",
+       "eraser"
+      ],
+      [
+       [
+        "ruler",
+        16
+       ],
+       [
+        "ruler",
+        18
+       ],
+       [
+        "pen",
+        12
+       ],
+       [
+        "tape",
+        13
+       ],
+       [
+        "eraser",
+        18
+       ],
+       [
+        "tape",
+        12
+       ],
+       [
+        "note",
+        11
+       ],
+       [
+        "note",
+        3
+       ],
+       [
+        "eraser",
+        15
+       ],
+       [
+        "eraser",
+        20
+       ],
+       [
+        "ruler",
+        16
+       ],
+       [
+        "tape",
+        14
+       ],
+       [
+        "tape",
+        14
+       ],
+       [
+        "eraser",
+        14
+       ],
+       [
+        "eraser",
+        9
+       ],
+       [
+        "glue",
+        13
+       ],
+       [
+        "tape",
+        3
+       ],
+       [
+        "ruler",
+        3
+       ],
+       [
+        "pen",
+        10
+       ],
+       [
+        "tape",
+        11
+       ]
+      ]
+     ],
+     "expected": [
+      "eraser",
+      "tape"
+     ]
+    },
+    {
+     "args": [
+      [
+       "marker",
+       "eraser",
+       "ruler",
+       "note",
+       "glue",
+       "clip",
+       "pen",
+       "tape"
+      ],
+      [
+       [
+        "glue",
+        18
+       ],
+       [
+        "glue",
+        12
+       ],
+       [
+        "ruler",
+        9
+       ],
+       [
+        "ruler",
+        5
+       ],
+       [
+        "glue",
+        13
+       ],
+       [
+        "eraser",
+        7
+       ],
+       [
+        "note",
+        3
+       ],
+       [
+        "ruler",
+        12
+       ],
+       [
+        "tape",
+        20
+       ],
+       [
+        "glue",
+        2
+       ],
+       [
+        "clip",
+        18
+       ],
+       [
+        "tape",
+        18
+       ],
+       [
+        "tape",
+        14
+       ],
+       [
+        "clip",
+        18
+       ],
+       [
+        "marker",
+        11
+       ],
+       [
+        "pen",
+        20
+       ],
+       [
+        "ruler",
+        9
+       ],
+       [
+        "eraser",
+        11
+       ],
+       [
+        "ruler",
+        11
+       ],
+       [
+        "glue",
+        14
+       ],
+       [
+        "tape",
+        3
+       ],
+       [
+        "eraser",
+        5
+       ],
+       [
+        "tape",
+        2
+       ],
+       [
+        "pen",
+        15
+       ],
+       [
+        "note",
+        11
+       ],
+       [
+        "marker",
+        13
+       ],
+       [
+        "glue",
+        13
+       ],
+       [
+        "clip",
+        1
+       ],
+       [
+        "eraser",
+        12
+       ],
+       [
+        "marker",
+        20
+       ],
+       [
+        "eraser",
+        16
+       ],
+       [
+        "pen",
+        4
+       ],
+       [
+        "marker",
+        6
+       ],
+       [
+        "clip",
+        13
+       ],
+       [
+        "marker",
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      "glue",
+      "tape"
+     ]
+    },
+    {
+     "args": [
+      [
+       "eraser",
+       "pen",
+       "note"
+      ],
+      [
+       [
+        "pen",
+        20
+       ],
+       [
+        "note",
+        11
+       ],
+       [
+        "pen",
+        12
+       ],
+       [
+        "note",
+        15
+       ],
+       [
+        "eraser",
+        9
+       ],
+       [
+        "note",
+        3
+       ],
+       [
+        "note",
+        1
+       ],
+       [
+        "pen",
+        19
+       ],
+       [
+        "eraser",
+        19
+       ],
+       [
+        "pen",
+        3
+       ],
+       [
+        "note",
+        10
+       ],
+       [
+        "note",
+        12
+       ]
+      ]
+     ],
+     "expected": [
+      "pen",
+      "note"
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(items, records):\n    if not isinstance(items, list) or not (2 <= len(items) <= 10) or len(set(items)) != len(items):\n        return False\n    for s in items:\n        if not (isinstance(s, str) and 1 <= len(s) <= 10 and s.isascii() and s.isalpha() and s.islower()):\n            return False\n    if not isinstance(records, list) or not (1 <= len(records) <= 50):\n        return False\n    for r in records:\n        if not (isinstance(r, list) and len(r) == 2 and r[0] in items and type(r[1]) is int and 1 <= r[1] <= 20):\n            return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "두 상품의 판매 개수 합이 같다면 어느 상품이 더 높은 순위일까요?",
+     "options": [
+      "items에서 앞에 있는 상품",
+      "items에서 뒤에 있는 상품",
+      "records에 먼저 기록된 상품",
+      "판매 기록 건수가 더 많은 상품"
+     ],
+     "answer": 0,
+     "explain": "문제에서 '상품 목록에서 앞에 있는 상품을 더 높은 순위로' 본다고 했어요. 그래서 func_a와 func_c는 더 클 때(<)만 위치를 바꿔서, 같으면 앞의 상품을 그대로 둬요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "func_b로 합계 구하기",
+     "prompt": "예시 1에서 func_b가 만드는 totals를 채워 보세요. totals[i]는 items[i] 상품이 팔린 개수의 합이에요.",
+     "columns": [
+      "인덱스 i",
+      "items[i]",
+      "totals[i]"
+     ],
+     "rows": [
+      [
+       "0",
+       "pen",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "1",
+       "eraser",
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       "note",
+       {
+        "a": "8"
+       }
+      ],
+      [
+       "3",
+       "ruler",
+       {
+        "a": "6"
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_b(names, records):\n    answer = [0] * len(names)\n    for i in range(len(names)):\n        for rec in records:\n            if rec[0] == names[i]:\n                answer[i] += rec[1]\n    return answer\n\n\ndef func_c(arr, skip):\n    answer = -1\n    for idx, elem in enumerate(arr):\n        if idx == skip:\n            continue\n        if answer == -1:\n            answer = idx\n        elif arr[answer] < elem:\n            answer = idx\n    return answer\n\n\ndef solution(items, records):\n    totals = func_b(items, records)\n    first = func_a(totals)\n    second = func_c(totals, first)\n    answer = [items[first], items[second]]\n    return answer\n\ndef answers():\n    return func_b(['pen', 'eraser', 'note', 'ruler'], [['note', 3], ['pen', 2], ['ruler', 4], ['note', 5], ['eraser', 1], ['ruler', 2], ['pen', 1]])",
+     "explain": "note가 3 + 5 = 8로 가장 많아 1위(인덱스 2)예요. 남은 상품 중에서는 ruler의 6이 가장 크니 2위는 ruler가 되어야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "틀린 func_c 따라가기",
+     "prompt": "totals = [3, 1, 8, 6], skip = 2(1위 위치)로 주어진(틀린) func_c를 따라가 보세요. `for idx, elem in enumerate(arr)`는 리스트의 위치(idx)와 값(elem)을 함께 하나씩 꺼내요. idx == skip이면 continue로 건너뛰니 answer가 그대로예요. 각 줄을 처리한 뒤 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 skip을 뺀 가장 큰 값의 위치)를 적어요.",
+     "columns": [
+      "idx",
+      "elem",
+      "틀린 코드의 answer",
+      "있어야 할 answer"
+     ],
+     "rows": [
+      [
+       "0",
+       "3",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       "1",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "2",
+       "8",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "3",
+       "6",
+       {
+        "a": "1"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    arr = [3, 1, 8, 6]\n    skip = 2\n    out = []\n    bad = good = -1\n    for idx, elem in enumerate(arr):\n        if idx != skip:\n            if bad == -1:\n                bad = idx\n            elif arr[bad] < elem:\n                bad += 1\n            if good == -1:\n                good = idx\n            elif arr[good] < elem:\n                good = idx\n        out += [bad, good]\n    return out",
+     "explain": "idx = 3에서 더 큰 값 6을 찾았을 때 틀린 코드는 answer를 0에서 1로 한 칸만 옮겨요. 그래서 6이 있는 3이 아니라 1(eraser)을 돌려줘요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 elif 아래 `answer += 1`을 `answer = idx`로 바꾼다",
+      "func_c의 `if idx == skip:`을 `if idx != skip:`으로 바꾼다",
+      "func_c의 `answer = -1`을 `answer = 0`으로 바꾼다",
+      "func_b의 `answer[i] += rec[1]`을 `answer[i] += 1`로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "더 큰 값을 찾았으면 그 값이 있는 위치 idx를 저장해야 해요. answer를 1 늘리면 위치가 한 칸 옮겨질 뿐이라 1위 자리(skip)나 엉뚱한 상품을 가리킬 수 있어요."
+    }
+   ],
+   "explain": "func_b로 상품별 합계를 만들고, func_a로 1위 위치를, func_c로 1위 위치만 건너뛴 가장 큰 값의 위치를 찾는 구조예요. 위치를 찾는 함수에서 더 좋은 값을 만나면 `answer = idx`처럼 지금 위치를 저장해야 하며, `answer += 1`은 우연히 맞을 때만 맞아요."
+  },
+  {
+   "id": "pya-t05-c",
+   "version": 1,
+   "title": "오래달리기 1등과 2등",
+   "statement": "체육 시간에 오래달리기 기록을 쟀습니다. 기록은 `\"분:초\"` 모양의 문자열로 적었으며, 예를 들어 `\"6:05\"`는 6분 5초입니다. 기록이 짧을수록 빠른 것입니다.\n\n가장 빠른 학생을 1등, 1등을 뺀 나머지 중 가장 빠른 학생을 2등이라고 할 때, 1등과 2등 학생의 이름을 구하려 합니다.\n\n학생 이름을 담은 리스트 `names`와 학생별 기록을 담은 리스트 `records`가 solution 함수의 매개변수로 주어질 때, `[1등 이름, 2등 이름]`을 return 하도록 코드를 작성했습니다.\n\n주어진 코드는 일부 입력에서 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "names와 records의 길이는 같으며, 2 이상 20 이하입니다.",
+    "names의 원소는 알파벳으로 이루어진 길이 1 이상 10 이하의 문자열이며, 서로 다릅니다.",
+    "records[i]는 names[i] 학생의 기록이며 `\"분:초\"` 모양입니다. 분은 3 이상 15 이하인 정수(앞에 0을 붙이지 않음), 초는 00 이상 59 이하의 두 자리 수입니다.",
+    "기록이 같은 학생은 없습니다."
+   ],
+   "returns": [
+    "[1등 학생 이름, 2등 학생 이름]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "names",
+    "records"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       "Mina",
+       "Joon",
+       "Sora",
+       "Hyun",
+       "Dami"
+      ],
+      [
+       "7:12",
+       "6:48",
+       "8:01",
+       "6:55",
+       "6:50"
+      ]
+     ],
+     "expected": [
+      "Joon",
+      "Dami"
+     ],
+     "explain": "초로 바꾸면 432, 408, 481, 415, 410입니다. 가장 짧은 408초의 Joon이 1등, 그다음 410초의 Dami가 2등입니다."
+    },
+    {
+     "args": [
+      [
+       "Alex",
+       "Bomi",
+       "Chan"
+      ],
+      [
+       "9:05",
+       "10:30",
+       "8:59"
+      ]
+     ],
+     "expected": [
+      "Chan",
+      "Alex"
+     ],
+     "explain": "초로 바꾸면 545, 630, 539입니다. 539초의 Chan이 1등, 545초의 Alex가 2등입니다."
+    }
+   ],
+   "code": "def func_a(record):\n    parts = record.split(':')\n    return int(parts[0]) * 60 + int(parts[1])\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(1, len(arr)):\n        if arr[i] < arr[answer]:\n            answer = i\n    return answer\n\n\ndef func_c(arr, best):\n    answer = -1\n    for idx, sec in enumerate(arr):\n        if sec == best:\n            continue\n        if answer == -1 or sec < arr[answer]:\n            answer += 1\n    return answer\n\n\ndef solution(names, records):\n    secs = []\n    for r in records:\n        secs.append(func_a(r))\n    first = func_b(secs)\n    second = func_c(secs, secs[first])\n    answer = [names[first], names[second]]\n    return answer",
+   "bugLine": 20,
+   "solution": "def func_a(record):\n    parts = record.split(':')\n    return int(parts[0]) * 60 + int(parts[1])\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(1, len(arr)):\n        if arr[i] < arr[answer]:\n            answer = i\n    return answer\n\n\ndef func_c(arr, best):\n    answer = -1\n    for idx, sec in enumerate(arr):\n        if sec == best:\n            continue\n        if answer == -1 or sec < arr[answer]:\n            answer = idx\n    return answer\n\n\ndef solution(names, records):\n    secs = []\n    for r in records:\n        secs.append(func_a(r))\n    first = func_b(secs)\n    second = func_c(secs, secs[first])\n    answer = [names[first], names[second]]\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       "Kim",
+       "Lee"
+      ],
+      [
+       "5:30",
+       "5:29"
+      ]
+     ],
+     "expected": [
+      "Lee",
+      "Kim"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Kim",
+       "Lee"
+      ],
+      [
+       "3:00",
+       "15:59"
+      ]
+     ],
+     "expected": [
+      "Kim",
+      "Lee"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Ana",
+       "Ben",
+       "Cho"
+      ],
+      [
+       "9:59",
+       "10:00",
+       "10:01"
+      ]
+     ],
+     "expected": [
+      "Ana",
+      "Ben"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Ana",
+       "Ben",
+       "Cho",
+       "Dan"
+      ],
+      [
+       "12:10",
+       "11:40",
+       "10:20",
+       "6:05"
+      ]
+     ],
+     "expected": [
+      "Dan",
+      "Cho"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Ana",
+       "Ben",
+       "Cho",
+       "Dan",
+       "Eve"
+      ],
+      [
+       "7:00",
+       "8:30",
+       "9:10",
+       "6:59",
+       "7:01"
+      ]
+     ],
+     "expected": [
+      "Dan",
+      "Ana"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Ana",
+       "Ben",
+       "Cho",
+       "Dan",
+       "Eve"
+      ],
+      [
+       "5:00",
+       "8:30",
+       "9:10",
+       "9:45",
+       "5:01"
+      ]
+     ],
+     "expected": [
+      "Ana",
+      "Eve"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Christina",
+       "Jo"
+      ],
+      [
+       "15:00",
+       "14:59"
+      ]
+     ],
+     "expected": [
+      "Jo",
+      "Christina"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Ana",
+       "Ben",
+       "Cho",
+       "Dan",
+       "Eve",
+       "Fay"
+      ],
+      [
+       "8:15",
+       "8:14",
+       "8:13",
+       "8:12",
+       "8:11",
+       "8:10"
+      ]
+     ],
+     "expected": [
+      "Fay",
+      "Eve"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Ana",
+       "Ben",
+       "Cho",
+       "Dan",
+       "Eve",
+       "Fay"
+      ],
+      [
+       "6:30",
+       "9:00",
+       "8:00",
+       "7:00",
+       "6:31",
+       "4:10"
+      ]
+     ],
+     "expected": [
+      "Fay",
+      "Ana"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Doyun",
+       "Christina",
+       "Yuna",
+       "Hyun",
+       "Haeun",
+       "Chan",
+       "Taeho",
+       "Siwoo",
+       "Joon",
+       "Jiho",
+       "Yerin",
+       "Mina",
+       "Jisu",
+       "Sora",
+       "Juwon",
+       "Seoyeon",
+       "Bomi",
+       "Minho",
+       "Dami",
+       "Alex"
+      ],
+      [
+       "4:29",
+       "15:56",
+       "13:58",
+       "11:53",
+       "9:22",
+       "15:50",
+       "10:58",
+       "13:11",
+       "10:10",
+       "11:04",
+       "15:11",
+       "7:45",
+       "10:11",
+       "13:59",
+       "7:48",
+       "15:08",
+       "11:20",
+       "5:18",
+       "7:25",
+       "8:41"
+      ]
+     ],
+     "expected": [
+      "Doyun",
+      "Minho"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Yuna",
+       "Sora",
+       "Alex",
+       "Mina",
+       "Taeho",
+       "Chan",
+       "Dami",
+       "Hyun",
+       "Bomi",
+       "Joon"
+      ],
+      [
+       "6:51",
+       "14:51",
+       "9:08",
+       "11:10",
+       "8:02",
+       "5:32",
+       "12:08",
+       "9:17",
+       "15:38",
+       "4:35"
+      ]
+     ],
+     "expected": [
+      "Joon",
+      "Chan"
+     ]
+    },
+    {
+     "args": [
+      [
+       "Sora",
+       "Bomi",
+       "Dami",
+       "Alex",
+       "Joon",
+       "Mina",
+       "Hyun"
+      ],
+      [
+       "10:55",
+       "15:33",
+       "14:56",
+       "15:32",
+       "7:55",
+       "12:31",
+       "5:54"
+      ]
+     ],
+     "expected": [
+      "Hyun",
+      "Joon"
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "import re\n\n\ndef valid(names, records):\n    if not isinstance(names, list) or not isinstance(records, list):\n        return False\n    if len(names) != len(records) or not (2 <= len(names) <= 20):\n        return False\n    if len(set(names)) != len(names):\n        return False\n    for s in names:\n        if not (isinstance(s, str) and 1 <= len(s) <= 10 and s.isascii() and s.isalpha()):\n            return False\n    for r in records:\n        if not isinstance(r, str) or not re.fullmatch(r'([3-9]|1[0-5]):[0-5][0-9]', r):\n            return False\n    return len(set(records)) == len(records)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "기록 \"9:59\"와 \"10:00\" 중 누가 빠른지 알맞게 비교하는 방법은?",
+     "options": [
+      "둘 다 초로 바꿔서(분 × 60 + 초) 작은 쪽을 고른다",
+      "문자열 그대로 비교해서 작은 쪽을 고른다",
+      "분만 비교한다",
+      "초만 비교한다"
+     ],
+     "answer": 0,
+     "explain": "문자열끼리 비교하면 앞 글자부터 비교해서 \"10:00\"이 \"9:59\"보다 작다고 나와요(\"1\" < \"9\"). 그래서 func_a가 기록을 초 단위 정수로 바꿔 줘요. 599초 < 600초이니 \"9:59\"가 빨라요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "func_a로 초 단위 바꾸기",
+     "prompt": "예시 1의 기록을 func_a로 바꾼 값(secs)을 채워 보세요. record.split(\":\")은 \":\"을 기준으로 문자열을 나눠 [\"7\", \"12\"]처럼 만들어요.",
+     "columns": [
+      "인덱스",
+      "names",
+      "records",
+      "func_a 결과(초)"
+     ],
+     "rows": [
+      [
+       "0",
+       "Mina",
+       "7:12",
+       {
+        "a": "432"
+       }
+      ],
+      [
+       "1",
+       "Joon",
+       "6:48",
+       {
+        "a": "408"
+       }
+      ],
+      [
+       "2",
+       "Sora",
+       "8:01",
+       {
+        "a": "481"
+       }
+      ],
+      [
+       "3",
+       "Hyun",
+       "6:55",
+       {
+        "a": "415"
+       }
+      ],
+      [
+       "4",
+       "Dami",
+       "6:50",
+       {
+        "a": "410"
+       }
+      ]
+     ],
+     "check": "def func_a(record):\n    parts = record.split(':')\n    return int(parts[0]) * 60 + int(parts[1])\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(1, len(arr)):\n        if arr[i] < arr[answer]:\n            answer = i\n    return answer\n\n\ndef func_c(arr, best):\n    answer = -1\n    for idx, sec in enumerate(arr):\n        if sec == best:\n            continue\n        if answer == -1 or sec < arr[answer]:\n            answer = idx\n    return answer\n\n\ndef solution(names, records):\n    secs = []\n    for r in records:\n        secs.append(func_a(r))\n    first = func_b(secs)\n    second = func_c(secs, secs[first])\n    answer = [names[first], names[second]]\n    return answer\n\ndef answers():\n    return [func_a(r) for r in [\"7:12\", \"6:48\", \"8:01\", \"6:55\", \"6:50\"]]",
+     "explain": "가장 작은 408초(Joon, 인덱스 1)가 1등이에요. 나머지 중 가장 작은 값은 410초(Dami, 인덱스 4)라서 2등은 Dami가 되어야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "틀린 func_c 따라가기",
+     "prompt": "secs = [432, 408, 481, 415, 410], best = 408로 주어진(틀린) func_c를 따라가 보세요. 각 줄을 처리한 뒤 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 best를 뺀 가장 작은 값의 위치)를 적어요. 처음 answer는 -1이에요.",
+     "columns": [
+      "idx",
+      "sec",
+      "틀린 코드의 answer",
+      "있어야 할 answer"
+     ],
+     "rows": [
+      [
+       "0",
+       "432",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       "408",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "2",
+       "481",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "3",
+       "415",
+       {
+        "a": "1"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "4",
+       "410",
+       {
+        "a": "1"
+       },
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    arr = [432, 408, 481, 415, 410]\n    best = 408\n    out = []\n    bad = good = -1\n    for idx, sec in enumerate(arr):\n        if sec != best:\n            if bad == -1 or sec < arr[bad]:\n                bad += 1\n            if good == -1 or sec < arr[good]:\n                good = idx\n        out += [bad, good]\n    return out",
+     "explain": "틀린 코드는 answer가 -1일 때도 1을 더해 0이 되니 처음은 우연히 맞아요. 하지만 idx = 3에서 415를 찾았을 때 answer가 1(1등 Joon의 자리)로 가 버리고, 그 뒤로는 408보다 작은 값이 없어 계속 1에 머물러요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 `answer += 1`을 `answer = idx`로 바꾼다",
+      "func_c의 `if sec == best:`를 `if sec != best:`로 바꾼다",
+      "func_c의 `answer = -1`을 `answer = 0`으로 바꾼다",
+      "func_b의 `for i in range(1, len(arr)):`를 `for i in range(len(arr)):`로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "조건을 만족했을 때 기억해야 하는 것은 \"지금 본 기록의 위치 idx\"예요. func_b의 range(1, …)는 0번을 처음 후보로 두었으니 1번부터 비교하는 것이라 틀리지 않았어요."
+    }
+   ],
+   "explain": "기록 문자열을 초로 바꾸는 func_a, 가장 작은 값의 위치를 찾는 func_b, 1등 기록을 건너뛰고 가장 작은 값의 위치를 찾는 func_c로 나뉜 구조예요. func_c에서 더 작은 값을 찾으면 `answer = idx`로 그 위치를 저장해야 해요. `answer += 1`은 1등의 자리까지 가리킬 수 있어 같은 이름이 두 번 나오기도 해요."
+  },
+  {
+   "id": "pya-t05-d",
+   "version": 1,
+   "title": "붐빈 시각 뒤 한가한 시각",
+   "statement": "놀이공원의 한 놀이기구에는 입구가 여러 개 있습니다. 직원은 정각마다 입구별 대기 인원을 세어 기록했고, 첫 번째 기록은 `start`시, 그다음 기록부터는 1시간씩 늦은 시각의 기록입니다. 어떤 시각의 대기 인원은 그 시각에 센 입구별 대기 인원을 모두 더한 값입니다.\n\n대기 인원이 가장 많은 시각과, 그 시각**보다 늦은** 시각 중 대기 인원이 가장 적은 시각을 구하려 합니다. 가장 많은(또는 가장 적은) 시각이 여러 개라면 그중 가장 이른 시각을 고릅니다.\n\n첫 기록 시각 `start`와 시각별 입구별 대기 인원을 담은 2차원 리스트 `waits`가 solution 함수의 매개변수로 주어질 때, `[대기 인원이 가장 많은 시각, 그 뒤 대기 인원이 가장 적은 시각]`을 return 하도록 코드를 작성했습니다.\n\n주어진 코드는 일부 입력에서 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "start는 9 이상 12 이하인 정수입니다.",
+    "waits의 길이는 2 이상 10 이하이며, waits[i]는 (start + i)시에 센 입구별 대기 인원을 담은 리스트입니다.",
+    "waits[i]의 길이는 1 이상 4 이하이며 모두 같습니다. 대기 인원은 0 이상 100 이하인 정수입니다.",
+    "대기 인원이 가장 많은 시각(여러 개면 가장 이른 시각) 뒤에는 기록이 하나 이상 있습니다."
+   ],
+   "returns": [
+    "[대기 인원이 가장 많은 시각, 그보다 늦은 시각 중 대기 인원이 가장 적은 시각]을 return 합니다. 시각은 정수(시)로 나타냅니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "start",
+    "waits"
+   ],
+   "examples": [
+    {
+     "args": [
+      10,
+      [
+       [
+        12,
+        8
+       ],
+       [
+        20,
+        15
+       ],
+       [
+        18,
+        9
+       ],
+       [
+        9,
+        6
+       ],
+       [
+        14,
+        13
+       ],
+       [
+        5,
+        4
+       ],
+       [
+        18,
+        12
+       ]
+      ]
+     ],
+     "expected": [
+      11,
+      15
+     ],
+     "explain": "시각별 합계는 10시부터 차례로 20, 35, 27, 15, 27, 9, 30입니다. 가장 많은 35는 11시이고, 11시보다 늦은 시각 중 가장 적은 9는 15시입니다."
+    },
+    {
+     "args": [
+      9,
+      [
+       [
+        30
+       ],
+       [
+        12
+       ],
+       [
+        30
+       ],
+       [
+        12
+       ]
+      ]
+     ],
+     "expected": [
+      9,
+      10
+     ],
+     "explain": "합계는 30, 12, 30, 12입니다. 가장 많은 30은 9시와 11시 중 이른 9시이고, 그 뒤 가장 적은 12는 10시와 12시 중 이른 10시입니다."
+    }
+   ],
+   "code": "def func_a(arr):\n    answer = []\n    for row in arr:\n        total = 0\n        for x in row:\n            total += x\n        answer.append(total)\n    return answer\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_c(arr, peak):\n    answer = -1\n    for idx, cnt in enumerate(arr):\n        if idx <= peak:\n            continue\n        if answer == -1:\n            answer = idx\n        elif cnt < arr[answer]:\n            answer += 1\n    return answer\n\n\ndef solution(start, waits):\n    totals = func_a(waits)\n    busy = func_b(totals)\n    quiet = func_c(totals, busy)\n    answer = [start + busy, start + quiet]\n    return answer",
+   "bugLine": 27,
+   "solution": "def func_a(arr):\n    answer = []\n    for row in arr:\n        total = 0\n        for x in row:\n            total += x\n        answer.append(total)\n    return answer\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_c(arr, peak):\n    answer = -1\n    for idx, cnt in enumerate(arr):\n        if idx <= peak:\n            continue\n        if answer == -1:\n            answer = idx\n        elif cnt < arr[answer]:\n            answer = idx\n    return answer\n\n\ndef solution(start, waits):\n    totals = func_a(waits)\n    busy = func_b(totals)\n    quiet = func_c(totals, busy)\n    answer = [start + busy, start + quiet]\n    return answer",
+   "tests": [
+    {
+     "args": [
+      9,
+      [
+       [
+        5
+       ],
+       [
+        3
+       ]
+      ]
+     ],
+     "expected": [
+      9,
+      10
+     ]
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        100,
+        100,
+        100,
+        100
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      12,
+      13
+     ]
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        4,
+        4
+       ],
+       [
+        4,
+        4
+       ],
+       [
+        4,
+        4
+       ]
+      ]
+     ],
+     "expected": [
+      10,
+      11
+     ]
+    },
+    {
+     "args": [
+      9,
+      [
+       [
+        1
+       ],
+       [
+        9
+       ],
+       [
+        7
+       ],
+       [
+        8
+       ],
+       [
+        9
+       ],
+       [
+        2
+       ],
+       [
+        6
+       ]
+      ]
+     ],
+     "expected": [
+      10,
+      14
+     ]
+    },
+    {
+     "args": [
+      11,
+      [
+       [
+        50,
+        20
+       ],
+       [
+        60,
+        30
+       ],
+       [
+        10,
+        5
+       ],
+       [
+        10,
+        5
+       ],
+       [
+        40,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      12,
+      13
+     ]
+    },
+    {
+     "args": [
+      9,
+      [
+       [
+        30,
+        10
+       ],
+       [
+        25,
+        30
+       ],
+       [
+        20,
+        20
+       ],
+       [
+        30,
+        30
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        5,
+        3
+       ],
+       [
+        40,
+        2
+       ],
+       [
+        0,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      12,
+      16
+     ]
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        2,
+        3,
+        1
+       ],
+       [
+        9,
+        9,
+        9
+       ],
+       [
+        8,
+        8,
+        8
+       ],
+       [
+        7,
+        7,
+        7
+       ],
+       [
+        6,
+        6,
+        6
+       ],
+       [
+        5,
+        5,
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      11,
+      15
+     ]
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        3
+       ],
+       [
+        1
+       ],
+       [
+        2
+       ],
+       [
+        4
+       ],
+       [
+        10
+       ],
+       [
+        9
+       ],
+       [
+        8
+       ],
+       [
+        9
+       ],
+       [
+        7
+       ],
+       [
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      16,
+      21
+     ]
+    },
+    {
+     "args": [
+      9,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      9,
+      10
+     ]
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        50
+       ],
+       [
+        20
+       ],
+       [
+        30
+       ],
+       [
+        40
+       ],
+       [
+        10
+       ]
+      ]
+     ],
+     "expected": [
+      10,
+      14
+     ]
+    },
+    {
+     "args": [
+      9,
+      [
+       [
+        1,
+        96,
+        24
+       ],
+       [
+        6,
+        19,
+        23
+       ],
+       [
+        95,
+        47,
+        88
+       ],
+       [
+        64,
+        78,
+        73
+       ],
+       [
+        69,
+        38,
+        13
+       ],
+       [
+        42,
+        87,
+        4
+       ],
+       [
+        30,
+        52,
+        39
+       ],
+       [
+        65,
+        18,
+        23
+       ]
+      ]
+     ],
+     "expected": [
+      11,
+      16
+     ]
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        61,
+        100,
+        53,
+        59
+       ],
+       [
+        13,
+        57,
+        91,
+        67
+       ],
+       [
+        53,
+        93,
+        23,
+        49
+       ],
+       [
+        32,
+        25,
+        90,
+        91
+       ],
+       [
+        27,
+        57,
+        60,
+        82
+       ],
+       [
+        16,
+        55,
+        97,
+        39
+       ],
+       [
+        82,
+        100,
+        61,
+        9
+       ],
+       [
+        78,
+        22,
+        14,
+        63
+       ],
+       [
+        70,
+        63,
+        39,
+        67
+       ]
+      ]
+     ],
+     "expected": [
+      10,
+      17
+     ]
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        100,
+        79,
+        69,
+        28
+       ],
+       [
+        20,
+        11,
+        39,
+        93
+       ],
+       [
+        76,
+        48,
+        8,
+        4
+       ],
+       [
+        42,
+        45,
+        24,
+        51
+       ],
+       [
+        28,
+        71,
+        85,
+        70
+       ],
+       [
+        0,
+        34,
+        89,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      12,
+      17
+     ]
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        99,
+        67,
+        3,
+        96
+       ],
+       [
+        63,
+        95,
+        0,
+        55
+       ],
+       [
+        64,
+        46,
+        87,
+        26
+       ],
+       [
+        35,
+        96,
+        46,
+        60
+       ],
+       [
+        19,
+        94,
+        35,
+        43
+       ],
+       [
+        13,
+        62,
+        39,
+        3
+       ],
+       [
+        93,
+        22,
+        45,
+        85
+       ]
+      ]
+     ],
+     "expected": [
+      12,
+      17
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(start, waits):\n    if type(start) is not int or not (9 <= start <= 12):\n        return False\n    if not isinstance(waits, list) or not (2 <= len(waits) <= 10):\n        return False\n    if not isinstance(waits[0], list) or not (1 <= len(waits[0]) <= 4):\n        return False\n    totals = []\n    for row in waits:\n        if not isinstance(row, list) or len(row) != len(waits[0]):\n            return False\n        if not all(type(x) is int and 0 <= x <= 100 for x in row):\n            return False\n        totals.append(sum(row))\n    return totals.index(max(totals)) < len(totals) - 1",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "func_c에서 `if idx <= peak: continue`는 어떤 시각을 건너뛰나요? (peak는 가장 붐빈 시각의 인덱스예요.)",
+     "options": [
+      "가장 붐빈 시각과 그보다 이른 시각 모두",
+      "가장 붐빈 시각 하나만",
+      "가장 붐빈 시각보다 늦은 시각 모두",
+      "아무 시각도 건너뛰지 않는다"
+     ],
+     "answer": 0,
+     "explain": "continue는 이번 반복의 나머지를 건너뛰고 다음 반복으로 가는 명령이에요. idx <= peak인 위치(붐빈 시각과 그 앞)를 모두 건너뛰니 '붐빈 시각보다 늦은 시각'만 비교하게 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "시각별 합계 구하기",
+     "prompt": "예시 1(start = 10)에서 func_a가 만드는 totals를 채워 보세요. totals[i]는 waits[i]에 담긴 입구별 인원을 모두 더한 값이에요.",
+     "columns": [
+      "인덱스 i",
+      "시각",
+      "waits[i]",
+      "totals[i]"
+     ],
+     "rows": [
+      [
+       "0",
+       "10시",
+       "[12, 8]",
+       {
+        "a": "20"
+       }
+      ],
+      [
+       "1",
+       "11시",
+       "[20, 15]",
+       {
+        "a": "35"
+       }
+      ],
+      [
+       "2",
+       "12시",
+       "[18, 9]",
+       {
+        "a": "27"
+       }
+      ],
+      [
+       "3",
+       "13시",
+       "[9, 6]",
+       {
+        "a": "15"
+       }
+      ],
+      [
+       "4",
+       "14시",
+       "[14, 13]",
+       {
+        "a": "27"
+       }
+      ],
+      [
+       "5",
+       "15시",
+       "[5, 4]",
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "6",
+       "16시",
+       "[18, 12]",
+       {
+        "a": "30"
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    answer = []\n    for row in arr:\n        total = 0\n        for x in row:\n            total += x\n        answer.append(total)\n    return answer\n\n\ndef func_b(arr):\n    answer = 0\n    for i in range(len(arr)):\n        if arr[answer] < arr[i]:\n            answer = i\n    return answer\n\n\ndef func_c(arr, peak):\n    answer = -1\n    for idx, cnt in enumerate(arr):\n        if idx <= peak:\n            continue\n        if answer == -1:\n            answer = idx\n        elif cnt < arr[answer]:\n            answer = idx\n    return answer\n\n\ndef solution(start, waits):\n    totals = func_a(waits)\n    busy = func_b(totals)\n    quiet = func_c(totals, busy)\n    answer = [start + busy, start + quiet]\n    return answer\n\ndef answers():\n    return func_a([[12, 8], [20, 15], [18, 9], [9, 6], [14, 13], [5, 4], [18, 12]])",
+     "explain": "가장 큰 합계 35는 인덱스 1(11시)이에요. 그 뒤(인덱스 2~6) 중 가장 작은 합계는 9로 인덱스 5(15시)예요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "틀린 func_c 따라가기",
+     "prompt": "totals = [20, 35, 27, 15, 27, 9, 30], peak = 1로 주어진(틀린) func_c를 idx = 2부터 따라가 보세요. 각 줄을 처리한 뒤 틀린 코드의 answer와, 원래 있어야 할 answer(지금까지 본 값 중 가장 작은 값의 위치)를 적어요.",
+     "columns": [
+      "idx",
+      "cnt",
+      "틀린 코드의 answer",
+      "있어야 할 answer"
+     ],
+     "rows": [
+      [
+       "2",
+       "27",
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "3",
+       "15",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "4",
+       "27",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "5",
+       "9",
+       {
+        "a": "4"
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "6",
+       "30",
+       {
+        "a": "4"
+       },
+       {
+        "a": "5"
+       }
+      ]
+     ],
+     "check": "def answers():\n    arr = [20, 35, 27, 15, 27, 9, 30]\n    peak = 1\n    out = []\n    bad = good = -1\n    for idx, cnt in enumerate(arr):\n        if idx <= peak:\n            continue\n        if bad == -1:\n            bad = idx\n        elif cnt < arr[bad]:\n            bad += 1\n        if good == -1:\n            good = idx\n        elif cnt < arr[good]:\n            good = idx\n        out += [bad, good]\n    return out",
+     "explain": "idx = 3까지는 한 칸씩 옮겨도 우연히 맞아요. 하지만 idx = 5에서 9를 찾았을 때 틀린 코드는 3에서 4로만 옮겨 가서, 9가 아닌 27(14시)을 가리키게 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 elif 아래 `answer += 1`을 `answer = idx`로 바꾼다",
+      "func_c의 `if idx <= peak:`를 `if idx < peak:`로 바꾼다",
+      "func_c의 `elif cnt < arr[answer]:`를 `elif cnt > arr[answer]:`로 바꾼다",
+      "solution의 `answer = [start + busy, start + quiet]`를 `answer = [busy, quiet]`로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "더 적은 인원을 찾았을 때는 그 시각의 위치 idx를 저장해야 해요. `idx < peak`로 바꾸면 붐빈 시각까지 비교 대상에 들어가 버려요."
+    }
+   ],
+   "explain": "2차원 리스트의 행 합계를 구하는 func_a, 가장 큰 값의 위치를 찾는 func_b, 그 위치보다 뒤에서 가장 작은 값의 위치를 찾는 func_c로 나뉜 구조예요. 위치를 찾는 함수에서는 더 좋은 값을 만날 때마다 `answer = idx`로 지금 위치를 저장해야 해요. 마지막에 인덱스에 start를 더해 시각으로 바꿔요."
+  },
+  {
+   "id": "pya-t05-e",
+   "version": 1,
+   "title": "급식 메뉴 평점 순위",
+   "statement": "급식 메뉴 선호도 조사에서 학생들이 메뉴마다 1점부터 5점까지의 점수를 주었습니다. 메뉴마다 점수를 준 학생 수가 다르므로, 점수를 받은 횟수가 `min_cnt` 이상인 메뉴만 순위에 올립니다.\n\n순위는 받은 점수의 평균이 높은 순서로 정하며, 평균이 같으면 메뉴 목록에서 앞에 있는 메뉴를 더 높은 순위로 봅니다. 순위에 오르지 못한 메뉴는 평균이 높아도 1위나 2위가 될 수 없습니다.\n\n메뉴 이름을 담은 리스트 `menus`, 메뉴별로 받은 점수들을 담은 2차원 리스트 `ratings`, 순위에 오르기 위한 최소 횟수 `min_cnt`가 solution 함수의 매개변수로 주어질 때, `[1위 메뉴 이름, 2위 메뉴 이름]`을 return 하도록 코드를 작성했습니다.\n\n주어진 코드는 일부 입력에서 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "menus의 길이는 2 이상 10 이하이며, 메뉴 이름은 알파벳 소문자로 이루어진 길이 1 이상 12 이하의 서로 다른 문자열입니다.",
+    "ratings의 길이는 menus의 길이와 같고, ratings[i]는 menus[i] 메뉴가 받은 점수를 담은 리스트입니다.",
+    "ratings[i]의 길이는 0 이상 30 이하이며, 점수는 1 이상 5 이하인 정수입니다.",
+    "min_cnt는 1 이상 30 이하인 정수이며, 순위에 오르는 메뉴는 항상 2개 이상입니다."
+   ],
+   "returns": [
+    "[1위 메뉴 이름, 2위 메뉴 이름]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "menus",
+    "ratings",
+    "min_cnt"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       "bibimbap",
+       "curry",
+       "noodle",
+       "pizza",
+       "salad"
+      ],
+      [
+       [
+        4,
+        5,
+        3
+       ],
+       [
+        5,
+        5
+       ],
+       [
+        3,
+        4,
+        4,
+        2
+       ],
+       [
+        5,
+        4,
+        5,
+        4
+       ],
+       [
+        2,
+        3,
+        1,
+        4
+       ]
+      ],
+      3
+     ],
+     "expected": [
+      "pizza",
+      "bibimbap"
+     ],
+     "explain": "curry는 점수를 2번만 받아 순위에 오르지 못합니다. 나머지 평균은 bibimbap 4.0, noodle 3.25, pizza 4.5, salad 2.5이므로 pizza가 1위, bibimbap이 2위입니다."
+    },
+    {
+     "args": [
+      [
+       "soup",
+       "kimbap",
+       "tteok"
+      ],
+      [
+       [
+        3
+       ],
+       [
+        4,
+        2
+       ],
+       []
+      ],
+      1
+     ],
+     "expected": [
+      "soup",
+      "kimbap"
+     ],
+     "explain": "tteok은 점수를 받지 못해 순위에 오르지 못합니다. soup와 kimbap의 평균이 3.0으로 같으므로 목록에서 앞에 있는 soup가 1위, kimbap이 2위입니다."
+    }
+   ],
+   "code": "def func_a(scores):\n    total = 0\n    for s in scores:\n        total += s\n    return total / len(scores)\n\n\ndef func_b(ratings, min_cnt):\n    answer = []\n    for scores in ratings:\n        if len(scores) >= min_cnt:\n            answer.append(func_a(scores))\n        else:\n            answer.append(-1)\n    return answer\n\n\ndef func_c(arr, skip):\n    answer = -1\n    for idx, avg in enumerate(arr):\n        if avg == -1 or idx == skip:\n            continue\n        if answer == -1:\n            answer = idx\n        elif arr[answer] < avg:\n            answer += 1\n    return answer\n\n\ndef solution(menus, ratings, min_cnt):\n    avgs = func_b(ratings, min_cnt)\n    first = func_c(avgs, -1)\n    second = func_c(avgs, first)\n    answer = [menus[first], menus[second]]\n    return answer",
+   "bugLine": 26,
+   "solution": "def func_a(scores):\n    total = 0\n    for s in scores:\n        total += s\n    return total / len(scores)\n\n\ndef func_b(ratings, min_cnt):\n    answer = []\n    for scores in ratings:\n        if len(scores) >= min_cnt:\n            answer.append(func_a(scores))\n        else:\n            answer.append(-1)\n    return answer\n\n\ndef func_c(arr, skip):\n    answer = -1\n    for idx, avg in enumerate(arr):\n        if avg == -1 or idx == skip:\n            continue\n        if answer == -1:\n            answer = idx\n        elif arr[answer] < avg:\n            answer = idx\n    return answer\n\n\ndef solution(menus, ratings, min_cnt):\n    avgs = func_b(ratings, min_cnt)\n    first = func_c(avgs, -1)\n    second = func_c(avgs, first)\n    answer = [menus[first], menus[second]]\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       "soup",
+       "rice"
+      ],
+      [
+       [
+        5
+       ],
+       [
+        1
+       ]
+      ],
+      1
+     ],
+     "expected": [
+      "soup",
+      "rice"
+     ]
+    },
+    {
+     "args": [
+      [
+       "soup",
+       "rice"
+      ],
+      [
+       [
+        2,
+        2
+       ],
+       [
+        3
+       ]
+      ],
+      1
+     ],
+     "expected": [
+      "rice",
+      "soup"
+     ]
+    },
+    {
+     "args": [
+      [
+       "a",
+       "b",
+       "c"
+      ],
+      [
+       [
+        5,
+        5
+       ],
+       [
+        4
+       ],
+       [
+        3,
+        3
+       ]
+      ],
+      2
+     ],
+     "expected": [
+      "a",
+      "c"
+     ]
+    },
+    {
+     "args": [
+      [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      [
+       [],
+       [
+        3,
+        4
+       ],
+       [],
+       [
+        4,
+        3
+       ]
+      ],
+      1
+     ],
+     "expected": [
+      "b",
+      "d"
+     ]
+    },
+    {
+     "args": [
+      [
+       "a",
+       "b",
+       "c",
+       "d",
+       "e"
+      ],
+      [
+       [
+        5,
+        5,
+        5
+       ],
+       [
+        1,
+        1,
+        1
+       ],
+       [
+        2,
+        2,
+        2
+       ],
+       [
+        3,
+        3,
+        3
+       ],
+       [
+        4,
+        4,
+        4
+       ]
+      ],
+      3
+     ],
+     "expected": [
+      "a",
+      "e"
+     ]
+    },
+    {
+     "args": [
+      [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      [
+       [
+        1,
+        2
+       ],
+       [
+        5,
+        5,
+        5,
+        5
+       ],
+       [
+        2,
+        1
+       ],
+       [
+        4,
+        5,
+        4
+       ]
+      ],
+      3
+     ],
+     "expected": [
+      "b",
+      "d"
+     ]
+    },
+    {
+     "args": [
+      [
+       "x",
+       "y",
+       "z"
+      ],
+      [
+       [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+       ],
+       [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5
+       ],
+       [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+       ]
+      ],
+      30
+     ],
+     "expected": [
+      "x",
+      "y"
+     ]
+    },
+    {
+     "args": [
+      [
+       "x",
+       "y",
+       "z"
+      ],
+      [
+       [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+       ],
+       [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5
+       ],
+       [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        1
+       ]
+      ],
+      30
+     ],
+     "expected": [
+      "x",
+      "z"
+     ]
+    },
+    {
+     "args": [
+      [
+       "p",
+       "q",
+       "r",
+       "s",
+       "t"
+      ],
+      [
+       [
+        3,
+        3
+       ],
+       [
+        2,
+        4
+       ],
+       [
+        4,
+        2
+       ],
+       [
+        1,
+        5
+       ],
+       [
+        5,
+        1
+       ]
+      ],
+      2
+     ],
+     "expected": [
+      "p",
+      "q"
+     ]
+    },
+    {
+     "args": [
+      [
+       "p",
+       "q",
+       "r",
+       "s",
+       "t",
+       "u"
+      ],
+      [
+       [
+        1
+       ],
+       [
+        2,
+        2
+       ],
+       [
+        5
+       ],
+       [
+        3,
+        3,
+        3
+       ],
+       [
+        5,
+        5
+       ],
+       [
+        4,
+        4,
+        4,
+        4
+       ]
+      ],
+      2
+     ],
+     "expected": [
+      "t",
+      "u"
+     ]
+    },
+    {
+     "args": [
+      [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      [
+       [
+        3,
+        3
+       ],
+       [
+        1
+       ],
+       [
+        2,
+        2
+       ],
+       [
+        5,
+        4
+       ]
+      ],
+      2
+     ],
+     "expected": [
+      "d",
+      "a"
+     ]
+    },
+    {
+     "args": [
+      [
+       "pizza",
+       "noodle",
+       "curry",
+       "bibimbap",
+       "salad"
+      ],
+      [
+       [
+        3,
+        1,
+        2,
+        2,
+        5
+       ],
+       [
+        3,
+        4,
+        1,
+        5,
+        5,
+        3,
+        5,
+        3,
+        1,
+        3
+       ],
+       [
+        5,
+        5,
+        5,
+        1,
+        5,
+        4
+       ],
+       [
+        4
+       ],
+       [
+        3,
+        4,
+        2,
+        5,
+        5
+       ]
+      ],
+      4
+     ],
+     "expected": [
+      "curry",
+      "salad"
+     ]
+    },
+    {
+     "args": [
+      [
+       "salad",
+       "curry",
+       "noodle",
+       "bibimbap",
+       "pizza"
+      ],
+      [
+       [
+        1,
+        2,
+        3,
+        3,
+        1,
+        3
+       ],
+       [
+        4
+       ],
+       [
+        4
+       ],
+       [
+        2,
+        1,
+        5,
+        4,
+        2,
+        1,
+        1
+       ],
+       [
+        5,
+        3,
+        1,
+        4,
+        3,
+        1,
+        4,
+        5,
+        2,
+        1
+       ]
+      ],
+      5
+     ],
+     "expected": [
+      "pizza",
+      "bibimbap"
+     ]
+    },
+    {
+     "args": [
+      [
+       "soup",
+       "salad",
+       "noodle",
+       "curry",
+       "pizza",
+       "bibimbap",
+       "kimbap"
+      ],
+      [
+       [
+        4,
+        2,
+        1,
+        2,
+        2,
+        4,
+        5,
+        3
+       ],
+       [
+        5,
+        5
+       ],
+       [
+        1,
+        2,
+        5
+       ],
+       [
+        4,
+        2,
+        1,
+        1,
+        4,
+        1
+       ],
+       [
+        5,
+        5
+       ],
+       [
+        3,
+        3,
+        3,
+        4,
+        5,
+        1
+       ],
+       [
+        2
+       ]
+      ],
+      1
+     ],
+     "expected": [
+      "salad",
+      "pizza"
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(menus, ratings, min_cnt):\n    if not isinstance(menus, list) or not isinstance(ratings, list):\n        return False\n    if not (2 <= len(menus) <= 10) or len(set(menus)) != len(menus) or len(ratings) != len(menus):\n        return False\n    for s in menus:\n        if not (isinstance(s, str) and 1 <= len(s) <= 12 and s.isascii() and s.isalpha() and s.islower()):\n            return False\n    if type(min_cnt) is not int or not (1 <= min_cnt <= 30):\n        return False\n    ok = 0\n    for r in ratings:\n        if not isinstance(r, list) or len(r) > 30:\n            return False\n        if not all(type(x) is int and 1 <= x <= 5 for x in r):\n            return False\n        if len(r) >= min_cnt:\n            ok += 1\n    return ok >= 2",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1에서 curry는 평균이 5.0으로 가장 높은데 1위가 아니에요. 왜 그럴까요?",
+     "options": [
+      "점수를 받은 횟수(2번)가 min_cnt(3)보다 적어 순위에 오르지 못해서",
+      "평균이 같은 메뉴가 있어서",
+      "메뉴 목록에서 뒤에 있어서",
+      "점수의 합이 가장 작아서"
+     ],
+     "answer": 0,
+     "explain": "min_cnt 이상 점수를 받은 메뉴만 순위에 올라요. func_b는 그렇지 않은 메뉴의 자리에 -1을 넣고, func_c는 -1인 자리를 건너뛰어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "func_b가 만드는 avgs",
+     "prompt": "예시 1(min_cnt = 3)에서 메뉴마다 받은 점수의 개수와, func_b가 avgs에 넣는 값을 채워 보세요. 순위에 오르지 못하면 -1을 넣어요. 평균은 / 나눗셈 결과라 4.0처럼 소수로 나와요.",
+     "columns": [
+      "인덱스",
+      "메뉴",
+      "점수의 개수",
+      "avgs에 넣는 값"
+     ],
+     "rows": [
+      [
+       "0",
+       "bibimbap",
+       {
+        "a": "3"
+       },
+       {
+        "a": "4.0",
+        "alts": [
+         "4"
+        ]
+       }
+      ],
+      [
+       "1",
+       "curry",
+       {
+        "a": "2"
+       },
+       {
+        "a": "-1"
+       }
+      ],
+      [
+       "2",
+       "noodle",
+       {
+        "a": "4"
+       },
+       {
+        "a": "3.25"
+       }
+      ],
+      [
+       "3",
+       "pizza",
+       {
+        "a": "4"
+       },
+       {
+        "a": "4.5"
+       }
+      ],
+      [
+       "4",
+       "salad",
+       {
+        "a": "4"
+       },
+       {
+        "a": "2.5"
+       }
+      ]
+     ],
+     "check": "def func_a(scores):\n    total = 0\n    for s in scores:\n        total += s\n    return total / len(scores)\n\n\ndef func_b(ratings, min_cnt):\n    answer = []\n    for scores in ratings:\n        if len(scores) >= min_cnt:\n            answer.append(func_a(scores))\n        else:\n            answer.append(-1)\n    return answer\n\n\ndef func_c(arr, skip):\n    answer = -1\n    for idx, avg in enumerate(arr):\n        if avg == -1 or idx == skip:\n            continue\n        if answer == -1:\n            answer = idx\n        elif arr[answer] < avg:\n            answer = idx\n    return answer\n\n\ndef solution(menus, ratings, min_cnt):\n    avgs = func_b(ratings, min_cnt)\n    first = func_c(avgs, -1)\n    second = func_c(avgs, first)\n    answer = [menus[first], menus[second]]\n    return answer\n\ndef answers():\n    ratings = [[4, 5, 3], [5, 5], [3, 4, 4, 2], [5, 4, 5, 4], [2, 3, 1, 4]]\n    avgs = func_b(ratings, 3)\n    out = []\n    for i in range(5):\n        out += [len(ratings[i]), avgs[i]]\n    return out",
+     "explain": "avgs = [4.0, -1, 3.25, 4.5, 2.5]예요. 순위 대상 중 가장 높은 4.5(pizza)가 1위, 그다음 4.0(bibimbap)이 2위가 되어야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "틀린 func_c로 1위 찾기",
+     "prompt": "solution은 1위를 찾을 때 first = func_c(avgs, -1)처럼 skip에 -1을 넣어요(어떤 인덱스도 -1이 아니니 아무것도 건너뛰지 않아요). avgs = [4.0, -1, 3.25, 4.5, 2.5]로 주어진(틀린) func_c를 따라가며, 각 줄을 처리한 뒤 틀린 코드의 answer와 원래 있어야 할 answer를 적어요.",
+     "columns": [
+      "idx",
+      "avg",
+      "틀린 코드의 answer",
+      "있어야 할 answer"
+     ],
+     "rows": [
+      [
+       "0",
+       "4.0",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       "-1",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "2",
+       "3.25",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "3",
+       "4.5",
+       {
+        "a": "1"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "4",
+       "2.5",
+       {
+        "a": "2"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    arr = [4.0, -1, 3.25, 4.5, 2.5]\n    skip = -1\n    out = []\n    bad = good = -1\n    for idx, avg in enumerate(arr):\n        if not (avg == -1 or idx == skip):\n            if bad == -1:\n                bad = idx\n            elif arr[bad] < avg:\n                bad += 1\n            if good == -1:\n                good = idx\n            elif arr[good] < avg:\n                good = idx\n        out += [bad, good]\n    return out",
+     "explain": "idx = 3에서 4.5를 찾았을 때 틀린 코드는 answer를 1(순위에 없는 curry, 값 -1)로 옮겨요. 그러면 다음 2.5도 -1보다 커서 answer가 2(noodle)가 되어, 1위가 엉뚱하게 noodle이 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 elif 아래 `answer += 1`을 `answer = idx`로 바꾼다",
+      "solution의 `first = func_c(avgs, -1)`을 `first = func_c(avgs, 0)`으로 바꾼다",
+      "func_c의 `if avg == -1 or idx == skip:`을 `if avg == -1 and idx == skip:`으로 바꾼다",
+      "func_b의 `answer.append(-1)`을 `answer.append(0)`으로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "func_c는 1위와 2위를 찾을 때 두 번 쓰여서, 이 한 줄이 틀리면 1위와 2위가 모두 틀어져요. 더 높은 평균을 찾으면 그 위치 idx를 저장하도록 고치면 두 번의 호출이 모두 바르게 동작해요."
+    }
+   ],
+   "explain": "평균을 구하는 func_a, 순위 대상만 평균을 넣고 나머지는 -1로 표시하는 func_b, 건너뛸 자리를 빼고 가장 큰 값의 위치를 찾는 func_c로 나뉜 구조예요. func_c가 두 번 쓰이므로, 위치를 저장하는 한 줄(`answer = idx`)이 틀리면 1위와 2위가 모두 틀릴 수 있어요. -1 표시와 skip이 함께 건너뛰어진다는 점도 확인해 보세요."
+  }
+ ]
+}

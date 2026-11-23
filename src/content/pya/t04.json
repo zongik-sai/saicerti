@@ -1,0 +1,1317 @@
+{
+ "course": "pya",
+ "type": 4,
+ "typeTitle": "자릿수 재배열하기",
+ "kind": "blank",
+ "skills": [
+  "자릿수 분리 list(str())",
+  "sort(reverse=True)",
+  "\"\".join과 int 변환",
+  "함수 나누기"
+ ],
+ "intro": "정수를 str()로 문자열로 바꾸고 list()로 자릿수를 하나씩 나눈 뒤, 정렬해서 가장 큰 수와 가장 작은 수를 만드는 유형이에요. 정렬한 글자들을 \"\".join()으로 이어 붙이고 int()로 다시 정수로 바꾸는 흐름을 연습해요.",
+ "problems": [
+  {
+   "id": "pya-t04-a",
+   "version": 1,
+   "title": "숫자 카드로 만든 두 수의 합",
+   "statement": "민서는 숫자가 하나씩 적힌 카드 세 장을 받았습니다. 세 카드의 숫자는 세 자리 자연수 `num`의 각 자리 숫자와 같고, 0이 적힌 카드는 없습니다. 카드를 놓는 순서를 바꾸어 만들 수 있는 가장 큰 수와 가장 작은 수를 구한 뒤, 두 수를 더하려 합니다.\n\n예를 들어 `num`이 `372`이면 카드 3, 7, 2로 만들 수 있는 가장 큰 수는 `732`, 가장 작은 수는 `237`이므로 두 수의 합은 `969`입니다.\n\n세 자리 자연수 `num`이 solution 함수의 매개변수로 주어질 때, 가장 큰 수와 가장 작은 수의 합을 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "num은 100 이상 999 이하인 세 자리 자연수입니다.",
+    "num의 각 자리 숫자는 1 이상 9 이하입니다(0은 없습니다).",
+    "같은 숫자가 여러 번 나올 수 있습니다."
+   ],
+   "returns": [
+    "가장 큰 수와 가장 작은 수의 합을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "num"
+   ],
+   "examples": [
+    {
+     "args": [
+      372
+     ],
+     "expected": 969,
+     "explain": "가장 큰 수 732와 가장 작은 수 237을 더하면 969입니다."
+    },
+    {
+     "args": [
+      515
+     ],
+     "expected": 706,
+     "explain": "숫자 5, 1, 5로 만든 가장 큰 수는 551, 가장 작은 수는 155이고, 합은 706입니다."
+    }
+   ],
+   "code": "def max_number(value):\n    digits = ⟦1⟧\n    digits.sort(⟦2⟧)\n    return int(\"\".join(digits))\n\ndef min_number(value):\n    digits = list(str(value))\n    digits.sort()\n    return ⟦3⟧\n\ndef solution(num):\n    answer = 0\n    big = ⟦4⟧\n    small = min_number(num)\n    answer = ⟦5⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(str(value))"
+    },
+    {
+     "answer": "reverse=True",
+     "alts": [
+      "reverse = True"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "max_number(num)"
+    },
+    {
+     "answer": "big + small",
+     "alts": [
+      "small + big"
+     ]
+    }
+   ],
+   "solution": "def max_number(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef solution(num):\n    answer = 0\n    big = max_number(num)\n    small = min_number(num)\n    answer = big + small\n    return answer",
+   "tests": [
+    {
+     "args": [
+      111
+     ],
+     "expected": 222
+    },
+    {
+     "args": [
+      999
+     ],
+     "expected": 1998
+    },
+    {
+     "args": [
+      123
+     ],
+     "expected": 444
+    },
+    {
+     "args": [
+      321
+     ],
+     "expected": 444
+    },
+    {
+     "args": [
+      919
+     ],
+     "expected": 1190
+    },
+    {
+     "args": [
+      112
+     ],
+     "expected": 323
+    },
+    {
+     "args": [
+      987
+     ],
+     "expected": 1776
+    },
+    {
+     "args": [
+      456
+     ],
+     "expected": 1110
+    },
+    {
+     "args": [
+      181
+     ],
+     "expected": 929
+    },
+    {
+     "args": [
+      555
+     ],
+     "expected": 1110
+    },
+    {
+     "args": [
+      214
+     ],
+     "expected": 545
+    },
+    {
+     "args": [
+      698
+     ],
+     "expected": 1675
+    },
+    {
+     "args": [
+      773
+     ],
+     "expected": 1150
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(num):\n    return isinstance(num, int) and not isinstance(num, bool) and 100 <= num <= 999 and '0' not in str(num)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`list(str(372))`의 결과는 무엇일까요? (`str()`은 수를 문자열(글자들)로 바꾸고, `list()`는 문자열을 글자 하나씩 나눈 리스트로 만들어요.)",
+     "options": [
+      "['3', '7', '2']",
+      "[3, 7, 2]",
+      "[372]",
+      "['372']"
+     ],
+     "answer": 0,
+     "explain": "str(372)는 글자 '3', '7', '2'가 이어진 문자열 '372'예요. list()는 이 문자열을 글자 하나씩 나누므로 ['3', '7', '2']가 돼요. 안에 든 것은 정수가 아니라 글자(문자열)라는 점을 기억하세요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`digits.sort()`처럼 괄호 안을 비우고 정렬하면 어떤 순서가 될까요?",
+     "options": [
+      "작은 것부터 큰 것 순서(오름차순)",
+      "큰 것부터 작은 것 순서(내림차순)",
+      "처음 순서 그대로",
+      "무작위 순서"
+     ],
+     "answer": 0,
+     "explain": "sort()는 기본으로 오름차순(작은 것부터)으로 정렬해요. 큰 것부터 놓는 내림차순이 필요하면 reverse=True를 넣어요. 글자 '1'~'9'도 숫자 크기 순서대로 정렬돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "num = 372일 때 각 코드의 결과를 채워 보세요. 글자는 따옴표로 써 주세요(예: '3').",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "list(str(372))",
+       {
+        "a": "['3', '7', '2']"
+       }
+      ],
+      [
+       "max_number에서 정렬한 뒤의 digits",
+       {
+        "a": "['7', '3', '2']"
+       }
+      ],
+      [
+       "max_number(372)",
+       {
+        "a": "732"
+       }
+      ],
+      [
+       "min_number(372)",
+       {
+        "a": "237"
+       }
+      ],
+      [
+       "answer",
+       {
+        "a": "969"
+       }
+      ]
+     ],
+     "check": "def max_number(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    digits = list(str(372))\n    out.append(digits[:])\n    digits.sort(reverse=True)\n    out.append(digits[:])\n    big = max_number(372)\n    small = min_number(372)\n    out += [big, small, big + small]\n    return out",
+     "explain": "내림차순으로 정렬하면 ['7', '3', '2']가 되고, 이어 붙이면 '732', 정수로 바꾸면 732예요. 오름차순이면 237이 되고, 두 수를 더하면 969예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`\"\".join(['7', '3', '2'])`의 결과는 무엇일까요?",
+     "options": [
+      "'732' (문자열)",
+      "732 (정수)",
+      "'7 3 2' (문자열)",
+      "['732'] (리스트)"
+     ],
+     "answer": 0,
+     "explain": "\"\".join(리스트)는 리스트의 글자들을 사이에 아무것도 넣지 않고 하나의 문자열로 이어 붙여요. 결과는 아직 문자열이라서, 더하기를 하려면 int()로 정수로 바꿔야 해요."
+    }
+   ],
+   "explain": "수를 str()로 문자열로 바꾸고 list()로 자릿수를 나눈 뒤, sort(reverse=True)는 가장 큰 수, sort()는 가장 작은 수를 만들어요. 정렬한 글자를 \"\".join()으로 이어 붙이고 int()로 정수로 바꿔야 더할 수 있어요. int()를 빠뜨리면 '732' + '237'처럼 문자열이 이어 붙어 버리니 주의하세요."
+  },
+  {
+   "id": "pya-t04-b",
+   "version": 1,
+   "title": "숫자 마술의 비밀",
+   "statement": "마술사가 관객에게 자연수 `num`을 하나 고르게 했습니다. 마술사는 `num`의 자릿수 순서를 바꾸어 만들 수 있는 가장 큰 수에서 가장 작은 수를 뺀 뒤, 그 차이를 9로 나눈 몫을 알아맞히려 합니다. 이 차이는 언제나 9의 배수입니다.\n\n자릿수를 늘어놓았을 때 맨 앞에 0이 오면, 앞쪽의 0은 지운 수로 봅니다. 숫자 0, 3, 5를 035로 놓으면 35가 됩니다.\n\n예를 들어 `num`이 `305`이면 가장 큰 수는 `530`, 가장 작은 수는 `35`입니다. 차이는 495이고, 495를 9로 나눈 몫은 `55`입니다.\n\n자연수 `num`이 solution 함수의 매개변수로 주어질 때, (가장 큰 수 − 가장 작은 수)를 9로 나눈 몫을 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "num은 10 이상 99999 이하인 자연수입니다.",
+    "같은 숫자가 여러 번 나올 수 있고, 0이 들어 있을 수 있습니다."
+   ],
+   "returns": [
+    "가장 큰 수에서 가장 작은 수를 뺀 값을 9로 나눈 몫(정수)을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "num"
+   ],
+   "examples": [
+    {
+     "args": [
+      305
+     ],
+     "expected": 55,
+     "explain": "가장 큰 수 530에서 가장 작은 수 35(035)를 빼면 495이고, 9로 나눈 몫은 55입니다."
+    },
+    {
+     "args": [
+      2026
+     ],
+     "expected": 666,
+     "explain": "가장 큰 수는 6220, 가장 작은 수는 0226, 즉 226입니다. 차이 5994를 9로 나눈 몫은 666입니다."
+    }
+   ],
+   "code": "def biggest(value):\n    digits = ⟦1⟧\n    digits.sort(⟦2⟧)\n    return ⟦3⟧\n\ndef smallest(value):\n    digits = ⟦4⟧\n    digits.sort()\n    return ⟦5⟧\n\ndef solution(num):\n    answer = 0\n    diff = ⟦6⟧\n    answer = ⟦7⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(str(value))"
+    },
+    {
+     "answer": "reverse=True",
+     "alts": [
+      "reverse = True"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "list(str(value))"
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "biggest(num) - smallest(num)"
+    },
+    {
+     "answer": "diff // 9",
+     "alts": [
+      "int(diff / 9)"
+     ]
+    }
+   ],
+   "solution": "def biggest(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef smallest(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef solution(num):\n    answer = 0\n    diff = biggest(num) - smallest(num)\n    answer = diff // 9\n    return answer",
+   "tests": [
+    {
+     "args": [
+      10
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      11
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      99999
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1000
+     ],
+     "expected": 111
+    },
+    {
+     "args": [
+      90000
+     ],
+     "expected": 9999
+    },
+    {
+     "args": [
+      12345
+     ],
+     "expected": 4664
+    },
+    {
+     "args": [
+      10203
+     ],
+     "expected": 3553
+    },
+    {
+     "args": [
+      98765
+     ],
+     "expected": 4664
+    },
+    {
+     "args": [
+      50505
+     ],
+     "expected": 6105
+    },
+    {
+     "args": [
+      4321
+     ],
+     "expected": 343
+    },
+    {
+     "args": [
+      88
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      7070
+     ],
+     "expected": 847
+    },
+    {
+     "args": [
+      60001
+     ],
+     "expected": 6776
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(num):\n    return isinstance(num, int) and not isinstance(num, bool) and 10 <= num <= 99999",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`num`이 `305`일 때, 문제의 규칙으로 본 가장 작은 수는 무엇일까요?",
+     "options": [
+      "35",
+      "305",
+      "53",
+      "350"
+     ],
+     "answer": 0,
+     "explain": "작은 숫자부터 놓으면 0, 3, 5 → 035예요. 맨 앞의 0은 지운 수로 보기로 했으니 35예요. 코드에서도 int('035')는 35가 되어 규칙과 똑같이 동작해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "num = 2026일 때 각 코드의 결과를 채워 보세요. 글자는 따옴표로 써 주세요(예: '2').",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "list(str(2026))",
+       {
+        "a": "['2', '0', '2', '6']"
+       }
+      ],
+      [
+       "biggest에서 정렬한 뒤의 digits",
+       {
+        "a": "['6', '2', '2', '0']"
+       }
+      ],
+      [
+       "biggest(2026)",
+       {
+        "a": "6220"
+       }
+      ],
+      [
+       "smallest에서 정렬한 뒤의 digits",
+       {
+        "a": "['0', '2', '2', '6']"
+       }
+      ],
+      [
+       "smallest(2026)",
+       {
+        "a": "226"
+       }
+      ],
+      [
+       "diff",
+       {
+        "a": "5994"
+       }
+      ],
+      [
+       "answer",
+       {
+        "a": "666"
+       }
+      ]
+     ],
+     "check": "def biggest(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef smallest(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    d = list(str(2026))\n    out.append(d[:])\n    d.sort(reverse=True)\n    out.append(d[:])\n    out.append(biggest(2026))\n    d.sort()\n    out.append(d[:])\n    out.append(smallest(2026))\n    diff = biggest(2026) - smallest(2026)\n    out += [diff, diff // 9]\n    return out",
+     "explain": "내림차순(큰 것부터)이면 '6220' → 6220, 오름차순(작은 것부터)이면 '0226' → 226이에요. 차이 5994를 9로 나눈 몫은 666이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`diff`를 9로 나눈 몫(정수)을 구하는 식으로 알맞은 것은?",
+     "options": [
+      "diff // 9",
+      "diff / 9",
+      "diff % 9",
+      "diff * 9"
+     ],
+     "answer": 0,
+     "explain": "//는 나눗셈의 몫을 정수로 구해요. /는 666.0 같은 실수가 나와서 정수 666과 다르게 채점되고, %는 나머지(여기서는 항상 0)를 구해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "`num`이 `100`이면 return 값은 얼마일까요?",
+     "a": "11",
+     "check": "def biggest(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef smallest(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef solution(num):\n    answer = 0\n    diff = biggest(num) - smallest(num)\n    answer = diff // 9\n    return answer\n\ndef answers():\n    return [solution(100)]",
+     "explain": "가장 큰 수는 100, 가장 작은 수는 001, 즉 1이에요. 차이 99를 9로 나눈 몫은 11이에요."
+    }
+   ],
+   "explain": "자릿수를 list(str(value))로 나누고, reverse=True로 정렬하면 가장 큰 수, 그냥 sort()하면 가장 작은 수가 돼요. int(\"\".join(digits))는 맨 앞의 0을 자연스럽게 없애 줘요. 마지막에 몫은 //로 구해야 정수가 나오며, /를 쓰면 실수가 나와 틀리게 돼요."
+  },
+  {
+   "id": "pya-t04-c",
+   "version": 1,
+   "title": "가장 높은 번호표 점수",
+   "statement": "행사장에서 나누어 준 번호표에는 자연수가 하나씩 적혀 있습니다. 번호표의 점수는 적힌 수의 자릿수 순서를 바꾸어 만들 수 있는 가장 큰 수에서 가장 작은 수를 뺀 값입니다. 자릿수를 늘어놓았을 때 맨 앞에 0이 오면, 앞쪽의 0은 지운 수로 봅니다. (048 → 48)\n\n예를 들어 번호표가 `[52, 408, 1111]`이면 점수는 각각 52 − 25 = 27, 840 − 48 = 792, 1111 − 1111 = 0이므로 가장 높은 점수는 `792`입니다.\n\n번호표에 적힌 수를 담은 리스트 `tickets`가 solution 함수의 매개변수로 주어질 때, 번호표 점수 중 가장 높은 점수를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "tickets의 길이는 1 이상 20 이하입니다.",
+    "tickets의 원소는 1 이상 99999 이하인 자연수입니다.",
+    "같은 숫자가 여러 번 나올 수 있고, 0이 들어 있을 수 있습니다."
+   ],
+   "returns": [
+    "번호표 점수 중 가장 높은 점수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "tickets"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       52,
+       408,
+       1111
+      ]
+     ],
+     "expected": 792,
+     "explain": "점수는 27, 792, 0이고, 이 중 가장 높은 점수는 792입니다."
+    },
+    {
+     "args": [
+      [
+       3105,
+       930
+      ]
+     ],
+     "expected": 5175,
+     "explain": "3105의 점수는 5310 − 135 = 5175, 930의 점수는 930 − 39 = 891이므로 5175를 return 합니다."
+    }
+   ],
+   "code": "def max_number(value):\n    digits = ⟦1⟧\n    digits.sort(reverse=True)\n    return ⟦2⟧\n\ndef min_number(value):\n    digits = list(str(value))\n    ⟦3⟧\n    return int(\"\".join(digits))\n\ndef solution(tickets):\n    answer = 0\n    for t in tickets:\n        score = ⟦4⟧\n        if ⟦5⟧:\n            answer = ⟦6⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(str(value))"
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "digits.sort()",
+     "alts": [
+      "digits.sort(reverse=False)",
+      "digits = sorted(digits)"
+     ]
+    },
+    {
+     "answer": "max_number(t) - min_number(t)"
+    },
+    {
+     "answer": "score > answer",
+     "alts": [
+      "answer < score",
+      "score >= answer"
+     ]
+    },
+    {
+     "answer": "score"
+    }
+   ],
+   "solution": "def max_number(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef solution(tickets):\n    answer = 0\n    for t in tickets:\n        score = max_number(t) - min_number(t)\n        if score > answer:\n            answer = score\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       7
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       99999
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       10
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       111,
+       222,
+       3333
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       90000,
+       12
+      ]
+     ],
+     "expected": 89991
+    },
+    {
+     "args": [
+      [
+       4321,
+       1234
+      ]
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      [
+       100,
+       1000,
+       10000
+      ]
+     ],
+     "expected": 9999
+    },
+    {
+     "args": [
+      [
+       56,
+       65
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       97531,
+       10,
+       4444,
+       806,
+       12,
+       70007,
+       555,
+       1203,
+       9,
+       31,
+       64000,
+       2718,
+       3,
+       9081,
+       123,
+       45,
+       50050,
+       8,
+       99,
+       1001
+      ]
+     ],
+     "expected": 83952
+    },
+    {
+     "args": [
+      [
+       12345,
+       54321,
+       13524
+      ]
+     ],
+     "expected": 41976
+    },
+    {
+     "args": [
+      [
+       8,
+       80,
+       808
+      ]
+     ],
+     "expected": 792
+    },
+    {
+     "args": [
+      [
+       20202
+      ]
+     ],
+     "expected": 21978
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(tickets):\n    return isinstance(tickets, list) and 1 <= len(tickets) <= 20 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 99999 for x in tickets)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "번호표 `1111`의 점수는 얼마일까요?",
+     "options": [
+      "0",
+      "1111",
+      "1",
+      "9999"
+     ],
+     "answer": 0,
+     "explain": "모든 자리 숫자가 같으면 순서를 어떻게 바꿔도 1111이에요. 가장 큰 수와 가장 작은 수가 같으니 점수는 0이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "tickets = [52, 408, 1111]일 때, 번호표 t를 하나 처리한 뒤의 값을 채워 보세요.",
+     "columns": [
+      "t",
+      "max_number(t)",
+      "min_number(t)",
+      "score",
+      "answer"
+     ],
+     "rows": [
+      [
+       "52",
+       {
+        "a": "52"
+       },
+       {
+        "a": "25"
+       },
+       {
+        "a": "27"
+       },
+       {
+        "a": "27"
+       }
+      ],
+      [
+       "408",
+       {
+        "a": "840"
+       },
+       {
+        "a": "48"
+       },
+       {
+        "a": "792"
+       },
+       {
+        "a": "792"
+       }
+      ],
+      [
+       "1111",
+       {
+        "a": "1111"
+       },
+       {
+        "a": "1111"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "792"
+       }
+      ]
+     ],
+     "check": "def max_number(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    answer = 0\n    for t in [52, 408, 1111]:\n        score = max_number(t) - min_number(t)\n        if score > answer:\n            answer = score\n        out += [max_number(t), min_number(t), score, answer]\n    return out",
+     "explain": "408은 내림차순이면 840, 오름차순이면 048 → 48이라 점수가 792예요. 1111의 점수 0은 792보다 작으니 answer는 그대로 792예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "반복문 안의 `if` 조건에는 무엇이 알맞을까요? (지금까지 본 점수 중 가장 높은 점수를 answer에 남기려 해요.)",
+     "options": [
+      "score > answer",
+      "score < answer",
+      "score == answer",
+      "answer > 0"
+     ],
+     "answer": 0,
+     "explain": "새 점수가 지금까지의 최고 점수(answer)보다 클 때만 answer를 바꿔야 해요. score < answer로 쓰면 오히려 더 작은 점수가 남아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "answer의 처음 값을 0으로 두어도 괜찮은 까닭은 무엇일까요?",
+     "options": [
+      "점수는 언제나 0 이상이라서",
+      "번호표가 언제나 1장이라서",
+      "가장 작은 수가 언제나 0이라서",
+      "0은 계산에 쓰이지 않아서"
+     ],
+     "answer": 0,
+     "explain": "가장 큰 수는 가장 작은 수보다 작을 수 없어서 점수는 0 이상이에요. 그래서 0에서 시작해도 실제 최고 점수를 놓치지 않아요."
+    }
+   ],
+   "explain": "번호표마다 max_number(t) − min_number(t)로 점수를 구하고, 지금까지의 최고 점수 answer보다 크면 바꿔 줘요. min_number의 빈칸은 오름차순 정렬 digits.sort() 한 줄이에요. digits = digits.sort()처럼 쓰면 sort()가 None을 돌려줘서 오류가 나니 주의하세요."
+  },
+  {
+   "id": "pya-t04-d",
+   "version": 1,
+   "title": "두 번호를 모아 만든 수",
+   "statement": "두 친구가 자연수를 하나씩 적었습니다. 한 친구는 `a`, 다른 친구는 `b`를 적었습니다. 두 수에 들어 있는 숫자를 모두 모은 뒤 순서를 바꾸어 한 줄로 늘어놓을 때, 만들 수 있는 가장 큰 수와 가장 작은 수의 차이를 구하려 합니다. 자릿수를 늘어놓았을 때 맨 앞에 0이 오면, 앞쪽의 0은 지운 수로 봅니다.\n\n예를 들어 `a`가 `40`, `b`가 `17`이면 모은 숫자는 4, 0, 1, 7입니다. 가장 큰 수는 `7410`, 가장 작은 수는 `0147`, 즉 `147`이므로 차이는 `7263`입니다.\n\n두 자연수 `a`, `b`가 solution 함수의 매개변수로 주어질 때, 가장 큰 수와 가장 작은 수의 차이를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "a와 b는 각각 1 이상 9999 이하인 자연수입니다.",
+    "같은 숫자가 여러 번 나올 수 있고, 0이 들어 있을 수 있습니다."
+   ],
+   "returns": [
+    "a와 b의 숫자를 모두 모아 만든 가장 큰 수에서 가장 작은 수를 뺀 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "a",
+    "b"
+   ],
+   "examples": [
+    {
+     "args": [
+      40,
+      17
+     ],
+     "expected": 7263,
+     "explain": "모은 숫자 4, 0, 1, 7로 만든 가장 큰 수는 7410, 가장 작은 수는 147이고 차이는 7263입니다."
+    },
+    {
+     "args": [
+      305,
+      8
+     ],
+     "expected": 8172,
+     "explain": "모은 숫자 3, 0, 5, 8로 만든 가장 큰 수는 8530, 가장 작은 수는 0358, 즉 358이고 차이는 8172입니다."
+    }
+   ],
+   "code": "def max_number(text):\n    digits = ⟦1⟧\n    digits.sort(⟦2⟧)\n    return ⟦3⟧\n\ndef min_number(text):\n    digits = list(text)\n    ⟦4⟧\n    return int(\"\".join(digits))\n\ndef solution(a, b):\n    answer = 0\n    text = ⟦5⟧\n    answer = ⟦6⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(text)"
+    },
+    {
+     "answer": "reverse=True",
+     "alts": [
+      "reverse = True"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "digits.sort()",
+     "alts": [
+      "digits.sort(reverse=False)",
+      "digits = sorted(digits)"
+     ]
+    },
+    {
+     "answer": "str(a) + str(b)",
+     "alts": [
+      "str(b) + str(a)"
+     ]
+    },
+    {
+     "answer": "max_number(text) - min_number(text)"
+    }
+   ],
+   "solution": "def max_number(text):\n    digits = list(text)\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(text):\n    digits = list(text)\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef solution(a, b):\n    answer = 0\n    text = str(a) + str(b)\n    answer = max_number(text) - min_number(text)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1,
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      9999,
+      9999
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      10,
+      1
+     ],
+     "expected": 99
+    },
+    {
+     "args": [
+      1000,
+      1000
+     ],
+     "expected": 10999989
+    },
+    {
+     "args": [
+      9,
+      1
+     ],
+     "expected": 72
+    },
+    {
+     "args": [
+      12,
+      34
+     ],
+     "expected": 3087
+    },
+    {
+     "args": [
+      5,
+      50
+     ],
+     "expected": 495
+    },
+    {
+     "args": [
+      9876,
+      5432
+     ],
+     "expected": 75308643
+    },
+    {
+     "args": [
+      7,
+      7
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      123,
+      4567
+     ],
+     "expected": 6419754
+    },
+    {
+     "args": [
+      1,
+      9999
+     ],
+     "expected": 79992
+    },
+    {
+     "args": [
+      2020,
+      2
+     ],
+     "expected": 21978
+    },
+    {
+     "args": [
+      606,
+      60
+     ],
+     "expected": 65934
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(a, b):\n    ok = lambda x: isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 9999\n    return ok(a) and ok(b)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`a = 40`, `b = 17`일 때 `str(a) + str(b)`의 결과는 무엇일까요?",
+     "options": [
+      "'4017'",
+      "57",
+      "'57'",
+      "['40', '17']"
+     ],
+     "answer": 0,
+     "explain": "str()로 바꾼 '40'과 '17'은 문자열이에요. 문자열끼리 +를 하면 더하기가 아니라 이어 붙이기가 되어 '4017'이 돼요. 정수끼리 40 + 17을 하면 57이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "a = 40, b = 17일 때 각 코드의 결과를 채워 보세요. 글자는 따옴표로 써 주세요(예: '4').",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "text",
+       {
+        "a": "'4017'",
+        "alts": [
+         "4017"
+        ]
+       }
+      ],
+      [
+       "max_number에서 정렬한 뒤의 digits",
+       {
+        "a": "['7', '4', '1', '0']"
+       }
+      ],
+      [
+       "max_number(text)",
+       {
+        "a": "7410"
+       }
+      ],
+      [
+       "min_number에서 정렬한 뒤의 digits",
+       {
+        "a": "['0', '1', '4', '7']"
+       }
+      ],
+      [
+       "min_number(text)",
+       {
+        "a": "147"
+       }
+      ],
+      [
+       "answer",
+       {
+        "a": "7263"
+       }
+      ]
+     ],
+     "check": "def max_number(text):\n    digits = list(text)\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(text):\n    digits = list(text)\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    text = str(40) + str(17)\n    out.append(repr(text))\n    d = list(text)\n    d.sort(reverse=True)\n    out.append(d[:])\n    out.append(max_number(text))\n    d.sort()\n    out.append(d[:])\n    out.append(min_number(text))\n    out.append(max_number(text) - min_number(text))\n    return out",
+     "explain": "'4017'을 글자로 나누어 내림차순이면 7410, 오름차순이면 '0147' → 147이에요. 7410 − 147 = 7263이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "`text = str(a) + str(b)` 대신 `text = str(a + b)`라고 쓰면, 예시 1(`a = 40`, `b = 17`)의 return 값은 얼마가 될까요?",
+     "a": "18",
+     "check": "def max_number(text):\n    digits = list(text)\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(text):\n    digits = list(text)\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    text = str(40 + 17)\n    return [max_number(text) - min_number(text)]",
+     "explain": "a + b를 먼저 하면 57이 되어 text는 '57'이에요. 그러면 75 − 57 = 18이 나와요. 숫자를 모으려면 문자열로 바꾼 뒤 이어 붙여야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`min_number`에서 digits를 오름차순(작은 것부터)으로 정렬하는 한 줄로 알맞은 것은?",
+     "options": [
+      "digits.sort()",
+      "digits.sort(reverse=True)",
+      "digits = digits.sort()",
+      "sort(digits)"
+     ],
+     "answer": 0,
+     "explain": "digits.sort()는 리스트 자체를 오름차순으로 바꿔요. sort()는 아무 값도 돌려주지 않아서(None) digits = digits.sort()라고 쓰면 digits가 None이 되어 오류가 나요. sort(digits)라는 함수는 없어요."
+    }
+   ],
+   "explain": "두 수를 str()로 바꾸어 이어 붙이면 모든 숫자를 한 문자열에 모을 수 있어요. 그다음은 list()로 나누고 정렬한 뒤 int(\"\".join(digits))로 다시 수로 만드는 같은 흐름이에요. str(a + b)처럼 먼저 더해 버리면 숫자가 섞여 버리니 주의하세요."
+  },
+  {
+   "id": "pya-t04-e",
+   "version": 1,
+   "title": "재배열 뺄셈 반복하기",
+   "statement": "자연수 하나에 다음 과정을 한 번 하면 새로운 수가 만들어집니다.\n\n- 그 수의 자릿수 순서를 바꾸어 만들 수 있는 가장 큰 수에서 가장 작은 수를 뺍니다.\n- 자릿수를 늘어놓았을 때 맨 앞에 0이 오면, 앞쪽의 0은 지운 수로 봅니다. (0378 → 378)\n- 뺀 결과가 다음 과정의 수가 됩니다. 결과가 0이 되면 그 뒤로도 계속 0입니다.\n\n예를 들어 `num`이 `3087`이고 `k`가 `2`이면, 첫 번째 과정에서 8730 − 378 = 8352가 되고, 두 번째 과정에서 8532 − 2358 = 6174가 되므로 `6174`를 return 합니다.\n\n자연수 `num`과 반복 횟수 `k`가 solution 함수의 매개변수로 주어질 때, `num`에 과정을 `k`번 반복한 결과를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "num은 1 이상 99999 이하인 자연수입니다.",
+    "k는 1 이상 10 이하인 자연수입니다.",
+    "같은 숫자가 여러 번 나올 수 있고, 0이 들어 있을 수 있습니다."
+   ],
+   "returns": [
+    "num에 과정을 k번 반복한 결과를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "num",
+    "k"
+   ],
+   "examples": [
+    {
+     "args": [
+      3087,
+      2
+     ],
+     "expected": 6174,
+     "explain": "3087 → 8730 − 378 = 8352 → 8532 − 2358 = 6174이므로 6174를 return 합니다."
+    },
+    {
+     "args": [
+      21,
+      3
+     ],
+     "expected": 0,
+     "explain": "21 → 21 − 12 = 9 → 9 − 9 = 0 → 0 − 0 = 0이므로 0을 return 합니다."
+    }
+   ],
+   "code": "def arrange(value, desc):\n    digits = ⟦1⟧\n    digits.sort(⟦2⟧)\n    return ⟦3⟧\n\ndef solution(num, k):\n    answer = num\n    for i in ⟦4⟧:\n        big = ⟦5⟧\n        small = arrange(answer, False)\n        answer = ⟦6⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "list(str(value))"
+    },
+    {
+     "answer": "reverse=desc",
+     "alts": [
+      "reverse = desc"
+     ]
+    },
+    {
+     "answer": "int(\"\".join(digits))",
+     "alts": [
+      "int(''.join(digits))"
+     ]
+    },
+    {
+     "answer": "range(k)",
+     "alts": [
+      "range(0, k)",
+      "range(1, k + 1)"
+     ]
+    },
+    {
+     "answer": "arrange(answer, True)"
+    },
+    {
+     "answer": "big - small"
+    }
+   ],
+   "solution": "def arrange(value, desc):\n    digits = list(str(value))\n    digits.sort(reverse=desc)\n    return int(\"\".join(digits))\n\ndef solution(num, k):\n    answer = num\n    for i in range(k):\n        big = arrange(answer, True)\n        small = arrange(answer, False)\n        answer = big - small\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1,
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      99999,
+      10
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      6174,
+      5
+     ],
+     "expected": 6174
+    },
+    {
+     "args": [
+      1000,
+      2
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      495,
+      3
+     ],
+     "expected": 495
+    },
+    {
+     "args": [
+      5,
+      10
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      12345,
+      1
+     ],
+     "expected": 41976
+    },
+    {
+     "args": [
+      12345,
+      10
+     ],
+     "expected": 82962
+    },
+    {
+     "args": [
+      2111,
+      1
+     ],
+     "expected": 999
+    },
+    {
+     "args": [
+      90000,
+      3
+     ],
+     "expected": 95931
+    },
+    {
+     "args": [
+      10,
+      1
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      3087,
+      1
+     ],
+     "expected": 8352
+    },
+    {
+     "args": [
+      54321,
+      10
+     ],
+     "expected": 82962
+    },
+    {
+     "args": [
+      2111,
+      2
+     ],
+     "expected": 0
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(num, k):\n    isint = lambda x: isinstance(x, int) and not isinstance(x, bool)\n    return isint(num) and isint(k) and 1 <= num <= 99999 and 1 <= k <= 10",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "두 번째 과정은 어떤 수로 시작할까요?",
+     "options": [
+      "첫 번째 과정의 결과(뺀 값)",
+      "처음에 주어진 수 num",
+      "첫 번째 과정의 가장 큰 수",
+      "첫 번째 과정의 가장 작은 수"
+     ],
+     "answer": 0,
+     "explain": "뺀 결과가 다음 과정의 수가 돼요. 그래서 코드에서는 answer에 결과를 다시 넣고, 다음 반복에서 그 answer로 가장 큰 수와 가장 작은 수를 만들어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "num = 3087, k = 2일 때, 반복할 때마다 값을 채워 보세요.",
+     "columns": [
+      "몇 번째 과정",
+      "시작할 때 answer",
+      "big",
+      "small",
+      "끝날 때 answer"
+     ],
+     "rows": [
+      [
+       "1",
+       "3087",
+       {
+        "a": "8730"
+       },
+       {
+        "a": "378"
+       },
+       {
+        "a": "8352"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "8352"
+       },
+       {
+        "a": "8532"
+       },
+       {
+        "a": "2358"
+       },
+       {
+        "a": "6174"
+       }
+      ]
+     ],
+     "check": "def arrange(value, desc):\n    digits = list(str(value))\n    digits.sort(reverse=desc)\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    answer = 3087\n    for i in range(2):\n        if i > 0:\n            out.append(answer)\n        big = arrange(answer, True)\n        small = arrange(answer, False)\n        answer = big - small\n        out += [big, small, answer]\n    return out",
+     "explain": "3087의 가장 작은 수는 '0378' → 378이에요. 첫 결과 8352가 두 번째 과정의 시작 수가 되고, 8532 − 2358 = 6174가 나와요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`arrange(value, True)`는 가장 큰 수, `arrange(value, False)`는 가장 작은 수가 되려면 `digits.sort(⟦2⟧)`의 빈칸에 무엇이 알맞을까요?",
+     "options": [
+      "reverse=desc",
+      "reverse=True",
+      "reverse=not desc",
+      "desc"
+     ],
+     "answer": 0,
+     "explain": "desc가 True면 reverse=True(내림차순), False면 reverse=False(오름차순)가 되어야 해요. reverse=True로 고정하면 늘 가장 큰 수만 나오고, sort(desc)처럼 이름 없이 넣으면 오류가 나요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "`num = 1000`, `k = 1`이면 return 값은 얼마일까요?",
+     "a": "999",
+     "check": "def arrange(value, desc):\n    digits = list(str(value))\n    digits.sort(reverse=desc)\n    return int(\"\".join(digits))\n\ndef solution(num, k):\n    answer = num\n    for i in range(k):\n        big = arrange(answer, True)\n        small = arrange(answer, False)\n        answer = big - small\n    return answer\n\ndef answers():\n    return [solution(1000, 1)]",
+     "explain": "가장 큰 수는 1000, 가장 작은 수는 0001, 즉 1이에요. 1000 − 1 = 999예요."
+    }
+   ],
+   "explain": "arrange 함수 하나에 desc를 넘겨 reverse=desc로 정렬 방향을 고르면, 가장 큰 수와 가장 작은 수를 함께 만들 수 있어요. 반복문에서는 결과를 answer에 다시 넣어야 다음 과정이 그 수로 이어져요. range(k)는 0부터 k − 1까지라서 정확히 k번 반복해요."
+  }
+ ]
+}

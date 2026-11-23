@@ -1,0 +1,2376 @@
+{
+ "course": "pya",
+ "type": 6,
+ "typeTitle": "초깃값 고치기",
+ "kind": "fix",
+ "skills": [
+  "최솟값·최댓값 찾기",
+  "초깃값 정하기",
+  "if/elif/else 분기",
+  "음수 비교"
+ ],
+ "intro": "반복문으로 가장 작은 값과 가장 큰 값을 찾는 코드에서, 반복 전에 넣어 두는 초깃값 한 줄이 잘못된 버그를 고치는 유형이에요. 초깃값이 실제 값들보다 작거나(최솟값) 크면(최댓값) 반복하는 동안 한 번도 바뀌지 않아 몇몇 입력에서만 틀린 답이 나와요. 틀린 코드를 직접 따라가 보며 어떤 초깃값이 언제나 안전한지 익혀요.",
+ "problems": [
+  {
+   "id": "pya-t06-a",
+   "version": 1,
+   "title": "심사 점수 합계",
+   "statement": "체조 대회에서 여러 심사위원이 한 선수에게 각각 0점 이상 10점 이하의 정수 점수를 줍니다. 점수가 한쪽으로 치우치는 것을 막기 위해 선수의 최종 점수는 다음 규칙으로 정합니다.\n\n- 가장 높은 점수와 가장 낮은 점수의 차이가 `limit` 이상이면, 가장 높은 점수 하나와 가장 낮은 점수 하나를 빼고 나머지 점수를 모두 더합니다.\n- 차이가 `limit`보다 작으면 모든 점수를 더합니다.\n- 가장 높은(낮은) 점수가 여러 개이면 그중 하나만 뺍니다.\n\n심사위원들의 점수를 담은 리스트 `scores`와 기준 값 `limit`이 매개변수로 주어질 때, 선수의 최종 점수를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "scores의 길이는 3 이상 10 이하입니다.",
+    "scores의 원소는 0 이상 10 이하인 정수입니다.",
+    "limit은 1 이상 10 이하인 정수입니다."
+   ],
+   "returns": [
+    "선수의 최종 점수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "scores",
+    "limit"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       7,
+       9,
+       4,
+       8,
+       6
+      ],
+      4
+     ],
+     "expected": 21,
+     "explain": "가장 높은 9점과 가장 낮은 4점의 차이 5가 4 이상이므로 9점과 4점을 빼고 7 + 8 + 6 = 21을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       6,
+       8,
+       7,
+       7
+      ],
+      3
+     ],
+     "expected": 28,
+     "explain": "가장 높은 8점과 가장 낮은 6점의 차이 2가 3보다 작으므로 모든 점수를 더한 28을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       5,
+       0,
+       9,
+       6
+      ],
+      5
+     ],
+     "expected": 11,
+     "explain": "가장 높은 9점과 가장 낮은 0점의 차이 9가 5 이상이므로 9점과 0점을 빼고 5 + 6 = 11을 return 합니다."
+    }
+   ],
+   "code": "def solution(scores, limit):\n    total = 0\n    low = 0\n    high = 0\n    for s in scores:\n        total += s\n        if s < low:\n            low = s\n        if s > high:\n            high = s\n    if high - low >= limit:\n        answer = total - high - low\n    else:\n        answer = total\n    return answer",
+   "bugLine": 3,
+   "solution": "def solution(scores, limit):\n    total = 0\n    low = scores[0]\n    high = 0\n    for s in scores:\n        total += s\n        if s < low:\n            low = s\n        if s > high:\n            high = s\n    if high - low >= limit:\n        answer = total - high - low\n    else:\n        answer = total\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       0,
+       0,
+       0
+      ],
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       10,
+       10,
+       10
+      ],
+      1
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      [
+       10,
+       0,
+       5
+      ],
+      10
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       3,
+       8,
+       0,
+       6,
+       2
+      ],
+      5
+     ],
+     "expected": 11
+    },
+    {
+     "args": [
+      [
+       9,
+       9,
+       2,
+       2,
+       5
+      ],
+      7
+     ],
+     "expected": 16
+    },
+    {
+     "args": [
+      [
+       2,
+       5,
+       9
+      ],
+      8
+     ],
+     "expected": 16
+    },
+    {
+     "args": [
+      [
+       4,
+       6,
+       5
+      ],
+      2
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       2,
+       1
+      ],
+      1
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       6,
+       7,
+       8,
+       9,
+       10,
+       6,
+       7,
+       8,
+       9,
+       10
+      ],
+      3
+     ],
+     "expected": 64
+    },
+    {
+     "args": [
+      [
+       5,
+       3,
+       7,
+       4,
+       6,
+       8,
+       2,
+       9,
+       1,
+       10
+      ],
+      9
+     ],
+     "expected": 44
+    },
+    {
+     "args": [
+      [
+       8,
+       3,
+       5
+      ],
+      6
+     ],
+     "expected": 16
+    },
+    {
+     "args": [
+      [
+       2,
+       4,
+       3,
+       5
+      ],
+      10
+     ],
+     "expected": 14
+    },
+    {
+     "args": [
+      [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ],
+      1
+     ],
+     "expected": 42
+    }
+   ],
+   "inputCheck": "def valid(scores, limit):\n    return isinstance(scores, list) and 3 <= len(scores) <= 10 and all(isinstance(x, int) and 0 <= x <= 10 for x in scores) and isinstance(limit, int) and 1 <= limit <= 10",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "scores = [5, 9, 9, 2], limit = 7일 때 최종 점수를 구하려면 어떤 점수를 빼야 할까요?",
+     "options": [
+      "9점 하나와 2점 하나",
+      "9점 두 개와 2점 하나",
+      "아무 점수도 빼지 않는다",
+      "2점 하나만"
+     ],
+     "answer": 0,
+     "explain": "차이 9 - 2 = 7은 7 \"이상\"에 들어가요(같은 경우도 포함). 가장 높은 점수가 두 개여도 하나만 빼므로 5 + 9 = 14가 최종 점수예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "scores = [7, 9, 4, 8, 6]이에요. 처음 코드 그대로, 점수 s를 하나 처리한 뒤의 low와 high를 채워 보세요.",
+     "columns": [
+      "s",
+      "low",
+      "high"
+     ],
+     "rows": [
+      [
+       "7",
+       {
+        "a": "0"
+       },
+       {
+        "a": "7"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "0"
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "0"
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "0"
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "0"
+       },
+       {
+        "a": "9"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    low = 0\n    high = 0\n    for s in [7, 9, 4, 8, 6]:\n        if s < low:\n            low = s\n        if s > high:\n            high = s\n        out += [low, high]\n    return out",
+     "explain": "high는 9로 잘 바뀌지만, low는 처음 값 0보다 작은 점수가 없어서 `s < low`가 한 번도 참이 되지 않아요. 그래서 실제 가장 낮은 점수 4를 찾지 못하고 0으로 남아요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "틀린 코드는 예시 1에서 얼마를 return 할까요? (올바른 답은 21이에요.)",
+     "a": "25",
+     "check": "def answers():\n    def solution(scores, limit):\n        total = 0\n        low = 0\n        high = 0\n        for s in scores:\n            total += s\n            if s < low:\n                low = s\n            if s > high:\n                high = s\n        if high - low >= limit:\n            answer = total - high - low\n        else:\n            answer = total\n        return answer\n    return [solution([7, 9, 4, 8, 6], 4)]",
+     "explain": "low가 0이라 차이를 9 - 0 = 9로 보고, 34에서 9와 0을 빼서 25가 나와요. 가장 낮은 점수 4를 빼지 못한 거예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "3번째 줄 `low = 0`을 어떻게 고치면 모든 입력에서 맞을까요?",
+     "options": [
+      "low = scores[0]",
+      "low = 1",
+      "low = -1",
+      "low = total"
+     ],
+     "answer": 0,
+     "explain": "초깃값(반복 전에 변수에 처음 넣는 값)을 첫 번째 점수 scores[0]으로 두면 실제 점수에서 출발하므로, 더 낮은 점수를 만날 때마다 알맞게 바뀌어요. 1이나 -1, total(아직 0)은 실제 가장 낮은 점수보다 작을 수 있어서 바뀌지 않는 경우가 생겨요."
+    }
+   ],
+   "explain": "가장 작은 값을 찾을 때 초깃값을 0으로 두면, 모든 값이 0보다 크거나 같으므로 low가 한 번도 바뀌지 않아요. 초깃값은 리스트의 첫 원소처럼 실제 값 중 하나로 잡는 것이 가장 안전해요. 점수에 0점이 있으면 틀린 코드도 우연히 맞기 때문에, 여러 입력으로 확인해야 버그를 찾을 수 있어요."
+  },
+  {
+   "id": "pya-t06-b",
+   "version": 1,
+   "title": "학교에서 가장 먼 집",
+   "statement": "곧게 뻗은 도로 위에 학교와 학생들의 집이 있습니다. 도로 위의 위치는 정수로 나타내고, 두 위치 사이의 거리는 두 수의 차이입니다. 담임 선생님은 가정 방문 계획을 세우기 위해 학교에서 가장 멀리 떨어진 집까지의 거리를 알고 싶어 합니다.\n\n학교의 위치 `school`과 학생들의 집 위치를 담은 리스트 `houses`가 매개변수로 주어질 때, 학교에서 가장 먼 집까지의 거리를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "houses의 길이는 1 이상 100 이하입니다.",
+    "houses의 원소는 0 이상 100 이하인 정수입니다. 같은 위치에 집이 여러 채 있을 수 있습니다.",
+    "school은 0 이상 100 이하인 정수입니다. 학교와 같은 위치에 집이 있을 수도 있습니다."
+   ],
+   "returns": [
+    "학교에서 가장 먼 집까지의 거리를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "school",
+    "houses"
+   ],
+   "examples": [
+    {
+     "args": [
+      50,
+      [
+       62,
+       35,
+       90,
+       48
+      ]
+     ],
+     "expected": 40,
+     "explain": "가장 왼쪽 집은 35, 가장 오른쪽 집은 90입니다. 학교에서 35까지는 15, 90까지는 40이므로 40을 return 합니다."
+    },
+    {
+     "args": [
+      70,
+      [
+       20,
+       45,
+       30
+      ]
+     ],
+     "expected": 50,
+     "explain": "모든 집이 학교보다 왼쪽에 있고 가장 왼쪽 집이 20이므로 70 - 20 = 50을 return 합니다."
+    },
+    {
+     "args": [
+      10,
+      [
+       30,
+       60,
+       25
+      ]
+     ],
+     "expected": 50,
+     "explain": "모든 집이 학교보다 오른쪽에 있고 가장 오른쪽 집이 60이므로 60 - 10 = 50을 return 합니다."
+    }
+   ],
+   "code": "def solution(school, houses):\n    answer = 0\n    left = 0\n    right = 0\n    for h in houses:\n        if h < left:\n            left = h\n        if h > right:\n            right = h\n    if school <= left:\n        answer = right - school\n    elif school >= right:\n        answer = school - left\n    else:\n        if school - left > right - school:\n            answer = school - left\n        else:\n            answer = right - school\n    return answer",
+   "bugLine": 3,
+   "solution": "def solution(school, houses):\n    answer = 0\n    left = houses[0]\n    right = 0\n    for h in houses:\n        if h < left:\n            left = h\n        if h > right:\n            right = h\n    if school <= left:\n        answer = right - school\n    elif school >= right:\n        answer = school - left\n    else:\n        if school - left > right - school:\n            answer = school - left\n        else:\n            answer = right - school\n    return answer",
+   "tests": [
+    {
+     "args": [
+      0,
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      [
+       100
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      0,
+      [
+       100
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      100,
+      [
+       0
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      50,
+      [
+       50,
+       50,
+       50
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      30,
+      [
+       30,
+       70
+      ]
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      70,
+      [
+       30,
+       70
+      ]
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      50,
+      [
+       20,
+       80
+      ]
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      45,
+      [
+       1,
+       100
+      ]
+     ],
+     "expected": 55
+    },
+    {
+     "args": [
+      60,
+      [
+       10,
+       99,
+       55
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      2,
+      [
+       5,
+       3,
+       9
+      ]
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      5,
+      [
+       8,
+       0,
+       3,
+       9
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      40,
+      [
+       96,
+       73,
+       83,
+       63,
+       20,
+       22,
+       71,
+       11,
+       69,
+       48,
+       49,
+       94,
+       23,
+       3,
+       83,
+       9,
+       12,
+       54,
+       83,
+       34,
+       93,
+       14,
+       86,
+       6,
+       36,
+       43,
+       59,
+       84,
+       41,
+       5,
+       7,
+       97,
+       34,
+       6,
+       60,
+       96,
+       72,
+       30,
+       25,
+       92,
+       61,
+       75,
+       14,
+       93,
+       81,
+       41,
+       52,
+       51,
+       66,
+       47,
+       74,
+       83,
+       53,
+       50,
+       92,
+       6,
+       68,
+       65,
+       81,
+       66,
+       33,
+       39,
+       38,
+       16,
+       7,
+       42,
+       86,
+       50,
+       63,
+       86,
+       90,
+       28,
+       34,
+       1,
+       54,
+       59,
+       81,
+       64,
+       97,
+       69,
+       85,
+       38,
+       93,
+       23,
+       24,
+       80,
+       88,
+       60,
+       57,
+       71,
+       89,
+       86,
+       81,
+       21,
+       52,
+       92,
+       4,
+       16,
+       33,
+       86
+      ]
+     ],
+     "expected": 57
+    },
+    {
+     "args": [
+      85,
+      [
+       27,
+       64,
+       47,
+       53,
+       35,
+       41,
+       30,
+       65,
+       64,
+       60,
+       38,
+       36,
+       53,
+       41,
+       45,
+       31,
+       54,
+       47,
+       39,
+       61,
+       33,
+       63,
+       59,
+       21,
+       45,
+       34,
+       22,
+       51,
+       24,
+       34
+      ]
+     ],
+     "expected": 64
+    }
+   ],
+   "inputCheck": "def valid(school, houses):\n    return isinstance(school, int) and 0 <= school <= 100 and isinstance(houses, list) and 1 <= len(houses) <= 100 and all(isinstance(x, int) and 0 <= x <= 100 for x in houses)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "school = 40, houses = [10, 40, 75]일 때 올바른 답은 무엇일까요?",
+     "options": [
+      "35",
+      "30",
+      "65",
+      "75"
+     ],
+     "answer": 0,
+     "explain": "학교에서 10까지는 40 - 10 = 30, 75까지는 75 - 40 = 35예요. 더 먼 쪽인 35가 답이에요. 65는 두 끝 집 사이의 거리라서 이 문제가 묻는 값이 아니에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "houses = [62, 35, 90, 48]이에요. 처음 코드 그대로, 집 위치 h를 하나 처리한 뒤의 값을 채워 보세요.",
+     "columns": [
+      "h",
+      "h < left",
+      "left",
+      "right"
+     ],
+     "rows": [
+      [
+       "62",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "62"
+       }
+      ],
+      [
+       "35",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "62"
+       }
+      ],
+      [
+       "90",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "90"
+       }
+      ],
+      [
+       "48",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "90"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    left = 0\n    right = 0\n    for h in [62, 35, 90, 48]:\n        c = h < left\n        if h < left:\n            left = h\n        if h > right:\n            right = h\n        out += [c, left, right]\n    return out",
+     "explain": "집 위치는 0 이상이라 0보다 작은 값이 없어요. 그래서 `h < left`는 늘 False이고 left는 끝까지 0이에요. 학교는 50인데 left가 0이니, 틀린 코드는 가장 왼쪽 집까지 50이라고 잘못 계산해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "틀린 코드에서 문제가 되는 줄은 어느 것일까요?",
+     "options": [
+      "3번째 줄 left = 0",
+      "4번째 줄 right = 0",
+      "6번째 줄 if h < left:",
+      "15번째 줄 if school - left > right - school:"
+     ],
+     "answer": 0,
+     "explain": "right는 0에서 시작해도 위치가 모두 0 이상이라 가장 오른쪽 집으로 알맞게 바뀌어요. 하지만 left는 0보다 작은 집이 없어서 바뀌지 않아요. 가장 작은 값을 찾는 변수의 초깃값(반복 전에 처음 넣어 두는 값)이 문제예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "3번째 줄을 어떻게 고치면 모든 입력에서 맞을까요?",
+     "options": [
+      "left = houses[0]",
+      "left = 1",
+      "left = -1",
+      "left = len(houses)"
+     ],
+     "answer": 0,
+     "explain": "houses[0]은 리스트의 첫 번째 원소예요(인덱스, 즉 위치 번호는 0부터 세요). 실제 집 위치에서 출발하면 더 작은 위치를 만날 때 알맞게 바뀌어요. 1이나 len(houses)는 실제 가장 왼쪽 집보다 작을 수 있어요."
+    }
+   ],
+   "explain": "가장 왼쪽(가장 작은) 위치를 찾는 left를 0으로 시작하면, 위치 0에 집이 없는 한 left가 바뀌지 않아요. 초깃값을 houses[0]처럼 실제 값으로 잡아야 해요. 예시 3처럼 학교가 모든 집보다 왼쪽에 있거나 위치 0에 집이 있으면 틀린 코드도 우연히 맞으니, 여러 경우를 확인해 보는 습관이 중요해요."
+  },
+  {
+   "id": "pya-t06-c",
+   "version": 1,
+   "title": "냉동 창고 온도 점검",
+   "statement": "식품 창고는 정해진 적정 온도 범위를 지켜야 하며, 냉동 창고의 온도는 0도보다 낮은 음수일 수 있습니다. 하루 동안 일정한 간격으로 잰 창고의 온도와 적정 온도의 하한 `lo`, 상한 `hi`가 주어지면, 다음 규칙으로 온도가 범위를 벗어난 정도를 계산합니다.\n\n- 가장 높은 온도가 `hi`보다 높으면 (가장 높은 온도 - hi)를 더합니다.\n- 가장 낮은 온도가 `lo`보다 낮으면 (lo - 가장 낮은 온도)를 더합니다.\n- 두 경우에 모두 해당하면 두 값을 모두 더하고, 둘 다 해당하지 않으면 0입니다.\n\n온도 기록을 담은 리스트 `temps`와 `lo`, `hi`가 매개변수로 주어질 때, 온도가 범위를 벗어난 정도를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "temps의 길이는 1 이상 50 이하입니다.",
+    "temps의 원소는 -30 이상 10 이하인 정수입니다.",
+    "lo와 hi는 -30 이상 10 이하인 정수이며, lo는 hi보다 작거나 같습니다."
+   ],
+   "returns": [
+    "온도가 적정 범위를 벗어난 정도를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "temps",
+    "lo",
+    "hi"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       -20,
+       -16,
+       -23,
+       -12,
+       -19
+      ],
+      -25,
+      -15
+     ],
+     "expected": 3,
+     "explain": "가장 높은 온도 -12가 -15보다 3도 높고, 가장 낮은 온도 -23은 -25보다 낮지 않으므로 3을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       3,
+       6,
+       1,
+       4
+      ],
+      2,
+      5
+     ],
+     "expected": 2,
+     "explain": "가장 높은 온도 6이 5보다 1 높고, 가장 낮은 온도 1이 2보다 1 낮으므로 1 + 1 = 2를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       -18,
+       -27,
+       -20
+      ],
+      -25,
+      -15
+     ],
+     "expected": 2,
+     "explain": "가장 높은 온도 -18은 -15보다 높지 않고, 가장 낮은 온도 -27이 -25보다 2 낮으므로 2를 return 합니다."
+    }
+   ],
+   "code": "def solution(temps, lo, hi):\n    answer = 0\n    low = temps[0]\n    high = 0\n    for t in temps:\n        if t < low:\n            low = t\n        if t > high:\n            high = t\n    if high > hi:\n        answer += high - hi\n    if low < lo:\n        answer += lo - low\n    return answer",
+   "bugLine": 4,
+   "solution": "def solution(temps, lo, hi):\n    answer = 0\n    low = temps[0]\n    high = temps[0]\n    for t in temps:\n        if t < low:\n            low = t\n        if t > high:\n            high = t\n    if high > hi:\n        answer += high - hi\n    if low < lo:\n        answer += lo - low\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       -30
+      ],
+      -30,
+      -30
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       10
+      ],
+      -30,
+      10
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       10
+      ],
+      -30,
+      -30
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      [
+       -30
+      ],
+      10,
+      10
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      [
+       -18,
+       -18,
+       -18
+      ],
+      -20,
+      -18
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       -10,
+       -25,
+       -15
+      ],
+      -20,
+      -18
+     ],
+     "expected": 13
+    },
+    {
+     "args": [
+      [
+       0,
+       -5,
+       -3
+      ],
+      -4,
+      -1
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       -1,
+       -2
+      ],
+      -5,
+      -3
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       5,
+       8,
+       2
+      ],
+      0,
+      4
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       -2,
+       -9,
+       -4,
+       -7
+      ],
+      -8,
+      -6
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       -22,
+       -19,
+       -24,
+       -21
+      ],
+      -25,
+      -18
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       -12,
+       -11,
+       -14
+      ],
+      -13,
+      -13
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       -27,
+       -29,
+       -20,
+       -30,
+       -18,
+       -16,
+       -23,
+       -24,
+       -15,
+       -24,
+       -9,
+       -23,
+       -18,
+       -20,
+       -22,
+       -5,
+       -11,
+       -21,
+       -22,
+       -30,
+       -20,
+       -20,
+       -5,
+       -19,
+       -24,
+       -5,
+       -20,
+       -16,
+       -11,
+       -26,
+       -13,
+       -19,
+       -18,
+       -5,
+       -12,
+       -12,
+       -12,
+       -29,
+       -27,
+       -8,
+       -17,
+       -10,
+       -14,
+       -8,
+       -28,
+       -20,
+       -26,
+       -27,
+       -20,
+       -24
+      ],
+      -24,
+      -16
+     ],
+     "expected": 17
+    },
+    {
+     "args": [
+      [
+       2,
+       5,
+       6,
+       5,
+       6,
+       3,
+       2,
+       9,
+       -2,
+       0,
+       8,
+       -3,
+       0,
+       7,
+       1,
+       5,
+       -3,
+       7,
+       9,
+       -2
+      ],
+      1,
+      6
+     ],
+     "expected": 7
+    }
+   ],
+   "inputCheck": "def valid(temps, lo, hi):\n    return isinstance(temps, list) and 1 <= len(temps) <= 50 and all(isinstance(x, int) and -30 <= x <= 10 for x in temps) and isinstance(lo, int) and isinstance(hi, int) and -30 <= lo <= hi <= 10",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "temps = [-17, -12, -15]에서 가장 높은 온도는 얼마일까요?",
+     "options": [
+      "-12",
+      "-17",
+      "-15",
+      "0"
+     ],
+     "answer": 0,
+     "explain": "음수는 0에 가까울수록 큰 수예요. -12 > -15 > -17이라서 가장 높은 온도는 -12예요. 리스트에 없는 0은 답이 될 수 없어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "temps = [-20, -16, -23, -12, -19]예요. 처음 코드 그대로, 온도 t를 하나 처리한 뒤의 값을 채워 보세요.",
+     "columns": [
+      "t",
+      "t > high",
+      "high"
+     ],
+     "rows": [
+      [
+       "-20",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "-16",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "-23",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "-12",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "-19",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    high = 0\n    for t in [-20, -16, -23, -12, -19]:\n        c = t > high\n        if t > high:\n            high = t\n        out += [c, high]\n    return out",
+     "explain": "온도가 모두 음수라 0보다 큰 값이 없어요. 그래서 `t > high`는 늘 False이고 high는 끝까지 0이에요. 틀린 코드는 가장 높은 온도를 0도로 보고 0 - (-15) = 15를 더해 15를 return 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "4번째 줄 `high = 0`을 어떻게 고치면 모든 입력에서 맞을까요?",
+     "options": [
+      "high = temps[0]",
+      "high = -1",
+      "high = 10",
+      "high = 1"
+     ],
+     "answer": 0,
+     "explain": "초깃값(반복 전에 처음 넣어 두는 값)을 바로 위 줄의 low처럼 첫 번째 온도 temps[0]으로 두면, 실제 온도 중 하나에서 출발하므로 더 높은 온도를 만날 때 알맞게 바뀌어요. -1은 모든 온도가 -1보다 낮을 때, 10이나 1은 실제 가장 높은 온도보다 클 때 틀려요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "틀린 코드(high = 0)로 실행해도 high가 실제 가장 높은 온도와 같아지는 temps는 어느 것일까요?",
+     "options": [
+      "[-5, 2, -8]",
+      "[-5, -2, -8]",
+      "[-30]",
+      "[-1, -1]"
+     ],
+     "answer": 0,
+     "explain": "0보다 높은 온도가 하나라도 있으면 high가 그 값으로 바뀌어서 우연히 맞아요. 그래서 예시 2(냉장 창고)는 맞고, 온도가 모두 음수인 냉동 창고에서만 틀려요."
+    }
+   ],
+   "explain": "가장 큰 값을 찾는 high를 0으로 시작하면, 값이 모두 음수일 때 high가 한 번도 바뀌지 않아요. 초깃값은 temps[0]처럼 실제 값 중 하나로 잡아야 음수가 섞여도 안전해요. 양수 온도가 있는 예시에서는 틀린 코드도 맞으니, 음수만 있는 경우를 꼭 시험해 보세요."
+  },
+  {
+   "id": "pya-t06-d",
+   "version": 1,
+   "title": "드론 순찰 거리",
+   "statement": "곧은 강둑을 따라 수질 측정 지점들이 있습니다. 강둑 위의 위치는 정수로 나타내고, 두 위치 사이의 거리는 두 수의 차이입니다. 드론은 강둑을 따라 왼쪽이나 오른쪽으로만 움직이며, 충전 기지에서 출발해 모든 측정 지점을 한 번 이상 지난 뒤 다시 충전 기지로 돌아와야 합니다.\n\n충전 기지의 위치 `base`와 측정 지점의 위치를 담은 리스트 `points`가 매개변수로 주어질 때, 드론이 움직여야 하는 가장 짧은 거리를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "points의 길이는 1 이상 100 이하입니다.",
+    "points의 원소는 1 이상 1,000 이하인 자연수입니다. 같은 위치에 측정 지점이 여러 개 있을 수 있습니다.",
+    "base는 1 이상 1,000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "드론이 기지로 돌아오기까지 움직이는 가장 짧은 거리를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "base",
+    "points"
+   ],
+   "examples": [
+    {
+     "args": [
+      300,
+      [
+       450,
+       180,
+       720
+      ]
+     ],
+     "expected": 1080,
+     "explain": "기지가 가장 왼쪽 지점 180과 가장 오른쪽 지점 720 사이에 있으므로, 두 끝을 모두 다녀와 (720 - 180) × 2 = 1080을 return 합니다."
+    },
+    {
+     "args": [
+      900,
+      [
+       640,
+       250,
+       410
+      ]
+     ],
+     "expected": 1300,
+     "explain": "모든 지점이 기지보다 왼쪽에 있으므로 가장 왼쪽 지점 250까지 갔다가 돌아와 (900 - 250) × 2 = 1300을 return 합니다."
+    },
+    {
+     "args": [
+      20,
+      [
+       75,
+       40,
+       130
+      ]
+     ],
+     "expected": 220,
+     "explain": "모든 지점이 기지보다 오른쪽에 있으므로 가장 오른쪽 지점 130까지 갔다가 돌아와 (130 - 20) × 2 = 220을 return 합니다."
+    }
+   ],
+   "code": "def solution(base, points):\n    answer = 0\n    left = 100\n    right = 0\n    for p in points:\n        if p < left:\n            left = p\n        if p > right:\n            right = p\n    if base <= left:\n        answer = (right - base) * 2\n    elif base >= right:\n        answer = (base - left) * 2\n    else:\n        answer = (right - left) * 2\n    return answer",
+   "bugLine": 3,
+   "solution": "def solution(base, points):\n    answer = 0\n    left = points[0]\n    right = 0\n    for p in points:\n        if p < left:\n            left = p\n        if p > right:\n            right = p\n    if base <= left:\n        answer = (right - base) * 2\n    elif base >= right:\n        answer = (base - left) * 2\n    else:\n        answer = (right - left) * 2\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1,
+      [
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1000,
+      [
+       1000
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1,
+      [
+       1000
+      ]
+     ],
+     "expected": 1998
+    },
+    {
+     "args": [
+      1000,
+      [
+       1
+      ]
+     ],
+     "expected": 1998
+    },
+    {
+     "args": [
+      500,
+      [
+       500,
+       500
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      250,
+      [
+       300,
+       800,
+       520
+      ]
+     ],
+     "expected": 1100
+    },
+    {
+     "args": [
+      999,
+      [
+       600,
+       998,
+       701
+      ]
+     ],
+     "expected": 798
+    },
+    {
+     "args": [
+      400,
+      [
+       101,
+       999
+      ]
+     ],
+     "expected": 1796
+    },
+    {
+     "args": [
+      600,
+      [
+       550,
+       650,
+       600
+      ]
+     ],
+     "expected": 200
+    },
+    {
+     "args": [
+      120,
+      [
+       130,
+       110
+      ]
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      50,
+      [
+       60,
+       70
+      ]
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      700,
+      [
+       520,
+       940,
+       610,
+       880
+      ]
+     ],
+     "expected": 840
+    },
+    {
+     "args": [
+      500,
+      [
+       100,
+       300,
+       700
+      ]
+     ],
+     "expected": 1200
+    },
+    {
+     "args": [
+      450,
+      [
+       427,
+       370,
+       592,
+       775,
+       934,
+       954,
+       741,
+       666,
+       263,
+       833,
+       272,
+       547,
+       990,
+       593,
+       815,
+       364,
+       754,
+       438,
+       172,
+       918,
+       447,
+       944,
+       574,
+       713,
+       732,
+       289,
+       340,
+       737,
+       426,
+       314,
+       826,
+       601,
+       706,
+       299,
+       796,
+       420,
+       509,
+       750,
+       378,
+       915,
+       651,
+       409,
+       518,
+       460,
+       397,
+       481,
+       819,
+       555,
+       779,
+       809,
+       767,
+       562,
+       876,
+       464,
+       405,
+       185,
+       421,
+       404,
+       549,
+       981,
+       787,
+       241,
+       896,
+       333,
+       382,
+       271,
+       319,
+       308,
+       946,
+       840,
+       867,
+       579,
+       859,
+       245,
+       555,
+       253,
+       892,
+       794,
+       915,
+       353,
+       995,
+       687,
+       370,
+       608,
+       793,
+       908,
+       520,
+       324,
+       263,
+       883,
+       799,
+       153,
+       178,
+       658,
+       648,
+       678,
+       282,
+       608,
+       487,
+       713
+      ]
+     ],
+     "expected": 1684
+    },
+    {
+     "args": [
+      1000,
+      [
+       609,
+       333,
+       348,
+       538,
+       759,
+       472,
+       345,
+       695,
+       746,
+       442,
+       731,
+       567,
+       534,
+       702,
+       723,
+       356,
+       686,
+       416,
+       382,
+       662,
+       868,
+       421,
+       699,
+       456,
+       712,
+       866,
+       676,
+       462,
+       887,
+       858,
+       644,
+       847,
+       884,
+       660,
+       804,
+       596,
+       805,
+       590,
+       750,
+       384
+      ]
+     ],
+     "expected": 1334
+    }
+   ],
+   "inputCheck": "def valid(base, points):\n    return isinstance(base, int) and 1 <= base <= 1000 and isinstance(points, list) and 1 <= len(points) <= 100 and all(isinstance(x, int) and 1 <= x <= 1000 for x in points)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "base = 50, points = [20, 80]일 때 드론이 움직이는 가장 짧은 거리는 얼마일까요?",
+     "options": [
+      "120",
+      "90",
+      "60",
+      "180"
+     ],
+     "answer": 0,
+     "explain": "50 → 20 → 80 → 50으로 움직이면 30 + 60 + 30 = 120이에요. 90은 기지로 돌아오지 않은 거리예요. 기지가 두 끝 사이에 있으면 (오른쪽 끝 - 왼쪽 끝) × 2가 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "points = [450, 180, 720]이에요. 처음 코드 그대로, 지점 p를 하나 처리한 뒤의 값을 채워 보세요.",
+     "columns": [
+      "p",
+      "p < left",
+      "left",
+      "right"
+     ],
+     "rows": [
+      [
+       "450",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "100"
+       },
+       {
+        "a": "450"
+       }
+      ],
+      [
+       "180",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "100"
+       },
+       {
+        "a": "450"
+       }
+      ],
+      [
+       "720",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "100"
+       },
+       {
+        "a": "720"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    left = 100\n    right = 0\n    for p in [450, 180, 720]:\n        c = p < left\n        if p < left:\n            left = p\n        if p > right:\n            right = p\n        out += [c, left, right]\n    return out",
+     "explain": "모든 지점이 left의 초깃값(반복 전에 처음 넣어 둔 값) 100보다 커서 `p < left`가 한 번도 참이 되지 않아요. left는 실제 가장 왼쪽 지점 180이 아니라 100으로 남아요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "틀린 코드는 예시 1에서 얼마를 return 할까요? (올바른 답은 1080이에요.)",
+     "a": "1240",
+     "check": "def answers():\n    def solution(base, points):\n        answer = 0\n        left = 100\n        right = 0\n        for p in points:\n            if p < left:\n                left = p\n            if p > right:\n                right = p\n        if base <= left:\n            answer = (right - base) * 2\n        elif base >= right:\n            answer = (base - left) * 2\n        else:\n            answer = (right - left) * 2\n        return answer\n    return [solution(300, [450, 180, 720])]",
+     "explain": "left가 100으로 남아서 (720 - 100) × 2 = 1240이 나와요. 지점이 100보다 작은 곳에 하나라도 있는 예시 3에서는 우연히 맞아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "3번째 줄 `left = 100`을 어떻게 고치면 모든 입력에서 맞을까요?",
+     "options": [
+      "left = points[0]",
+      "left = 500",
+      "left = 1",
+      "left = 0"
+     ],
+     "answer": 0,
+     "explain": "\"충분히 큰 수\"로 시작하려면 나올 수 있는 가장 큰 위치(1,000) 이상이어야 해요. 100이나 500은 모자라고 1이나 0은 너무 작아요. 첫 번째 원소 points[0]으로 시작하면 범위를 따질 필요 없이 언제나 맞아요."
+    }
+   ],
+   "explain": "가장 작은 값을 찾는 초깃값을 \"큰 수\"로 잡을 때는 나올 수 있는 어떤 값보다도 커야 해요. 100은 위치가 1,000까지인 이 문제에서 모자라서, 모든 지점이 100보다 오른쪽이면 left가 바뀌지 않아요. 첫 원소 points[0]으로 시작하면 이런 실수를 막을 수 있어요."
+  },
+  {
+   "id": "pya-t06-e",
+   "version": 1,
+   "title": "남은 택배 배달",
+   "statement": "택배 기사가 곧은 골목길에 있는 집들에 택배를 배달합니다. 골목길 위의 위치는 정수로 나타내고, 두 위치 사이의 거리는 두 수의 차이입니다. 오전에 이미 배달을 마친 집이 있어서, 오후에는 아직 배달하지 않은 집만 모두 들르면 됩니다. 기사는 현재 위치에서 출발해 골목길을 따라 왼쪽이나 오른쪽으로 움직이며, 마지막 집을 들른 뒤에는 돌아오지 않아도 됩니다.\n\n기사의 현재 위치 `start`, 집의 위치를 담은 리스트 `houses`, 각 집의 배달 여부를 `houses`와 같은 순서로 담은 리스트 `done`이 매개변수로 주어집니다. `done`의 원소가 1이면 배달을 마친 집, 0이면 아직 배달하지 않은 집입니다. 남은 집을 모두 들르기 위해 움직여야 하는 가장 짧은 거리를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n주어진 코드에서 한 줄만 변경해서 모든 입력에 대해 올바르게 동작하도록 수정해 주세요.",
+   "params": [
+    "houses와 done의 길이는 같으며, 1 이상 100 이하입니다.",
+    "houses의 원소는 0 이상 100 이하인 정수입니다. 같은 위치에 집이 여러 채 있을 수 있습니다.",
+    "done의 원소는 0 또는 1이며, 0인 원소(아직 배달하지 않은 집)가 하나 이상 있습니다.",
+    "start는 0 이상 100 이하인 정수입니다."
+   ],
+   "returns": [
+    "아직 배달하지 않은 집을 모두 들르는 가장 짧은 이동 거리를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "start",
+    "houses",
+    "done"
+   ],
+   "examples": [
+    {
+     "args": [
+      40,
+      [
+       10,
+       60,
+       25,
+       85,
+       50
+      ],
+      [
+       1,
+       0,
+       0,
+       0,
+       1
+      ]
+     ],
+     "expected": 75,
+     "explain": "남은 집은 60, 25, 85입니다. 25까지 먼저 가면(15) 다시 85까지 가야 해서(60) 모두 75를 움직이고, 85까지 먼저 가면 45 + 60 = 105이므로 75를 return 합니다."
+    },
+    {
+     "args": [
+      70,
+      [
+       30,
+       55,
+       90
+      ],
+      [
+       1,
+       0,
+       1
+      ]
+     ],
+     "expected": 15,
+     "explain": "남은 집은 55 한 곳뿐이므로 70 - 55 = 15를 return 합니다."
+    }
+   ],
+   "code": "def solution(start, houses, done):\n    answer = 0\n    left = 0\n    right = 0\n    for i in range(len(houses)):\n        if done[i] == 0:\n            if houses[i] < left:\n                left = houses[i]\n            if houses[i] > right:\n                right = houses[i]\n    if start <= left:\n        answer = right - start\n    elif start >= right:\n        answer = start - left\n    else:\n        if start - left < right - start:\n            answer = (start - left) + (right - left)\n        else:\n            answer = (right - start) + (right - left)\n    return answer",
+   "bugLine": 3,
+   "solution": "def solution(start, houses, done):\n    answer = 0\n    left = 101\n    right = 0\n    for i in range(len(houses)):\n        if done[i] == 0:\n            if houses[i] < left:\n                left = houses[i]\n            if houses[i] > right:\n                right = houses[i]\n    if start <= left:\n        answer = right - start\n    elif start >= right:\n        answer = start - left\n    else:\n        if start - left < right - start:\n            answer = (start - left) + (right - left)\n        else:\n            answer = (right - start) + (right - left)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      0,
+      [
+       0
+      ],
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      [
+       100
+      ],
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      0,
+      [
+       100
+      ],
+      [
+       0
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      100,
+      [
+       0
+      ],
+      [
+       0
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      50,
+      [
+       10,
+       90,
+       50
+      ],
+      [
+       1,
+       1,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      30,
+      [
+       5,
+       40,
+       70
+      ],
+      [
+       1,
+       0,
+       0
+      ]
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      80,
+      [
+       95,
+       20,
+       60
+      ],
+      [
+       1,
+       0,
+       0
+      ]
+     ],
+     "expected": 60
+    },
+    {
+     "args": [
+      50,
+      [
+       1,
+       30,
+       70,
+       100
+      ],
+      [
+       1,
+       0,
+       0,
+       1
+      ]
+     ],
+     "expected": 60
+    },
+    {
+     "args": [
+      45,
+      [
+       3,
+       20,
+       95,
+       60
+      ],
+      [
+       1,
+       0,
+       1,
+       0
+      ]
+     ],
+     "expected": 55
+    },
+    {
+     "args": [
+      10,
+      [
+       50,
+       50,
+       50
+      ],
+      [
+       0,
+       1,
+       0
+      ]
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      35,
+      [
+       10,
+       80,
+       40
+      ],
+      [
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 95
+    },
+    {
+     "args": [
+      60,
+      [
+       2,
+       99,
+       61,
+       59
+      ],
+      [
+       1,
+       1,
+       0,
+       0
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      50,
+      [
+       20,
+       0,
+       70,
+       40
+      ],
+      [
+       0,
+       0,
+       0,
+       1
+      ]
+     ],
+     "expected": 90
+    },
+    {
+     "args": [
+      70,
+      [
+       1,
+       4,
+       6,
+       12,
+       59,
+       37,
+       36,
+       83,
+       7,
+       6,
+       90,
+       8,
+       49,
+       75,
+       48,
+       13,
+       7,
+       8,
+       34,
+       3,
+       90,
+       54,
+       96,
+       27,
+       35,
+       73,
+       36,
+       84,
+       36,
+       40,
+       78,
+       60,
+       39,
+       16,
+       99,
+       87,
+       40,
+       12,
+       49,
+       31,
+       73,
+       77,
+       81,
+       9,
+       76,
+       85,
+       15,
+       79,
+       25,
+       96,
+       69,
+       46,
+       79,
+       80,
+       20,
+       97,
+       10,
+       38,
+       73,
+       17,
+       65,
+       38,
+       90,
+       45,
+       21,
+       2,
+       5,
+       4,
+       38,
+       77,
+       62,
+       48,
+       96,
+       59,
+       13,
+       72,
+       0,
+       5,
+       26,
+       5,
+       58,
+       55,
+       3,
+       49,
+       100,
+       31,
+       16,
+       61,
+       5,
+       50,
+       47,
+       41,
+       97,
+       66,
+       33,
+       24,
+       46,
+       67,
+       12,
+       73
+      ],
+      [
+       1,
+       0,
+       1,
+       1,
+       1,
+       0,
+       0,
+       1,
+       0,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       0,
+       0,
+       0,
+       0,
+       1,
+       1,
+       0,
+       0,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       1,
+       0,
+       0,
+       1,
+       0,
+       1,
+       1,
+       0,
+       0,
+       1,
+       1,
+       1,
+       0,
+       0,
+       1,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       1,
+       1,
+       1,
+       1,
+       0,
+       0,
+       0,
+       0,
+       0,
+       1,
+       1,
+       1,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1,
+       1,
+       1,
+       1,
+       0,
+       0,
+       1,
+       1,
+       0,
+       0,
+       0,
+       0,
+       1,
+       1,
+       0,
+       1,
+       0,
+       1,
+       1,
+       0,
+       0,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 128
+    },
+    {
+     "args": [
+      20,
+      [
+       39,
+       56,
+       89,
+       34,
+       39,
+       85,
+       72,
+       47,
+       81,
+       71,
+       83,
+       64,
+       78,
+       31,
+       96,
+       55,
+       83,
+       99,
+       33,
+       31,
+       98,
+       89,
+       86,
+       65,
+       87,
+       82,
+       31,
+       92,
+       57,
+       75,
+       81,
+       61,
+       86,
+       30,
+       36,
+       65,
+       98,
+       44,
+       91,
+       44,
+       73,
+       52,
+       33,
+       57,
+       33,
+       56,
+       35,
+       99,
+       67,
+       97,
+       35,
+       49,
+       100,
+       44,
+       63,
+       33,
+       100,
+       80,
+       41,
+       63
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 80
+    }
+   ],
+   "inputCheck": "def valid(start, houses, done):\n    return isinstance(start, int) and 0 <= start <= 100 and isinstance(houses, list) and isinstance(done, list) and 1 <= len(houses) <= 100 and len(done) == len(houses) and all(isinstance(x, int) and 0 <= x <= 100 for x in houses) and all(x in (0, 1) and isinstance(x, int) for x in done) and 0 in done",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1(houses = [10, 60, 25, 85, 50], done = [1, 0, 0, 0, 1])에서 오후에 들러야 하는 집의 위치를 모두 고르면?",
+     "options": [
+      "25, 60, 85",
+      "10, 50",
+      "10, 25, 50, 60, 85",
+      "60, 85"
+     ],
+     "answer": 0,
+     "explain": "done에서 0인 자리(1, 2, 3번 인덱스)의 집만 남은 집이에요. 인덱스는 리스트에서 원소의 자리 번호로 0부터 세요. 그래서 houses[1] = 60, houses[2] = 25, houses[3] = 85예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로, i번째 집을 처리한 뒤의 left와 right를 채워 보세요.",
+     "columns": [
+      "i",
+      "houses[i]",
+      "done[i]",
+      "left",
+      "right"
+     ],
+     "rows": [
+      [
+       "0",
+       "10",
+       "1",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       "60",
+       "0",
+       {
+        "a": "0"
+       },
+       {
+        "a": "60"
+       }
+      ],
+      [
+       "2",
+       "25",
+       "0",
+       {
+        "a": "0"
+       },
+       {
+        "a": "60"
+       }
+      ],
+      [
+       "3",
+       "85",
+       "0",
+       {
+        "a": "0"
+       },
+       {
+        "a": "85"
+       }
+      ],
+      [
+       "4",
+       "50",
+       "1",
+       {
+        "a": "0"
+       },
+       {
+        "a": "85"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    houses = [10, 60, 25, 85, 50]\n    done = [1, 0, 0, 0, 1]\n    left = 0\n    right = 0\n    for i in range(len(houses)):\n        if done[i] == 0:\n            if houses[i] < left:\n                left = houses[i]\n            if houses[i] > right:\n                right = houses[i]\n        out += [left, right]\n    return out",
+     "explain": "배달을 마친 집(done[i]가 1)은 건너뛰어요. right는 85로 잘 바뀌지만 left는 0보다 작은 집이 없어 끝까지 0이에요. 그래서 틀린 코드는 남은 집이 0부터 85까지 있다고 보고 125를 return 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "3번째 줄을 `left = houses[0]`으로 고치면 예시 1에서 반복이 끝난 뒤 left는 얼마가 될까요?",
+     "options": [
+      "10",
+      "25",
+      "60",
+      "0"
+     ],
+     "answer": 0,
+     "explain": "houses[0] = 10은 이미 배달을 마친 집인데, 남은 집(25, 60, 85)보다 작아서 left가 10에서 바뀌지 않아요. 남은 집만 따지는 문제에서는 첫 원소가 비교 대상이 아닐 수 있어서 초깃값(반복 전에 처음 넣어 두는 값)으로 쓸 수 없어요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "3번째 줄을 어떻게 고치면 모든 입력에서 맞을까요?",
+     "options": [
+      "left = 101",
+      "left = houses[0]",
+      "left = 1",
+      "left = len(houses)"
+     ],
+     "answer": 0,
+     "explain": "집 위치는 100 이하이므로, 어떤 집보다도 큰 101로 시작하면 처음 만나는 남은 집에서 반드시 바뀌어요. 1이나 len(houses)는 실제 가장 왼쪽의 남은 집보다 작을 수 있어 바뀌지 않는 경우가 생겨요."
+    }
+   ],
+   "explain": "조건에 맞는 원소(아직 배달하지 않은 집) 중에서 가장 작은 값을 찾을 때는, 첫 원소가 조건에 맞지 않을 수 있어서 houses[0]을 초깃값으로 쓰면 안 돼요. 이럴 때는 나올 수 있는 가장 큰 값보다 큰 수(101)로 시작해요. right의 초깃값 0은 모든 위치가 0 이상이라 괜찮아요."
+  }
+ ]
+}

@@ -1,0 +1,2016 @@
+{
+ "course": "pyb",
+ "type": 5,
+ "typeTitle": "반복 멈춤 조건 고치기",
+ "kind": "fix",
+ "skills": [
+  "누적합",
+  "break",
+  "반복 멈춤 조건",
+  "한 줄 수정"
+ ],
+ "intro": "값을 차례로 더해 가다가 제한을 넘기 직전에 멈추는 코드에서, 잘못된 멈춤 조건(break 조건) 한 줄을 고칩니다. \"더하기 전에 먼저 확인한다\"는 순서와 넘는다(>)·이상(>=)의 차이를 연습해요.",
+ "problems": [
+  {
+   "id": "pyb-t05-a",
+   "version": 1,
+   "title": "넘치기 전까지 물 붓기",
+   "statement": "물통 하나에 여러 컵의 물을 차례대로 부으려 합니다. 컵은 놓인 순서대로만 부을 수 있고, 물통에 든 물의 양은 물통의 용량을 넘으면 안 됩니다. 물의 양이 용량과 똑같아지는 것은 괜찮습니다.\n\n어떤 컵을 부으면 용량을 넘게 될 때는 그 컵을 붓지 않고 거기서 붓기를 멈춥니다. 뒤에 더 작은 컵이 남아 있어도 붓지 않습니다.\n- 예를 들어 용량이 1000mL이고 컵의 물이 차례대로 [300, 450, 400, 100]mL라면, 앞의 두 컵을 부었을 때 750mL입니다. 세 번째 컵을 부으면 1150mL가 되어 용량을 넘으므로 멈춥니다. 따라서 물통에 든 물은 750mL입니다.\n\n물통의 용량 `capacity`와 컵에 든 물의 양을 순서대로 담은 리스트 `cups`가 매개변수로 주어질 때, 물통에 부은 물의 양을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "capacity는 물통의 용량(mL)이며, 1 이상 1000 이하인 자연수입니다.",
+    "cups의 길이는 1 이상 20 이하입니다.",
+    "cups의 원소는 각 컵에 든 물의 양(mL)이며, 1 이상 500 이하인 자연수입니다."
+   ],
+   "returns": [
+    "물통에 부은 물의 양(mL)을 return 합니다. 첫 번째 컵부터 부을 수 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "capacity",
+    "cups"
+   ],
+   "examples": [
+    {
+     "args": [
+      1000,
+      [
+       300,
+       450,
+       400,
+       100
+      ]
+     ],
+     "expected": 750,
+     "explain": "300 + 450 = 750mL까지 붓습니다. 400mL를 더 부으면 1150mL로 용량을 넘으므로 멈추고, 마지막 100mL 컵도 붓지 않습니다."
+    },
+    {
+     "args": [
+      500,
+      [
+       200,
+       300,
+       100
+      ]
+     ],
+     "expected": 500,
+     "explain": "200 + 300 = 500mL는 용량과 같으므로 괜찮습니다. 100mL를 더 부으면 600mL가 되어 멈춥니다."
+    }
+   ],
+   "code": "def solution(capacity, cups):\n    water = 0\n    for cup in cups:\n        if water > capacity:\n            break\n        water += cup\n    return water",
+   "bugLine": 4,
+   "solution": "def solution(capacity, cups):\n    water = 0\n    for cup in cups:\n        if water + cup > capacity:\n            break\n        water += cup\n    return water",
+   "tests": [
+    {
+     "args": [
+      1,
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1,
+      [
+       2
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      400,
+      [
+       500,
+       100,
+       100
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      600,
+      [
+       200,
+       500,
+       100,
+       100,
+       100
+      ]
+     ],
+     "expected": 200
+    },
+    {
+     "args": [
+      100,
+      [
+       30,
+       30,
+       30
+      ]
+     ],
+     "expected": 90
+    },
+    {
+     "args": [
+      1000,
+      [
+       100,
+       200,
+       300,
+       400
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      1000,
+      [
+       500,
+       500,
+       1
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      1000,
+      [
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      1000,
+      [
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500,
+       500
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      999,
+      [
+       333,
+       333,
+       333,
+       1
+      ]
+     ],
+     "expected": 999
+    },
+    {
+     "args": [
+      750,
+      [
+       250,
+       250,
+       251,
+       249
+      ]
+     ],
+     "expected": 500
+    },
+    {
+     "args": [
+      50,
+      [
+       10,
+       20,
+       30,
+       5
+      ]
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      20,
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 20
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(capacity, cups):\n    return isinstance(capacity, int) and 1 <= capacity <= 1000 and isinstance(cups, list) and 1 <= len(cups) <= 20 and all(isinstance(x, int) and 1 <= x <= 500 for x in cups)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "용량이 1000mL인 물통에 지금 750mL가 들어 있어요. 다음 컵은 400mL, 그다음 컵은 100mL예요. 어떻게 할까요?",
+     "options": [
+      "400mL 컵을 붓지 않고 바로 멈춘다",
+      "400mL 컵을 부은 뒤에 멈춘다",
+      "400mL 컵만 건너뛰고 100mL 컵을 붓는다",
+      "넘치는 만큼 덜어 내고 계속 붓는다"
+     ],
+     "answer": 0,
+     "explain": "부으면 용량을 넘는 컵을 만나면 그 컵은 붓지 않고 거기서 끝내요. 컵은 순서대로만 부을 수 있으니, 뒤에 작은 컵이 있어도 붓지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 capacity = 1000, cups = [300, 450, 400, 100]을 따라가 보세요. \"검사 때 water\"는 if 줄을 실행할 때의 값이에요. break로 멈춘 줄은 water가 그대로예요.",
+     "columns": [
+      "cup",
+      "검사 때 water",
+      "water > capacity",
+      "반복 뒤 water"
+     ],
+     "rows": [
+      [
+       "300",
+       "0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "300"
+       }
+      ],
+      [
+       "450",
+       {
+        "a": "300"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "750"
+       }
+      ],
+      [
+       "400",
+       {
+        "a": "750"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1150"
+       }
+      ],
+      [
+       "100",
+       {
+        "a": "1150"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1150"
+       }
+      ]
+     ],
+     "check": "def answers():\n    capacity = 1000\n    water = 0\n    out = []\n    for i, cup in enumerate([300, 450, 400, 100]):\n        if i > 0:\n            out.append(water)\n        stop = water > capacity\n        out.append(stop)\n        if not stop:\n            water += cup\n        out.append(water)\n        if stop:\n            break\n    return out",
+     "explain": "water처럼 값을 계속 더해 쌓는 것을 누적이라고 하고, break는 반복문을 그 자리에서 끝내는 명령이에요. 틀린 코드는 붓기 전에 \"지금까지의 water\"만 검사해서, 400mL를 부어 1150mL로 넘친 다음에야 멈춰요. 그래서 750이 아니라 1150을 return 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "4번째 줄을 어떻게 고쳐야 넘치기 전에 멈출까요?",
+     "options": [
+      "if water + cup > capacity:",
+      "if water >= capacity:",
+      "if water + cup >= capacity:",
+      "if cup > capacity:"
+     ],
+     "answer": 0,
+     "explain": "이번 컵을 부었을 때의 양(water + cup)을 먼저 계산해서 용량을 넘는지 확인해야 해요. >= 를 쓰면 용량과 딱 맞는 경우(예시 2)에도 멈춰 버려요."
+    }
+   ],
+   "explain": "반복할 때마다 \"이번 것을 더하면 넘는지\"를 먼저 확인하고, 넘지 않을 때만 더해야 해요. 이미 더한 값(water)만 검사하면 넘친 뒤에야 멈춰서 컵 하나를 더 붓게 돼요. \"넘는다\"는 > 이고, 용량과 같은 것은 괜찮다는 점도 함께 확인해요."
+  },
+  {
+   "id": "pyb-t05-b",
+   "version": 1,
+   "title": "점심시간 상담 인원",
+   "statement": "담임 선생님이 점심시간에 학생 상담을 하려 합니다. 학생들은 줄을 선 순서대로 상담을 받으며, 학생마다 상담에 걸리는 시간(분)이 정해져 있습니다.\n\n상담은 남은 시간 안에 끝낼 수 있을 때만 시작합니다. 남은 시간과 상담 시간이 같아도 상담할 수 있습니다. 남은 시간 안에 끝낼 수 없는 학생을 만나면 그 학생부터는 상담하지 않습니다.\n- 예를 들어 상담에 쓸 수 있는 시간이 60분이고 상담 시간이 차례대로 [15, 20, 30, 5]분이라면, 두 학생을 상담한 뒤 25분이 남습니다. 세 번째 학생은 30분이 걸려 끝낼 수 없으므로 멈춥니다. 따라서 상담한 학생은 2명입니다.\n\n상담에 쓸 수 있는 시간 `minutes`와 학생별 상담 시간을 줄 선 순서대로 담은 리스트 `durations`가 매개변수로 주어질 때, 상담한 학생 수를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "minutes는 상담에 쓸 수 있는 시간(분)이며, 1 이상 300 이하인 자연수입니다.",
+    "durations의 길이는 1 이상 20 이하입니다.",
+    "durations의 원소는 각 학생의 상담 시간(분)이며, 1 이상 60 이하인 자연수입니다."
+   ],
+   "returns": [
+    "상담한 학생 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "minutes",
+    "durations"
+   ],
+   "examples": [
+    {
+     "args": [
+      60,
+      [
+       15,
+       20,
+       30,
+       5
+      ]
+     ],
+     "expected": 2,
+     "explain": "15 + 20 = 35분을 쓰고 25분이 남습니다. 세 번째 학생(30분)은 끝낼 수 없어 멈추므로, 마지막 학생(5분)도 상담하지 않습니다."
+    },
+    {
+     "args": [
+      50,
+      [
+       10,
+       25,
+       15,
+       10
+      ]
+     ],
+     "expected": 3,
+     "explain": "10 + 25 + 15 = 50분을 쓰면 남은 시간이 정확히 0분이 됩니다. 네 번째 학생은 상담할 수 없으므로 3명입니다."
+    }
+   ],
+   "code": "def solution(minutes, durations):\n    remain = minutes\n    count = 0\n    for d in durations:\n        if remain < 0:\n            break\n        remain -= d\n        count += 1\n    return count",
+   "bugLine": 5,
+   "solution": "def solution(minutes, durations):\n    remain = minutes\n    count = 0\n    for d in durations:\n        if remain < d:\n            break\n        remain -= d\n        count += 1\n    return count",
+   "tests": [
+    {
+     "args": [
+      1,
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1,
+      [
+       2
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      300,
+      [
+       60,
+       60,
+       60,
+       60,
+       60
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      300,
+      [
+       60,
+       60,
+       60,
+       60,
+       60,
+       60
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      300,
+      [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      299,
+      [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     ],
+     "expected": 19
+    },
+    {
+     "args": [
+      100,
+      [
+       50,
+       60,
+       10,
+       10
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      45,
+      [
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      5,
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      60,
+      [
+       60,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      59,
+      [
+       60,
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      [
+       20,
+       40,
+       45,
+       5,
+       5
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      90,
+      [
+       30,
+       30,
+       30
+      ]
+     ],
+     "expected": 3
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(minutes, durations):\n    return isinstance(minutes, int) and 1 <= minutes <= 300 and isinstance(durations, list) and 1 <= len(durations) <= 20 and all(isinstance(x, int) and 1 <= x <= 60 for x in durations)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "남은 시간이 15분이고, 다음 학생의 상담 시간도 15분이에요. 어떻게 할까요?",
+     "options": [
+      "상담한다(끝나면 0분이 남는다)",
+      "상담하지 않고 멈춘다",
+      "그 학생은 건너뛰고 다음 학생을 상담한다"
+     ],
+     "answer": 0,
+     "explain": "남은 시간 안에 끝낼 수 있으면 상담해요. 남은 시간과 상담 시간이 같으면 딱 맞게 끝나니까 상담할 수 있어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 minutes = 60, durations = [15, 20, 30, 5]를 따라가 보세요. if 검사는 바로 위 줄의 remain(처음엔 60)으로 해요. break로 멈춘 줄은 remain과 count가 그대로예요.",
+     "columns": [
+      "d",
+      "remain < 0",
+      "반복 뒤 remain",
+      "반복 뒤 count"
+     ],
+     "rows": [
+      [
+       "15",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "45"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "20",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "25"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "30",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "-5"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "-5"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    remain = 60\n    count = 0\n    out = []\n    for d in [15, 20, 30, 5]:\n        stop = remain < 0\n        if not stop:\n            remain -= d\n            count += 1\n        out += [stop, remain, count]\n        if stop:\n            break\n    return out",
+     "explain": "틀린 코드는 시간을 빼기 전에 \"남은 시간이 이미 음수인지\"만 봐요. 그래서 30분짜리 학생까지 상담해 -5분이 된 뒤에야 멈추고, 2가 아니라 3을 return 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "5번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if remain < d:",
+      "if remain <= 0:",
+      "if remain <= d:",
+      "if d < remain:"
+     ],
+     "answer": 0,
+     "explain": "이번 학생을 상담하기 전에 \"남은 시간이 상담 시간보다 적은지\"를 먼저 확인해요. remain <= d로 쓰면 시간이 딱 맞는 학생(예시 2의 세 번째 학생)도 상담하지 못해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 minutes = 10, durations = [15, 5, 5]를 넣으면 무엇을 return 할까요?",
+     "a": "0",
+     "check": "def answers():\n    def solution(minutes, durations):\n        remain = minutes\n        count = 0\n        for d in durations:\n            if remain < d:\n                break\n            remain -= d\n            count += 1\n        return count\n    return [solution(10, [15, 5, 5])]",
+     "explain": "첫 학생(15분)부터 끝낼 수 없어서 바로 멈춰요. 뒤에 5분짜리 학생들이 있어도 순서대로만 상담하니 0명이에요."
+    }
+   ],
+   "explain": "상담하기 전에 \"이번 학생의 시간을 뺄 수 있는지(remain < d이면 멈춤)\"를 먼저 확인해야 해요. 이미 뺀 결과가 음수인지만 보면, 시간이 모자란 학생까지 상담한 것으로 세게 돼요. 시간이 딱 맞는 경우는 상담할 수 있다는 점도 기억해요."
+  },
+  {
+   "id": "pyb-t05-c",
+   "version": 1,
+   "title": "가방에 담은 보물의 가치",
+   "statement": "탐험가가 동굴에서 발견한 순서대로 보물을 가방에 담으려 합니다. 보물마다 무게와 가치가 있으며, 가방에 담은 보물의 무게 합은 가방이 견딜 수 있는 무게 `limit`를 넘으면 안 됩니다. 무게 합이 `limit`와 같은 것은 괜찮습니다.\n\n어떤 보물을 담으면 무게 합이 `limit`를 넘게 될 때, 탐험가는 그 보물을 담지 않고 탐험을 끝냅니다. 그 뒤에 발견할 보물은 담지 않습니다.\n\n가방이 견딜 수 있는 무게 `limit`와 발견한 순서대로 보물의 정보를 담은 2차원 리스트 `treasures`가 매개변수로 주어질 때, 가방에 담은 보물들의 가치 합을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "limit는 1 이상 100 이하인 자연수입니다.",
+    "treasures의 길이는 1 이상 15 이하입니다.",
+    "treasures의 각 원소는 [무게, 가치] 형태의 리스트입니다.",
+    "무게는 1 이상 50 이하, 가치는 1 이상 1000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "가방에 담은 보물들의 가치 합을 return 합니다. 아무것도 담지 못했으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "limit",
+    "treasures"
+   ],
+   "examples": [
+    {
+     "args": [
+      20,
+      [
+       [
+        5,
+        300
+       ],
+       [
+        8,
+        500
+       ],
+       [
+        9,
+        700
+       ],
+       [
+        2,
+        100
+       ]
+      ]
+     ],
+     "expected": 800,
+     "explain": "무게 5 + 8 = 13까지 담고, 가치 합은 300 + 500 = 800입니다. 무게 9인 보물을 담으면 22가 되어 limit를 넘으므로 탐험을 끝냅니다."
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        4,
+        120
+       ],
+       [
+        6,
+        200
+       ],
+       [
+        5,
+        90
+       ],
+       [
+        1,
+        50
+       ]
+      ]
+     ],
+     "expected": 410,
+     "explain": "무게 4 + 6 + 5 = 15는 limit와 같으므로 담을 수 있고, 가치 합은 410입니다. 무게 1인 보물을 담으면 16이 되어 끝냅니다."
+    }
+   ],
+   "code": "def solution(limit, treasures):\n    weight_sum = 0\n    value_sum = 0\n    for t in treasures:\n        if weight_sum > limit:\n            break\n        weight_sum += t[0]\n        value_sum += t[1]\n    return value_sum",
+   "bugLine": 5,
+   "solution": "def solution(limit, treasures):\n    weight_sum = 0\n    value_sum = 0\n    for t in treasures:\n        if weight_sum + t[0] > limit:\n            break\n        weight_sum += t[0]\n        value_sum += t[1]\n    return value_sum",
+   "tests": [
+    {
+     "args": [
+      1,
+      [
+       [
+        1,
+        1000
+       ]
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      1,
+      [
+       [
+        2,
+        500
+       ]
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      [
+       [
+        50,
+        1000
+       ],
+       [
+        50,
+        1000
+       ]
+      ]
+     ],
+     "expected": 2000
+    },
+    {
+     "args": [
+      100,
+      [
+       [
+        50,
+        1
+       ],
+       [
+        50,
+        1
+       ],
+       [
+        1,
+        1000
+       ]
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      30,
+      [
+       [
+        10,
+        100
+       ],
+       [
+        25,
+        900
+       ],
+       [
+        5,
+        50
+       ],
+       [
+        5,
+        50
+       ]
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      50,
+      [
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ]
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      49,
+      [
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ],
+       [
+        10,
+        1
+       ]
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      100,
+      [
+       [
+        7,
+        10
+       ],
+       [
+        7,
+        20
+       ],
+       [
+        7,
+        30
+       ],
+       [
+        7,
+        40
+       ],
+       [
+        7,
+        50
+       ],
+       [
+        7,
+        60
+       ],
+       [
+        7,
+        70
+       ],
+       [
+        7,
+        80
+       ],
+       [
+        7,
+        90
+       ],
+       [
+        7,
+        100
+       ],
+       [
+        7,
+        110
+       ],
+       [
+        7,
+        120
+       ],
+       [
+        7,
+        130
+       ],
+       [
+        7,
+        140
+       ],
+       [
+        7,
+        150
+       ]
+      ]
+     ],
+     "expected": 1050
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        20,
+        999
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      25,
+      [
+       [
+        5,
+        5
+       ],
+       [
+        5,
+        10
+       ],
+       [
+        5,
+        15
+       ],
+       [
+        5,
+        20
+       ],
+       [
+        5,
+        25
+       ],
+       [
+        5,
+        30
+       ]
+      ]
+     ],
+     "expected": 75
+    },
+    {
+     "args": [
+      60,
+      [
+       [
+        30,
+        300
+       ],
+       [
+        29,
+        290
+       ],
+       [
+        2,
+        20
+       ]
+      ]
+     ],
+     "expected": 590
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        3,
+        40
+       ],
+       [
+        3,
+        30
+       ],
+       [
+        3,
+        20
+       ],
+       [
+        3,
+        10
+       ]
+      ]
+     ],
+     "expected": 100
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(limit, treasures):\n    return isinstance(limit, int) and 1 <= limit <= 100 and isinstance(treasures, list) and 1 <= len(treasures) <= 15 and all(isinstance(t, list) and len(t) == 2 and all(isinstance(v, int) for v in t) and 1 <= t[0] <= 50 and 1 <= t[1] <= 1000 for t in treasures)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "보물 정보 t = [8, 500]에서 무게 합을 셀 때 써야 하는 값은 무엇일까요?",
+     "options": [
+      "t[0]인 8",
+      "t[1]인 500",
+      "t[0] + t[1]인 508",
+      "len(t)인 2"
+     ],
+     "answer": 0,
+     "explain": "인덱스는 리스트 안에서 원소의 자리 번호이고 0부터 시작해요. [무게, 가치] 순서이므로 무게는 t[0], 가치는 t[1]이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 limit = 20을 따라가 보세요. if 검사는 바로 위 줄의 weight_sum(처음엔 0)으로 해요. break로 멈춘 줄은 값이 그대로예요.",
+     "columns": [
+      "t",
+      "weight_sum > limit",
+      "반복 뒤 weight_sum",
+      "반복 뒤 value_sum"
+     ],
+     "rows": [
+      [
+       "[5, 300]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "5"
+       },
+       {
+        "a": "300"
+       }
+      ],
+      [
+       "[8, 500]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "13"
+       },
+       {
+        "a": "800"
+       }
+      ],
+      [
+       "[9, 700]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "22"
+       },
+       {
+        "a": "1500"
+       }
+      ],
+      [
+       "[2, 100]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "22"
+       },
+       {
+        "a": "1500"
+       }
+      ]
+     ],
+     "check": "def answers():\n    limit = 20\n    weight_sum = 0\n    value_sum = 0\n    out = []\n    for t in [[5, 300], [8, 500], [9, 700], [2, 100]]:\n        stop = weight_sum > limit\n        if not stop:\n            weight_sum += t[0]\n            value_sum += t[1]\n        out += [stop, weight_sum, value_sum]\n        if stop:\n            break\n    return out",
+     "explain": "틀린 코드는 보물을 담기 전에 \"이미 담은 무게\"만 검사해요. 그래서 무게 9인 보물을 담아 22가 된 뒤에야 멈추고, 800이 아니라 1500을 return 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "5번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if weight_sum + t[0] > limit:",
+      "if weight_sum + t[1] > limit:",
+      "if weight_sum + t[0] >= limit:",
+      "if t[0] > limit:"
+     ],
+     "answer": 0,
+     "explain": "이번 보물을 담았을 때의 무게(weight_sum + t[0])가 limit를 넘는지 먼저 확인해야 해요. t[1]은 가치라서 무게 검사에 쓰면 안 되고, >= 를 쓰면 무게가 딱 맞는 보물(예시 2)도 못 담아요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 limit = 30, treasures = [[10, 100], [25, 900], [5, 50]]을 넣으면 무엇을 return 할까요?",
+     "a": "100",
+     "check": "def answers():\n    def solution(limit, treasures):\n        weight_sum = 0\n        value_sum = 0\n        for t in treasures:\n            if weight_sum + t[0] > limit:\n                break\n            weight_sum += t[0]\n            value_sum += t[1]\n        return value_sum\n    return [solution(30, [[10, 100], [25, 900], [5, 50]])]",
+     "explain": "두 번째 보물을 담으면 무게가 35가 되어 탐험을 끝내요. 세 번째 보물(무게 5)은 담을 수 있어 보여도 이미 끝났으니 가치 합은 100이에요."
+    }
+   ],
+   "explain": "담기 전에 \"이번 보물을 담으면 무게가 넘는지(weight_sum + t[0] > limit)\"를 먼저 확인해야 해요. 이미 담은 무게만 검사하면 넘치는 보물까지 담고 나서 멈춰요. 2차원 리스트에서 무게는 t[0], 가치는 t[1]이라는 점도 헷갈리지 않아야 해요."
+  },
+  {
+   "id": "pyb-t05-d",
+   "version": 1,
+   "title": "차단되기 전까지 꽂은 제품",
+   "statement": "교실 멀티탭에 전기 제품을 정해진 순서대로 하나씩 꽂으려 합니다. 꽂힌 제품들의 소비 전력 합이 차단 기준 `limit`(W) **이상**이 되면 멀티탭의 전원이 차단됩니다.\n\n그래서 어떤 제품을 꽂으면 소비 전력 합이 `limit` 이상이 될 때, 그 제품은 꽂지 않고 거기서 멈춥니다. 뒤에 남은 제품도 꽂지 않습니다.\n- 예를 들어 차단 기준이 2000W이고 제품의 소비 전력이 차례대로 [800, 700, 500, 100]W라면, 두 제품을 꽂았을 때 1500W입니다. 세 번째 제품을 꽂으면 2000W로 차단 기준 이상이 되므로 멈춥니다. 따라서 꽂은 제품은 2개입니다.\n\n차단 기준 `limit`와 꽂을 순서대로 제품의 소비 전력을 담은 리스트 `watts`가 매개변수로 주어질 때, 꽂은 제품의 수를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "limit는 차단 기준(W)이며, 1 이상 5000 이하인 자연수입니다.",
+    "watts의 길이는 1 이상 20 이하입니다.",
+    "watts의 원소는 각 제품의 소비 전력(W)이며, 1 이상 2000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "전원이 차단되지 않도록 꽂은 제품의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "limit",
+    "watts"
+   ],
+   "examples": [
+    {
+     "args": [
+      2000,
+      [
+       800,
+       700,
+       500,
+       100
+      ]
+     ],
+     "expected": 2,
+     "explain": "800 + 700 = 1500W까지 꽂습니다. 500W 제품을 꽂으면 2000W로 차단 기준과 같아지므로(이상) 멈춥니다."
+    },
+    {
+     "args": [
+      3000,
+      [
+       1200,
+       900,
+       600,
+       400
+      ]
+     ],
+     "expected": 3,
+     "explain": "1200 + 900 + 600 = 2700W는 3000W보다 작으므로 괜찮습니다. 400W 제품을 꽂으면 3100W가 되어 멈춥니다."
+    }
+   ],
+   "code": "def solution(limit, watts):\n    total = 0\n    count = 0\n    for w in watts:\n        if total >= limit:\n            break\n        total += w\n        count += 1\n    return count",
+   "bugLine": 5,
+   "solution": "def solution(limit, watts):\n    total = 0\n    count = 0\n    for w in watts:\n        if total + w >= limit:\n            break\n        total += w\n        count += 1\n    return count",
+   "tests": [
+    {
+     "args": [
+      1,
+      [
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2,
+      [
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      5000,
+      [
+       2000,
+       2000,
+       999
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      5000,
+      [
+       2000,
+       2000,
+       1000
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      3000,
+      [
+       500,
+       500,
+       500,
+       500,
+       500
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      3000,
+      [
+       500,
+       500,
+       500,
+       500,
+       500,
+       500
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      4000,
+      [
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200
+      ]
+     ],
+     "expected": 19
+    },
+    {
+     "args": [
+      5000,
+      [
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200,
+       200
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      1500,
+      [
+       700,
+       900,
+       100,
+       100
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2200,
+      [
+       1800,
+       300,
+       99
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      1000,
+      [
+       1001,
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      10,
+      [
+       3,
+       3,
+       3,
+       1
+      ]
+     ],
+     "expected": 3
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(limit, watts):\n    return isinstance(limit, int) and 1 <= limit <= 5000 and isinstance(watts, list) and 1 <= len(watts) <= 20 and all(isinstance(x, int) and 1 <= x <= 2000 for x in watts)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "차단 기준이 2000W이고 지금 1500W만큼 꽂혀 있어요. 500W 제품을 꽂아도 될까요?",
+     "options": [
+      "안 된다. 합이 2000W로 기준 이상이 된다",
+      "된다. 합이 2000W로 기준을 넘지는 않는다",
+      "된다. 꽂은 다음에 멈추면 된다"
+     ],
+     "answer": 0,
+     "explain": "\"이상\"은 같은 값도 포함해요. 합이 2000W가 되는 순간 차단되므로 꽂으면 안 돼요. 꽂은 뒤의 합이 limit보다 작아야만 꽂을 수 있어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 limit = 2000, watts = [800, 700, 500, 100]을 따라가 보세요. if 검사는 바로 위 줄의 total(처음엔 0)로 해요. break로 멈춘 줄은 total과 count가 그대로예요.",
+     "columns": [
+      "w",
+      "total >= limit",
+      "반복 뒤 total",
+      "반복 뒤 count"
+     ],
+     "rows": [
+      [
+       "800",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "800"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "700",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1500"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "500",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2000"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "100",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "2000"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    limit = 2000\n    total = 0\n    count = 0\n    out = []\n    for w in [800, 700, 500, 100]:\n        stop = total >= limit\n        if not stop:\n            total += w\n            count += 1\n        out += [stop, total, count]\n        if stop:\n            break\n    return out",
+     "explain": "틀린 코드는 꽂기 전에 \"지금까지의 합\"만 검사해요. 그래서 500W 제품을 꽂아 2000W가 된 뒤에야 멈추고, 2가 아니라 3을 return 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "5번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if total + w >= limit:",
+      "if total + w > limit:",
+      "if total > limit:",
+      "if w >= limit:"
+     ],
+     "answer": 0,
+     "explain": "꽂은 뒤의 합(total + w)이 limit 이상인지 먼저 확인해요. > 를 쓰면 합이 딱 limit가 되는 경우(예시 1의 세 번째 제품)를 놓쳐요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 limit = 1000, watts = [1000, 1]을 넣으면 무엇을 return 할까요?",
+     "a": "0",
+     "check": "def answers():\n    def solution(limit, watts):\n        total = 0\n        count = 0\n        for w in watts:\n            if total + w >= limit:\n                break\n            total += w\n            count += 1\n        return count\n    return [solution(1000, [1000, 1])]",
+     "explain": "첫 제품만 꽂아도 합이 1000W로 기준 이상이라 바로 멈춰요. 뒤에 1W 제품이 있어도 순서대로만 꽂으니 0개예요."
+    }
+   ],
+   "explain": "꽂기 전에 \"꽂은 뒤의 합이 limit 이상이 되는지(total + w >= limit)\"를 먼저 확인해야 해요. 문제의 \"이상\"은 같은 값을 포함하므로 >= 를 써요. 지금까지의 합만 검사하면 차단되는 제품까지 꽂은 것으로 세게 돼요."
+  },
+  {
+   "id": "pyb-t05-e",
+   "version": 1,
+   "title": "드론에 실을 택배",
+   "statement": "배송 드론 한 대에 택배를 접수된 순서대로 싣습니다. 드론에는 택배를 최대 `max_count`개까지 실을 수 있고, 실은 택배의 무게 합은 `limit`(kg)를 넘으면 안 됩니다. 무게 합이 `limit`와 같은 것은 괜찮습니다.\n\n이미 `max_count`개를 실었거나, 다음 택배를 실으면 무게 합이 `limit`를 넘게 될 때는 그 택배를 싣지 않고 싣기를 멈춥니다. 뒤에 남은 택배도 싣지 않습니다.\n\n최대 개수 `max_count`, 무게 제한 `limit`, 접수된 순서대로 택배의 무게를 담은 리스트 `parcels`가 매개변수로 주어질 때, 실은 택배의 수와 무게 합을 [개수, 무게 합] 형태로 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "max_count는 1 이상 10 이하인 자연수입니다.",
+    "limit는 무게 제한(kg)이며, 1 이상 100 이하인 자연수입니다.",
+    "parcels의 길이는 1 이상 20 이하입니다.",
+    "parcels의 원소는 각 택배의 무게(kg)이며, 1 이상 50 이하인 자연수입니다."
+   ],
+   "returns": [
+    "[실은 택배의 수, 실은 택배의 무게 합]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "max_count",
+    "limit",
+    "parcels"
+   ],
+   "examples": [
+    {
+     "args": [
+      4,
+      10,
+      [
+       3,
+       4,
+       5,
+       1,
+       1
+      ]
+     ],
+     "expected": [
+      2,
+      7
+     ],
+     "explain": "3 + 4 = 7kg까지 싣습니다. 5kg 택배를 실으면 12kg이 되어 limit를 넘으므로 멈춥니다."
+    },
+    {
+     "args": [
+      3,
+      20,
+      [
+       5,
+       6,
+       2,
+       4
+      ]
+     ],
+     "expected": [
+      3,
+      13
+     ],
+     "explain": "5 + 6 + 2 = 13kg으로 3개를 실으면 최대 개수를 채웠으므로 멈춥니다."
+    },
+    {
+     "args": [
+      5,
+      15,
+      [
+       4,
+       6,
+       5,
+       3
+      ]
+     ],
+     "expected": [
+      3,
+      15
+     ],
+     "explain": "4 + 6 + 5 = 15kg은 limit와 같으므로 괜찮습니다. 3kg 택배를 실으면 18kg이 되어 멈춥니다."
+    }
+   ],
+   "code": "def solution(max_count, limit, parcels):\n    count = 0\n    total = 0\n    for p in parcels:\n        if count == max_count or total > limit:\n            break\n        total += p\n        count += 1\n    return [count, total]",
+   "bugLine": 5,
+   "solution": "def solution(max_count, limit, parcels):\n    count = 0\n    total = 0\n    for p in parcels:\n        if count == max_count or total + p > limit:\n            break\n        total += p\n        count += 1\n    return [count, total]",
+   "tests": [
+    {
+     "args": [
+      1,
+      1,
+      [
+       1
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      1,
+      1,
+      [
+       2
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      1,
+      50,
+      [
+       10,
+       10
+      ]
+     ],
+     "expected": [
+      1,
+      10
+     ]
+    },
+    {
+     "args": [
+      10,
+      100,
+      [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     ],
+     "expected": [
+      10,
+      100
+     ]
+    },
+    {
+     "args": [
+      10,
+      100,
+      [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     ],
+     "expected": [
+      10,
+      100
+     ]
+    },
+    {
+     "args": [
+      10,
+      99,
+      [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     ],
+     "expected": [
+      9,
+      90
+     ]
+    },
+    {
+     "args": [
+      5,
+      100,
+      [
+       50,
+       50,
+       1
+      ]
+     ],
+     "expected": [
+      2,
+      100
+     ]
+    },
+    {
+     "args": [
+      3,
+      30,
+      [
+       10,
+       25,
+       5,
+       5,
+       5
+      ]
+     ],
+     "expected": [
+      1,
+      10
+     ]
+    },
+    {
+     "args": [
+      2,
+      100,
+      [
+       40,
+       30,
+       20
+      ]
+     ],
+     "expected": [
+      2,
+      70
+     ]
+    },
+    {
+     "args": [
+      4,
+      20,
+      [
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     ],
+     "expected": [
+      4,
+      20
+     ]
+    },
+    {
+     "args": [
+      10,
+      10,
+      [
+       20,
+       1,
+       1
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      6,
+      50,
+      [
+       8,
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     ],
+     "expected": [
+      5,
+      50
+     ]
+    },
+    {
+     "args": [
+      3,
+      100,
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": [
+      3,
+      3
+     ]
+    },
+    {
+     "args": [
+      10,
+      100,
+      [
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50
+      ]
+     ],
+     "expected": [
+      2,
+      100
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(max_count, limit, parcels):\n    return isinstance(max_count, int) and 1 <= max_count <= 10 and isinstance(limit, int) and 1 <= limit <= 100 and isinstance(parcels, list) and 1 <= len(parcels) <= 20 and all(isinstance(x, int) and 1 <= x <= 50 for x in parcels)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "max_count = 3, limit = 20이고 지금 택배 3개(13kg)를 실었어요. 다음 택배가 2kg이면 어떻게 할까요?",
+     "options": [
+      "싣지 않고 멈춘다(이미 3개를 실었다)",
+      "싣는다(15kg은 20kg을 넘지 않는다)",
+      "싣고 나서 멈춘다"
+     ],
+     "answer": 0,
+     "explain": "두 조건을 모두 지켜야 실을 수 있어요. 무게는 괜찮아도 이미 최대 개수만큼 실었으니 멈춰요. \"둘 중 하나라도 어기면\"은 파이썬에서 or로 이어 써요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 max_count = 4, limit = 10, parcels = [3, 4, 5, 1, 1]을 따라가 보세요. \"멈춤 조건\"은 5번째 줄 if 식 전체의 값(True/False)이에요. break로 멈춘 줄은 값이 그대로예요.",
+     "columns": [
+      "p",
+      "검사 때 [count, total]",
+      "멈춤 조건",
+      "반복 뒤 [count, total]"
+     ],
+     "rows": [
+      [
+       "3",
+       "[0, 0]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[1, 3]"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "[1, 3]"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[2, 7]"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "[2, 7]"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[3, 12]"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "[3, 12]"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[3, 12]"
+       }
+      ]
+     ],
+     "check": "def answers():\n    max_count, limit = 4, 10\n    count = 0\n    total = 0\n    out = []\n    for i, p in enumerate([3, 4, 5, 1, 1]):\n        if i > 0:\n            out.append([count, total])\n        stop = count == max_count or total > limit\n        out.append(stop)\n        if not stop:\n            total += p\n            count += 1\n        out.append([count, total])\n        if stop:\n            break\n    return out",
+     "explain": "틀린 코드는 싣기 전에 \"이미 실은 무게\"만 보기 때문에, 5kg 택배를 실어 12kg이 된 뒤에야 멈춰요. 그래서 [2, 7]이 아니라 [3, 12]를 return 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "5번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if count == max_count or total + p > limit:",
+      "if count == max_count and total + p > limit:",
+      "if count + 1 == max_count or total + p > limit:",
+      "if count == max_count or total + p >= limit:"
+     ],
+     "answer": 0,
+     "explain": "개수 조건은 그대로 두고, 무게 조건만 \"이번 택배를 실었을 때(total + p)\"로 바꿔요. and로 쓰면 두 조건이 동시에 맞을 때만 멈추고, >= 를 쓰면 무게가 딱 맞는 경우(예시 3)도 못 실어요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 max_count = 3, limit = 30, parcels = [10, 25, 5, 5]를 넣으면 무엇을 return 할까요? 리스트 모양으로 써 주세요.",
+     "a": "[1, 10]",
+     "check": "def answers():\n    def solution(max_count, limit, parcels):\n        count = 0\n        total = 0\n        for p in parcels:\n            if count == max_count or total + p > limit:\n                break\n            total += p\n            count += 1\n        return [count, total]\n    return [solution(3, 30, [10, 25, 5, 5])]",
+     "explain": "25kg 택배를 실으면 35kg이 되어 멈춰요. 뒤의 5kg 택배들은 실을 수 있어 보여도 순서대로만 싣기 때문에 [1, 10]이에요."
+    }
+   ],
+   "explain": "멈춤 조건이 두 개일 때는 or로 이어서 하나라도 맞으면 멈춰요. 개수 조건은 \"이미 max_count개인지\" 보면 되지만, 무게 조건은 이번 택배를 실었을 때(total + p)로 미리 확인해야 해요. 틀린 코드는 무게가 넘친 뒤에야 멈춰서 택배를 하나 더 실어요."
+  }
+ ]
+}

@@ -1,0 +1,3556 @@
+{
+ "course": "pya",
+ "type": 7,
+ "typeTitle": "조건문 고치기",
+ "kind": "fix",
+ "skills": [
+  "그래프 탐색(DFS)",
+  "재귀 함수",
+  "방문 표시 리스트",
+  "참/거짓 조건",
+  "보조 함수 나누기"
+ ],
+ "intro": "여러 보조 함수로 나뉜 프로그램에서 참/거짓을 판단하는 조건문 한 줄이 뒤집힌 곳을 찾아 고칩니다. 재귀로 이어진 대상을 찾아 방문 표시를 하고, 표시된 결과에서 원하는 것만 골라내는 흐름을 익혀요.",
+ "problems": [
+  {
+   "id": "pya-t07-a",
+   "version": 1,
+   "title": "소식을 듣지 못한 회원",
+   "statement": "독서 동아리 회원 n명에게 0번부터 n-1번까지 번호가 붙어 있습니다. `friends[i]`에는 i번 회원이 소식을 전하는 회원들의 번호가 들어 있습니다. 소식은 한쪽 방향으로만 전해지므로, i번이 j번에게 전한다고 해서 j번도 i번에게 전하는 것은 아닙니다.\n\n회장인 0번 회원이 모임 장소가 바뀌었다는 소식을 처음 알게 되었고, 소식을 들은 회원은 자기가 전할 수 있는 회원 모두에게 다시 소식을 전합니다. 끝까지 소식을 듣지 못하는 회원의 번호를 작은 번호부터 차례로 리스트에 담아 return 하려 합니다.\n\nsolution 함수와 func_a, func_b 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "friends는 회원마다 소식을 전하는 회원 번호를 담은 2차원 리스트이며, 길이(회원 수 n)는 2 이상 12 이하입니다.",
+    "friends[i]의 원소는 0 이상 n-1 이하인 정수이고, i 자신은 들어 있지 않으며 같은 번호가 두 번 들어 있지 않습니다.",
+    "friends[i]는 빈 리스트일 수 있습니다."
+   ],
+   "returns": [
+    "소식을 듣지 못하는 회원 번호를 작은 번호부터 담은 리스트를 return 합니다. 모두 소식을 들으면 빈 리스트를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "friends"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        1,
+        2
+       ],
+       [
+        3
+       ],
+       [],
+       [
+        1
+       ],
+       [
+        5
+       ],
+       [
+        4
+       ]
+      ]
+     ],
+     "expected": [
+      4,
+      5
+     ],
+     "explain": "0번 → 1번 → 3번, 0번 → 2번 순서로 소식이 퍼집니다. 4번과 5번은 서로에게만 소식을 전하므로 끝까지 듣지 못해 [4, 5]를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       [
+        1
+       ],
+       [],
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      2
+     ],
+     "explain": "0번은 1번에게만 전합니다. 2번은 0번에게 전할 수는 있지만 2번에게 전하는 회원이 없어서 [2]를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       [
+        2
+       ],
+       [
+        0
+       ],
+       [
+        1
+       ]
+      ]
+     ],
+     "expected": [],
+     "explain": "0번 → 2번 → 1번으로 모두 소식을 들으므로 빈 리스트를 return 합니다."
+    }
+   ],
+   "code": "def func_a(member, friends, heard):\n    heard[member] = True\n    for f in friends[member]:\n        if not heard[f]:\n            func_a(f, friends, heard)\n\ndef func_b(heard):\n    answer = []\n    for i in range(len(heard)):\n        if heard[i]:\n            answer.append(i)\n    return answer\n\ndef solution(friends):\n    heard = [False] * len(friends)\n    func_a(0, friends, heard)\n    return func_b(heard)",
+   "bugLine": 10,
+   "solution": "def func_a(member, friends, heard):\n    heard[member] = True\n    for f in friends[member]:\n        if not heard[f]:\n            func_a(f, friends, heard)\n\ndef func_b(heard):\n    answer = []\n    for i in range(len(heard)):\n        if not heard[i]:\n            answer.append(i)\n    return answer\n\ndef solution(friends):\n    heard = [False] * len(friends)\n    func_a(0, friends, heard)\n    return func_b(heard)",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        1
+       ],
+       []
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       []
+      ]
+     ],
+     "expected": [
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1
+       ],
+       [
+        2
+       ],
+       [
+        3
+       ],
+       [
+        4
+       ],
+       [
+        5
+       ],
+       [
+        6
+       ],
+       [
+        7
+       ],
+       [
+        8
+       ],
+       [
+        9
+       ],
+       [
+        10
+       ],
+       [
+        11
+       ],
+       []
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        2
+       ],
+       [
+        3
+       ],
+       [
+        4
+       ],
+       [
+        5
+       ],
+       [
+        6
+       ],
+       [
+        7
+       ],
+       [
+        8
+       ],
+       [
+        9
+       ],
+       [
+        10
+       ],
+       [
+        11
+       ],
+       [
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       [],
+       [],
+       [],
+       [],
+       []
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        0
+       ],
+       [
+        1
+       ],
+       [
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        3
+       ],
+       [
+        0
+       ],
+       [],
+       [
+        1,
+        2
+       ]
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      [
+       [
+        2
+       ],
+       [
+        0
+       ],
+       [
+        4
+       ],
+       [],
+       [
+        3
+       ],
+       [
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        3
+       ],
+       [],
+       [
+        1
+       ],
+       [
+        2
+       ],
+       [],
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      4
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+       ]
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        3
+       ],
+       [
+        2,
+        3,
+        7
+       ],
+       [
+        5
+       ],
+       [
+        1
+       ],
+       [
+        6,
+        5
+       ],
+       [
+        6
+       ],
+       [],
+       [
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      4
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        7
+       ],
+       [
+        0,
+        7,
+        8
+       ],
+       [
+        7
+       ],
+       [
+        6
+       ],
+       [
+        8,
+        1,
+        10,
+        7,
+        11
+       ],
+       [
+        3,
+        10
+       ],
+       [
+        0
+       ],
+       [
+        4,
+        0,
+        5,
+        2
+       ],
+       [
+        3,
+        6
+       ],
+       [],
+       [],
+       [
+        2,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      9
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       [],
+       [
+        8
+       ],
+       [
+        7,
+        5
+       ],
+       [
+        2,
+        5
+       ],
+       [],
+       [],
+       [],
+       [],
+       []
+      ]
+     ],
+     "expected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ]
+    }
+   ],
+   "inputCheck": "def valid(friends):\n    n = len(friends)\n    if not (2 <= n <= 12):\n        return False\n    for i, row in enumerate(friends):\n        if not isinstance(row, list) or len(set(row)) != len(row):\n            return False\n        for x in row:\n            if not isinstance(x, int) or isinstance(x, bool) or not (0 <= x < n) or x == i:\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 2 `friends = [[1], [], [0]]`에서 2번 회원은 소식을 들을 수 있을까요?",
+     "options": [
+      "듣지 못해요. 누구의 목록에도 2번이 없어서 2번에게 전하는 사람이 없어요.",
+      "들어요. 2번의 목록에 0번이 있으니 0번과 연결되어 있어요.",
+      "들어요. 회장은 모든 회원에게 소식을 전해요."
+     ],
+     "answer": 0,
+     "explain": "friends[i]는 i번이 소식을 \"전하는\" 방향만 알려 줘요. 2번이 들으려면 누군가의 목록에 2가 있어야 하는데, friends[0] = [1]과 friends[1] = []에는 2가 없어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기 (func_a)",
+     "prompt": "friends = [[1, 2], [3], [], [1], [5], [4]]예요. func_a가 불리는 차례대로 member와, 그때 heard[member]를 True로 바꾼 직후 True인 회원 수를 채워 보세요. 재귀(함수가 자기 자신을 다시 부르는 것)에서는 안쪽 호출이 끝나야 바깥 반복이 이어져요.",
+     "columns": [
+      "차례",
+      "member",
+      "True인 회원 수"
+     ],
+     "rows": [
+      [
+       "1",
+       "0",
+       "1"
+      ],
+      [
+       "2",
+       {
+        "a": "1"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "2"
+       },
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    friends = [[1, 2], [3], [], [1], [5], [4]]\n    heard = [False] * 6\n    log = []\n    def func_a(member):\n        heard[member] = True\n        log.append([member, heard.count(True)])\n        for f in friends[member]:\n            if not heard[f]:\n                func_a(f)\n    func_a(0)\n    out = []\n    for m, c in log[1:]:\n        out += [m, c]\n    return out",
+     "explain": "0번은 먼저 1번에게 전하고, 1번이 3번에게 전한 뒤에야 0번의 다음 차례인 2번으로 가요. 3번의 목록에 있는 1번은 이미 들었으니 건너뛰어요. 4번과 5번은 끝까지 불리지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "func_a가 끝나면 heard = [True, True, True, True, False, False]예요. 지금 코드의 func_b(heard)는 무엇을 return 할까요? (리스트 그대로 써 보세요)",
+     "a": "[0, 1, 2, 3]",
+     "alts": [
+      "[0,1,2,3]"
+     ],
+     "check": "def answers():\n    heard = [True, True, True, True, False, False]\n    answer = []\n    for i in range(len(heard)):\n        if heard[i]:\n            answer.append(i)\n    return [answer]",
+     "explain": "지금 코드는 heard[i]가 True인, 즉 소식을 \"들은\" 회원을 모아요. 문제에서 원하는 것은 듣지 못한 회원이라 [4, 5]가 나와야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_b의 `if heard[i]:` → `if not heard[i]:`",
+      "func_a의 `if not heard[f]:` → `if heard[f]:`",
+      "solution의 `heard = [False] * len(friends)` → `heard = [True] * len(friends)`",
+      "func_b의 `answer.append(i)` → `answer.append(i + 1)`"
+     ],
+     "answer": 0,
+     "explain": "func_a는 소식을 바르게 퍼뜨리고 있어요. 고를 대상을 정하는 func_b의 조건에 not을 붙이면 heard[i]가 False인(듣지 못한) 회원만 담겨요. func_a의 조건을 바꾸면 소식이 0번에서 멈춰요."
+    }
+   ],
+   "explain": "func_a는 재귀로 소식을 퍼뜨리며 들은 회원을 heard에 True로 표시하고, func_b는 그중 원하는 회원만 골라 담아요. 조건에 not이 있고 없고에 따라 고르는 대상이 정반대가 되니, 문제에서 \"들은\" 회원과 \"듣지 못한\" 회원 중 무엇을 원하는지 꼭 확인하세요."
+  },
+  {
+   "id": "pya-t07-b",
+   "version": 1,
+   "title": "편의점이 있는 섬",
+   "statement": "바다에 1번부터 n번까지 번호가 붙은 섬 n개가 있고, 일부 섬 사이에는 다리가 놓여 있습니다. 다리는 양쪽 방향으로 모두 건널 수 있습니다. `bridges`의 원소 `[a, b]`는 a번 섬과 b번 섬을 잇는 다리를 뜻하고, `stores`에는 편의점이 있는 섬의 번호가 들어 있습니다.\n\n여행자가 1번 섬에서 출발해 다리만 건너서 갈 수 있는 섬(1번 섬 포함) 가운데, 편의점이 있는 섬의 수를 return 하려 합니다.\n\nsolution 함수와 func_a, func_b, func_c 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "n은 섬의 수이며 2 이상 20 이하인 정수입니다.",
+    "bridges의 길이는 1 이상 30 이하이고, 원소 [a, b]는 1 ≤ a < b ≤ n 인 정수 2개입니다. 같은 다리가 두 번 들어 있지 않습니다.",
+    "stores의 길이는 0 이상 n 이하이고, 원소는 1 이상 n 이하인 서로 다른 정수입니다."
+   ],
+   "returns": [
+    "1번 섬에서 갈 수 있는 섬(1번 섬 포함) 중 편의점이 있는 섬의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "n",
+    "bridges",
+    "stores"
+   ],
+   "examples": [
+    {
+     "args": [
+      6,
+      [
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        1,
+        6
+       ]
+      ],
+      [
+       1,
+       3,
+       4,
+       6
+      ]
+     ],
+     "expected": 3,
+     "explain": "1번 섬에서 2번·3번·6번 섬으로 갈 수 있습니다. 이 중 편의점이 있는 섬은 1번·3번·6번이므로 3을 return 합니다. 4번 섬에도 편의점이 있지만 갈 수 없습니다."
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ]
+      ],
+      [
+       2,
+       3
+      ]
+     ],
+     "expected": 0,
+     "explain": "1번 섬과 이어진 다리가 없어 1번 섬에만 머뭅니다. 1번 섬에는 편의점이 없으므로 0을 return 합니다."
+    }
+   ],
+   "code": "def func_a(n, bridges):\n    graph = [[False] * (n + 1) for _ in range(n + 1)]\n    for a, b in bridges:\n        graph[a][b] = True\n        graph[b][a] = True\n    return graph\n\ndef func_b(now, graph, visited):\n    visited[now] = True\n    for nxt in range(1, len(graph)):\n        if graph[now][nxt] and not visited[nxt]:\n            func_b(nxt, graph, visited)\n\ndef func_c(visited, has_store):\n    answer = 0\n    for i in range(1, len(visited)):\n        if visited[i] and not has_store[i]:\n            answer += 1\n    return answer\n\ndef solution(n, bridges, stores):\n    has_store = [False] * (n + 1)\n    for s in stores:\n        has_store[s] = True\n    graph = func_a(n, bridges)\n    visited = [False] * (n + 1)\n    func_b(1, graph, visited)\n    return func_c(visited, has_store)",
+   "bugLine": 17,
+   "solution": "def func_a(n, bridges):\n    graph = [[False] * (n + 1) for _ in range(n + 1)]\n    for a, b in bridges:\n        graph[a][b] = True\n        graph[b][a] = True\n    return graph\n\ndef func_b(now, graph, visited):\n    visited[now] = True\n    for nxt in range(1, len(graph)):\n        if graph[now][nxt] and not visited[nxt]:\n            func_b(nxt, graph, visited)\n\ndef func_c(visited, has_store):\n    answer = 0\n    for i in range(1, len(visited)):\n        if visited[i] and has_store[i]:\n            answer += 1\n    return answer\n\ndef solution(n, bridges, stores):\n    has_store = [False] * (n + 1)\n    for s in stores:\n        has_store[s] = True\n    graph = func_a(n, bridges)\n    visited = [False] * (n + 1)\n    func_b(1, graph, visited)\n    return func_c(visited, has_store)",
+   "tests": [
+    {
+     "args": [
+      2,
+      [
+       [
+        1,
+        2
+       ]
+      ],
+      []
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        1,
+        2
+       ]
+      ],
+      [
+       1,
+       2
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        1,
+        2
+       ]
+      ],
+      [
+       2
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ],
+       [
+        14,
+        15
+       ],
+       [
+        15,
+        16
+       ],
+       [
+        16,
+        17
+       ],
+       [
+        17,
+        18
+       ],
+       [
+        18,
+        19
+       ],
+       [
+        19,
+        20
+       ]
+      ],
+      [
+       20,
+       19,
+       18,
+       17,
+       16,
+       15,
+       14,
+       13,
+       12,
+       11,
+       10,
+       9,
+       8,
+       7,
+       6,
+       5,
+       4,
+       3,
+       2,
+       1
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ],
+       [
+        14,
+        15
+       ],
+       [
+        15,
+        16
+       ],
+       [
+        16,
+        17
+       ],
+       [
+        17,
+        18
+       ],
+       [
+        18,
+        19
+       ],
+       [
+        19,
+        20
+       ]
+      ],
+      [
+       1,
+       5,
+       9
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        1,
+        3
+       ],
+       [
+        4,
+        5
+       ]
+      ],
+      [
+       4,
+       5
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        1,
+        5
+       ],
+       [
+        2,
+        5
+       ],
+       [
+        3,
+        4
+       ]
+      ],
+      [
+       5,
+       3
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      8,
+      [
+       [
+        1,
+        2
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ]
+      ],
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        2,
+        9
+       ],
+       [
+        3,
+        7
+       ],
+       [
+        3,
+        5
+       ],
+       [
+        1,
+        7
+       ],
+       [
+        2,
+        6
+       ],
+       [
+        5,
+        8
+       ],
+       [
+        7,
+        9
+       ],
+       [
+        4,
+        9
+       ],
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       2,
+       9,
+       10,
+       1,
+       5,
+       7,
+       3,
+       4,
+       6,
+       8
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        6,
+        10
+       ],
+       [
+        1,
+        8
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        3,
+        9
+       ],
+       [
+        8,
+        10
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        1,
+        5
+       ],
+       [
+        3,
+        11
+       ]
+      ],
+      [
+       3,
+       6,
+       9
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        7,
+        11
+       ],
+       [
+        3,
+        16
+       ],
+       [
+        4,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        10,
+        13
+       ],
+       [
+        18,
+        20
+       ],
+       [
+        3,
+        7
+       ],
+       [
+        10,
+        19
+       ],
+       [
+        3,
+        15
+       ],
+       [
+        4,
+        11
+       ],
+       [
+        13,
+        19
+       ],
+       [
+        3,
+        6
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        4,
+        9
+       ],
+       [
+        7,
+        10
+       ],
+       [
+        1,
+        19
+       ],
+       [
+        1,
+        17
+       ],
+       [
+        6,
+        10
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        15,
+        17
+       ],
+       [
+        10,
+        15
+       ],
+       [
+        9,
+        18
+       ],
+       [
+        5,
+        19
+       ],
+       [
+        4,
+        19
+       ],
+       [
+        13,
+        15
+       ],
+       [
+        7,
+        19
+       ],
+       [
+        9,
+        15
+       ],
+       [
+        17,
+        20
+       ],
+       [
+        11,
+        16
+       ],
+       [
+        8,
+        20
+       ]
+      ],
+      [
+       14,
+       19,
+       15,
+       12,
+       13,
+       11
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        2,
+        11
+       ],
+       [
+        2,
+        5
+       ],
+       [
+        2,
+        7
+       ],
+       [
+        6,
+        9
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        9,
+        12
+       ],
+       [
+        4,
+        10
+       ],
+       [
+        6,
+        12
+       ],
+       [
+        9,
+        15
+       ],
+       [
+        2,
+        9
+       ],
+       [
+        10,
+        14
+       ],
+       [
+        11,
+        13
+       ]
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        4,
+        6
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        3,
+        5
+       ],
+       [
+        1,
+        3
+       ]
+      ],
+      [
+       5,
+       4,
+       1
+      ]
+     ],
+     "expected": 3
+    }
+   ],
+   "inputCheck": "def valid(n, bridges, stores):\n    if not (isinstance(n, int) and 2 <= n <= 20):\n        return False\n    if not (1 <= len(bridges) <= 30):\n        return False\n    seen = set()\n    for e in bridges:\n        if not (isinstance(e, list) and len(e) == 2 and all(isinstance(v, int) for v in e)):\n            return False\n        a, b = e\n        if not (1 <= a < b <= n) or (a, b) in seen:\n            return False\n        seen.add((a, b))\n    if not (0 <= len(stores) <= n) or len(set(stores)) != len(stores):\n        return False\n    return all(isinstance(s, int) and 1 <= s <= n for s in stores)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "출발한 1번 섬에 편의점이 있다면 어떻게 셀까요?",
+     "options": [
+      "센다. 1번 섬도 \"갈 수 있는 섬\"에 포함된다.",
+      "세지 않는다. 다리를 한 번 이상 건너야 센다.",
+      "갈 수 있든 없든 편의점이 있는 섬은 모두 센다."
+     ],
+     "answer": 0,
+     "explain": "문제에 \"1번 섬 포함\"이라고 했어요. 그리고 다리로 갈 수 없는 섬은 편의점이 있어도 세지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기 (지금 코드의 func_c)",
+     "prompt": "func_b가 끝난 뒤의 visited[i]와, 지금 코드의 조건 `visited[i] and not has_store[i]` 결과를 채워 보세요. 두 리스트는 섬 번호를 그대로 인덱스(칸 번호)로 쓰려고 n+1칸을 만들고 0번 칸은 쓰지 않아요.",
+     "columns": [
+      "i",
+      "visited[i]",
+      "has_store[i]",
+      "지금 조건 결과"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "True",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "False",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "True",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       "True",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       "False",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "True",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    n, bridges, stores = 6, [[1, 2], [2, 3], [4, 5], [1, 6]], [1, 3, 4, 6]\n    graph = [[False] * (n + 1) for _ in range(n + 1)]\n    for a, b in bridges:\n        graph[a][b] = True\n        graph[b][a] = True\n    visited = [False] * (n + 1)\n    def func_b(now):\n        visited[now] = True\n        for nxt in range(1, n + 1):\n            if graph[now][nxt] and not visited[nxt]:\n                func_b(nxt)\n    func_b(1)\n    has_store = [False] * (n + 1)\n    for s in stores:\n        has_store[s] = True\n    out = []\n    for i in range(1, n + 1):\n        out += [visited[i], visited[i] and not has_store[i]]\n    return out",
+     "explain": "1·2·3·6번 섬은 갈 수 있어서 visited가 True예요. 지금 조건은 \"갈 수 있고 편의점이 없는\" 섬인 2번만 True가 되어 1을 세요. 우리가 원하는 것은 1·3·6번이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 `if visited[i] and not has_store[i]:` → `if visited[i] and has_store[i]:`",
+      "func_c의 `if visited[i] and not has_store[i]:` → `if not visited[i] and not has_store[i]:`",
+      "solution의 `has_store[s] = True` → `has_store[s] = False`",
+      "func_b의 `if graph[now][nxt] and not visited[nxt]:` → `if graph[now][nxt] and visited[nxt]:`"
+     ],
+     "answer": 0,
+     "explain": "갈 수 있다(visited[i])와 편의점이 있다(has_store[i])가 둘 다 참인 섬을 세야 해요. 3번처럼 바꾸면 모든 섬이 편의점 없음이 되고, 4번처럼 바꾸면 1번 섬에서 더 나아가지 못해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에서 `n = 4, bridges = [[1, 2], [3, 4]], stores = [3, 4]`이면 return 값은 얼마일까요?",
+     "a": "0",
+     "check": "def func_a(n, bridges):\n    graph = [[False] * (n + 1) for _ in range(n + 1)]\n    for a, b in bridges:\n        graph[a][b] = True\n        graph[b][a] = True\n    return graph\n\ndef func_b(now, graph, visited):\n    visited[now] = True\n    for nxt in range(1, len(graph)):\n        if graph[now][nxt] and not visited[nxt]:\n            func_b(nxt, graph, visited)\n\ndef func_c(visited, has_store):\n    answer = 0\n    for i in range(1, len(visited)):\n        if visited[i] and has_store[i]:\n            answer += 1\n    return answer\n\ndef solution(n, bridges, stores):\n    has_store = [False] * (n + 1)\n    for s in stores:\n        has_store[s] = True\n    graph = func_a(n, bridges)\n    visited = [False] * (n + 1)\n    func_b(1, graph, visited)\n    return func_c(visited, has_store)\n\ndef answers():\n    return [solution(4, [[1, 2], [3, 4]], [3, 4])]",
+     "explain": "1번 섬에서는 2번 섬까지만 갈 수 있어요. 3·4번 섬에 편의점이 있지만 갈 수 없으니 0이에요."
+    }
+   ],
+   "explain": "func_a는 다리를 표(인접 행렬)로 만들고, func_b는 재귀로 갈 수 있는 섬에 visited 표시를 하며, func_c는 표시된 섬 중 조건에 맞는 섬을 셉니다. and로 이은 두 조건 중 하나에 not이 잘못 붙으면 정반대의 섬을 세게 되니, 조건의 각 부분을 문제 문장과 하나씩 맞춰 보세요."
+  },
+  {
+   "id": "pya-t07-c",
+   "version": 1,
+   "title": "백신이 설치된 컴퓨터",
+   "statement": "한 사무실에 0번부터 n-1번까지 번호가 붙은 컴퓨터 n대가 있고, 일부 컴퓨터는 케이블로 이어져 있습니다. `cables`의 원소 `[a, b]`는 a번과 b번 컴퓨터가 케이블로 이어져 있다는 뜻입니다. `start`번 컴퓨터가 처음 바이러스에 감염되었고, 감염된 컴퓨터는 케이블로 이어진 컴퓨터에 바이러스를 옮깁니다.\n\n단, `vaccine`에 번호가 들어 있는 컴퓨터에는 백신이 설치되어 있어 감염되지 않습니다. 감염되지 않으므로 다른 컴퓨터에 바이러스를 옮기지도 않습니다. 최종적으로 감염되는 컴퓨터의 수(start번 포함)를 return 하려 합니다.\n\nsolution 함수와 func_a, func_b, func_c 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "n은 컴퓨터의 수이며 2 이상 20 이하인 정수입니다.",
+    "cables의 길이는 1 이상 30 이하이고, 원소 [a, b]는 0 ≤ a < b ≤ n-1 인 정수 2개입니다. 같은 원소가 두 번 들어 있지 않습니다.",
+    "vaccine의 길이는 0 이상 n-1 이하이고, 원소는 0 이상 n-1 이하인 서로 다른 정수입니다.",
+    "start는 0 이상 n-1 이하인 정수이며, vaccine에 들어 있지 않습니다."
+   ],
+   "returns": [
+    "감염되는 컴퓨터의 수(start번 포함)를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "n",
+    "cables",
+    "vaccine",
+    "start"
+   ],
+   "examples": [
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        4,
+        5
+       ]
+      ],
+      [
+       4
+      ],
+      0
+     ],
+     "expected": 4,
+     "explain": "0번 → 1번 → 2번 → 3번 순서로 감염됩니다. 4번은 백신이 있어 감염되지 않고, 4번을 거쳐야만 닿는 5번도 감염되지 않으므로 4를 return 합니다."
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      [
+       0
+      ],
+      3
+     ],
+     "expected": 2,
+     "explain": "3번 → 2번이 감염되지만 0번은 백신이 있어 막힙니다. 1번은 0번을 거쳐야만 닿을 수 있어 감염되지 않으므로 2를 return 합니다."
+    }
+   ],
+   "code": "def func_a(n, cables):\n    graph = [[False] * n for _ in range(n)]\n    for a, b in cables:\n        graph[a][b] = True\n        graph[b][a] = True\n    return graph\n\ndef func_b(num, infected, safe):\n    if infected[num]:\n        return False\n    if not safe[num]:\n        return False\n    return True\n\ndef func_c(now, graph, infected, safe):\n    infected[now] = True\n    for nxt in range(len(graph)):\n        if graph[now][nxt] and func_b(nxt, infected, safe):\n            func_c(nxt, graph, infected, safe)\n\ndef solution(n, cables, vaccine, start):\n    safe = [False] * n\n    for v in vaccine:\n        safe[v] = True\n    graph = func_a(n, cables)\n    infected = [False] * n\n    func_c(start, graph, infected, safe)\n    return infected.count(True)",
+   "bugLine": 11,
+   "solution": "def func_a(n, cables):\n    graph = [[False] * n for _ in range(n)]\n    for a, b in cables:\n        graph[a][b] = True\n        graph[b][a] = True\n    return graph\n\ndef func_b(num, infected, safe):\n    if infected[num]:\n        return False\n    if safe[num]:\n        return False\n    return True\n\ndef func_c(now, graph, infected, safe):\n    infected[now] = True\n    for nxt in range(len(graph)):\n        if graph[now][nxt] and func_b(nxt, infected, safe):\n            func_c(nxt, graph, infected, safe)\n\ndef solution(n, cables, vaccine, start):\n    safe = [False] * n\n    for v in vaccine:\n        safe[v] = True\n    graph = func_a(n, cables)\n    infected = [False] * n\n    func_c(start, graph, infected, safe)\n    return infected.count(True)",
+   "tests": [
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [],
+      0
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       1
+      ],
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       0
+      ],
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ],
+       [
+        14,
+        15
+       ],
+       [
+        15,
+        16
+       ],
+       [
+        16,
+        17
+       ],
+       [
+        17,
+        18
+       ],
+       [
+        18,
+        19
+       ]
+      ],
+      [],
+      0
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ],
+       [
+        14,
+        15
+       ],
+       [
+        15,
+        16
+       ],
+       [
+        16,
+        17
+       ],
+       [
+        17,
+        18
+       ],
+       [
+        18,
+        19
+       ]
+      ],
+      [
+       10
+      ],
+      15
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        4
+       ],
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       0
+      ],
+      3
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        4
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ]
+      ],
+      [
+       0,
+       1,
+       2,
+       4
+      ],
+      3
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        0,
+        4
+       ]
+      ],
+      [
+       2
+      ],
+      0
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      [],
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        6,
+        8
+       ],
+       [
+        0,
+        4
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        6
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        7,
+        10
+       ],
+       [
+        3,
+        9
+       ],
+       [
+        5,
+        10
+       ],
+       [
+        5,
+        11
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        10
+       ],
+       [
+        8,
+        11
+       ],
+       [
+        9,
+        11
+       ],
+       [
+        0,
+        9
+       ],
+       [
+        4,
+        5
+       ]
+      ],
+      [
+       1,
+       5
+      ],
+      8
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        10,
+        13
+       ],
+       [
+        1,
+        15
+       ],
+       [
+        2,
+        18
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        0,
+        13
+       ],
+       [
+        4,
+        8
+       ],
+       [
+        12,
+        18
+       ],
+       [
+        7,
+        18
+       ],
+       [
+        0,
+        17
+       ],
+       [
+        6,
+        8
+       ],
+       [
+        3,
+        9
+       ],
+       [
+        16,
+        18
+       ],
+       [
+        0,
+        9
+       ],
+       [
+        3,
+        7
+       ],
+       [
+        5,
+        11
+       ],
+       [
+        4,
+        7
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        1,
+        13
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        2,
+        17
+       ],
+       [
+        9,
+        13
+       ],
+       [
+        12,
+        16
+       ],
+       [
+        3,
+        10
+       ],
+       [
+        7,
+        11
+       ],
+       [
+        3,
+        6
+       ],
+       [
+        8,
+        17
+       ],
+       [
+        3,
+        8
+       ],
+       [
+        5,
+        19
+       ],
+       [
+        12,
+        15
+       ],
+       [
+        1,
+        17
+       ]
+      ],
+      [
+       0,
+       11
+      ],
+      9
+     ],
+     "expected": 17
+    },
+    {
+     "args": [
+      9,
+      [
+       [
+        2,
+        7
+       ],
+       [
+        3,
+        8
+       ],
+       [
+        0,
+        7
+       ],
+       [
+        0,
+        6
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        2,
+        5
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        4,
+        5
+       ]
+      ],
+      [
+       3,
+       4,
+       7
+      ],
+      8
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        5,
+        12
+       ],
+       [
+        11,
+        13
+       ],
+       [
+        1,
+        6
+       ],
+       [
+        12,
+        14
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        1,
+        3
+       ],
+       [
+        4,
+        7
+       ],
+       [
+        1,
+        8
+       ],
+       [
+        8,
+        11
+       ],
+       [
+        0,
+        5
+       ],
+       [
+        4,
+        11
+       ],
+       [
+        3,
+        14
+       ],
+       [
+        2,
+        13
+       ],
+       [
+        4,
+        9
+       ]
+      ],
+      [
+       4,
+       11,
+       9,
+       5
+      ],
+      0
+     ],
+     "expected": 1
+    }
+   ],
+   "inputCheck": "def valid(n, cables, vaccine, start):\n    if not (isinstance(n, int) and 2 <= n <= 20):\n        return False\n    if not (1 <= len(cables) <= 30):\n        return False\n    seen = set()\n    for e in cables:\n        if not (isinstance(e, list) and len(e) == 2 and all(isinstance(v, int) for v in e)):\n            return False\n        a, b = e\n        if not (0 <= a < b <= n - 1) or (a, b) in seen:\n            return False\n        seen.add((a, b))\n    if not (0 <= len(vaccine) <= n - 1) or len(set(vaccine)) != len(vaccine):\n        return False\n    if not all(isinstance(v, int) and 0 <= v <= n - 1 for v in vaccine):\n        return False\n    return isinstance(start, int) and 0 <= start <= n - 1 and start not in vaccine",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "백신이 설치된 컴퓨터에 대한 설명으로 옳은 것은?",
+     "options": [
+      "감염되지 않고, 그 컴퓨터를 거쳐서 바이러스가 퍼지지도 않는다.",
+      "감염되지 않지만, 바이러스를 이웃 컴퓨터로 옮길 수는 있다.",
+      "감염은 되지만 감염된 컴퓨터 수에서는 뺀다.",
+      "start번 컴퓨터에도 백신이 설치되어 있을 수 있다."
+     ],
+     "answer": 0,
+     "explain": "감염되지 않은 컴퓨터는 바이러스를 옮기지 못해요. 그래서 백신 컴퓨터는 길을 막는 벽 같은 역할을 해요. start는 vaccine에 들어 있지 않다고 조건에 적혀 있어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "func_b 결과 정리",
+     "prompt": "func_b(num, …)는 \"num번 컴퓨터로 바이러스가 옮아가야 하는가\"를 참(True)/거짓(False)으로 알려 주는 함수예요. 경우마다 바라는 결과와 지금 코드의 결과를 채워 보세요.",
+     "columns": [
+      "infected[num]",
+      "safe[num]",
+      "바라는 결과",
+      "지금 코드 결과"
+     ],
+     "rows": [
+      [
+       "False",
+       "False",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "False",
+       "True",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "True",
+       "False",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    def bad(inf, safe):\n        if inf:\n            return False\n        if not safe:\n            return False\n        return True\n    out = []\n    for inf, safe in [(False, False), (False, True), (True, False)]:\n        out += [not inf and not safe, bad(inf, safe)]\n    return out",
+     "explain": "이미 감염된 컴퓨터나 백신 컴퓨터로는 옮아가면 안 되니, 둘 다 아닐 때만 True여야 해요. 지금 코드는 백신 조건이 뒤집혀서 백신 컴퓨터로만 옮아가요. (백신 컴퓨터는 감염되지 않으니 두 값이 모두 True인 경우는 없어요.)"
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "지금 코드로 예시 1을 실행하면 return 값은 얼마일까요?",
+     "a": "1",
+     "check": "def answers():\n    n, cables, vaccine, start = 6, [[0, 1], [1, 2], [2, 3], [1, 4], [4, 5]], [4], 0\n    graph = [[False] * n for _ in range(n)]\n    for a, b in cables:\n        graph[a][b] = graph[b][a] = True\n    safe = [False] * n\n    for v in vaccine:\n        safe[v] = True\n    infected = [False] * n\n    def ok(x):\n        if infected[x]:\n            return False\n        if not safe[x]:\n            return False\n        return True\n    def go(now):\n        infected[now] = True\n        for nxt in range(n):\n            if graph[now][nxt] and ok(nxt):\n                go(nxt)\n    go(start)\n    return [infected.count(True)]",
+     "explain": "0번과 이어진 1번은 백신이 없어서, 지금 코드의 func_b가 False를 돌려줘요. 그래서 바이러스가 0번에서 멈추고 1을 return 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_b의 `if not safe[num]:` → `if safe[num]:`",
+      "func_c의 `if graph[now][nxt] and func_b(nxt, infected, safe):` → `if graph[now][nxt] and not func_b(nxt, infected, safe):`",
+      "func_b의 `if infected[num]:` → `if not infected[num]:`",
+      "solution의 `safe = [False] * n` → `safe = [True] * n`"
+     ],
+     "answer": 0,
+     "explain": "백신 컴퓨터(safe[num]이 True)일 때 False를 돌려줘야 해요. 2번처럼 바꾸면 이미 감염된 컴퓨터로 다시 들어가 재귀가 끝나지 않고, 3번은 어떤 컴퓨터로도 옮지 않으며, 4번은 모든 컴퓨터를 백신 컴퓨터로 만들어 백신 정보가 사라져요."
+    }
+   ],
+   "explain": "func_b처럼 참/거짓을 돌려주는 보조 함수는 \"언제 True, 언제 False인지\"를 표로 정리해 보면 잘못된 조건이 잘 보여요. 여기서는 감염된 컴퓨터와 백신 컴퓨터 모두 False여야 하는데, 백신 조건에 not이 잘못 붙어 있었어요."
+  },
+  {
+   "id": "pya-t07-d",
+   "version": 1,
+   "title": "단체 사진 이름표",
+   "statement": "한 학교의 학생들은 저마다 대문자 알파벳 한 글자로 된 별명을 가지고 있고, 별명이 같은 학생은 없습니다. 동아리 기록 `records`의 각 원소는 같은 동아리인 학생 두 명의 별명을 이어 붙인 문자열입니다. 예를 들어 \"KC\"는 K와 C가 같은 동아리라는 뜻입니다. 같은 동아리인 학생과 같은 동아리인 학생도 같은 동아리입니다.\n\n별명이 `me`인 학생과 같은 동아리인 학생들이 모두 모여 단체 사진을 찍습니다. 사진에 나오는 학생(me 포함)의 별명을 알파벳 순서로 이어 붙인 문자열을 return 하려 합니다.\n\nsolution 함수와 func_a, func_b, func_c 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "records의 길이는 1 이상 12 이하입니다.",
+    "records의 원소는 서로 다른 대문자 알파벳 두 글자로 된 문자열이며, 두 글자의 순서는 정해져 있지 않습니다.",
+    "me는 대문자 알파벳 한 글자이며, records의 원소 중 적어도 하나에 들어 있습니다."
+   ],
+   "returns": [
+    "me와 같은 동아리인 학생(me 포함)의 별명을 알파벳 순서로 이어 붙인 문자열을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "records",
+    "me"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       "KC",
+       "DA",
+       "CB",
+       "FB",
+       "AE"
+      ],
+      "B"
+     ],
+     "expected": "BCFK",
+     "explain": "B는 C·F와 같은 동아리이고, C는 K와 같은 동아리이므로 B, C, F, K가 모입니다. 알파벳 순서로 이어 붙인 \"BCFK\"를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       "ZY",
+       "XW"
+      ],
+      "W"
+     ],
+     "expected": "WX",
+     "explain": "W와 같은 동아리는 X뿐이므로 \"WX\"를 return 합니다."
+    }
+   ],
+   "code": "ALPHA = 26\n\ndef func_a(records):\n    graph = [[False] * ALPHA for _ in range(ALPHA)]\n    for rec in records:\n        x = ord(rec[0]) - ord('A')\n        y = ord(rec[1]) - ord('A')\n        graph[x][y] = True\n        graph[y][x] = True\n    return graph\n\ndef func_b(now, graph, visited):\n    visited[now] = True\n    for nxt in range(ALPHA):\n        if graph[now][nxt] and not visited[nxt]:\n            func_b(nxt, graph, visited)\n\ndef func_c(visited):\n    answer = ''\n    for i in range(ALPHA):\n        if not visited[i]:\n            answer += chr(i + ord('A'))\n    return answer\n\ndef solution(records, me):\n    graph = func_a(records)\n    visited = [False] * ALPHA\n    func_b(ord(me) - ord('A'), graph, visited)\n    return func_c(visited)",
+   "bugLine": 21,
+   "solution": "ALPHA = 26\n\ndef func_a(records):\n    graph = [[False] * ALPHA for _ in range(ALPHA)]\n    for rec in records:\n        x = ord(rec[0]) - ord('A')\n        y = ord(rec[1]) - ord('A')\n        graph[x][y] = True\n        graph[y][x] = True\n    return graph\n\ndef func_b(now, graph, visited):\n    visited[now] = True\n    for nxt in range(ALPHA):\n        if graph[now][nxt] and not visited[nxt]:\n            func_b(nxt, graph, visited)\n\ndef func_c(visited):\n    answer = ''\n    for i in range(ALPHA):\n        if visited[i]:\n            answer += chr(i + ord('A'))\n    return answer\n\ndef solution(records, me):\n    graph = func_a(records)\n    visited = [False] * ALPHA\n    func_b(ord(me) - ord('A'), graph, visited)\n    return func_c(visited)",
+   "tests": [
+    {
+     "args": [
+      [
+       "AB"
+      ],
+      "A"
+     ],
+     "expected": "AB"
+    },
+    {
+     "args": [
+      [
+       "BA"
+      ],
+      "B"
+     ],
+     "expected": "AB"
+    },
+    {
+     "args": [
+      [
+       "ZA"
+      ],
+      "Z"
+     ],
+     "expected": "AZ"
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "BC",
+       "CD",
+       "DE",
+       "EF",
+       "FG",
+       "GH",
+       "HI",
+       "IJ",
+       "JK",
+       "KL",
+       "LM"
+      ],
+      "G"
+     ],
+     "expected": "ABCDEFGHIJKLM"
+    },
+    {
+     "args": [
+      [
+       "QR",
+       "ST",
+       "TU",
+       "UV",
+       "PQ"
+      ],
+      "S"
+     ],
+     "expected": "STUV"
+    },
+    {
+     "args": [
+      [
+       "KC",
+       "CK",
+       "MN"
+      ],
+      "C"
+     ],
+     "expected": "CK"
+    },
+    {
+     "args": [
+      [
+       "MA",
+       "BM",
+       "MC",
+       "DM"
+      ],
+      "D"
+     ],
+     "expected": "ABCDM"
+    },
+    {
+     "args": [
+      [
+       "XY",
+       "YZ",
+       "ZX",
+       "AB"
+      ],
+      "Z"
+     ],
+     "expected": "XYZ"
+    },
+    {
+     "args": [
+      [
+       "AB",
+       "CD",
+       "EF",
+       "GH",
+       "IJ",
+       "KL",
+       "MN",
+       "OP",
+       "QR",
+       "ST",
+       "UV",
+       "WY"
+      ],
+      "Y"
+     ],
+     "expected": "WY"
+    },
+    {
+     "args": [
+      [
+       "JD",
+       "ER",
+       "RW",
+       "OR",
+       "OQ",
+       "VO"
+      ],
+      "O"
+     ],
+     "expected": "EOQRVW"
+    },
+    {
+     "args": [
+      [
+       "QY",
+       "LA",
+       "IZ",
+       "WP",
+       "XC",
+       "DQ",
+       "GR",
+       "YQ",
+       "SQ",
+       "RL"
+      ],
+      "Y"
+     ],
+     "expected": "DQSY"
+    },
+    {
+     "args": [
+      [
+       "IE",
+       "SM",
+       "VQ",
+       "BQ",
+       "JU",
+       "ZM",
+       "QB",
+       "GZ",
+       "FP",
+       "FN",
+       "QD",
+       "XG"
+      ],
+      "J"
+     ],
+     "expected": "JU"
+    },
+    {
+     "args": [
+      [
+       "IU",
+       "AZ",
+       "DP",
+       "GW",
+       "BF",
+       "JU",
+       "YM",
+       "CK"
+      ],
+      "Y"
+     ],
+     "expected": "MY"
+    }
+   ],
+   "inputCheck": "def valid(records, me):\n    up = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'\n    if not (1 <= len(records) <= 12):\n        return False\n    for r in records:\n        if not (isinstance(r, str) and len(r) == 2 and r[0] in up and r[1] in up and r[0] != r[1]):\n            return False\n    return isinstance(me, str) and len(me) == 1 and me in up and any(me in r for r in records)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1 `records = [\"KC\", \"DA\", \"CB\", \"FB\", \"AE\"]`에서 K와 F는 같은 동아리일까요?",
+     "options": [
+      "같다. K–C, C–B, B–F로 이어진다.",
+      "다르다. K와 F가 함께 적힌 원소가 없다.",
+      "알 수 없다. 기록의 두 글자 순서가 정해져 있지 않다."
+     ],
+     "answer": 0,
+     "explain": "\"같은 동아리인 학생과 같은 동아리인 학생도 같은 동아리\"이므로, 기록을 따라 이어지기만 하면 같은 동아리예요. D·A·E는 K·C·B·F와 이어지지 않아 다른 동아리예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "글자 ↔ 번호 바꾸기",
+     "prompt": "ord(문자)는 문자의 고유 번호를, chr(번호)는 반대로 번호에 해당하는 문자를 알려 줘요. ord(글자) - ord('A')를 하면 A=0, B=1 … 처럼 리스트 인덱스(칸 번호)로 쓸 수 있어요. 빈칸을 채워 보세요.",
+     "columns": [
+      "글자",
+      "ord(글자) - ord('A')"
+     ],
+     "rows": [
+      [
+       "A",
+       "0"
+      ],
+      [
+       "C",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "K",
+       {
+        "a": "10"
+       }
+      ],
+      [
+       "Z",
+       {
+        "a": "25"
+       }
+      ],
+      [
+       {
+        "a": "F"
+       },
+       "5"
+      ]
+     ],
+     "check": "def answers():\n    return [ord('C') - ord('A'), ord('K') - ord('A'), ord('Z') - ord('A'), chr(5 + ord('A'))]",
+     "explain": "func_a는 별명을 0~25 번호로 바꿔 graph에 표시하고, func_c는 chr(i + ord('A'))로 번호를 다시 글자로 바꿔요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "예시 2(`records = [\"ZY\", \"XW\"]`, `me = \"W\"`)를 지금 코드로 실행하면, return 하는 문자열은 몇 글자일까요?",
+     "a": "24",
+     "check": "def answers():\n    visited = [False] * 26\n    visited[ord('W') - 65] = True\n    visited[ord('X') - 65] = True\n    answer = ''\n    for i in range(26):\n        if not visited[i]:\n            answer += chr(i + 65)\n    return [len(answer)]",
+     "explain": "W와 X만 visited가 True예요. 지금 코드는 visited가 False인 글자를 모으므로, 26글자 중 W·X를 뺀 24글자가 나와요. 원하는 답은 \"WX\" 두 글자예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 `if not visited[i]:` → `if visited[i]:`",
+      "func_b의 `if graph[now][nxt] and not visited[nxt]:` → `if graph[now][nxt] and visited[nxt]:`",
+      "func_c의 `answer += chr(i + ord('A'))` → `answer += chr(i)`",
+      "solution의 `visited = [False] * ALPHA` → `visited = [True] * ALPHA`"
+     ],
+     "answer": 0,
+     "explain": "func_b는 me와 같은 동아리를 바르게 찾아 visited를 True로 표시해요. func_c는 그 True인 글자만 모아야 하는데 not이 잘못 붙어 반대로 모으고 있었어요."
+    }
+   ],
+   "explain": "문자를 ord로 번호로 바꿔 2차원 리스트(인접 행렬)에 기록하고, 재귀로 같은 동아리를 찾아 visited에 표시한 뒤, chr로 다시 글자로 바꿔 이어 붙여요. 0부터 25까지 차례로 살피므로 결과는 자연스럽게 알파벳 순서가 돼요. 마지막에 고르는 조건의 not 하나가 답을 정반대로 만든다는 점을 기억하세요."
+  },
+  {
+   "id": "pya-t07-e",
+   "version": 1,
+   "title": "모두 숙제를 낸 모둠",
+   "statement": "한 반에 0번부터 n-1번까지 번호가 붙은 학생 n명이 있습니다. `pairs`의 원소 `[a, b]`는 a번과 b번 학생이 같은 모둠이라는 뜻이고, 같은 모둠인 학생과 같은 모둠인 학생도 같은 모둠입니다. pairs에 한 번도 나오지 않는 학생은 혼자서 한 모둠입니다.\n\n`done[i]`는 i번 학생이 숙제를 냈으면 1, 내지 않았으면 0입니다. 모둠원 모두가 숙제를 낸 모둠에 칭찬 도장을 찍어 주려 할 때, 칭찬 도장을 받는 모둠의 수를 return 하려 합니다.\n\nsolution 함수와 func_a, func_b, func_c 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "n은 학생 수이며 1 이상 20 이하인 정수입니다.",
+    "pairs의 길이는 0 이상 30 이하이고, 원소 [a, b]는 0 ≤ a < b ≤ n-1 인 정수 2개입니다. 같은 원소가 두 번 들어 있지 않습니다.",
+    "done은 길이가 n인 리스트이며, 원소는 0 또는 1입니다."
+   ],
+   "returns": [
+    "모둠원 모두가 숙제를 낸 모둠의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "n",
+    "pairs",
+    "done"
+   ],
+   "examples": [
+    {
+     "args": [
+      8,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        5,
+        6
+       ]
+      ],
+      [
+       1,
+       1,
+       1,
+       1,
+       0,
+       0,
+       0,
+       1
+      ]
+     ],
+     "expected": 2,
+     "explain": "0번·1번·2번, 3번·4번, 5번·6번이 각각 한 모둠이고 7번은 혼자 한 모둠입니다. 모두 숙제를 낸 모둠은 0·1·2번 모둠과 7번 모둠이므로 2를 return 합니다."
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        0,
+        4
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      [
+       1,
+       0,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 1,
+     "explain": "0번·1번·4번 모둠은 1번이 숙제를 내지 않았고, 2번·3번 모둠은 모두 냈으므로 1을 return 합니다."
+    }
+   ],
+   "code": "def func_a(n, pairs):\n    graph = [[] for _ in range(n)]\n    for a, b in pairs:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, done):\n    for member in group:\n        if done[member]:\n            return False\n    return True\n\ndef solution(n, pairs, done):\n    graph = func_a(n, pairs)\n    visited = [False] * n\n    answer = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            if func_c(group, done):\n                answer += 1\n    return answer",
+   "bugLine": 17,
+   "solution": "def func_a(n, pairs):\n    graph = [[] for _ in range(n)]\n    for a, b in pairs:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, done):\n    for member in group:\n        if not done[member]:\n            return False\n    return True\n\ndef solution(n, pairs, done):\n    graph = func_a(n, pairs)\n    visited = [False] * n\n    answer = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            if func_c(group, done):\n                answer += 1\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1,
+      [],
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1,
+      [],
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      [],
+      [
+       1,
+       0
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       1,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      20,
+      [],
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ],
+       [
+        14,
+        15
+       ],
+       [
+        15,
+        16
+       ],
+       [
+        16,
+        17
+       ],
+       [
+        17,
+        18
+       ],
+       [
+        18,
+        19
+       ]
+      ],
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       0,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        4,
+        5
+       ]
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        5
+       ],
+       [
+        1,
+        5
+       ],
+       [
+        2,
+        4
+       ]
+      ],
+      [
+       1,
+       1,
+       0,
+       0,
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        4,
+        19
+       ],
+       [
+        12,
+        16
+       ],
+       [
+        14,
+        16
+       ],
+       [
+        8,
+        12
+       ],
+       [
+        2,
+        10
+       ],
+       [
+        5,
+        8
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        8,
+        19
+       ],
+       [
+        3,
+        17
+       ],
+       [
+        7,
+        10
+       ],
+       [
+        2,
+        5
+       ],
+       [
+        10,
+        17
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        0,
+        15
+       ],
+       [
+        11,
+        16
+       ],
+       [
+        5,
+        9
+       ],
+       [
+        2,
+        12
+       ],
+       [
+        2,
+        6
+       ],
+       [
+        6,
+        19
+       ],
+       [
+        3,
+        14
+       ],
+       [
+        1,
+        17
+       ],
+       [
+        11,
+        13
+       ],
+       [
+        8,
+        18
+       ],
+       [
+        5,
+        15
+       ],
+       [
+        3,
+        5
+       ],
+       [
+        5,
+        10
+       ],
+       [
+        2,
+        16
+       ],
+       [
+        10,
+        19
+       ],
+       [
+        4,
+        8
+       ],
+       [
+        8,
+        11
+       ]
+      ],
+      [
+       1,
+       1,
+       1,
+       1,
+       0,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       0,
+       0,
+       1,
+       1,
+       0,
+       1,
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        4,
+        6
+       ],
+       [
+        3,
+        7
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        5,
+        8
+       ],
+       [
+        0,
+        5
+       ],
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       0,
+       1
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        1,
+        3
+       ],
+       [
+        13,
+        14
+       ],
+       [
+        1,
+        11
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        11,
+        13
+       ],
+       [
+        2,
+        6
+       ],
+       [
+        6,
+        11
+       ],
+       [
+        3,
+        13
+       ],
+       [
+        3,
+        5
+       ]
+      ],
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       0,
+       1,
+       1,
+       0,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        5,
+        9
+       ],
+       [
+        2,
+        6
+       ],
+       [
+        2,
+        4
+       ],
+       [
+        6,
+        10
+       ],
+       [
+        1,
+        8
+       ],
+       [
+        3,
+        9
+       ],
+       [
+        1,
+        11
+       ],
+       [
+        0,
+        10
+       ],
+       [
+        1,
+        9
+       ],
+       [
+        6,
+        11
+       ]
+      ],
+      [
+       1,
+       1,
+       1,
+       0,
+       1,
+       0,
+       0,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    }
+   ],
+   "inputCheck": "def valid(n, pairs, done):\n    if not (isinstance(n, int) and 1 <= n <= 20):\n        return False\n    if not (0 <= len(pairs) <= 30):\n        return False\n    seen = set()\n    for e in pairs:\n        if not (isinstance(e, list) and len(e) == 2 and all(isinstance(v, int) for v in e)):\n            return False\n        a, b = e\n        if not (0 <= a < b <= n - 1) or (a, b) in seen:\n            return False\n        seen.add((a, b))\n    return isinstance(done, list) and len(done) == n and all(type(x) is int and x in (0, 1) for x in done)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1에서 pairs에 한 번도 나오지 않는 7번 학생은 숙제를 냈어요. 어떻게 셀까요?",
+     "options": [
+      "혼자인 한 모둠으로 보고, 도장을 받는 모둠으로 센다.",
+      "모둠이 없는 학생이므로 세지 않는다.",
+      "가장 가까운 번호인 6번의 모둠에 넣어서 판단한다."
+     ],
+     "answer": 0,
+     "explain": "문제에 \"pairs에 한 번도 나오지 않는 학생은 혼자서 한 모둠\"이라고 했어요. 모둠원(자기 자신) 모두가 숙제를 냈으니(done[7] = 1) 도장을 받아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "solution의 for 반복에서 visited[i]가 False라서 새 모둠을 찾게 되는 i, 그때 func_b가 채운 group, 모둠원 모두가 숙제를 냈는지, 지금 코드의 func_c 결과를 채워 보세요. 첫 줄은 예시예요. 파이썬은 조건에서 0을 거짓(False), 1을 참(True)처럼 다뤄서 `done[m]`이 1이면 `if done[m]:`이 실행돼요.",
+     "columns": [
+      "새 모둠을 찾은 i",
+      "group",
+      "모두 냈나?",
+      "지금 func_c 결과"
+     ],
+     "rows": [
+      [
+       "0",
+       "[0, 1, 2]",
+       "True",
+       "False"
+      ],
+      [
+       {
+        "a": "3"
+       },
+       {
+        "a": "[3, 4]",
+        "alts": [
+         "[3,4]"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       {
+        "a": "5"
+       },
+       {
+        "a": "[5, 6]",
+        "alts": [
+         "[5,6]"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       {
+        "a": "7"
+       },
+       {
+        "a": "[7]",
+        "alts": [
+         "[7]"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    n, pairs = 8, [[0, 1], [1, 2], [3, 4], [5, 6]]\n    done = [1, 1, 1, 1, 0, 0, 0, 1]\n    graph = [[] for _ in range(n)]\n    for a, b in pairs:\n        graph[a].append(b)\n        graph[b].append(a)\n    visited = [False] * n\n    def func_b(now, group):\n        visited[now] = True\n        group.append(now)\n        for nxt in graph[now]:\n            if not visited[nxt]:\n                func_b(nxt, group)\n    def bad(group):\n        for m in group:\n            if done[m]:\n                return False\n        return True\n    out = []\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, group)\n            out += [i, group, all(done[m] for m in group), bad(group)]\n    return out[4:]",
+     "explain": "지금 func_c는 숙제를 \"낸\" 학생을 만나면 False를 돌려줘서, 아무도 내지 않은 5·6번 모둠만 True가 돼요. 우리가 원하는 것은 모두 낸 0·1·2번 모둠과 7번 모둠이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "func_c처럼 \"모두 ~인지\" 확인하는 함수에서, 반복문 안에서 바로 return False 해야 하는 때는 언제일까요?",
+     "options": [
+      "조건을 만족하지 않는 모둠원(숙제를 안 낸 학생)을 처음 만났을 때",
+      "조건을 만족하는 모둠원(숙제를 낸 학생)을 처음 만났을 때",
+      "마지막 모둠원까지 모두 확인했을 때"
+     ],
+     "answer": 0,
+     "explain": "한 명이라도 안 냈으면 \"모두 냈다\"가 아니니 바로 False예요. 끝까지 그런 학생이 없을 때만 반복이 끝난 뒤 return True에 닿아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 `if done[member]:` → `if not done[member]:`",
+      "solution의 `if func_c(group, done):` → `if not func_c(group, done):`",
+      "func_c의 `return True` → `return False`",
+      "solution의 `if not visited[i]:` → `if visited[i]:`"
+     ],
+     "answer": 0,
+     "explain": "2번처럼 바꾸면 \"한 명이라도 낸 모둠\"을 세게 되어 3·4번 모둠처럼 일부만 낸 모둠도 세어져요. 3번은 항상 False가 되어 0이 나오고, 4번은 모둠을 하나도 찾지 못해요."
+    }
+   ],
+   "explain": "func_b는 재귀로 한 모둠의 학생을 group에 모으고, func_c는 그 모둠원이 모두 숙제를 냈는지 확인해요. \"모두 ~인가\"는 조건에 어긋나는 원소를 만나면 바로 False, 끝까지 없으면 True로 판단하는 패턴이에요. 여기에 not이 빠지면 \"아무도 안 낸 모둠\"을 세는 정반대 함수가 됩니다."
+  }
+ ]
+}

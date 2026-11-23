@@ -1,0 +1,1512 @@
+{
+ "course": "pyb",
+ "type": 9,
+ "typeTitle": "조건 빼고 평균 구하기",
+ "kind": "write",
+ "skills": [
+  "리스트 순회",
+  "합계 누적",
+  "최솟값·최댓값 찾기",
+  "정수 나눗셈 //"
+ ],
+ "intro": "여러 기록 중 가장 낮은 값, 가장 높은 값, 조건에 맞지 않는 값을 빼고 나머지의 평균을 정수로 구하는 유형이에요. 반복문 하나로 합계와 최솟값·최댓값을 함께 구하고, 나누는 개수를 정확히 세고, //로 소수점 아래를 버리는 연습을 합니다.",
+ "problems": [
+  {
+   "id": "pyb-t09-a",
+   "version": 1,
+   "title": "가장 적게 읽은 날 빼고",
+   "statement": "민지는 독서 앱에 날마다 읽은 쪽수를 기록합니다. 한 주의 독서 성적은 **가장 적게 읽은 날 하나를 뺀** 나머지 날들의 읽은 쪽수 평균으로 정하며, 평균의 소수점 아래는 버립니다. 날마다 읽은 쪽수는 모두 서로 다릅니다.\n\n예를 들어 읽은 쪽수가 [30, 12, 45, 28, 50]이면 가장 적게 읽은 날은 12쪽입니다. 이를 뺀 나머지 30, 45, 28, 50의 평균은 153 ÷ 4 = 38.25이고, 소수점 아래를 버리면 독서 성적은 38입니다.\n\n날마다 읽은 쪽수를 담은 리스트 `pages`가 매개변수로 주어질 때, 독서 성적을 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "pages는 날마다 읽은 쪽수를 담은 리스트입니다.",
+    "pages의 길이는 2 이상 10 이하입니다.",
+    "pages의 원소는 1 이상 200 이하인 정수이며, 모두 서로 다릅니다."
+   ],
+   "returns": [
+    "가장 적게 읽은 날 하나를 뺀 나머지 날의 평균 쪽수를, 소수점 아래를 버린 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "pages"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       30,
+       12,
+       45,
+       28,
+       50
+      ]
+     ],
+     "expected": 38,
+     "explain": "가장 적게 읽은 12쪽을 빼면 30, 45, 28, 50이 남고, 평균 153 ÷ 4 = 38.25에서 소수점 아래를 버려 38입니다."
+    },
+    {
+     "args": [
+      [
+       60,
+       75,
+       40,
+       90,
+       85,
+       55
+      ]
+     ],
+     "expected": 73,
+     "explain": "가장 적게 읽은 40쪽을 빼면 나머지 합은 365이고, 365 ÷ 5 = 73입니다."
+    }
+   ],
+   "code": "def solution(pages):\n    answer = 0\n    return answer",
+   "solution": "def solution(pages):\n    total = 0\n    low = pages[0]\n    for p in pages:\n        total += p\n        if p < low:\n            low = p\n    answer = (total - low) // (len(pages) - 1)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       9,
+       4
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       4,
+       9
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       1,
+       200
+      ]
+     ],
+     "expected": 200
+    },
+    {
+     "args": [
+      [
+       150,
+       180,
+       120,
+       199
+      ]
+     ],
+     "expected": 176
+    },
+    {
+     "args": [
+      [
+       5,
+       6,
+       7
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       200,
+       199,
+       198,
+       197,
+       196,
+       195,
+       194,
+       193,
+       192,
+       191
+      ]
+     ],
+     "expected": 196
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       10,
+       9,
+       8,
+       7,
+       6,
+       5,
+       4,
+       3,
+       2,
+       1
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       33,
+       17,
+       50,
+       8,
+       41
+      ]
+     ],
+     "expected": 35
+    },
+    {
+     "args": [
+      [
+       101,
+       102
+      ]
+     ],
+     "expected": 102
+    },
+    {
+     "args": [
+      [
+       70,
+       3,
+       71,
+       72
+      ]
+     ],
+     "expected": 71
+    },
+    {
+     "args": [
+      [
+       13,
+       26,
+       39,
+       52,
+       65,
+       78,
+       91
+      ]
+     ],
+     "expected": 58
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(pages):\n    return isinstance(pages, list) and 2 <= len(pages) <= 10 and all(type(x) is int and 1 <= x <= 200 for x in pages) and len(set(pages)) == len(pages)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "pages = [30, 12, 45, 28, 50]에서 평균을 낼 때 합계를 몇으로 나눠야 할까요?",
+     "options": [
+      "4",
+      "5",
+      "3",
+      "12"
+     ],
+     "answer": 0,
+     "explain": "5일 중 가장 적게 읽은 하루를 빼니 4일이 남아요. 코드로는 len(pages) - 1이에요. len()은 리스트에 든 값의 개수를 알려 주는 함수예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "total = 0, low = pages[0](첫 번째 값 30)으로 시작해요. p를 하나씩 볼 때마다 total에 p를 더하고, p가 low보다 작으면 low를 p로 바꿔요. 각 줄을 처리한 뒤의 total과 low를 채워 보세요.",
+     "columns": [
+      "p",
+      "total (합계)",
+      "low (가장 적은 쪽수)"
+     ],
+     "rows": [
+      [
+       "30",
+       {
+        "a": "30"
+       },
+       {
+        "a": "30"
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "42"
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "45",
+       {
+        "a": "87"
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "28",
+       {
+        "a": "115"
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "50",
+       {
+        "a": "165"
+       },
+       {
+        "a": "12"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    pages = [30, 12, 45, 28, 50]\n    total = 0\n    low = pages[0]\n    for p in pages:\n        total += p\n        if p < low:\n            low = p\n        out += [total, low]\n    return out",
+     "explain": "total은 값을 계속 더해 가는 누적 변수예요. low는 지금까지 본 값 중 가장 작은 값만 기억해서, 끝나면 12가 남아요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "반복이 끝나 total = 165, low = 12가 되었어요. 독서 성적(38)을 정수로 구하는 식은 무엇일까요?",
+     "options": [
+      "(total - low) // (len(pages) - 1)",
+      "(total - low) / (len(pages) - 1)",
+      "(total - low) // len(pages)",
+      "total // len(pages) - low"
+     ],
+     "answer": 0,
+     "explain": "/는 38.25처럼 소수가 있는 실수를 만들어요. //는 나눈 몫만 남겨 소수점 아래를 버린 정수 38을 만들어요. 나누는 수는 뺀 하루를 제외한 len(pages) - 1이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "pages = [9, 4]처럼 이틀만 기록했다면 독서 성적은 얼마일까요?",
+     "a": "9",
+     "alts": [],
+     "check": "def answers():\n    def solution(pages):\n        total = 0\n        low = pages[0]\n        for p in pages:\n            total += p\n            if p < low:\n                low = p\n        answer = (total - low) // (len(pages) - 1)\n        return answer\n    return [solution([9, 4])]",
+     "explain": "가장 적은 4쪽을 빼면 9쪽 하나만 남아요. 9 // 1 = 9예요. 길이가 2일 때도 나누는 수가 1이라 0으로 나누는 일이 없어요."
+    }
+   ],
+   "explain": "반복문 하나로 합계(total)와 가장 작은 값(low)을 함께 구한 뒤, (total - low)를 남은 개수 len(pages) - 1로 나눕니다. 소수점 아래를 버리려면 / 대신 //를 써야 정수가 나와요. low의 처음 값은 100 같은 임의의 수보다 pages[0]처럼 리스트의 실제 값으로 잡는 것이 안전해요."
+  },
+  {
+   "id": "pyb-t09-b",
+   "version": 1,
+   "title": "가장 오래 걸린 날 빼고",
+   "statement": "준호는 집에서 학교까지 걸린 시간(분)을 날마다 기록합니다. 버스를 놓친 날처럼 유난히 오래 걸린 날이 평균을 흐리지 않도록, **가장 오래 걸린 날 하나를 뺀** 나머지 날들의 평균 시간을 구하려 합니다. 이때 소수점 아래는 버립니다. 또한 가장 오래 걸린 시간이 여러 날이면 그중 하루만 뺍니다.\n\n예를 들어 걸린 시간이 [25, 40, 22, 27, 23]이면 가장 오래 걸린 날은 40분입니다. 이를 뺀 나머지 25, 22, 27, 23의 평균은 97 ÷ 4 = 24.25분이고, 소수점 아래를 버리면 24입니다.\n\n날마다 걸린 시간을 담은 리스트 `minutes`가 매개변수로 주어질 때, 평균 시간을 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "minutes는 날마다 걸린 시간(분)을 담은 리스트입니다.",
+    "minutes의 길이는 2 이상 10 이하입니다.",
+    "minutes의 원소는 5 이상 90 이하인 정수입니다. 같은 값이 여러 번 나올 수 있습니다."
+   ],
+   "returns": [
+    "가장 오래 걸린 날 하루를 뺀 나머지 날의 평균 시간을, 소수점 아래를 버린 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "minutes"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       25,
+       40,
+       22,
+       27,
+       23
+      ]
+     ],
+     "expected": 24,
+     "explain": "가장 오래 걸린 40분을 빼면 25, 22, 27, 23이 남고, 평균 97 ÷ 4 = 24.25에서 소수점 아래를 버려 24입니다."
+    },
+    {
+     "args": [
+      [
+       30,
+       45,
+       45,
+       20
+      ]
+     ],
+     "expected": 31,
+     "explain": "45분인 날이 이틀이지만 하루만 뺍니다. 남은 30, 45, 20의 평균은 95 ÷ 3 = 31.66…이므로 31입니다."
+    }
+   ],
+   "code": "def solution(minutes):\n    answer = 0\n    return answer",
+   "solution": "def solution(minutes):\n    total = 0\n    high = minutes[0]\n    for m in minutes:\n        total += m\n        if m > high:\n            high = m\n    answer = (total - high) // (len(minutes) - 1)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       50,
+       50
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       5,
+       90
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       90,
+       5
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       90,
+       90,
+       90,
+       90,
+       90,
+       90,
+       90,
+       90,
+       90,
+       90
+      ]
+     ],
+     "expected": 90
+    },
+    {
+     "args": [
+      [
+       20,
+       60,
+       60,
+       60
+      ]
+     ],
+     "expected": 46
+    },
+    {
+     "args": [
+      [
+       12,
+       15,
+       14
+      ]
+     ],
+     "expected": 13
+    },
+    {
+     "args": [
+      [
+       12,
+       15,
+       13
+      ]
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      [
+       35,
+       18,
+       18,
+       22,
+       80,
+       19
+      ]
+     ],
+     "expected": 22
+    },
+    {
+     "args": [
+      [
+       88,
+       30,
+       31,
+       32,
+       33
+      ]
+     ],
+     "expected": 31
+    },
+    {
+     "args": [
+      [
+       5,
+       5,
+       5,
+       6
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       40,
+       41,
+       39,
+       42,
+       38,
+       43,
+       37,
+       44,
+       36,
+       45
+      ]
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      [
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32
+      ]
+     ],
+     "expected": 28
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(minutes):\n    return isinstance(minutes, list) and 2 <= len(minutes) <= 10 and all(type(x) is int and 5 <= x <= 90 for x in minutes)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "minutes = [30, 45, 45, 20]일 때 평균을 내기 전에 빼야 하는 것은 무엇일까요?",
+     "options": [
+      "45분인 날 하루만",
+      "45분인 날 이틀 모두",
+      "가장 짧은 20분인 날",
+      "아무것도 빼지 않는다"
+     ],
+     "answer": 0,
+     "explain": "문제에서 가장 오래 걸린 시간이 여러 날이면 그중 하루만 뺀다고 했어요. 그래서 45분 하나만 빼고 30, 45, 20의 평균을 구해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "total = 0, high = minutes[0](첫 번째 값 25)으로 시작해요. m을 하나씩 볼 때마다 total에 m을 더하고, m이 high보다 크면 high를 m으로 바꿔요. 각 줄을 처리한 뒤의 total과 high를 채워 보세요.",
+     "columns": [
+      "m",
+      "total (합계)",
+      "high (가장 긴 시간)"
+     ],
+     "rows": [
+      [
+       "25",
+       {
+        "a": "25"
+       },
+       {
+        "a": "25"
+       }
+      ],
+      [
+       "40",
+       {
+        "a": "65"
+       },
+       {
+        "a": "40"
+       }
+      ],
+      [
+       "22",
+       {
+        "a": "87"
+       },
+       {
+        "a": "40"
+       }
+      ],
+      [
+       "27",
+       {
+        "a": "114"
+       },
+       {
+        "a": "40"
+       }
+      ],
+      [
+       "23",
+       {
+        "a": "137"
+       },
+       {
+        "a": "40"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    minutes = [25, 40, 22, 27, 23]\n    total = 0\n    high = minutes[0]\n    for m in minutes:\n        total += m\n        if m > high:\n            high = m\n        out += [total, high]\n    return out",
+     "explain": "high는 지금까지 본 값 중 가장 큰 값만 기억해요. 40을 만난 뒤로는 더 큰 값이 없어서 끝까지 40이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "반복이 끝나 total = 137, high = 40이 되었어요. 평균 시간(24)을 정수로 구하는 식은 무엇일까요?",
+     "options": [
+      "(total - high) // (len(minutes) - 1)",
+      "(total - high) // len(minutes)",
+      "(total - high) / (len(minutes) - 1)",
+      "total // (len(minutes) - 1)"
+     ],
+     "answer": 0,
+     "explain": "40을 빼고 남은 4일로 나눠야 하니 len(minutes) - 1이에요. //는 나눈 몫만 남겨 소수점 아래를 버린 정수를 만들고, /는 24.25 같은 실수를 만들어요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "minutes = [20, 60, 60, 60]이면 평균 시간은 얼마일까요?",
+     "a": "46",
+     "alts": [],
+     "check": "def answers():\n    def solution(minutes):\n        total = 0\n        high = minutes[0]\n        for m in minutes:\n            total += m\n            if m > high:\n                high = m\n        answer = (total - high) // (len(minutes) - 1)\n        return answer\n    return [solution([20, 60, 60, 60])]",
+     "explain": "60 하나만 빼면 20, 60, 60이 남아요. 140 // 3 = 46이에요. 60을 모두 빼면 20이 되어 틀리니 조심해요."
+    }
+   ],
+   "explain": "합계와 가장 큰 값을 반복문 하나로 함께 구하고, (합계 - 가장 큰 값)을 남은 날 수 len(minutes) - 1로 나눕니다. 가장 큰 값이 여러 번 나와도 하나만 빼므로 개수에서 1만 빼면 돼요. 소수점 아래를 버리려면 //를 씁니다."
+  },
+  {
+   "id": "pyb-t09-c",
+   "version": 1,
+   "title": "볼링 최저 게임 빼고",
+   "statement": "볼링 동호회에서는 회원이 그날 친 여러 게임의 점수 중 **가장 낮은 게임 점수 하나를 뺀** 나머지 점수의 평균을 그날의 기록으로 삼습니다. 평균의 소수점 아래는 버립니다. 또한 가장 낮은 점수가 여러 게임이면 그중 한 게임만 뺍니다.\n\n예를 들어 게임 점수가 [150, 210, 98, 185]이면 가장 낮은 점수는 98점입니다. 이를 뺀 150, 210, 185의 평균은 545 ÷ 3 = 181.66…이고, 소수점 아래를 버리면 그날의 기록은 181입니다.\n\n게임 점수를 담은 리스트 `games`가 매개변수로 주어질 때, 그날의 기록을 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "games는 게임 점수를 담은 리스트입니다.",
+    "games의 길이는 2 이상 10 이하입니다.",
+    "games의 원소는 0 이상 300 이하인 정수입니다. 같은 점수가 여러 번 나올 수 있습니다."
+   ],
+   "returns": [
+    "가장 낮은 게임 점수 하나를 뺀 나머지 점수의 평균을, 소수점 아래를 버린 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "games"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       150,
+       210,
+       98,
+       185
+      ]
+     ],
+     "expected": 181,
+     "explain": "가장 낮은 98점을 빼면 150, 210, 185가 남고, 평균 545 ÷ 3 = 181.66…에서 소수점 아래를 버려 181입니다."
+    },
+    {
+     "args": [
+      [
+       205,
+       130,
+       130,
+       260,
+       175
+      ]
+     ],
+     "expected": 192,
+     "explain": "130점이 두 게임이지만 하나만 뺍니다. 남은 205, 130, 260, 175의 평균은 770 ÷ 4 = 192.5이므로 192입니다."
+    }
+   ],
+   "code": "def solution(games):\n    answer = 0\n    return answer",
+   "solution": "def solution(games):\n    total = 0\n    low = games[0]\n    for g in games:\n        total += g\n        if g < low:\n            low = g\n    answer = (total - low) // (len(games) - 1)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       250,
+       180,
+       220
+      ]
+     ],
+     "expected": 235
+    },
+    {
+     "args": [
+      [
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       0,
+       300
+      ]
+     ],
+     "expected": 300
+    },
+    {
+     "args": [
+      [
+       300,
+       0
+      ]
+     ],
+     "expected": 300
+    },
+    {
+     "args": [
+      [
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300
+      ]
+     ],
+     "expected": 300
+    },
+    {
+     "args": [
+      [
+       120,
+       120,
+       120,
+       121
+      ]
+     ],
+     "expected": 120
+    },
+    {
+     "args": [
+      [
+       99,
+       100,
+       101
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       180,
+       190,
+       200,
+       175,
+       260,
+       240
+      ]
+     ],
+     "expected": 214
+    },
+    {
+     "args": [
+      [
+       110,
+       0,
+       0,
+       90
+      ]
+     ],
+     "expected": 66
+    },
+    {
+     "args": [
+      [
+       123,
+       234,
+       145,
+       256,
+       167,
+       278,
+       189
+      ]
+     ],
+     "expected": 211
+    },
+    {
+     "args": [
+      [
+       101,
+       102,
+       103,
+       104,
+       105,
+       106,
+       107,
+       108,
+       109,
+       110
+      ]
+     ],
+     "expected": 106
+    },
+    {
+     "args": [
+      [
+       270,
+       265
+      ]
+     ],
+     "expected": 270
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(games):\n    return isinstance(games, list) and 2 <= len(games) <= 10 and all(type(x) is int and 0 <= x <= 300 for x in games)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "games = [205, 130, 130, 260, 175]에서 평균을 낼 때 합계를 몇으로 나눠야 할까요?",
+     "options": [
+      "4",
+      "3",
+      "5"
+     ],
+     "answer": 0,
+     "explain": "130점이 두 번 있지만 한 게임만 빼요. 5게임에서 1게임을 빼니 4로 나눠요. 코드로는 len(games) - 1이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "total = 0, low = games[0](첫 번째 값 150)으로 시작해요. g를 하나씩 볼 때마다 total에 g를 더하고, g가 low보다 작으면 low를 g로 바꿔요. 각 줄을 처리한 뒤의 total과 low를 채워 보세요.",
+     "columns": [
+      "g",
+      "total (합계)",
+      "low (가장 낮은 점수)"
+     ],
+     "rows": [
+      [
+       "150",
+       {
+        "a": "150"
+       },
+       {
+        "a": "150"
+       }
+      ],
+      [
+       "210",
+       {
+        "a": "360"
+       },
+       {
+        "a": "150"
+       }
+      ],
+      [
+       "98",
+       {
+        "a": "458"
+       },
+       {
+        "a": "98"
+       }
+      ],
+      [
+       "185",
+       {
+        "a": "643"
+       },
+       {
+        "a": "98"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    games = [150, 210, 98, 185]\n    total = 0\n    low = games[0]\n    for g in games:\n        total += g\n        if g < low:\n            low = g\n        out += [total, low]\n    return out",
+     "explain": "98을 만났을 때 low가 150에서 98로 바뀌고, 그 뒤 185는 98보다 크니 그대로예요. 끝나면 (643 - 98) // 3 = 181이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "어떤 학생이 low의 처음 값을 100으로 정했어요. games = [250, 180, 220]이면 어떻게 될까요?",
+     "options": [
+      "모든 점수가 100보다 커서 low가 100으로 남고, 엉뚱한 100을 빼게 된다",
+      "아무 문제 없이 정답 235가 나온다",
+      "오류가 나서 프로그램이 멈춘다",
+      "가장 높은 점수 250을 빼게 된다"
+     ],
+     "answer": 0,
+     "explain": "점수는 300까지 나올 수 있어서 100보다 작은 점수가 없을 수도 있어요. 그러면 low가 100으로 남아 (650 - 100) // 2 = 275라는 틀린 답이 나와요. low는 games[0]처럼 리스트의 실제 값으로 시작하는 것이 안전해요."
+    }
+   ],
+   "explain": "합계와 가장 낮은 점수를 반복문 하나로 구하고 (합계 - 가장 낮은 점수) // (게임 수 - 1)을 return 합니다. 점수 범위가 0~300이므로 low를 100처럼 임의의 수로 시작하면 틀릴 수 있어요. 같은 최저 점수가 여러 개여도 하나만 빼면 됩니다."
+  },
+  {
+   "id": "pyb-t09-d",
+   "version": 1,
+   "title": "최고·최저 점수 빼고 평균",
+   "statement": "노래 대회에서 심사위원들이 한 참가자에게 준 점수로 최종 점수를 정합니다. 한 심사위원의 치우친 점수가 결과를 좌우하지 않도록, **가장 높은 점수 하나와 가장 낮은 점수 하나를 뺀** 나머지 점수의 평균을 최종 점수로 하며, 소수점 아래는 버립니다. 가장 높은(또는 가장 낮은) 점수가 여러 개이면 그중 하나만 뺍니다.\n\n예를 들어 점수가 [85, 92, 78, 88, 95]이면 가장 높은 95점과 가장 낮은 78점을 뺍니다. 나머지 85, 92, 88의 평균은 265 ÷ 3 = 88.33…이고, 소수점 아래를 버리면 최종 점수는 88입니다.\n\n심사위원 점수를 담은 리스트 `scores`가 매개변수로 주어질 때, 최종 점수를 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "scores는 심사위원들이 준 점수를 담은 리스트입니다.",
+    "scores의 길이는 3 이상 10 이하입니다.",
+    "scores의 원소는 0 이상 100 이하인 정수입니다. 같은 점수가 여러 번 나올 수 있습니다."
+   ],
+   "returns": [
+    "가장 높은 점수 하나와 가장 낮은 점수 하나를 뺀 나머지 점수의 평균을, 소수점 아래를 버린 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "scores"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       85,
+       92,
+       78,
+       88,
+       95
+      ]
+     ],
+     "expected": 88,
+     "explain": "가장 높은 95점과 가장 낮은 78점을 빼면 85, 92, 88이 남고, 평균 265 ÷ 3 = 88.33…에서 소수점 아래를 버려 88입니다."
+    },
+    {
+     "args": [
+      [
+       90,
+       60,
+       75,
+       60
+      ]
+     ],
+     "expected": 67,
+     "explain": "가장 높은 90점 하나와, 두 개인 60점 중 하나만 뺍니다. 남은 75, 60의 평균은 135 ÷ 2 = 67.5이므로 67입니다."
+    },
+    {
+     "args": [
+      [
+       70,
+       70,
+       70
+      ]
+     ],
+     "expected": 70,
+     "explain": "가장 높은 점수와 가장 낮은 점수가 모두 70점입니다. 70점을 하나씩만 빼면 70점 하나가 남아 70입니다."
+    }
+   ],
+   "code": "def solution(scores):\n    answer = 0\n    return answer",
+   "solution": "def solution(scores):\n    total = 0\n    high = scores[0]\n    low = scores[0]\n    for s in scores:\n        total += s\n        if s > high:\n            high = s\n        if s < low:\n            low = s\n    answer = (total - high - low) // (len(scores) - 2)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       0,
+       100,
+       50
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       100,
+       100,
+       100
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       100,
+       40,
+       100,
+       40
+      ]
+     ],
+     "expected": 70
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       1,
+       100,
+       100
+      ]
+     ],
+     "expected": 33
+    },
+    {
+     "args": [
+      [
+       55,
+       56,
+       57,
+       58,
+       59,
+       60,
+       61,
+       62,
+       63,
+       64
+      ]
+     ],
+     "expected": 59
+    },
+    {
+     "args": [
+      [
+       64,
+       63,
+       62,
+       61,
+       60,
+       59,
+       58,
+       57,
+       56,
+       55
+      ]
+     ],
+     "expected": 59
+    },
+    {
+     "args": [
+      [
+       80,
+       81,
+       90,
+       70
+      ]
+     ],
+     "expected": 80
+    },
+    {
+     "args": [
+      [
+       72,
+       88,
+       95,
+       64,
+       83,
+       77
+      ]
+     ],
+     "expected": 80
+    },
+    {
+     "args": [
+      [
+       50,
+       50,
+       49,
+       51
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       3,
+       99,
+       98,
+       97,
+       2
+      ]
+     ],
+     "expected": 66
+    },
+    {
+     "args": [
+      [
+       100,
+       0,
+       99,
+       1,
+       98,
+       2,
+       97
+      ]
+     ],
+     "expected": 59
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(scores):\n    return isinstance(scores, list) and 3 <= len(scores) <= 10 and all(type(x) is int and 0 <= x <= 100 for x in scores)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "scores = [90, 60, 75, 60]에서 평균을 낼 때 합계를 몇으로 나눠야 할까요?",
+     "options": [
+      "2",
+      "1",
+      "3",
+      "4"
+     ],
+     "answer": 0,
+     "explain": "가장 높은 90 하나, 가장 낮은 60 하나(두 개 중 하나만)를 빼니 4 - 2 = 2개가 남아요. 코드로는 len(scores) - 2예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "total = 0, high = low = scores[0](첫 번째 값 85)으로 시작해요. s를 하나씩 볼 때마다 total에 s를 더하고, s가 high보다 크면 high를, low보다 작으면 low를 바꿔요. 각 줄을 처리한 뒤의 값을 채워 보세요.",
+     "columns": [
+      "s",
+      "total",
+      "high",
+      "low"
+     ],
+     "rows": [
+      [
+       "85",
+       {
+        "a": "85"
+       },
+       {
+        "a": "85"
+       },
+       {
+        "a": "85"
+       }
+      ],
+      [
+       "92",
+       {
+        "a": "177"
+       },
+       {
+        "a": "92"
+       },
+       {
+        "a": "85"
+       }
+      ],
+      [
+       "78",
+       {
+        "a": "255"
+       },
+       {
+        "a": "92"
+       },
+       {
+        "a": "78"
+       }
+      ],
+      [
+       "88",
+       {
+        "a": "343"
+       },
+       {
+        "a": "92"
+       },
+       {
+        "a": "78"
+       }
+      ],
+      [
+       "95",
+       {
+        "a": "438"
+       },
+       {
+        "a": "95"
+       },
+       {
+        "a": "78"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    scores = [85, 92, 78, 88, 95]\n    total = 0\n    high = scores[0]\n    low = scores[0]\n    for s in scores:\n        total += s\n        if s > high:\n            high = s\n        if s < low:\n            low = s\n        out += [total, high, low]\n    return out",
+     "explain": "high와 low를 한 번의 반복에서 함께 갱신(새 값으로 바꾸기)할 수 있어요. 끝나면 total = 438, high = 95, low = 78이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "total = 438, high = 95, low = 78일 때 최종 점수(88)를 정수로 구하는 식은 무엇일까요?",
+     "options": [
+      "(total - high - low) // (len(scores) - 2)",
+      "(total - high - low) // (len(scores) - 1)",
+      "(total - high - low) // len(scores)",
+      "(total - high - low) / (len(scores) - 2)"
+     ],
+     "answer": 0,
+     "explain": "두 점수를 뺐으니 남은 개수는 len(scores) - 2예요. 265 // 3 = 88이고, /를 쓰면 88.33… 같은 실수가 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "scores = [100, 40, 100, 40]이면 최종 점수는 얼마일까요?",
+     "a": "70",
+     "alts": [],
+     "check": "def answers():\n    def solution(scores):\n        total = 0\n        high = scores[0]\n        low = scores[0]\n        for s in scores:\n            total += s\n            if s > high:\n                high = s\n            if s < low:\n                low = s\n        answer = (total - high - low) // (len(scores) - 2)\n        return answer\n    return [solution([100, 40, 100, 40])]",
+     "explain": "100 하나와 40 하나만 빼면 100, 40이 남아요. 140 // 2 = 70이에요."
+    }
+   ],
+   "explain": "반복문 하나로 합계, 가장 큰 값, 가장 작은 값을 함께 구한 뒤 (합계 - 최고 - 최저) // (개수 - 2)를 return 합니다. 두 값을 뺐으니 나누는 수도 2를 빼야 해요. 모든 점수가 같아도 하나씩만 빼므로 같은 식이 그대로 통해요."
+  },
+  {
+   "id": "pyb-t09-e",
+   "version": 1,
+   "title": "파울 빼고 최저 기록 빼고",
+   "statement": "멀리뛰기 연습에서 한 학생이 뛴 기록(cm)을 차례로 적었습니다. 발이 선을 넘은 **파울**은 기록을 0으로 적습니다. 최종 기록은 다음 순서로 정합니다.\n\n- 파울(0)인 기록은 모두 뺍니다.\n- 남은 기록 중 가장 짧은 기록 하나를 뺍니다. 가장 짧은 기록이 여러 개이면 그중 하나만 뺍니다.\n- 그 나머지 기록의 평균을 구하고, 소수점 아래는 버립니다.\n\n예를 들어 기록이 [178, 0, 165, 191, 0]이면 파울 두 개를 빼고 남은 178, 165, 191 중 가장 짧은 165를 뺍니다. 나머지 178, 191의 평균은 369 ÷ 2 = 184.5이고, 소수점 아래를 버리면 최종 기록은 184입니다.\n\n기록을 담은 리스트 `records`가 매개변수로 주어질 때, 최종 기록을 return 하도록 solution 함수를 완성해 주세요.",
+   "params": [
+    "records는 뛴 순서대로 기록(cm)을 담은 리스트입니다.",
+    "records의 길이는 2 이상 10 이하입니다.",
+    "records의 원소는 0 이상 300 이하인 정수이며, 0은 파울을 뜻합니다.",
+    "파울이 아닌(0이 아닌) 기록은 항상 2개 이상 있습니다."
+   ],
+   "returns": [
+    "파울을 모두 빼고, 남은 기록 중 가장 짧은 기록 하나를 뺀 나머지 기록의 평균을, 소수점 아래를 버린 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "records"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       178,
+       0,
+       165,
+       191,
+       0
+      ]
+     ],
+     "expected": 184,
+     "explain": "파울 두 개를 빼면 178, 165, 191이 남고, 그중 가장 짧은 165를 뺍니다. 남은 178, 191의 평균은 369 ÷ 2 = 184.5이므로 184입니다."
+    },
+    {
+     "args": [
+      [
+       150,
+       0,
+       150
+      ]
+     ],
+     "expected": 150,
+     "explain": "파울을 빼면 150, 150이 남습니다. 가장 짧은 150 중 하나만 빼면 150 하나가 남아 150입니다."
+    }
+   ],
+   "code": "def solution(records):\n    answer = 0\n    return answer",
+   "solution": "def solution(records):\n    total = 0\n    count = 0\n    low = 300\n    for r in records:\n        if r > 0:\n            total += r\n            count += 1\n            if r < low:\n                low = r\n    answer = (total - low) // (count - 1)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       1,
+       2
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       120,
+       120
+      ]
+     ],
+     "expected": 120
+    },
+    {
+     "args": [
+      [
+       300,
+       300
+      ]
+     ],
+     "expected": 300
+    },
+    {
+     "args": [
+      [
+       0,
+       300,
+       0,
+       300,
+       0
+      ]
+     ],
+     "expected": 300
+    },
+    {
+     "args": [
+      [
+       200,
+       210,
+       220,
+       230,
+       240,
+       250,
+       260,
+       270,
+       280,
+       290
+      ]
+     ],
+     "expected": 250
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       155,
+       172
+      ]
+     ],
+     "expected": 172
+    },
+    {
+     "args": [
+      [
+       140,
+       0,
+       160,
+       151,
+       0,
+       149,
+       0
+      ]
+     ],
+     "expected": 153
+    },
+    {
+     "args": [
+      [
+       180,
+       185,
+       0,
+       179,
+       190
+      ]
+     ],
+     "expected": 185
+    },
+    {
+     "args": [
+      [
+       95,
+       0,
+       96,
+       97,
+       0
+      ]
+     ],
+     "expected": 96
+    },
+    {
+     "args": [
+      [
+       210,
+       0,
+       205,
+       205,
+       230
+      ]
+     ],
+     "expected": 215
+    },
+    {
+     "args": [
+      [
+       250,
+       120,
+       0,
+       130
+      ]
+     ],
+     "expected": 190
+    },
+    {
+     "args": [
+      [
+       5,
+       0,
+       300,
+       299
+      ]
+     ],
+     "expected": 299
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(records):\n    return isinstance(records, list) and 2 <= len(records) <= 10 and all(type(x) is int and 0 <= x <= 300 for x in records) and sum(1 for x in records if x > 0) >= 2",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "records = [178, 0, 165, 191, 0]에서 평균을 낼 때 합계를 몇으로 나눠야 할까요?",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 0,
+     "explain": "파울 2개를 빼면 3개가 남고, 그중 가장 짧은 하나를 더 빼면 2개가 남아요. 그래서 len(records)가 아니라 파울이 아닌 기록의 개수 count에서 1을 뺀 수로 나눠요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "total = 0, count = 0, low = 300(기록이 될 수 있는 가장 큰 값)으로 시작해요. r이 0보다 클 때만 total에 r을 더하고, count를 1 늘리고, r이 low보다 작으면 low를 r로 바꿔요. 각 줄을 처리한 뒤의 값을 채워 보세요.",
+     "columns": [
+      "r",
+      "total",
+      "count",
+      "low"
+     ],
+     "rows": [
+      [
+       "178",
+       {
+        "a": "178"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "178"
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "178"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "178"
+       }
+      ],
+      [
+       "165",
+       {
+        "a": "343"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "165"
+       }
+      ],
+      [
+       "191",
+       {
+        "a": "534"
+       },
+       {
+        "a": "3"
+       },
+       {
+        "a": "165"
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "534"
+       },
+       {
+        "a": "3"
+       },
+       {
+        "a": "165"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    records = [178, 0, 165, 191, 0]\n    total = 0\n    count = 0\n    low = 300\n    for r in records:\n        if r > 0:\n            total += r\n            count += 1\n            if r < low:\n                low = r\n        out += [total, count, low]\n    return out",
+     "explain": "r이 0(파울)인 줄에서는 아무 값도 바뀌지 않아요. count는 조건에 맞는 값의 개수를 세는 변수예요. 끝나면 total = 534, count = 3, low = 165예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "파울을 따로 빼지 않고 \"리스트 전체에서 가장 작은 값 하나\"만 빼면 records = [178, 0, 165, 191, 0]에서 어떻게 될까요?",
+     "options": [
+      "0 하나만 빠지고, 다른 0과 가장 짧은 165는 그대로 평균에 들어간다",
+      "정답과 똑같이 184가 나온다",
+      "오류가 나서 프로그램이 멈춘다",
+      "가장 긴 191이 빠진다"
+     ],
+     "answer": 0,
+     "explain": "전체에서 가장 작은 값은 파울 0이에요. 0 하나만 빼면 178, 165, 191, 0의 평균 534 // 4 = 133이 되어 틀려요. 그래서 if r > 0: 으로 파울을 먼저 걸러야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "total = 534, count = 3, low = 165일 때 최종 기록(184)을 구하는 식은 무엇일까요?",
+     "options": [
+      "(total - low) // (count - 1)",
+      "(total - low) // (len(records) - 1)",
+      "(total - low) // count",
+      "total // (count - 1)"
+     ],
+     "answer": 0,
+     "explain": "평균에 들어가는 기록은 파울이 아닌 count개 중 하나를 뺀 count - 1개예요. 369 // 2 = 184이고, len(records)를 쓰면 파울까지 세어 버려요."
+    }
+   ],
+   "explain": "파울(0)은 if r > 0: 으로 걸러 합계·개수·최솟값 계산에서 모두 빼고, 남은 값으로 (합계 - 최솟값) // (개수 - 1)을 구합니다. 나누는 수는 len(records)가 아니라 직접 센 count를 써야 해요. low를 300으로 시작해도 되는 까닭은 기록이 300 이하이기 때문이에요."
+  }
+ ]
+}
