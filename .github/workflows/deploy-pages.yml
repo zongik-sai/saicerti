@@ -42,7 +42,7 @@ jobs:
         run: npm run lint
       - name: Unit tests (진도 합치기·표 채점 규칙 등)
         run: npm test
-      - name: Content check (문제 100개: 정답·테스트·빈칸·한 줄 수정·중간 점검 정답)
+      - name: 'Content check (문제 100개 — 정답·테스트·빈칸·한 줄 수정·중간 점검 정답)'
         run: python3 tools/validate.py
       - name: Configure Pages
         id: pages
