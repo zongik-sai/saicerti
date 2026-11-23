@@ -4,7 +4,7 @@ import { COURSES, loadCourse } from '../../content';
 import type { Course, CourseId } from '../../content/types';
 import { sanitize, type CourseState } from '../progress/model';
 import { supabase } from '../auth/supabase';
-import { useAuth } from '../auth/AuthContext';
+import { useRoles } from '../admin/roles';
 
 interface Row {
   user_id: string;
@@ -16,28 +16,12 @@ interface Row {
 
 /** 선생님 화면: 과정별 반 학습 현황(읽기만). 선생님 계정(am_i_teacher)만 자료를 읽는다. */
 export function TeacherPage() {
-  const { identity } = useAuth();
-  const [isTeacher, setIsTeacher] = useState<boolean | null>(null);
+  const roles = useRoles();
+  const isTeacher = roles === null ? null : roles.teacher;
   const [cid, setCid] = useState<CourseId>('pyb');
   const [course, setCourse] = useState<Course | null>(null);
   const [rows, setRows] = useState<Row[] | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const sb = supabase();
-    if (!sb || identity?.kind !== 'user') {
-      setIsTeacher(false);
-      return;
-    }
-    let alive = true;
-    void Promise.resolve(sb.rpc('am_i_teacher')).then(({ data, error: e }) => {
-      if (!alive) return;
-      setIsTeacher(!e && data === true);
-    });
-    return () => {
-      alive = false;
-    };
-  }, [identity]);
 
   useEffect(() => {
     if (!isTeacher) return;

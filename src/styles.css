@@ -300,3 +300,88 @@ p { margin: 0 0 0.6rem; }
 .sync { font-size: 0.8rem; white-space: nowrap; }
 .sync.bad { color: var(--bad); }
 .dev-flag { background: var(--warn); color: #000; font-size: 0.75rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 4px; }
+
+/* ---- 교사 관리(배움 숲 계정 관리 화면과 같은 구성) ---- */
+:root {
+  --teal: var(--accent);
+  --teal-strong: var(--accent);
+  --teal-soft: var(--accent-soft);
+  --moss: var(--ok);
+  --moss-strong: var(--ok);
+  --moss-soft: var(--ok-soft);
+  --ink-soft: var(--soft);
+  --radius-m: var(--radius);
+  --radius-s: 8px;
+  --font: var(--sans);
+}
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.07); }
+.btn-quiet { background: transparent; border-color: transparent; color: var(--accent); padding-inline: 0.4em; }
+.btn-quiet:hover:not(:disabled) { border-color: transparent; text-decoration: underline; }
+.btn-small { min-height: 32px; padding: 0.25em 0.7em; font-size: 0.9rem; }
+.stack { display: grid; gap: 0.75rem; }
+.stack > * { min-width: 0; }
+.small { font-size: 0.875rem; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; }
+.notice-warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+.notice-bad { background: var(--bad-soft); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); max-width: 100%; }
+table.data { border-collapse: collapse; font-size: 0.88rem; min-width: 100%; }
+table.data th, table.data td { padding: 0.35rem 0.7rem; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+table.data th { background: var(--surface-2); font-weight: 600; }
+table.data tr:last-child td { border-bottom: 0; }
+.toasts { position: fixed; right: 1rem; bottom: 1rem; display: grid; gap: 0.5rem; z-index: 50; max-width: min(360px, calc(100vw - 2rem)); }
+.toast { background: var(--surface); border: 1px solid var(--ok); border-left-width: 5px; border-radius: 8px; padding: 0.6rem 0.8rem; font-weight: 600; box-shadow: var(--shadow); }
+.monitor-modal-back { position: fixed; inset: 0; z-index: 100; background: rgba(10, 15, 25, 0.55); display: grid; place-items: center; padding: 1rem; }
+.monitor-modal { width: min(460px, 100%); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem 1.2rem; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); }
+.monitor-modal h2 { font-size: 1.2rem; }
+.acc-tools select { font: inherit; padding: 0.3rem 0.4rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); max-width: 100%; }
+.acc input[type='search'] { min-width: 0; flex: 1 1 14rem; max-width: 22rem; min-height: 36px; padding: 0.25rem 0.6rem; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface); }
+.acc-filters { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.acc-filter { display: inline-flex; align-items: center; gap: 0.4rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font-weight: 600; font-size: 0.92rem; padding: 0.25em 0.8em; min-height: 34px; cursor: pointer; }
+.acc-filter:hover { border-color: var(--accent); }
+.acc-filter.on { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.acc-count { font-variant-numeric: tabular-nums; font-size: 0.82rem; font-weight: 700; border-radius: 999px; padding: 0 0.45em; background: var(--surface-2); color: var(--soft); }
+.acc-filter.on .acc-count { background: rgba(255, 255, 255, 0.22); color: inherit; }
+table.data.acc-table td, table.data.acc-table tbody th { vertical-align: top; white-space: normal; }
+table.data.acc-table th[scope='row'] { background: transparent; font-weight: 700; white-space: nowrap; }
+table.data.acc-table .acc-date, table.data.acc-table .acc-email { white-space: nowrap; }
+.acc-table tr[data-kind='unknown'] td:first-child { box-shadow: inset 3px 0 0 var(--warn); }
+.acc-email { font-family: var(--mono); font-size: 0.84rem; }
+.acc-sid { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.acc-sid-p { display: block; white-space: nowrap; }
+.acc-kind { display: inline-block; border-radius: 999px; padding: 0.05em 0.6em; font-size: 0.8rem; font-weight: 700; border: 1px solid; white-space: nowrap; }
+.acc-kind.kind-admin { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.acc-kind.kind-teacher { color: var(--ok); border-color: var(--ok); background: var(--ok-soft); }
+.acc-kind.kind-student { color: var(--soft); border-color: var(--line); background: var(--surface-2); }
+.acc-kind.kind-unknown { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+.acc-reason { display: block; color: var(--warn); margin-top: 0.15rem; min-width: 8.5rem; max-width: 10.5rem; line-height: 1.35; }
+.acc-btns { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; min-width: 10rem; max-width: 12.5rem; }
+.acc-btns .btn { white-space: nowrap; }
+.acc-btns .small { flex-basis: 100%; line-height: 1.35; }
+.acc-revoke { color: var(--bad); }
+.acc-danger { background: var(--bad); border-color: var(--bad); color: #fff; }
+.acc-danger:hover:not(:disabled) { filter: brightness(0.92); }
+.acc-modal .acc-email { display: inline-block; margin-top: 0.1rem; overflow-wrap: anywhere; }
+.acc-audit h2 { font-size: 1.05rem; }
+.acc-audit-list { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.25rem; font-size: 0.92rem; overflow-wrap: anywhere; }
+.acc-act { font-weight: 700; }
+.acc-act.act-grant_teacher, .acc-act.act-grant_admin { color: var(--ok); }
+.acc-act.act-revoke_teacher, .acc-act.act-revoke_admin { color: var(--bad); }
+@media (max-width: 640px) {
+  .acc-wrap { border: 0; background: transparent; overflow: visible; }
+  .acc-table { display: block; min-width: 0; }
+  .acc-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .acc-table tbody { display: grid; gap: 0.5rem; }
+  .acc-table tr { display: block; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 0.5rem 0.7rem; }
+  .acc-table tr[data-kind='unknown'] { border-left: 4px solid var(--warn); }
+  .acc-table tr[data-kind='unknown'] td:first-child { box-shadow: none; }
+  table.data.acc-table td, table.data.acc-table th[scope='row'] { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 0.6rem; align-items: baseline; border: 0; padding: 0.12rem 0; white-space: normal; min-width: 0; }
+  table.data.acc-table td::before, table.data.acc-table th[scope='row']::before { content: attr(data-label); color: var(--soft); font-size: 0.8rem; font-weight: 600; }
+  table.data.acc-table .acc-email { white-space: normal; overflow-wrap: anywhere; }
+  .acc-v { min-width: 0; }
+  .acc-reason { display: inline; margin: 0 0 0 0.35rem; min-width: 0; max-width: none; }
+  .acc-sid-p { display: inline; white-space: normal; margin-left: 0.35rem; }
+  .acc-btns { min-width: 0; max-width: none; }
+  .acc-toasts { left: 1rem; right: 1rem; max-width: none; }
+}

@@ -8,6 +8,8 @@ import { forgetLearner, useCourseProgress } from '../features/progress/store';
 import { CourseHome } from './CourseHome';
 import { ProblemPage } from './ProblemPage';
 import { TeacherPage } from '../features/teacher/TeacherPage';
+import { AdminPage } from '../features/admin/AdminPage';
+import { useRoles } from '../features/admin/roles';
 import { tally } from '../features/progress/model';
 
 export function App() {
@@ -20,6 +22,7 @@ export function App() {
             <Route key={c.id} path={`${c.path}/*`} element={<CourseRoute key={c.id} meta={c} />} />
           ))}
           <Route path="/teacher" element={<TeacherPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Shell>
@@ -29,6 +32,7 @@ export function App() {
 
 function Shell({ children }: { children: ReactNode }) {
   const { identity, signOut, exitDemo } = useAuth();
+  const roles = useRoles();
   const [warn, setWarn] = useState(false);
   const out = async (force = false) => {
     if (identity?.kind === 'demo') {
@@ -60,6 +64,8 @@ function Shell({ children }: { children: ReactNode }) {
                 {c.name.replace('프로그래밍 ', '')}
               </NavLink>
             ))}
+            {roles?.teacher && <NavLink to="/teacher">반 현황</NavLink>}
+            {roles?.teacher && <NavLink to="/admin">교사 관리</NavLink>}
           </nav>
           <div className="top-right">
             {identity?.kind === 'demo' && <span className="dev-flag">개발용 데모</span>}
