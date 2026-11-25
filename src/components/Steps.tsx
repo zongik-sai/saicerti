@@ -42,7 +42,7 @@ export function optionOrder(options: string[], seed: string, fixed = false): num
   return idx;
 }
 
-/** 중간 점검 한 단계. 맞혀야 다음으로(세 번 틀리면 정답 보기). */
+/** 중간 점검 한 단계. 맞히면 ✓(세 번 틀리면 정답 보기). 단계 이동은 문제 화면에서 자유롭게 한다. */
 export function StepView(p: Props) {
   return (
     <div className="card" aria-live="polite">

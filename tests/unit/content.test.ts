@@ -44,6 +44,15 @@ describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
       }
   });
 
+  it('중간 점검 질문·보기·해설에 코드 빈칸 번호(⟦n⟧)가 없다(질문만 읽고 풀 수 있게)', () => {
+    for (const f of files)
+      for (const p of f.problems)
+        for (const st of p.steps) {
+          const shown = JSON.stringify(st, (k, v: unknown) => (k === 'check' ? undefined : v));
+          expect(shown, `${p.id} ${st.id}`).not.toMatch(/⟦\d+⟧/);
+        }
+  });
+
   it('C 과정 파일은 lang "c", 정답 코드에 main이 없다(채점기가 함수를 직접 부름)', () => {
     for (const f of files.filter((x) => x.course === 'cb')) {
       expect(f.lang, `${f.course} t${f.type}`).toBe('c');

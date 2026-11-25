@@ -66,8 +66,9 @@ export function CourseHome({ course, learnerKey, remote }: { course: Course; lea
               <div className="probs">
                 {ty.problems.map((p, i) => {
                   const s = prog.state.probs[p.id];
-                  const cls = s?.solved ? 'solved' : s?.stepsDone ? 'coding' : s ? 'started' : '';
-                  const label = s?.solved ? '해결' : s?.stepsDone ? '코드 풀이 중' : s ? '중간 점검 중' : '시작 전';
+                  const coding = s?.stepsDone || (s?.tries ?? 0) > 0;
+                  const cls = s?.solved ? 'solved' : coding ? 'coding' : s ? 'started' : '';
+                  const label = s?.solved ? '해결' : coding ? '코드 풀이 중' : s ? '중간 점검 중' : '시작 전';
                   return (
                     <Link key={p.id} to={`${meta.path}/${p.id}`} className={`prob-chip ${cls}`} title={`${p.title} · ${label}`}>
                       <span className="dot" aria-hidden />

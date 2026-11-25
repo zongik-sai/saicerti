@@ -56,6 +56,11 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
     });
 
   const next = nextProblem(course, type, index);
+  // 한 문제 안에서는 중간 점검 단계와 코드 풀이를 자유롭게 오간다(선생님 요청 2026-11-26). 진도 표시(✓)는 맞힌 단계에만
+  const goNext = () => {
+    if (stepIdx >= problem.steps.length - 1) setTab('code');
+    else setStepIdx(stepIdx + 1);
+  };
 
   return (
     <div className="page" ref={topRef}>
@@ -85,21 +90,18 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
             </button>
             <button role="tab" aria-selected={tab === 'code'} className={`panel-tab${ps?.solved ? ' done' : ''}`} onClick={() => setTab('code')}>
               <span className="num">{ps?.solved ? '✓' : '2'}</span> 코드 풀이
-              <small>{ps?.solved ? '해결' : stepsDone ? '열림' : '잠김'}</small>
+              <small>{ps?.solved ? '해결' : ''}</small>
             </button>
           </div>
 
           {tab === 'steps' && (
             <>
               <div className="stepper" aria-label="중간 점검 단계">
-                {problem.steps.map((s, i) => {
-                  const open = doneSteps.has(s.id) || i === (firstOpen < 0 ? problem.steps.length : firstOpen) || i <= (firstOpen < 0 ? problem.steps.length : firstOpen);
-                  return (
-                    <button key={s.id} className={`${i === stepIdx ? 'cur' : ''} ${doneSteps.has(s.id) ? 'done' : ''}`} disabled={!open} aria-current={i === stepIdx ? 'step' : undefined} onClick={() => setStepIdx(i)}>
-                      {i + 1}
-                    </button>
-                  );
-                })}
+                {problem.steps.map((s, i) => (
+                  <button key={s.id} className={`${i === stepIdx ? 'cur' : ''} ${doneSteps.has(s.id) ? 'done' : ''}`} aria-current={i === stepIdx ? 'step' : undefined} aria-label={`중간 점검 ${i + 1}단계${doneSteps.has(s.id) ? ' (맞힘)' : ''}`} onClick={() => setStepIdx(i)}>
+                    {i + 1}
+                  </button>
+                ))}
               </div>
               <StepView
                 seed={problem.id}
@@ -114,32 +116,34 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
                 onCorrect={() => markStep(problem.steps[stepIdx].id, false)}
                 onReveal={() => markStep(problem.steps[stepIdx].id, true)}
                 isLast={stepIdx === problem.steps.length - 1}
-                onNext={() => {
-                  if (stepIdx >= problem.steps.length - 1) setTab('code');
-                  else setStepIdx(stepIdx + 1);
-                }}
+                onNext={goNext}
               />
+              <div className="step-nav">
+                <button className="btn small ghost" onClick={() => setStepIdx(stepIdx - 1)} disabled={stepIdx === 0}>
+                  ← 이전 단계
+                </button>
+                {!doneSteps.has(problem.steps[stepIdx].id) && (
+                  <button className="btn small ghost" onClick={goNext}>
+                    {stepIdx >= problem.steps.length - 1 ? '코드 풀이 보기 →' : '다음 단계 보기 →'}
+                  </button>
+                )}
+              </div>
             </>
           )}
 
-          {tab === 'code' &&
-            (stepsDone || ps?.solved ? (
-              <CodePanel key={problem.id} problem={problem} kind={type.kind} lang={type.lang ?? 'python'} learnerKey={learnerKey} ps={ps} update={update} nextPath={next ? `${meta.path}/${next}` : null} onNext={() => next && navigate(`${meta.path}/${next}`)} />
-            ) : (
-              <div className="card lock">
-                <div className="icon" aria-hidden>
-                  🔒
-                </div>
-                <p>
-                  중간 점검 {problem.steps.length}단계를 먼저 풀면 코드 풀이가 열려요.
-                  <br />
-                  손으로 따라가 보면 코드가 훨씬 쉬워져요.
+          {tab === 'code' && (
+            <>
+              {!stepsDone && !ps?.solved && (
+                <p className="notice" style={{ marginTop: 0 }}>
+                  중간 점검을 먼저 풀어 보면 코드가 훨씬 쉬워져요 ({problem.steps.filter((x) => doneSteps.has(x.id)).length}/{problem.steps.length}단계 맞힘).{' '}
+                  <button className="btn small ghost" onClick={() => setTab('steps')}>
+                    중간 점검 보기
+                  </button>
                 </p>
-                <button className="btn primary" onClick={() => setTab('steps')}>
-                  중간 점검 하러 가기
-                </button>
-              </div>
-            ))}
+              )}
+              <CodePanel key={problem.id} problem={problem} kind={type.kind} lang={type.lang ?? 'python'} learnerKey={learnerKey} ps={ps} update={update} nextPath={next ? `${meta.path}/${next}` : null} onNext={() => next && navigate(`${meta.path}/${next}`)} />
+            </>
+          )}
           {prog.syncError && <p className="notice warn" style={{ marginTop: '0.75rem' }}>{prog.syncError}</p>}
         </section>
       </div>
