@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { InputCell, Step, TableCell } from '../content/types';
+import type { Figure, InputCell, Lang, Step, TableCell } from '../content/types';
 import { cellOk } from '../lib/pyrepr';
 import { inline, Rich } from './Rich';
 
@@ -9,6 +9,8 @@ const REVEAL_AFTER = 3;
 interface Props {
   /** 보기 섞기 씨앗(문제 id) */
   seed: string;
+  figures?: Figure[];
+  lang?: Lang;
   step: Step;
   index: number;
   total: number;
@@ -85,7 +87,7 @@ function Footer({ ok, revealed, explain, wrong, onReveal, onNext, isLast, onChec
   );
 }
 
-function Mcq({ step, seed, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'mcq' }> }) {
+function Mcq({ step, seed, figures, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'mcq' }> }) {
   const order = optionOrder(step.options, `${seed}:${step.id}`, refersToPosition(step.q + step.explain));
   const [sel, setSel] = useState<number | null>(done ? step.answer : null);
   const [wrongPick, setWrongPick] = useState<number | null>(null);
@@ -109,7 +111,7 @@ function Mcq({ step, seed, done, revealed, onCorrect, onReveal, onNext, isLast }
   return (
     <>
       <div className="step-q">
-        <Rich text={step.q} />
+        <Rich text={step.q} figures={figures} />
       </div>
       <div className="opts" role="radiogroup" aria-label="보기">
         {order.map((i, pos) => {
@@ -138,7 +140,7 @@ function Mcq({ step, seed, done, revealed, onCorrect, onReveal, onNext, isLast }
   );
 }
 
-function Table({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'table' }> }) {
+function Table({ step, figures, lang, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'table' }> }) {
   const cells: InputCell[] = step.rows.flat().filter(isInput);
   const [vals, setVals] = useState<string[]>(() => (done ? cells.map((c) => c.a) : cells.map(() => '')));
   const [marks, setMarks] = useState<(boolean | null)[]>(() => cells.map(() => null));
@@ -160,7 +162,7 @@ function Table({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Pr
     <>
       {step.title && <h3 style={{ marginTop: '0.3rem' }}>{step.title}</h3>}
       <div className="step-q">
-        <Rich text={step.prompt} />
+        <Rich text={step.prompt} figures={figures} />
       </div>
       <div className="scroll-x">
         <table className="trace">
@@ -209,13 +211,13 @@ function Table({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Pr
           </tbody>
         </table>
       </div>
-      {!done && <p className="faint">참/거짓은 True·False, 글자는 따옴표('a')로 써요. 빈칸 없이 모두 채운 뒤 확인을 눌러요.</p>}
+      {!done && <p className="faint">{lang === 'c' ? "참/거짓은 1·0, 문자는 작은따옴표('a'), 문자열은 큰따옴표(\"ab\")로 써요." : "참/거짓은 True·False, 글자는 따옴표('a')로 써요."} 빈칸 없이 모두 채운 뒤 확인을 눌러요.</p>}
       <Footer ok={done} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} onCheck={check} canCheck={vals.every((v) => v.trim() !== '')} />
     </>
   );
 }
 
-function Short({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'short' }> }) {
+function Short({ step, figures, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'short' }> }) {
   const [v, setV] = useState(done ? step.a : '');
   const [mark, setMark] = useState<boolean | null>(null);
   const [wrong, setWrong] = useState(0);
@@ -233,7 +235,7 @@ function Short({ step, done, revealed, onCorrect, onReveal, onNext, isLast }: Pr
   return (
     <>
       <div className="step-q">
-        <Rich text={step.q} />
+        <Rich text={step.q} figures={figures} />
       </div>
       <input
         className={`short-input ${done || mark === true ? 'right' : mark === false ? 'wrong' : ''}`}

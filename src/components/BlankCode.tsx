@@ -15,10 +15,11 @@ interface Props {
   values: string[];
   onChange: (i: number, v: string) => void;
   disabled?: boolean;
+  lang?: 'python' | 'c';
 }
 
 /** 빈칸 채우기 코드: 코드는 읽기 전용, 빈칸마다 입력 칸(입력 길이에 따라 넓어짐). */
-export function BlankCode({ code, values, onChange, disabled }: Props) {
+export function BlankCode({ code, values, onChange, disabled, lang = 'python' }: Props) {
   const lines = code.split('\n');
   return (
     <div className="code-box">
@@ -28,7 +29,7 @@ export function BlankCode({ code, values, onChange, disabled }: Props) {
           let last = 0;
           for (const m of line.matchAll(MARK)) {
             const idx = m.index ?? 0;
-            if (idx > last) parts.push(<Fragment key={`t${idx}`}>{highlightLine(line.slice(last, idx), `h${li}-${idx}`)}</Fragment>);
+            if (idx > last) parts.push(<Fragment key={`t${idx}`}>{highlightLine(line.slice(last, idx), `h${li}-${idx}`, lang)}</Fragment>);
             const n = Number(m[1]);
             const v = values[n - 1] ?? '';
             parts.push(
@@ -51,7 +52,7 @@ export function BlankCode({ code, values, onChange, disabled }: Props) {
             );
             last = idx + m[0].length;
           }
-          if (last < line.length) parts.push(<Fragment key="end">{highlightLine(line.slice(last), `e${li}`)}</Fragment>);
+          if (last < line.length) parts.push(<Fragment key="end">{highlightLine(line.slice(last), `e${li}`, lang)}</Fragment>);
           return (
             <span className="ln" key={li}>
               {parts.length ? parts : ' '}

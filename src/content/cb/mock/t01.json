@@ -1,0 +1,470 @@
+{
+ "course": "cb",
+ "type": 1,
+ "typeTitle": "반복으로 수열 채우기",
+ "kind": "blank",
+ "lang": "c",
+ "skills": [
+  "배열 선언과 크기",
+  "for 반복문의 시작·끝",
+  "점화식(앞 칸으로 다음 칸 계산)",
+  "인덱스(0부터 셈)"
+ ],
+ "intro": "앞 칸의 값으로 다음 칸을 정하는 규칙(점화식)을 보고, for 반복문으로 배열을 앞에서부터 차례로 채우는 연습을 해요. 배열을 몇 칸으로 만들지, 반복을 몇에서 시작해 어디서 끝낼지(인덱스는 0부터)를 정확히 정하는 것이 핵심이에요.",
+ "problems": [
+  {
+   "id": "cb-m1-t01",
+   "version": 1,
+   "title": "피보나치 수 구하기",
+   "statement": "피보나치 수열은 아래와 같이 정의합니다.\n\n- `fibo[0] = 0`, `fibo[1] = 1`\n- `fibo[n] = fibo[n-1] + fibo[n-2]` (n ≥ 2)\n\n다시 말해, N이 2 이상이면 N번째 피보나치 수는 바로 앞의 두 피보나치 수를 더한 값입니다.\n\n예를 들어 아래 그림은 9까지의 피보나치 수열(`fibo[0]`부터 `fibo[9]`까지)을 나타낸 것입니다. 색칠한 두 칸은 처음부터 정해져 있는 `fibo[0]`과 `fibo[1]`입니다.\n\n{{fig:f1}}\n\n정수 N이 주어질 때, 반복문으로 N번째 피보나치 수를 구해 return 하는 solution 함수를 만들려고 합니다. 코드가 올바르게 동작하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "N은 0 이상 45 이하인 정수입니다."
+   ],
+   "returns": [
+    "N번째 피보나치 수(`fibo[N]`)를 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      7
+     ],
+     "expected": 13,
+     "explain": "그림에서 `fibo[7]`은 13입니다."
+    },
+    {
+     "args": [
+      13
+     ],
+     "expected": 233,
+     "explain": "`fibo[11] = 89`, `fibo[12] = 144`이므로 `fibo[13]`은 89 + 144 = 233입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 0) return 0;\n    if (N == 1) return 1;\n    int fibo[⟦1⟧];\n    fibo[0] = 0;\n    fibo[1] = 1;\n    for (int i = ⟦2⟧; i <= ⟦3⟧; i++) {\n        fibo[i] = fibo[i - 1] + fibo[i - 2];\n    }\n    return fibo[N];\n}",
+   "blanks": [
+    {
+     "answer": "N + 1",
+     "alts": [
+      "N+1",
+      "46"
+     ]
+    },
+    {
+     "answer": "2"
+    },
+    {
+     "answer": "N"
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 0) return 0;\n    if (N == 1) return 1;\n    int fibo[N + 1];\n    fibo[0] = 0;\n    fibo[1] = 1;\n    for (int i = 2; i <= N; i++) {\n        fibo[i] = fibo[i - 1] + fibo[i - 2];\n    }\n    return fibo[N];\n}",
+   "tests": [
+    {
+     "args": [
+      0
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      4
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      10
+     ],
+     "expected": 55
+    },
+    {
+     "args": [
+      11
+     ],
+     "expected": 89
+    },
+    {
+     "args": [
+      20
+     ],
+     "expected": 6765
+    },
+    {
+     "args": [
+      30
+     ],
+     "expected": 832040
+    },
+    {
+     "args": [
+      40
+     ],
+     "expected": 102334155
+    },
+    {
+     "args": [
+      44
+     ],
+     "expected": 701408733
+    },
+    {
+     "args": [
+      45
+     ],
+     "expected": 1134903170
+    }
+   ],
+   "inputCheck": "def valid(N):\n    return type(N) is int and 0 <= N <= 45",
+   "steps": [],
+   "explain": "`fibo[0]`부터 `fibo[N]`까지 담아야 하므로 배열 크기는 `N + 1`이에요. `fibo[0]`, `fibo[1]`은 미리 정했으니 반복은 i = 2부터 시작해 `i <= N`까지 돌며 바로 앞 두 칸을 더해요. 크기를 N으로 잡으면 마지막 칸 `fibo[N]`이 배열 밖이 되어 오류가 나고, 끝을 N - 1로 잡으면 `fibo[N]`을 채우지 못해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      0,
+      1,
+      1,
+      2,
+      3,
+      5,
+      8,
+      13,
+      21,
+      34
+     ],
+     "highlight": [
+      0,
+      1
+     ],
+     "caption": "9까지의 피보나치 수열",
+     "alt": "인덱스 0부터 9까지 10칸으로 된 배열 그림이다. 칸의 값은 차례로 0, 1, 1, 2, 3, 5, 8, 13, 21, 34이다. 인덱스 0과 1의 칸(값 0과 1)만 색칠되어 있다."
+    }
+   ]
+  },
+  {
+   "id": "cb-m2-t01",
+   "version": 1,
+   "title": "피보나치 수 구하기",
+   "statement": "피보나치 수열은 아래와 같이 정의합니다.\n\n- `fibo[0] = 0`, `fibo[1] = 1`\n- `fibo[n] = fibo[n-1] + fibo[n-2]` (n ≥ 2)\n\n다시 말해, N이 2 이상이면 N번째 피보나치 수는 바로 앞의 두 피보나치 수를 더한 값입니다.\n\n예를 들어 아래 그림은 11까지의 피보나치 수열(`fibo[0]`부터 `fibo[11]`까지)을 나타낸 것입니다. 색칠한 두 칸은 처음부터 정해져 있는 `fibo[0]`과 `fibo[1]`입니다.\n\n{{fig:f1}}\n\n정수 N이 주어질 때, 반복문으로 N번째 피보나치 수를 구해 return 하는 solution 함수를 만들려고 합니다. 코드가 올바르게 동작하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "N은 0 이상 45 이하인 정수입니다."
+   ],
+   "returns": [
+    "N번째 피보나치 수(`fibo[N]`)를 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      6
+     ],
+     "expected": 8,
+     "explain": "그림에서 `fibo[6]`은 8입니다."
+    },
+    {
+     "args": [
+      16
+     ],
+     "expected": 987,
+     "explain": "`fibo[14] = 377`, `fibo[15] = 610`이므로 `fibo[16]`은 377 + 610 = 987입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 0) return 0;\n    if (N == 1) return 1;\n    int fibo[⟦1⟧];\n    fibo[0] = 0;\n    fibo[1] = 1;\n    for (int i = ⟦2⟧; i <= ⟦3⟧; i++) {\n        fibo[i] = fibo[i - 1] + fibo[i - 2];\n    }\n    return fibo[N];\n}",
+   "blanks": [
+    {
+     "answer": "N + 1",
+     "alts": [
+      "N+1",
+      "46"
+     ]
+    },
+    {
+     "answer": "2"
+    },
+    {
+     "answer": "N"
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 0) return 0;\n    if (N == 1) return 1;\n    int fibo[N + 1];\n    fibo[0] = 0;\n    fibo[1] = 1;\n    for (int i = 2; i <= N; i++) {\n        fibo[i] = fibo[i - 1] + fibo[i - 2];\n    }\n    return fibo[N];\n}",
+   "tests": [
+    {
+     "args": [
+      0
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      5
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      9
+     ],
+     "expected": 34
+    },
+    {
+     "args": [
+      12
+     ],
+     "expected": 144
+    },
+    {
+     "args": [
+      25
+     ],
+     "expected": 75025
+    },
+    {
+     "args": [
+      35
+     ],
+     "expected": 9227465
+    },
+    {
+     "args": [
+      41
+     ],
+     "expected": 165580141
+    },
+    {
+     "args": [
+      44
+     ],
+     "expected": 701408733
+    },
+    {
+     "args": [
+      45
+     ],
+     "expected": 1134903170
+    }
+   ],
+   "inputCheck": "def valid(N):\n    return type(N) is int and 0 <= N <= 45",
+   "steps": [],
+   "explain": "`fibo[0]`부터 `fibo[N]`까지 담아야 하므로 배열 크기는 `N + 1`이에요. `fibo[0]`, `fibo[1]`은 미리 정했으니 반복은 i = 2부터 시작해 `i <= N`까지 돌며 바로 앞 두 칸을 더해요. 크기를 N으로 잡으면 마지막 칸 `fibo[N]`이 배열 밖이 되어 오류가 나고, 끝을 N - 1로 잡으면 `fibo[N]`을 채우지 못해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      0,
+      1,
+      1,
+      2,
+      3,
+      5,
+      8,
+      13,
+      21,
+      34,
+      55,
+      89
+     ],
+     "highlight": [
+      0,
+      1
+     ],
+     "caption": "11까지의 피보나치 수열",
+     "alt": "인덱스 0부터 11까지 12칸으로 된 배열 그림이다. 칸의 값은 차례로 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89이다. 인덱스 0과 1의 칸(값 0과 1)만 색칠되어 있다."
+    }
+   ]
+  },
+  {
+   "id": "cb-m3-t01",
+   "version": 1,
+   "title": "피보나치 수 구하기",
+   "statement": "피보나치 수열은 아래와 같이 정의합니다.\n\n- `fibo[0] = 0`, `fibo[1] = 1`\n- `fibo[n] = fibo[n-1] + fibo[n-2]` (n ≥ 2)\n\n다시 말해, N이 2 이상이면 N번째 피보나치 수는 바로 앞의 두 피보나치 수를 더한 값입니다.\n\n예를 들어 아래 그림은 8까지의 피보나치 수열(`fibo[0]`부터 `fibo[8]`까지)을 나타낸 것입니다. 색칠한 두 칸은 처음부터 정해져 있는 `fibo[0]`과 `fibo[1]`입니다.\n\n{{fig:f1}}\n\n정수 N이 주어질 때, 반복문으로 N번째 피보나치 수를 구해 return 하는 solution 함수를 만들려고 합니다. 코드가 올바르게 동작하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "N은 0 이상 45 이하인 정수입니다."
+   ],
+   "returns": [
+    "N번째 피보나치 수(`fibo[N]`)를 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      8
+     ],
+     "expected": 21,
+     "explain": "그림에서 `fibo[8]`은 21입니다."
+    },
+    {
+     "args": [
+      20
+     ],
+     "expected": 6765,
+     "explain": "`fibo[18] = 2584`, `fibo[19] = 4181`이므로 `fibo[20]`은 2584 + 4181 = 6765입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 0) return 0;\n    if (N == 1) return 1;\n    int fibo[⟦1⟧];\n    fibo[0] = 0;\n    fibo[1] = 1;\n    for (int i = ⟦2⟧; i <= ⟦3⟧; i++) {\n        fibo[i] = fibo[i - 1] + fibo[i - 2];\n    }\n    return fibo[N];\n}",
+   "blanks": [
+    {
+     "answer": "N + 1",
+     "alts": [
+      "N+1",
+      "46"
+     ]
+    },
+    {
+     "answer": "2"
+    },
+    {
+     "answer": "N"
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 0) return 0;\n    if (N == 1) return 1;\n    int fibo[N + 1];\n    fibo[0] = 0;\n    fibo[1] = 1;\n    for (int i = 2; i <= N; i++) {\n        fibo[i] = fibo[i - 1] + fibo[i - 2];\n    }\n    return fibo[N];\n}",
+   "tests": [
+    {
+     "args": [
+      0
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      4
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      7
+     ],
+     "expected": 13
+    },
+    {
+     "args": [
+      14
+     ],
+     "expected": 377
+    },
+    {
+     "args": [
+      22
+     ],
+     "expected": 17711
+    },
+    {
+     "args": [
+      33
+     ],
+     "expected": 3524578
+    },
+    {
+     "args": [
+      42
+     ],
+     "expected": 267914296
+    },
+    {
+     "args": [
+      44
+     ],
+     "expected": 701408733
+    },
+    {
+     "args": [
+      45
+     ],
+     "expected": 1134903170
+    }
+   ],
+   "inputCheck": "def valid(N):\n    return type(N) is int and 0 <= N <= 45",
+   "steps": [],
+   "explain": "`fibo[0]`부터 `fibo[N]`까지 담아야 하므로 배열 크기는 `N + 1`이에요. `fibo[0]`, `fibo[1]`은 미리 정했으니 반복은 i = 2부터 시작해 `i <= N`까지 돌며 바로 앞 두 칸을 더해요. 크기를 N으로 잡으면 마지막 칸 `fibo[N]`이 배열 밖이 되어 오류가 나고, 끝을 N - 1로 잡으면 `fibo[N]`을 채우지 못해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      0,
+      1,
+      1,
+      2,
+      3,
+      5,
+      8,
+      13,
+      21
+     ],
+     "highlight": [
+      0,
+      1
+     ],
+     "caption": "8까지의 피보나치 수열",
+     "alt": "인덱스 0부터 8까지 9칸으로 된 배열 그림이다. 칸의 값은 차례로 0, 1, 1, 2, 3, 5, 8, 13, 21이다. 인덱스 0과 1의 칸(값 0과 1)만 색칠되어 있다."
+    }
+   ]
+  }
+ ]
+}

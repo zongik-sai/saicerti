@@ -115,7 +115,7 @@ export function mergeState(a: CourseState | null | undefined, b: CourseState | n
   return out;
 }
 
-const PID = /^(pyb|pya)-t\d{2}-[a-e]$/;
+const PID = /^(pyb|pya|cb|ca)-t\d{2}-[a-e]$/;
 const SID = /^s\d{1,2}$/;
 const ISO = (v: unknown): string | undefined => (typeof v === 'string' && v.length <= 40 && !Number.isNaN(Date.parse(v)) ? v : undefined);
 

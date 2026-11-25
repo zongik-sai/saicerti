@@ -3,6 +3,8 @@ import { EditorState, StateEffect, StateField, RangeSetBuilder } from '@codemirr
 import { Decoration, EditorView, keymap, lineNumbers, highlightActiveLine, drawSelection, type DecorationSet } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { python } from '@codemirror/lang-python';
+import { cpp } from '@codemirror/lang-cpp';
+import type { Lang } from '../content/types';
 import { bracketMatching, indentUnit, syntaxHighlighting, HighlightStyle } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
 
@@ -47,10 +49,11 @@ interface Props {
   /** 처음 코드와 다른 줄(1부터): 노란 배경 */
   changedLines?: number[];
   label: string;
+  lang?: Lang;
 }
 
-/** 파이썬 코드 편집기(CodeMirror). Tab = 들여쓰기(Esc 다음 Tab으로 빠져나감). */
-export function CodeEditor({ value, onChange, changedLines, label }: Props) {
+/** 코드 편집기(CodeMirror, 파이썬·C). Tab = 들여쓰기(Esc 다음 Tab으로 빠져나감). */
+export function CodeEditor({ value, onChange, changedLines, label, lang = 'python' }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const cb = useRef(onChange);
@@ -69,7 +72,7 @@ export function CodeEditor({ value, onChange, changedLines, label }: Props) {
           bracketMatching(),
           indentUnit.of('    '),
           EditorState.tabSize.of(4),
-          python(),
+          lang === 'c' ? cpp() : python(),
           syntaxHighlighting(style),
           theme,
           changedField,

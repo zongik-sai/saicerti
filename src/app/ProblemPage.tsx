@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import type { Course, Problem, TypeFile } from '../content/types';
+import type { Course, Lang, Problem, TypeFile } from '../content/types';
 import { KIND_LABEL, KIND_TASK } from '../content/types';
 import { courseMeta } from '../content';
 import { inline } from '../components/Rich';
@@ -72,7 +72,7 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
             {ps?.solved && <span className="badge write">해결</span>}
           </div>
           <h1 style={{ marginTop: '0.4rem' }}>{problem.title}</h1>
-          <StatementBody problem={problem} />
+          <StatementBody problem={problem} lang={type.lang ?? 'python'} />
         </section>
 
         <section aria-label="풀이">
@@ -103,6 +103,8 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
               </div>
               <StepView
                 seed={problem.id}
+                figures={problem.figures}
+                lang={type.lang ?? 'python'}
                 key={`${problem.id}-${problem.steps[stepIdx].id}`}
                 step={problem.steps[stepIdx]}
                 index={stepIdx}
@@ -122,7 +124,7 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
 
           {tab === 'code' &&
             (stepsDone || ps?.solved ? (
-              <CodePanel key={problem.id} problem={problem} kind={type.kind} learnerKey={learnerKey} ps={ps} update={update} nextPath={next ? `${meta.path}/${next}` : null} onNext={() => next && navigate(`${meta.path}/${next}`)} />
+              <CodePanel key={problem.id} problem={problem} kind={type.kind} lang={type.lang ?? 'python'} learnerKey={learnerKey} ps={ps} update={update} nextPath={next ? `${meta.path}/${next}` : null} onNext={() => next && navigate(`${meta.path}/${next}`)} />
             ) : (
               <div className="card lock">
                 <div className="icon" aria-hidden>
@@ -155,6 +157,7 @@ function nextProblem(course: Course, type: TypeFile, index: number): string | nu
 interface CodeProps {
   problem: Problem;
   kind: TypeFile['kind'];
+  lang: Lang;
   learnerKey: string;
   ps: ProbState | undefined;
   update: (fn: (p: ProbState) => ProbState) => void;
@@ -162,8 +165,8 @@ interface CodeProps {
   onNext: () => void;
 }
 
-function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: CodeProps) {
-  const engine = useEngine();
+function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNext }: CodeProps) {
+  const engine = useEngine(lang);
   const draft = useMemo(() => readDraft(learnerKey, problem.id, problem.version), [learnerKey, problem.id, problem.version]);
   const nBlanks = kind === 'blank' ? countBlanks(problem.code) : 0;
   const [code, setCode] = useState<string>(kind === 'blank' ? problem.code : draft?.code ?? problem.code);
@@ -204,7 +207,7 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
     if (block) return;
     setBusy(mode);
     const cases = mode === 'run' ? problem.examples : [...problem.examples, ...problem.tests];
-    const result = await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', mode === 'run' ? 5000 : 9000);
+    const result = await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', mode === 'run' ? 5000 : 9000, lang, problem.cspec);
     setBusy(null);
     setShown({ mode, result, exampleCount: problem.examples.length });
     if (mode === 'submit') {
@@ -232,10 +235,10 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
         <span className="task">{KIND_TASK[kind]}</span>
       </div>
       {kind === 'blank' ? (
-        <BlankCode code={problem.code} values={blanks} onChange={(i, v) => setBlanks((old) => old.map((x, j) => (j === i ? v : x)))} disabled={busy !== null} />
+        <BlankCode lang={lang} code={problem.code} values={blanks} onChange={(i, v) => setBlanks((old) => old.map((x, j) => (j === i ? v : x)))} disabled={busy !== null} />
       ) : (
         <Suspense fallback={<div className="code-box" style={{ minHeight: '14rem', padding: '1rem' }} role="status">편집기 불러오는 중…</div>}>
-          <CodeEditor value={code} onChange={setCode} changedLines={changed ?? undefined} label={kind === 'fix' ? '한 줄 수정 코드 편집기' : '함수 작성 코드 편집기'} />
+          <CodeEditor lang={lang} value={code} onChange={setCode} changedLines={changed ?? undefined} label={kind === 'fix' ? '한 줄 수정 코드 편집기' : '함수 작성 코드 편집기'} />
         </Suspense>
       )}
       {kind === 'fix' && (
@@ -267,14 +270,14 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
         )}
       </div>
       <p className="engine" aria-live="polite">
-        {engineText(engine)}
+        {engineText(engine, lang)}
       </p>
       {notice && (
         <p className="notice warn" role="alert">
           {notice}
         </p>
       )}
-      <div ref={resultsRef}>{shown && <ResultsView shown={shown} problem={problem} />}</div>
+      <div ref={resultsRef}>{shown && <ResultsView shown={shown} problem={problem} lang={lang} />}</div>
 
       {solvedNow && (
         <div className="solved-box">
@@ -290,7 +293,7 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
               </button>
             )}
           </div>
-          {showAnswer && <CodeView code={problem.solution} />}
+          {showAnswer && <CodeView lang={lang} code={problem.solution} />}
         </div>
       )}
       {!solvedNow && (ps?.tries ?? 0) >= 3 && (
@@ -320,7 +323,7 @@ function CodePanel({ problem, kind, learnerKey, ps, update, nextPath, onNext }: 
           {showAnswer && (
             <div className="explain revealed">
               <p style={{ margin: 0 }}>{inline(problem.explain)}</p>
-              <CodeView code={problem.solution} />
+              <CodeView lang={lang} code={problem.solution} />
               <p className="faint" style={{ margin: '0.4rem 0 0' }}>
                 답을 보고 직접 다시 입력해 채점해 보세요.
               </p>

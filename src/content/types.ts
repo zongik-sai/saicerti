@@ -1,5 +1,6 @@
 /** 문제 데이터 형식(docs/CONTENT_SCHEMA.md). 검수: python3 tools/validate.py */
-export type CourseId = 'pyb' | 'pya';
+export type CourseId = 'pyb' | 'pya' | 'cb';
+export type Lang = 'python' | 'c';
 export type ProblemKind = 'blank' | 'fix' | 'write';
 export type CompareMode = 'exact' | 'float';
 export type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
@@ -23,6 +24,19 @@ export type Step =
   | { id: string; kind: 'table'; title?: string; prompt: string; columns: string[]; rows: TableCell[][]; check?: string; explain: string }
   | { id: string; kind: 'short'; q: string; a: string; alts?: string[]; check?: string; explain: string };
 
+/** 문제 속 그림(시험지의 이미지를 화면에서 다시 그림). 설명 글에서 한 줄짜리 `{{fig:ID}}`로 넣는다 */
+export type Figure =
+  | { id: string; kind: 'cells'; caption?: string; alt: string; index?: (string | number)[] | 'auto' | 'auto1'; values: (string | number)[]; highlight?: number[]; dim?: number[]; marks?: { at: number; label: string }[]; arrows?: { from: number; to: number; label?: string; both?: boolean }[]; groups?: { from: number; to: number; label: string }[] }
+  | { id: string; kind: 'grid'; caption?: string; alt: string; rows: (string | number)[][]; rowLabels?: string[]; colLabels?: string[]; highlight?: [number, number][]; dim?: [number, number][] }
+  | { id: string; kind: 'table'; caption?: string; alt: string; head: string[]; rows: (string | number)[][]; highlight?: number[] }
+  | { id: string; kind: 'svg'; caption?: string; alt: string; svg: string };
+
+/** C 문제 채점 정보: 숨긴 길이 매개변수(예: arr_len = len(arr)), 배열 반환 길이 */
+export interface CSpec {
+  derived?: Record<string, string>;
+  ret?: { len?: string };
+}
+
 export interface Problem {
   id: string;
   version: number;
@@ -42,6 +56,8 @@ export interface Problem {
   inputCheck?: string;
   steps: Step[];
   explain: string;
+  figures?: Figure[];
+  cspec?: CSpec;
 }
 
 export interface TypeFile {
@@ -49,6 +65,8 @@ export interface TypeFile {
   type: number;
   typeTitle: string;
   kind: ProblemKind;
+  /** 기본 python */
+  lang?: Lang;
   skills: string[];
   intro: string;
   problems: Problem[];

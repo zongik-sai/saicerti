@@ -28,8 +28,14 @@ def err(where, msg):
     ERRORS.append(f'{where}: {msg}')
 
 
-def run_harness(code, func, cases, mode):
-    req = json.dumps({'code': code, 'func': func, 'cases': cases, 'mode': mode})
+CTX = {'lang': 'python'}
+# 함수 정의 찾기: 파이썬 def f( / C 반환형 f(
+FUNC_DEF = {'python': r'def\s+{f}\s*\(', 'c': r'[\w\*]\s+\**{f}\s*\('}
+
+
+def run_harness(code, func, cases, mode, spec=None):
+    # C 문제(lang=c)는 같은 harness의 run_cases_c(브라우저와 같은 인터프리터)로 실행
+    req = json.dumps({'code': code, 'func': func, 'cases': cases, 'mode': mode, 'lang': CTX['lang'], 'spec': spec or {}})
     try:
         p = subprocess.run([sys.executable, '-I', HARNESS], input=req, capture_output=True, text=True, timeout=20)
     except subprocess.TimeoutExpired:
@@ -190,7 +196,7 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
     if not isinstance(an, list) or not an or not all(isinstance(x, str) and IDENT.match(x) for x in an):
         err(where, 'argNames 오류')
         return
-    if not re.search(rf'def\s+{p["funcName"]}\s*\(', p['solution']):
+    if not re.search(FUNC_DEF[CTX['lang']].format(f=re.escape(p['funcName'])), p['solution']):
         err(where, '정답 코드에 funcName 함수 정의 없음')
     mode = p.get('compare', 'exact')
     if mode not in ('exact', 'float'):
@@ -244,7 +250,31 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
         bad = [i + 1 for i, v in enumerate(res) if not v]
         err(where, f'inputCheck 거짓인 케이스(예시 먼저 번호): {bad}')
     # 정답 코드
-    r, e = run_harness(p['solution'], p['funcName'], allc, mode)
+    if CTX['lang'] == 'c':
+        spec = p.get('cspec') or {}
+        if not isinstance(spec, dict):
+            err(where, 'cspec는 객체')
+            spec = {}
+        if not re.search(r'#include', p['solution']) and re.search(r'\b(printf|malloc|strlen|strcpy|strcmp|sqrt|abs)\s*\(', p['solution']):
+            err(where, 'C 코드에서 라이브러리 함수를 쓰면 #include를 넣을 것')
+        if re.search(r'\bint\s+main\s*\(', p['solution']):
+            err(where, 'C 코드에 main 함수를 넣지 말 것(채점은 solution을 직접 부름)')
+        # gcc로 같은 테스트를 돌려 기댓값이 실제 C와 같은지 대조
+        try:
+            for d_ in (os.path.join(ROOT, 'tools'), os.path.join(ROOT, 'src', 'grader')):
+                d_ in sys.path or sys.path.insert(0, d_)
+            import cref  # noqa: E402
+            from harness import same as _same  # noqa: E402
+            g = cref.run_gcc(p['solution'], p['funcName'], allc, spec)
+            badg = [i + 1 for i, (x, c) in enumerate(zip(g, allc)) if not x.get('ok') or not _same(x.get('value'), c['expected'], mode)]
+            if badg:
+                i = badg[0] - 1
+                err(where, f'gcc 대조 실패(예시 먼저 번호) {badg[:6]} — #{badg[0]}: {g[i].get("error") or g[i].get("value")!r} ≠ {allc[i]["expected"]!r}')
+        except Exception as gexc:  # noqa: BLE001
+            err(where, f'gcc 대조 실행 실패: {gexc}')
+    else:
+        spec = None
+    r, e = run_harness(p['solution'], p['funcName'], allc, mode, spec)
     if e or r is None:
         err(where, f'정답 실행 실패: {e}')
     elif r['compile']:
@@ -283,7 +313,7 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
                 err(where, f'한 줄 수정: 다른 줄이 정확히 1개여야 함(지금 {diff})')
             elif p.get('bugLine') != diff[0]:
                 err(where, f'bugLine은 {diff[0]}')
-        r2, e = run_harness(code, p['funcName'], [{'args': c['args'], 'expected': c['expected']} for c in ex], mode)
+        r2, e = run_harness(code, p['funcName'], [{'args': c['args'], 'expected': c['expected']} for c in ex], mode, spec)
         if e or r2 is None:
             err(where, f'처음 코드 실행 실패(시간 초과면 무한 반복 버그는 피할 것): {e}')
         elif not r2['compile'] and all(x['ok'] for x in r2['results']):
@@ -291,12 +321,12 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
         if MARK.search(code):
             err(where, '한 줄 수정 코드에 빈칸 표시가 있음')
     elif kind == 'write':
-        r2, e = run_harness(code, p['funcName'], allc, mode)
+        r2, e = run_harness(code, p['funcName'], allc, mode, spec)
         if r2 and not r2['compile'] and all(x['ok'] for x in r2['results']):
             err(where, '처음 코드가 이미 모든 테스트를 통과함')
         if MARK.search(code):
             err(where, '함수 작성 코드에 빈칸 표시가 있음')
-        if not re.search(rf'def\s+{p["funcName"]}\s*\(', code):
+        if not re.search(FUNC_DEF[CTX['lang']].format(f=re.escape(p['funcName'])), code):
             err(where, '처음 코드에 funcName 함수 정의 없음')
     if mock and p.get('steps') == []:
         return  # 모의고사: 중간 점검 없이 실전처럼
@@ -311,13 +341,19 @@ def check_file(path, seen):
         err(where, f'JSON 오류: {e}')
         return 0
     mock = bool(re.search(r'[/\\]mock[/\\]t\d{2}\.json$', path))
-    m = re.search(r'(pyb|pya)[/\\](?:mock[/\\])?t(\d{2})\.json$', path)
+    m = re.search(r'(pyb|pya|cb|ca)[/\\](?:mock[/\\])?t(\d{2})\.json$', path)
     if not m:
         err(where, '파일 경로는 src/content/<pyb|pya>/tNN.json 또는 src/content/<pyb|pya>/mock/tNN.json')
         return 0
     course, tnum = m.group(1), int(m.group(2))
     if d.get('course') != course or d.get('type') != tnum:
         err(where, f'course/type이 경로와 다름({d.get("course")}, {d.get("type")})')
+    CTX['lang'] = d.get('lang', 'python')
+    if CTX['lang'] not in ('python', 'c'):
+        err(where, 'lang은 python|c')
+        return 0
+    if (course in ('cb', 'ca')) != (CTX['lang'] == 'c'):
+        err(where, 'C 과정(cb·ca) 파일은 "lang": "c", 파이썬 과정은 lang 생략')
     kind = d.get('kind')
     if kind not in ('blank', 'fix', 'write'):
         err(where, 'kind는 blank|fix|write')

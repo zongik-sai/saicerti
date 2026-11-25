@@ -16,10 +16,13 @@ for (const r of refs) {
 }
 ok(`index.html 로컬 참조 ${refs.length}개가 ${base} 아래에 존재`);
 
-for (const f of ['pyworker.js', 'privacy.html', 'pyodide/pyodide.js', 'pyodide/pyodide.asm.js', 'pyodide/pyodide.asm.wasm', 'pyodide/python_stdlib.zip', 'pyodide/pyodide-lock.json', 'pyodide/harness.py', 'pyodide/runtime.json']) {
+for (const f of ['pyworker.js', 'privacy.html', 'pyodide/pyodide.js', 'pyodide/pyodide.asm.js', 'pyodide/pyodide.asm.wasm', 'pyodide/python_stdlib.zip', 'pyodide/pyodide-lock.json', 'pyodide/harness.py', 'pyodide/runtime.json', 'pyodide/cinterp.py']) {
   if (!existsSync(join(dir, f))) fail(`파일 없음: ${f}`);
 }
 if (!process.exitCode) ok(`파이썬 워커·Pyodide·하네스 파일 존재 (wasm ${(statSync(join(dir, 'pyodide/pyodide.asm.wasm')).size / 1e6).toFixed(1)}MB)`);
+const rt = JSON.parse(readFileSync(join(dir, 'pyodide/runtime.json'), 'utf8'));
+if (!rt.pycparser || !existsSync(join(dir, 'pyodide', rt.pycparser))) fail('pycparser wheel 없음'); else ok(`C 채점: cinterp.py + ${rt.pycparser}`);
+if (readFileSync(join(dir, 'pyodide/cinterp.py'), 'utf8') !== readFileSync('src/grader/cinterp.py', 'utf8')) fail('배포된 cinterp.py가 src/grader/cinterp.py와 다름');
 const harness = readFileSync(join(dir, 'pyodide/harness.py'), 'utf8');
 if (harness !== readFileSync('src/grader/harness.py', 'utf8')) fail('배포된 harness.py가 src/grader/harness.py와 다름'); else ok('harness.py = src/grader/harness.py');
 

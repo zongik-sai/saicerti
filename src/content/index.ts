@@ -6,6 +6,8 @@ export interface CourseMeta {
   exam: string;
   blurb: string;
   path: string;
+  /** 실제 시험 시간(분). 시험 화면에서 확인한 것만 적는다 */
+  examMinutes?: number;
 }
 
 /** 과정 목록. ID(pyb·pya)는 진도 저장 키라 바꾸지 않는다. */
@@ -24,6 +26,14 @@ export const COURSES: CourseMeta[] = [
     blurb: '정렬 기준, 슬라이싱, 함수 나누기, 시뮬레이션처럼 한 단계 깊은 10가지 시험 유형을 연습해요.',
     path: '/advanced',
   },
+  {
+    id: 'cb',
+    name: '프로그래밍 C 기본',
+    exam: 'COS Pro 2급 C 대비',
+    blurb: '반복문·조건문·배열·문자열을 C로 다루는 10가지 시험 유형. 빈칸 채우기, 한 줄 수정, 함수 작성을 단계별로 연습해요.',
+    path: '/c-basic',
+    examMinutes: 50,
+  },
 ];
 
 export const courseMeta = (id: string): CourseMeta | undefined => COURSES.find((c) => c.id === id);
@@ -32,11 +42,13 @@ export const courseByPath = (path: string): CourseMeta | undefined => COURSES.fi
 const loaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   pyb: import.meta.glob<TypeFile>('./pyb/t*.json', { import: 'default' }),
   pya: import.meta.glob<TypeFile>('./pya/t*.json', { import: 'default' }),
+  cb: import.meta.glob<TypeFile>('./cb/t*.json', { import: 'default' }),
 };
 
 const mockLoaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   pyb: import.meta.glob<TypeFile>('./pyb/mock/t*.json', { import: 'default' }),
   pya: import.meta.glob<TypeFile>('./pya/mock/t*.json', { import: 'default' }),
+  cb: import.meta.glob<TypeFile>('./cb/mock/t*.json', { import: 'default' }),
 };
 
 export const MOCK_SETS = 3;

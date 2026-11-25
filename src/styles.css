@@ -185,7 +185,7 @@ p { margin: 0 0 0.6rem; }
 
 /* 문제 화면 */
 .solve { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 1rem; align-items: start; }
-@media (max-width: 960px) { .solve { grid-template-columns: 1fr; } }
+@media (max-width: 960px) { .solve { grid-template-columns: minmax(0, 1fr); } }
 .statement { position: sticky; top: 4rem; max-height: calc(100vh - 5rem); overflow: auto; }
 @media (max-width: 960px) { .statement { position: static; max-height: none; } }
 .statement h1 { font-size: 1.3rem; }
@@ -405,3 +405,35 @@ table.data.acc-table .acc-date, table.data.acc-table .acc-email { white-space: n
 .mock-big.small-big { font-size: 1.2rem; }
 .mock-table td.name { text-align: left; white-space: normal; }
 @media (max-width: 640px) { .mock-bar { position: static; } }
+
+/* ---- 문제 속 그림(데이터로 다시 그림) ---- */
+.fig { margin: 0.6rem 0 0.8rem; }
+.fig figcaption { font-size: 0.84rem; color: var(--faint); margin-top: 0.3rem; }
+.fig-scroll { overflow-x: auto; max-width: 100%; }
+.fig-cells { display: inline-grid; gap: 0; font-family: var(--mono); font-size: 0.9rem; }
+.fig-idx { text-align: center; font-size: 0.75rem; color: var(--faint); padding: 0 0.2rem 0.15rem; }
+.fig-cell { text-align: center; padding: 0.35rem 0.5rem; border: 1px solid var(--line-strong); margin-left: -1px; background: var(--surface); min-width: 2.4rem; }
+.fig-cell:first-of-type { margin-left: 0; }
+.fig-cell.hi { background: color-mix(in srgb, var(--bad) 18%, var(--surface)); border-color: color-mix(in srgb, var(--bad) 55%, var(--line-strong)); font-weight: 600; position: relative; z-index: 1; }
+.fig-cell.dim { color: var(--faint); background: var(--surface-2); }
+.fig-mark { text-align: center; font-size: 0.75rem; color: var(--accent); padding-top: 0.15rem; font-weight: 600; }
+.fig-arrows { margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.84rem; color: var(--soft); }
+.fig-grid { border-collapse: collapse; font-family: var(--mono); font-size: 0.88rem; }
+.fig-grid th, .fig-grid td { border: 1px solid var(--line-strong); padding: 0.3rem 0.55rem; text-align: center; min-width: 2.2rem; }
+.fig-grid th { background: var(--surface-2); font-weight: 600; color: var(--soft); font-size: 0.8rem; }
+.fig-grid td { background: var(--surface); }
+.fig-grid td.hi, .fig-table tr.hi td { background: color-mix(in srgb, var(--bad) 18%, var(--surface)); font-weight: 600; }
+.fig-grid td.dim { color: var(--faint); background: var(--surface-2); }
+.fig-table td { font-family: var(--sans); }
+.fig-svg svg { max-width: 100%; height: auto; color: var(--ink); }
+.fig-svg svg text { fill: currentColor; font-family: var(--sans); }
+
+.fig-group { border: 2px solid var(--accent); border-top: 0; border-radius: 0 0 8px 8px; height: 0.7rem; margin: 0.15rem 0.3rem 1.1rem; position: relative; }
+.fig-group span { position: absolute; left: 50%; top: 0.55rem; transform: translateX(-50%); font-size: 0.78rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.fig-arrow { position: relative; height: 1.4rem; margin: 0.1rem 1.1rem; border-bottom: 2px solid var(--soft); }
+.fig-arrow::after { content: ''; position: absolute; bottom: -6px; border: 5px solid transparent; }
+.fig-arrow.right::after { right: -8px; border-left: 8px solid var(--soft); }
+.fig-arrow.left::after { left: -8px; border-right: 8px solid var(--soft); }
+.fig-arrow span { position: absolute; left: 50%; bottom: 0.15rem; transform: translateX(-50%); font-size: 0.75rem; color: var(--soft); white-space: nowrap; }
+.fig-arrow.both::after { right: -8px; border-left: 8px solid var(--soft); }
+.fig-arrow.both::before { content: ''; position: absolute; bottom: -6px; left: -8px; border: 5px solid transparent; border-right: 8px solid var(--soft); }

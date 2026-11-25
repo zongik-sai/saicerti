@@ -1,25 +1,34 @@
 import { useEffect, useState } from 'react';
-import type { Problem } from '../content/types';
+import type { Lang, Problem } from '../content/types';
 import { Bullets, Rich, inline } from '../components/Rich';
 import { ExamplesTable } from '../components/Results';
 import { py, type EngineStatus } from '../grader/client';
 
-/** 파이썬 채점기 상태(화면에 들어오면 미리 불러 둔다) */
-export function useEngine(): EngineStatus {
+/** 채점기 상태(화면에 들어오면 미리 불러 둔다). C 과정이면 C 채점기까지 */
+export function useEngine(lang: Lang = 'python'): EngineStatus {
   const [s, setS] = useState<EngineStatus>(py().status);
   useEffect(() => {
     const off = py().subscribe(setS);
     setS(py().status);
     void py()
-      .ensure()
+      .ensure(lang)
       .catch(() => undefined);
     return off;
-  }, []);
+  }, [lang]);
   return s;
 }
 
-export const engineText = (engine: EngineStatus) =>
-  engine === 'loading' ? '파이썬 준비 중… (처음 한 번은 약 10MB를 내려받아요)' : engine === 'error' ? '파이썬을 불러오지 못했어요. 인터넷을 확인하고 실행을 다시 눌러 보세요.' : engine === 'ready' ? '파이썬 준비됨 · 코드는 이 브라우저 안에서만 실행돼요' : '';
+export const engineText = (engine: EngineStatus, lang: Lang = 'python') => {
+  const name = lang === 'c' ? 'C 채점기' : '파이썬';
+  const obj = lang === 'c' ? 'C 채점기를' : '파이썬을';
+  return engine === 'loading'
+    ? `${name} 준비 중… (처음 한 번은 약 10MB를 내려받아요)`
+    : engine === 'error'
+      ? `${obj} 불러오지 못했어요. 인터넷을 확인하고 실행을 다시 눌러 보세요.`
+      : engine === 'ready'
+        ? `${name} 준비됨 · 코드는 이 브라우저 안에서만 실행돼요`
+        : '';
+};
 
 /** 처음 코드와 다른 줄 번호(1부터). 줄 수가 다르면 null */
 export function changedLines(orig: string, now: string): number[] | null {
@@ -42,12 +51,12 @@ export function fixBlockReason(changed: number[] | null): string | null {
 }
 
 /** 시험지 형식: 문제 설명 · 매개변수 설명 · return 값 설명 · 예시 */
-export function StatementBody({ problem }: { problem: Problem }) {
+export function StatementBody({ problem, lang = 'python' }: { problem: Problem; lang?: Lang }) {
   return (
     <>
       <div className="sec">
         <h3>문제 설명</h3>
-        <Rich text={problem.statement} />
+        <Rich text={problem.statement} figures={problem.figures} />
       </div>
       <div className="sec">
         <h3>매개변수 설명</h3>
@@ -59,7 +68,7 @@ export function StatementBody({ problem }: { problem: Problem }) {
       </div>
       <div className="sec">
         <h3>예시</h3>
-        <ExamplesTable problem={problem} />
+        <ExamplesTable problem={problem} lang={lang} />
         {problem.examples.some((e) => e.explain) && (
           <div style={{ marginTop: '0.5rem' }}>
             {problem.examples.map((e, i) =>

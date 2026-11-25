@@ -2,24 +2,26 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { TypeFile } from '../../src/content/types';
-import { cellOk, normCell, pyRepr } from '../../src/lib/pyrepr';
+import { cellOk, cRepr, normCell, pyRepr } from '../../src/lib/pyrepr';
+import { cleanSvg } from '../../src/components/Figure';
 import { countBlanks, fillBlanks } from '../../src/components/BlankCode';
 import { STORAGE_PREFIX } from '../../src/lib/storage';
 import { AUTH_STORAGE_KEY } from '../../src/features/auth/supabase';
 
 const root = join(__dirname, '../../src/content');
+const COURSES = ['pyb', 'pya', 'cb'];
 const files: TypeFile[] = [];
-for (const c of ['pyb', 'pya']) for (const f of readdirSync(join(root, c)).filter((x) => x.endsWith('.json')).sort()) files.push(JSON.parse(readFileSync(join(root, c, f), 'utf8')));
+for (const c of COURSES) for (const f of readdirSync(join(root, c)).filter((x) => x.endsWith('.json')).sort()) files.push(JSON.parse(readFileSync(join(root, c, f), 'utf8')));
 
 describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
   it('과정마다 10유형 × 5문제, id는 고유', () => {
-    for (const c of ['pyb', 'pya']) {
+    for (const c of COURSES) {
       const fs = files.filter((f) => f.course === c);
       expect(fs.map((f) => f.type)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
       for (const f of fs) expect(f.problems).toHaveLength(5);
     }
     const ids = files.flatMap((f) => f.problems.map((p) => p.id));
-    expect(new Set(ids).size).toBe(100);
+    expect(new Set(ids).size).toBe(50 * COURSES.length);
   });
 
   it('표·단답 정답은 화면 채점 규칙(cellOk)으로 자기 자신과 맞는다', () => {
@@ -41,12 +43,46 @@ describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
         expect(norm(filled), p.id).toBe(norm(p.solution));
       }
   });
+
+  it('C 과정 파일은 lang "c", 정답 코드에 main이 없다(채점기가 함수를 직접 부름)', () => {
+    for (const f of files.filter((x) => x.course === 'cb')) {
+      expect(f.lang, `${f.course} t${f.type}`).toBe('c');
+      for (const p of f.problems) {
+        expect(p.solution, p.id).not.toMatch(/\bmain\s*\(/);
+      }
+    }
+  });
+});
+
+describe('그림(figures)', () => {
+  const texts = (p: TypeFile['problems'][number]) => [p.statement, p.explain ?? '', ...p.steps.flatMap((s) => [s.kind === 'table' ? s.prompt : s.q, s.explain])].join('\n');
+  it('글 속 {{fig:ID}}는 그 문제의 그림을 가리키고, 그림은 모두 쓰이며 alt가 있다', () => {
+    for (const f of files)
+      for (const p of f.problems) {
+        const used = [...texts(p).matchAll(/\{\{fig:([\w-]+)\}\}/g)].map((m) => m[1]);
+        const ids = (p.figures ?? []).map((x) => x.id);
+        for (const u of used) expect(ids, `${p.id} ${u}`).toContain(u);
+        for (const id of ids) expect(used, `${p.id} ${id}`).toContain(id);
+        for (const fig of p.figures ?? []) expect(fig.alt.length, `${p.id} ${fig.id}`).toBeGreaterThan(10);
+      }
+  });
+  it('SVG 정리: 스크립트·이벤트·링크를 지운다', () => {
+    const dirty = `<svg><script>alert(1)</script><a href="javascript:x"><text onclick="x()">t</text></a></svg>`;
+    const clean = cleanSvg(dirty);
+    expect(clean).not.toMatch(/script|onclick|href|javascript/i);
+    expect(clean).toContain('<text>t</text>');
+  });
 });
 
 describe('표시·채점 도우미', () => {
   it('파이썬 표기', () => {
     expect(pyRepr([1, 'a', true, null, [2.5]])).toBe("[1, 'a', True, None, [2.5]]");
     expect(pyRepr("it's")).toBe('"it\'s"');
+  });
+  it('C 표기', () => {
+    expect(cRepr([1, 2, 3])).toBe('{1, 2, 3}');
+    expect(cRepr('abc')).toBe('"abc"');
+    expect(cRepr(true)).toBe('true');
   });
   it('표 칸 비교: 공백 무시, 따옴표 같게', () => {
     expect(normCell(' [ "a" , 1 ] ')).toBe("['a',1]");
@@ -80,9 +116,9 @@ describe('객관식 보기 섞기', () => {
 
 describe('모의고사 데이터', () => {
   const mocks: TypeFile[] = [];
-  for (const c of ['pyb', 'pya']) for (const f of readdirSync(join(root, c, 'mock')).filter((x) => x.endsWith('.json')).sort()) mocks.push(JSON.parse(readFileSync(join(root, c, 'mock', f), 'utf8')));
+  for (const c of COURSES) for (const f of readdirSync(join(root, c, 'mock')).filter((x) => x.endsWith('.json')).sort()) mocks.push(JSON.parse(readFileSync(join(root, c, 'mock', f), 'utf8')));
   it('과정마다 10유형 × 3회, 연습 문제와 같은 형식(kind)', () => {
-    for (const c of ['pyb', 'pya']) {
+    for (const c of COURSES) {
       const ms = mocks.filter((m) => m.course === c);
       expect(ms.map((m) => m.type)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
       for (const m of ms) {

@@ -6,6 +6,7 @@ import copy
 import io
 import json
 import math
+import os
 import sys
 import traceback
 
@@ -135,8 +136,67 @@ def run_cases(code, func, cases_json, mode='exact', stdout_limit=6000):
     return json.dumps(out, ensure_ascii=False)
 
 
+def _load_cinterp():
+    """C 인터프리터 모듈. 브라우저에서는 워커가 cinterp.py를 모듈 'cinterp'로 미리 등록해 둔다.
+    검수 도구(CPython)에서는 이 파일과 같은 폴더(src/grader)에서 불러온다."""
+    try:
+        import cinterp
+    except ImportError:
+        here = globals().get('__file__')
+        if not here:
+            raise
+        d = os.path.dirname(os.path.abspath(here))
+        if d not in sys.path:
+            sys.path.insert(0, d)
+        import cinterp
+    return cinterp
+
+
+def run_cases_c(code, func, cases_json, mode='exact', spec_json='{}', stdout_limit=6000):
+    """C 코드를 브라우저 안 C 인터프리터(cinterp)로 실행하고 cases마다 func(args…)의 반환값을 비교한다.
+    run_cases와 같은 모양의 JSON 문자열을 돌려준다. spec: {derived: {매개변수: 'len(arr)'…}, ret: {len: …}}"""
+    ci = _load_cinterp()
+    cases = json.loads(cases_json)
+    spec = json.loads(spec_json or '{}') or {}
+    cap = _Cap(stdout_limit)
+    out = {'compile': None, 'results': []}
+    prog = None
+    try:
+        prog = ci.compile_c(code)
+        if not prog.has(func):
+            out['compile'] = {'type': 'NameError', 'message': f'{func} 함수가 없어요.', 'line': None, 'hint': f'{func} 함수의 이름과 모양(반환 타입 {func}(매개변수…) {{ … }})을 바꾸지 마세요.'}
+    except ci.CError as e:
+        out['compile'] = e.as_dict()
+    except Exception as e:  # noqa: BLE001 채점기 내부 오류도 결과로 돌려준다
+        out['compile'] = _err(e)
+        out['compile']['hint'] = '채점기 내부 오류예요. 선생님께 알려 주세요.'
+    if out['compile'] is None:
+        for c in cases:
+            try:
+                got = prog.call(func, c['args'], spec)
+                out['results'].append({'ok': same(got, c['expected'], mode), 'got': short_repr(got)})
+            except ci.CError as e:
+                out['results'].append({'ok': False, 'error': e.as_dict()})
+            except KeyboardInterrupt:
+                raise
+            except Exception as e:  # noqa: BLE001
+                d = _err(e)
+                d['hint'] = '채점기 내부 오류예요. 선생님께 알려 주세요.'
+                out['results'].append({'ok': False, 'error': d})
+    cut = False
+    if prog is not None:
+        cap.write(prog.stdout_text())
+        cut = prog.rt.out_total > len(prog.rt.out)
+    out['stdout'] = cap.getvalue()
+    out['stdoutCut'] = cap.size > stdout_limit or cut
+    return json.dumps(out, ensure_ascii=False)
+
+
 if __name__ == '__main__':
-    # 검수 도구용: stdin으로 {code, func, cases, mode}를 받아 결과 JSON을 출력
+    # 검수 도구용: stdin으로 {code, func, cases, mode, lang, spec}를 받아 결과 JSON을 출력(lang이 'c'면 C 인터프리터)
     req = json.loads(sys.stdin.read())
-    res = run_cases(req['code'], req['func'], json.dumps(req['cases']), req.get('mode', 'exact'))
+    if req.get('lang') == 'c':
+        res = run_cases_c(req['code'], req['func'], json.dumps(req['cases']), req.get('mode', 'exact'), json.dumps(req.get('spec') or {}))
+    else:
+        res = run_cases(req['code'], req['func'], json.dumps(req['cases']), req.get('mode', 'exact'))
     sys.__stdout__.write(res)

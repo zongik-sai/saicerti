@@ -1,0 +1,2042 @@
+{
+ "course": "cb",
+ "type": 3,
+ "lang": "c",
+ "typeTitle": "모든 조합 살펴보기",
+ "kind": "blank",
+ "skills": [
+  "3중 for 문",
+  "조합 고르기(i < j < k)",
+  "최댓값 갱신(INT_MIN)",
+  "조건에 맞는 경우 세기"
+ ],
+ "intro": "배열에서 서로 다른 원소 2~3개를 고르는 모든 경우(조합)를 2중·3중 for 문으로 빠짐없이 살펴보는 유형이에요. 안쪽 반복을 바깥 반복 변수 + 1에서 시작해 같은 원소를 두 번 고르거나 같은 묶음을 다시 보지 않게 하고, 가장 큰 값을 고르거나 조건에 맞는 경우를 세는 법을 연습해요.",
+ "problems": [
+  {
+   "id": "cb-t03-a",
+   "version": 1,
+   "title": "카드 두 장의 곱",
+   "statement": "정수가 하나씩 적힌 카드가 한 줄로 놓여 있습니다. 카드에는 음수가 적혀 있을 수도 있습니다. 이 중 서로 다른 카드 2장을 골라 두 수를 곱할 때 나올 수 있는 가장 큰 값을 구하려 합니다.\n\n예를 들어 카드가 [-7, -3, 2, 4]이면 2장을 고르는 방법은 다음 6가지입니다.\n- (-7) × (-3) = 21\n- (-7) × 2 = -14\n- (-7) × 4 = -28\n- (-3) × 2 = -6\n- (-3) × 4 = -12\n- 2 × 4 = 8\n\n따라서 가장 큰 값은 21입니다. 음수끼리 곱하면 양수가 되므로, 가장 큰 수 두 개를 고른다고 항상 답이 되지는 않습니다. 그래서 2중 for 문으로 카드 2장을 고르는 모든 경우를 확인합니다.\n\n카드에 적힌 수를 담은 배열 `cards`가 주어질 때, 서로 다른 카드 2장의 곱 중 가장 큰 값을 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "cards는 카드에 적힌 수를 놓인 순서대로 담은 정수 배열이고, cards_len은 cards의 길이입니다.",
+    "cards_len은 2 이상 20 이하입니다.",
+    "cards의 원소는 -100 이상 100 이하인 정수이며, 같은 수가 적힌 카드가 여러 장 있을 수 있습니다."
+   ],
+   "returns": [
+    "서로 다른 카드 2장을 골라 곱한 값 중 가장 큰 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "cards"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       -7,
+       -3,
+       2,
+       4
+      ]
+     ],
+     "expected": 21,
+     "explain": "문제 설명의 예와 같습니다. 음수끼리 곱한 (-7) × (-3) = 21이 가장 큽니다."
+    },
+    {
+     "args": [
+      [
+       -2,
+       5,
+       -6,
+       3
+      ]
+     ],
+     "expected": 15,
+     "explain": "음수끼리 곱한 (-2) × (-6) = 12보다 5 × 3 = 15가 더 크므로 15입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n#include <limits.h>\n\nint solution(int cards[], int cards_len) {\n    int best = INT_MIN;\n    for (int i = 0; i < cards_len - 1; i++) {\n        for (int j = ⟦1⟧; j < ⟦2⟧; j++) {\n            int prod = ⟦3⟧;\n            if (⟦4⟧) best = prod;\n        }\n    }\n    return best;\n}",
+   "blanks": [
+    {
+     "answer": "i + 1"
+    },
+    {
+     "answer": "cards_len"
+    },
+    {
+     "answer": "cards[i] * cards[j]",
+     "alts": [
+      "cards[j] * cards[i]"
+     ]
+    },
+    {
+     "answer": "prod > best",
+     "alts": [
+      "best < prod"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n#include <limits.h>\n\nint solution(int cards[], int cards_len) {\n    int best = INT_MIN;\n    for (int i = 0; i < cards_len - 1; i++) {\n        for (int j = i + 1; j < cards_len; j++) {\n            int prod = cards[i] * cards[j];\n            if (prod > best) best = prod;\n        }\n    }\n    return best;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       100,
+       100
+      ]
+     ],
+     "expected": 10000
+    },
+    {
+     "args": [
+      [
+       -100,
+       -100
+      ]
+     ],
+     "expected": 10000
+    },
+    {
+     "args": [
+      [
+       -100,
+       100
+      ]
+     ],
+     "expected": -10000
+    },
+    {
+     "args": [
+      [
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       -1,
+       0,
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       7,
+       7,
+       7
+      ]
+     ],
+     "expected": 49
+    },
+    {
+     "args": [
+      [
+       -3,
+       -5,
+       -7
+      ]
+     ],
+     "expected": 35
+    },
+    {
+     "args": [
+      [
+       -50,
+       1,
+       2
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       -2,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       100,
+       -100,
+       99,
+       -99
+      ]
+     ],
+     "expected": 9900
+    },
+    {
+     "args": [
+      [
+       -9,
+       8,
+       -7,
+       6,
+       -5,
+       4,
+       -3,
+       2,
+       -1,
+       0,
+       1,
+       -2,
+       3,
+       -4,
+       5,
+       -6,
+       7,
+       -8,
+       9,
+       -10
+      ]
+     ],
+     "expected": 90
+    },
+    {
+     "args": [
+      [
+       -98,
+       -20,
+       15,
+       43,
+       -38,
+       -91,
+       33,
+       1,
+       -54,
+       71,
+       22,
+       95,
+       -69,
+       -24,
+       59,
+       15,
+       92,
+       -87,
+       56,
+       62
+      ]
+     ],
+     "expected": 8918
+    },
+    {
+     "args": [
+      [
+       93,
+       -21,
+       63,
+       90,
+       -89,
+       -94,
+       58,
+       -28,
+       85,
+       67,
+       44,
+       -55
+      ]
+     ],
+     "expected": 8370
+    },
+    {
+     "args": [
+      [
+       1,
+       -100,
+       2,
+       -1,
+       3
+      ]
+     ],
+     "expected": 100
+    }
+   ],
+   "inputCheck": "def valid(cards):\n    return 2 <= len(cards) <= 20 and all(isinstance(x, int) and not isinstance(x, bool) and -100 <= x <= 100 for x in cards)",
+   "cspec": {
+    "derived": {
+     "cards_len": "len(cards)"
+    }
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "카드가 4장일 때, 서로 다른 카드 2장을 고르는 방법은 몇 가지일까요? (고르는 순서는 따지지 않아요.)",
+     "options": [
+      "4가지",
+      "6가지",
+      "12가지",
+      "16가지"
+     ],
+     "answer": 1,
+     "explain": "자리 번호(인덱스, 배열에서 0부터 세는 위치)로 쓰면 (0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)의 6가지예요. 이렇게 순서를 따지지 않고 무엇을 골랐는지만 보는 묶음을 '조합'이라고 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "cards = {-7, -3, 2, 4}예요. best는 처음에 INT_MIN(int가 담을 수 있는 가장 작은 수, -2147483648)이에요. (i, j)마다 prod와, 그 차례를 처리한 뒤의 best를 채워 보세요.",
+     "columns": [
+      "i",
+      "j",
+      "cards[i]",
+      "cards[j]",
+      "prod",
+      "best"
+     ],
+     "rows": [
+      [
+       "0",
+       "1",
+       "-7",
+       "-3",
+       {
+        "a": "21"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "0",
+       "2",
+       "-7",
+       "2",
+       {
+        "a": "-14"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "0",
+       "3",
+       "-7",
+       "4",
+       {
+        "a": "-28"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "1",
+       "2",
+       "-3",
+       "2",
+       {
+        "a": "-6"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "1",
+       "3",
+       "-3",
+       "4",
+       {
+        "a": "-12"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "2",
+       "3",
+       "2",
+       "4",
+       {
+        "a": "8"
+       },
+       {
+        "a": "21"
+       }
+      ]
+     ],
+     "check": "def answers():\n    cards = [-7, -3, 2, 4]\n    out = []\n    best = -2147483648\n    for i in range(len(cards) - 1):\n        for j in range(i + 1, len(cards)):\n            prod = cards[i] * cards[j]\n            if prod > best:\n                best = prod\n            out += [prod, best]\n    return out",
+     "explain": "for (int j = i + 1; j < cards_len; j++)는 j를 i + 1부터 1씩 늘리며 j < cards_len이 참인 동안 반복해요. 첫 곱 21은 INT_MIN보다 크니 바로 best가 되고, 그 뒤로는 21보다 큰 곱이 없어서 best가 그대로예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "⟦1⟧(j의 시작값)으로 알맞은 것은?",
+     "options": [
+      "i + 1",
+      "0",
+      "i",
+      "1"
+     ],
+     "answer": 0,
+     "explain": "j를 i에서 시작하면 i == j일 때 같은 카드를 두 번 곱해요(예: (-7) × (-7) = 49). 0이나 1에서 시작해도 같은 카드끼리 곱하는 경우가 생겨요. i + 1에서 시작하면 i보다 뒤에 있는 카드만 짝이 되어 모든 짝을 한 번씩만 봐요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "best를 INT_MIN 대신 0으로 시작하는 틀린 코드가 있어요. cards = {-5, 3}이면 이 틀린 코드는 얼마를 return 할까요?",
+     "a": "0",
+     "check": "def answers():\n    cards = [-5, 3]\n    best = 0\n    for i in range(len(cards) - 1):\n        for j in range(i + 1, len(cards)):\n            prod = cards[i] * cards[j]\n            if prod > best:\n                best = prod\n    return [best]",
+     "explain": "곱은 (-5) × 3 = -15 하나뿐인데 -15 > 0이 거짓이라 best가 바뀌지 않고 0이 나와요(올바른 답은 -15). 어떤 곱보다도 작은 INT_MIN에서 시작해야 첫 곱이 반드시 best가 돼요. INT_MIN은 #include <limits.h>를 써야 쓸 수 있어요."
+    }
+   ],
+   "explain": "바깥 반복은 앞 카드 i를, 안쪽 반복은 i 뒤의 카드 j를 골라 모든 짝을 한 번씩 확인해요. 곱이 best보다 크면 best를 바꿔요. 음수끼리 곱하면 양수가 되므로 큰 수 두 개만 보면 틀릴 수 있고, best를 0으로 시작하면 곱이 모두 음수일 때 틀려요."
+  },
+  {
+   "id": "cb-t03-b",
+   "version": 1,
+   "title": "세트 가격 맞추기",
+   "statement": "문구점에서 물건 3개를 묶어 세트로 팔려고 합니다. 물건의 가격이 담긴 배열 `prices`와 세트 가격 `target`이 주어집니다. 서로 다른 물건 3개를 골랐을 때 세 가격의 합이 정확히 `target`이 되는 방법이 몇 가지인지 구하려 합니다.\n\n예를 들어 prices가 [3, 5, 2, 7, 4]이고 target이 12이면, 물건 3개를 고르는 방법 10가지 중 가격 합이 12인 것은 3 + 5 + 4와 3 + 2 + 7의 2가지입니다.\n\n가격이 같은 물건이 여러 개 있어도 서로 다른 물건으로 보며, 물건을 고르는 순서는 따지지 않습니다.\n\n3중 for 문으로 물건 3개를 고르는 모든 경우를 확인하여, 가격 합이 target인 방법의 수를 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "prices는 물건 가격을 담은 정수 배열이고, prices_len은 prices의 길이입니다.",
+    "prices_len은 3 이상 20 이하입니다.",
+    "prices의 원소는 1 이상 100 이하인 정수입니다.",
+    "target은 3 이상 300 이하인 정수입니다."
+   ],
+   "returns": [
+    "가격 합이 target인 물건 3개를 고르는 방법의 수를 return 합니다. 그런 방법이 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "prices",
+    "target"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       3,
+       5,
+       2,
+       7,
+       4
+      ],
+      12
+     ],
+     "expected": 2,
+     "explain": "문제 설명의 예와 같습니다. 3 + 5 + 4 = 12, 3 + 2 + 7 = 12의 2가지입니다."
+    },
+    {
+     "args": [
+      [
+       2,
+       4,
+       6,
+       4
+      ],
+      12
+     ],
+     "expected": 2,
+     "explain": "2 + 4 + 6 = 12와 2 + 6 + 4 = 12입니다. 두 경우는 가격이 같은 서로 다른 물건(앞의 4와 뒤의 4)을 골랐으므로 2가지입니다."
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3
+      ],
+      7
+     ],
+     "expected": 0,
+     "explain": "물건 3개를 모두 골라도 합이 6이라 7이 될 수 없습니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int prices[], int prices_len, int target) {\n    int count = 0;\n    for (int i = 0; i < prices_len - 2; i++) {\n        for (int j = ⟦1⟧; j < prices_len - 1; j++) {\n            for (int k = ⟦2⟧; k < ⟦3⟧; k++) {\n                int sum = ⟦4⟧;\n                if (⟦5⟧) count++;\n            }\n        }\n    }\n    return count;\n}",
+   "blanks": [
+    {
+     "answer": "i + 1"
+    },
+    {
+     "answer": "j + 1"
+    },
+    {
+     "answer": "prices_len"
+    },
+    {
+     "answer": "prices[i] + prices[j] + prices[k]"
+    },
+    {
+     "answer": "sum == target",
+     "alts": [
+      "target == sum"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int prices[], int prices_len, int target) {\n    int count = 0;\n    for (int i = 0; i < prices_len - 2; i++) {\n        for (int j = i + 1; j < prices_len - 1; j++) {\n            for (int k = j + 1; k < prices_len; k++) {\n                int sum = prices[i] + prices[j] + prices[k];\n                if (sum == target) count++;\n            }\n        }\n    }\n    return count;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       1,
+       1,
+       1
+      ],
+      3
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       2
+      ],
+      3
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       100,
+       100,
+       100
+      ],
+      300
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ],
+      3
+     ],
+     "expected": 1140
+    },
+    {
+     "args": [
+      [
+       5,
+       5,
+       5,
+       5,
+       5
+      ],
+      15
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       10,
+       20,
+       30,
+       40,
+       50
+      ],
+      90
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6
+      ],
+      100
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       7,
+       3,
+       9,
+       1,
+       5,
+       11,
+       2
+      ],
+      15
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       20,
+       3,
+       8,
+       9,
+       14,
+       22,
+       11,
+       25,
+       8,
+       12,
+       12,
+       23,
+       9,
+       25,
+       19,
+       26,
+       11,
+       1,
+       26,
+       25
+      ],
+      45
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       97,
+       42,
+       82,
+       79,
+       94,
+       57,
+       51,
+       60,
+       16,
+       91,
+       57,
+       20,
+       30,
+       54,
+       57,
+       26,
+       77,
+       57,
+       7,
+       79
+      ],
+      150
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      [
+       2,
+       4,
+       6,
+       8,
+       10,
+       12,
+       14,
+       16,
+       18,
+       20,
+       1,
+       3,
+       5,
+       7,
+       9
+      ],
+      30
+     ],
+     "expected": 16
+    },
+    {
+     "args": [
+      [
+       50,
+       50,
+       50,
+       50,
+       1,
+       99
+      ],
+      150
+     ],
+     "expected": 8
+    }
+   ],
+   "inputCheck": "def valid(prices, target):\n    return 3 <= len(prices) <= 20 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 100 for x in prices) and isinstance(target, int) and 3 <= target <= 300",
+   "cspec": {
+    "derived": {
+     "prices_len": "len(prices)"
+    }
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "prices_len이 5일 때, i = 0, j = 1이면 k는 어떤 값들을 차례로 가질까요?",
+     "options": [
+      "2, 3, 4",
+      "1, 2, 3, 4",
+      "0, 1, 2, 3, 4",
+      "2, 3"
+     ],
+     "answer": 0,
+     "explain": "k는 j + 1 = 2에서 시작해 k < 5인 동안 1씩 늘어요. 그래서 2, 3, 4예요. 이렇게 i < j < k가 되게 고르면 같은 물건을 두 번 고르지 않고, 같은 묶음을 두 번 세지도 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "prices = {2, 4, 6, 4}, target = 12예요. 세 반복이 고르는 (i, j, k) 순서대로 sum과, 그 차례를 처리한 뒤의 count를 채워 보세요.",
+     "columns": [
+      "i",
+      "j",
+      "k",
+      "sum",
+      "count"
+     ],
+     "rows": [
+      [
+       "0",
+       "1",
+       "2",
+       {
+        "a": "12"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "0",
+       "1",
+       "3",
+       {
+        "a": "10"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "0",
+       "2",
+       "3",
+       {
+        "a": "12"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "1",
+       "2",
+       "3",
+       {
+        "a": "14"
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def answers():\n    prices = [2, 4, 6, 4]\n    target = 12\n    n = len(prices)\n    count = 0\n    out = []\n    for i in range(n - 2):\n        for j in range(i + 1, n - 1):\n            for k in range(j + 1, n):\n                s = prices[i] + prices[j] + prices[k]\n                if s == target:\n                    count += 1\n                out += [s, count]\n    return out",
+     "explain": "sum이 12인 (0, 1, 2)와 (0, 2, 3)에서만 count가 1 늘어요. count++는 count를 1 늘린다는 뜻이에요(count = count + 1과 같아요)."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "⟦5⟧에 들어갈 조건으로 알맞은 것은?",
+     "options": [
+      "sum == target",
+      "sum = target",
+      "sum >= target",
+      "sum != target"
+     ],
+     "answer": 0,
+     "explain": "C에서 = 는 값을 넣는(대입) 기호이고, 두 값이 같은지 비교할 때는 == 를 써요. sum = target이라고 쓰면 sum에 target이 들어가 버려서 조건이 항상 참이 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "prices = {5, 5, 5, 5}, target = 15이면 return 값은 무엇일까요?",
+     "a": "4",
+     "check": "from itertools import combinations\ndef answers():\n    return [sum(1 for c in combinations([5, 5, 5, 5], 3) if sum(c) == 15)]",
+     "explain": "어떤 3개를 골라도 합이 15예요. 4개 중 3개를 고르는 방법은 빼놓을 물건 하나를 고르는 것과 같아서 4가지예요. 가격이 같아도 서로 다른 물건이라 모두 세요."
+    }
+   ],
+   "explain": "i는 0부터, j는 i + 1부터, k는 j + 1부터 시작하면 i < j < k인 묶음을 한 번씩만 확인해요. 세 가격의 합이 target과 같을 때(== 로 비교) count를 1 늘려요. 비교에 = 를 쓰거나 안쪽 반복을 0부터 시작하는 실수를 조심하세요."
+  },
+  {
+   "id": "cb-t03-c",
+   "version": 1,
+   "title": "드론에 실을 상자 세 개",
+   "statement": "드론 한 대가 상자 3개를 한 번에 나르려고 합니다. 드론은 실은 상자의 무게 합이 `limit` 이하일 때만 날 수 있습니다. 상자들의 무게가 담긴 배열 `boxes`가 주어질 때, 서로 다른 상자 3개를 골라 실을 수 있는 무게 합 중 가장 큰 값을 구하려 합니다.\n\n예를 들어 boxes가 [9, 4, 6, 8]이고 limit이 20이면 상자 3개를 고르는 방법은 다음과 같습니다.\n- 9 + 4 + 6 = 19\n- 9 + 4 + 8 = 21 (limit 초과)\n- 9 + 6 + 8 = 23 (limit 초과)\n- 4 + 6 + 8 = 18\n\n따라서 실을 수 있는 가장 큰 무게 합은 19입니다. 어떤 상자 3개를 골라도 무게 합이 limit을 넘으면 -1을 return 합니다.\n\n3중 for 문으로 상자 3개를 고르는 모든 경우를 확인하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "boxes는 상자의 무게를 담은 정수 배열이고, boxes_len은 boxes의 길이입니다.",
+    "boxes_len은 3 이상 20 이하입니다.",
+    "boxes의 원소는 1 이상 100 이하인 정수입니다.",
+    "limit은 1 이상 300 이하인 정수입니다."
+   ],
+   "returns": [
+    "무게 합이 limit 이하가 되도록 상자 3개를 고를 때, 가장 큰 무게 합을 return 합니다. 그런 방법이 없으면 -1을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "boxes",
+    "limit"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       9,
+       4,
+       6,
+       8
+      ],
+      20
+     ],
+     "expected": 19,
+     "explain": "문제 설명의 예와 같습니다."
+    },
+    {
+     "args": [
+      [
+       12,
+       30,
+       25,
+       7,
+       18
+      ],
+      50
+     ],
+     "expected": 50,
+     "explain": "25 + 7 + 18 = 50은 limit과 같으므로 실을 수 있고, 이것이 실을 수 있는 가장 큰 무게 합입니다."
+    },
+    {
+     "args": [
+      [
+       40,
+       50,
+       60
+      ],
+      100
+     ],
+     "expected": -1,
+     "explain": "고를 수 있는 묶음은 40 + 50 + 60 = 150 하나뿐인데 100을 넘으므로 -1입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int boxes[], int boxes_len, int limit) {\n    int best = ⟦1⟧;\n    for (int i = 0; i < ⟦2⟧; i++) {\n        for (int j = i + 1; j < ⟦3⟧; j++) {\n            for (int k = j + 1; k < boxes_len; k++) {\n                int total = boxes[i] + boxes[j] + boxes[k];\n                if (⟦4⟧ && ⟦5⟧) best = total;\n            }\n        }\n    }\n    return best;\n}",
+   "blanks": [
+    {
+     "answer": "-1"
+    },
+    {
+     "answer": "boxes_len - 2",
+     "alts": [
+      "boxes_len"
+     ]
+    },
+    {
+     "answer": "boxes_len - 1",
+     "alts": [
+      "boxes_len"
+     ]
+    },
+    {
+     "answer": "total <= limit",
+     "alts": [
+      "limit >= total"
+     ]
+    },
+    {
+     "answer": "total > best",
+     "alts": [
+      "best < total"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int boxes[], int boxes_len, int limit) {\n    int best = -1;\n    for (int i = 0; i < boxes_len - 2; i++) {\n        for (int j = i + 1; j < boxes_len - 1; j++) {\n            for (int k = j + 1; k < boxes_len; k++) {\n                int total = boxes[i] + boxes[j] + boxes[k];\n                if (total <= limit && total > best) best = total;\n            }\n        }\n    }\n    return best;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       1,
+       1,
+       1
+      ],
+      3
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       1
+      ],
+      2
+     ],
+     "expected": -1
+    },
+    {
+     "args": [
+      [
+       100,
+       100,
+       100
+      ],
+      300
+     ],
+     "expected": 300
+    },
+    {
+     "args": [
+      [
+       100,
+       100,
+       100
+      ],
+      299
+     ],
+     "expected": -1
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3
+      ],
+      1
+     ],
+     "expected": -1
+    },
+    {
+     "args": [
+      [
+       5,
+       10,
+       15,
+       20,
+       25
+      ],
+      40
+     ],
+     "expected": 40
+    },
+    {
+     "args": [
+      [
+       30,
+       20,
+       10,
+       40,
+       50,
+       60
+      ],
+      100
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       99,
+       1,
+       1,
+       98,
+       2
+      ],
+      101
+     ],
+     "expected": 101
+    },
+    {
+     "args": [
+      [
+       95,
+       83,
+       26,
+       39,
+       63,
+       10,
+       16,
+       16,
+       69,
+       87,
+       52,
+       89,
+       69,
+       24,
+       75,
+       41,
+       73,
+       90,
+       84,
+       57
+      ],
+      150
+     ],
+     "expected": 150
+    },
+    {
+     "args": [
+      [
+       26,
+       60,
+       76,
+       37,
+       4,
+       90,
+       3,
+       23,
+       10,
+       41,
+       15,
+       100,
+       33,
+       66,
+       47,
+       35,
+       53,
+       54,
+       99,
+       9
+      ],
+      30
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      [
+       55,
+       84,
+       55,
+       62,
+       98,
+       66,
+       68,
+       70,
+       88,
+       85,
+       79,
+       43,
+       43,
+       92,
+       88
+      ],
+      300
+     ],
+     "expected": 278
+    },
+    {
+     "args": [
+      [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ],
+      20
+     ],
+     "expected": -1
+    }
+   ],
+   "inputCheck": "def valid(boxes, limit):\n    return 3 <= len(boxes) <= 20 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 100 for x in boxes) and isinstance(limit, int) and 1 <= limit <= 300",
+   "cspec": {
+    "derived": {
+     "boxes_len": "len(boxes)"
+    }
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "limit이 20일 때, 무게 합이 정확히 20인 상자 3개는 실을 수 있을까요?",
+     "options": [
+      "실을 수 있다",
+      "실을 수 없다",
+      "상자를 고른 순서에 따라 다르다"
+     ],
+     "answer": 0,
+     "explain": "'이하'는 같은 값을 포함해요. 그래서 실을 수 있는지 보는 조건은 total <= limit이에요(total < limit이 아니에요)."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "boxes_len이 5일 때, 의미 있는 묶음을 만들 수 있는 i의 가장 큰 값은 얼마일까요? (i 뒤에 j, k가 차례로 있어야 해요.)",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "answer": 0,
+     "explain": "i = 2이면 j = 3, k = 4로 마지막 묶음이 돼요. i가 3이면 j = 4 뒤에 k가 들어갈 자리가 없어요. 그래서 i는 boxes_len - 2 전까지, j는 boxes_len - 1 전까지 돌게 써요. (끝을 boxes_len으로 써도 안쪽 반복이 그냥 돌지 않을 뿐 답은 같아요.)"
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "boxes = {9, 4, 6, 8}, limit = 20이고 best는 처음에 -1이에요. C에서 조건식은 참이면 1, 거짓이면 0이에요. 차례마다 total, total <= limit, 그 차례를 처리한 뒤의 best를 채워 보세요.",
+     "columns": [
+      "(i, j, k)",
+      "total",
+      "total <= limit",
+      "best"
+     ],
+     "rows": [
+      [
+       "(0, 1, 2)",
+       {
+        "a": "19"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "19"
+       }
+      ],
+      [
+       "(0, 1, 3)",
+       {
+        "a": "21"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "19"
+       }
+      ],
+      [
+       "(0, 2, 3)",
+       {
+        "a": "23"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "19"
+       }
+      ],
+      [
+       "(1, 2, 3)",
+       {
+        "a": "18"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "19"
+       }
+      ]
+     ],
+     "check": "def answers():\n    boxes = [9, 4, 6, 8]\n    limit = 20\n    n = len(boxes)\n    best = -1\n    out = []\n    for i in range(n - 2):\n        for j in range(i + 1, n - 1):\n            for k in range(j + 1, n):\n                total = boxes[i] + boxes[j] + boxes[k]\n                ok = total <= limit\n                if ok and total > best:\n                    best = total\n                out += [total, int(ok), best]\n    return out",
+     "explain": "마지막 18은 limit 이하이지만 best(19)보다 작아서 best가 바뀌지 않아요. 두 조건을 &&(그리고)로 묶었으니 둘 다 참일 때만 best가 바뀌어요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "⟦1⟧ best의 처음 값으로 알맞은 것은?",
+     "options": [
+      "-1",
+      "0",
+      "limit",
+      "boxes[0]"
+     ],
+     "answer": 0,
+     "explain": "실을 수 있는 묶음이 하나도 없으면 best는 한 번도 바뀌지 않고 처음 값 그대로 return 돼요. 문제에서 그때 -1을 돌려 달라고 했으니 -1에서 시작해요. 무게 합은 항상 3 이상이라 처음 실을 수 있는 묶음은 반드시 -1보다 커요."
+    }
+   ],
+   "explain": "세 반복으로 i < j < k인 상자 묶음을 모두 확인하고, 무게 합이 limit 이하이면서 지금까지의 best보다 클 때만 best를 바꿔요. best를 -1로 시작하면 실을 수 있는 묶음이 없을 때 그대로 -1이 돌아가요. '이하'는 <= 라는 점을 놓치지 마세요."
+  },
+  {
+   "id": "cb-t03-d",
+   "version": 1,
+   "title": "삼각형이 되는 막대 세 개",
+   "statement": "여러 개의 막대가 있습니다. 이 중 서로 다른 막대 3개를 골라 삼각형을 만들려고 합니다. 고른 세 막대의 길이를 a, b, c라고 할 때, 아래 세 조건을 모두 만족해야 삼각형을 만들 수 있습니다.\n- a + b > c\n- b + c > a\n- a + c > b\n\n예를 들어 막대 길이가 [2, 3, 4, 7]이면 3개를 고르는 방법은 (2, 3, 4), (2, 3, 7), (2, 4, 7), (3, 4, 7)의 4가지입니다. 이 중 세 조건을 모두 만족하는 것은 (2, 3, 4) 하나뿐입니다. 특히 (3, 4, 7)은 3 + 4가 7보다 크지 않으므로 삼각형이 되지 않습니다.\n\n막대 길이를 담은 배열 `sticks`가 주어질 때, 삼각형을 만들 수 있는 막대 3개를 고르는 방법의 수를 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요. 길이가 같은 막대도 서로 다른 막대로 보며, 고르는 순서는 따지지 않습니다.",
+   "params": [
+    "sticks는 막대 길이를 담은 정수 배열이고, sticks_len은 sticks의 길이입니다.",
+    "sticks_len은 3 이상 15 이하입니다.",
+    "sticks의 원소는 1 이상 50 이하인 정수입니다."
+   ],
+   "returns": [
+    "삼각형을 만들 수 있는 막대 3개를 고르는 방법의 수를 return 합니다. 그런 방법이 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "sticks"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       2,
+       3,
+       4,
+       7
+      ]
+     ],
+     "expected": 1,
+     "explain": "문제 설명의 예와 같습니다."
+    },
+    {
+     "args": [
+      [
+       4,
+       4,
+       8,
+       5
+      ]
+     ],
+     "expected": 3,
+     "explain": "(4, 4, 8)은 4 + 4가 8보다 크지 않아 안 됩니다. (4, 4, 5)와, 길이 4인 막대 둘 중 하나씩을 고른 (4, 8, 5) 두 가지를 합해 3가지입니다."
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3
+      ]
+     ],
+     "expected": 0,
+     "explain": "고를 수 있는 묶음은 (1, 2, 3) 하나뿐인데 1 + 2가 3보다 크지 않으므로 0입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int sticks[], int sticks_len) {\n    int count = 0;\n    for (int i = ⟦1⟧; i < sticks_len - 2; i++) {\n        for (int j = ⟦2⟧; j < sticks_len - 1; j++) {\n            for (int k = ⟦3⟧; k < sticks_len; k++) {\n                int a = sticks[i];\n                int b = sticks[j];\n                int c = sticks[k];\n                if (a + b > c && ⟦4⟧ && ⟦5⟧) ⟦6⟧;\n            }\n        }\n    }\n    return count;\n}",
+   "blanks": [
+    {
+     "answer": "0"
+    },
+    {
+     "answer": "i + 1"
+    },
+    {
+     "answer": "j + 1"
+    },
+    {
+     "answer": "b + c > a",
+     "alts": [
+      "a < b + c"
+     ]
+    },
+    {
+     "answer": "a + c > b",
+     "alts": [
+      "b < a + c"
+     ]
+    },
+    {
+     "answer": "count++",
+     "alts": [
+      "count += 1",
+      "count = count + 1",
+      "++count"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int sticks[], int sticks_len) {\n    int count = 0;\n    for (int i = 0; i < sticks_len - 2; i++) {\n        for (int j = i + 1; j < sticks_len - 1; j++) {\n            for (int k = j + 1; k < sticks_len; k++) {\n                int a = sticks[i];\n                int b = sticks[j];\n                int c = sticks[k];\n                if (a + b > c && b + c > a && a + c > b) count++;\n            }\n        }\n    }\n    return count;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       2
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       50,
+       50,
+       50
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       1,
+       50,
+       50
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       50
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     ],
+     "expected": 455
+    },
+    {
+     "args": [
+      [
+       3,
+       4,
+       5,
+       6
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       10,
+       1,
+       2,
+       3,
+       20,
+       30
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15
+      ]
+     ],
+     "expected": 203
+    },
+    {
+     "args": [
+      [
+       36,
+       8,
+       38,
+       41,
+       11,
+       50,
+       46,
+       15,
+       31,
+       18,
+       38,
+       21,
+       7,
+       1,
+       28
+      ]
+     ],
+     "expected": 202
+    },
+    {
+     "args": [
+      [
+       20,
+       8,
+       8,
+       7,
+       2,
+       11,
+       19,
+       2,
+       20,
+       2
+      ]
+     ],
+     "expected": 36
+    },
+    {
+     "args": [
+      [
+       8,
+       2,
+       8,
+       2,
+       4
+      ]
+     ],
+     "expected": 3
+    }
+   ],
+   "inputCheck": "def valid(sticks):\n    return 3 <= len(sticks) <= 15 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 50 for x in sticks)",
+   "cspec": {
+    "derived": {
+     "sticks_len": "len(sticks)"
+    }
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "길이가 3, 4, 7인 막대 세 개로 삼각형을 만들 수 있을까요?",
+     "options": [
+      "만들 수 있다",
+      "만들 수 없다",
+      "막대를 놓는 순서에 따라 다르다"
+     ],
+     "answer": 1,
+     "explain": "3 + 4 = 7이라 a + b > c가 거짓이에요. '크다(>)'는 같은 경우를 포함하지 않아요. 짧은 두 막대를 이은 길이가 긴 막대와 같으면 납작하게 겹쳐져서 삼각형이 되지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "sticks = {2, 3, 4, 7}이에요. 묶음마다 세 조건이 참이면 1, 거짓이면 0을 쓰고, 그 묶음을 처리한 뒤의 count를 채워 보세요.",
+     "columns": [
+      "a, b, c",
+      "a + b > c",
+      "b + c > a",
+      "a + c > b",
+      "count"
+     ],
+     "rows": [
+      [
+       "2, 3, 4",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2, 3, 7",
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2, 4, 7",
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "3, 4, 7",
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "from itertools import combinations\ndef answers():\n    out = []\n    count = 0\n    for a, b, c in combinations([2, 3, 4, 7], 3):\n        x, y, z = a + b > c, b + c > a, a + c > b\n        if x and y and z:\n            count += 1\n        out += [int(x), int(y), int(z), count]\n    return out",
+     "explain": "세 조건이 모두 1인 (2, 3, 4)에서만 count가 늘어요. 조건을 &&(그리고)로 묶으면 하나라도 0(거짓)일 때 전체가 거짓이 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "⟦2⟧(j의 시작값)으로 알맞은 것은?",
+     "options": [
+      "i + 1",
+      "i",
+      "0",
+      "i + 2"
+     ],
+     "answer": 0,
+     "explain": "j가 i이면 같은 막대를 두 번 고르고, 0이면 이미 센 묶음을 다시 세요. i + 2이면 i 바로 다음 막대를 건너뛰어 빠지는 묶음이 생겨요. i + 1에서 시작해야 i < j인 모든 짝을 한 번씩 봐요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "sticks = {1, 1, 1, 9}이면 return 값은 무엇일까요?",
+     "a": "1",
+     "check": "from itertools import combinations\ndef answers():\n    return [sum(1 for a, b, c in combinations([1, 1, 1, 9], 3) if a + b > c and b + c > a and a + c > b)]",
+     "explain": "(1, 1, 1)만 삼각형이 돼요. 9가 들어간 묶음은 1 + 1 > 9가 거짓이라 세지 않아요."
+    }
+   ],
+   "explain": "i는 0부터, j는 i + 1부터, k는 j + 1부터 시작해 막대 3개를 고르는 모든 묶음을 한 번씩 확인해요. 세 조건을 &&로 묶어 모두 참일 때만 count++로 1 늘려요. 두 막대 길이의 합이 나머지와 같을 때는 삼각형이 아니라는 점(> 이지 >= 가 아님)이 경계예요."
+  },
+  {
+   "id": "cb-t03-e",
+   "version": 1,
+   "title": "떨어져 앉는 세 자리",
+   "statement": "공연장 맨 앞줄 좌석에 왼쪽부터 0번, 1번, 2번, … 번호가 붙어 있고, 좌석마다 무대가 잘 보이는 정도를 나타내는 점수가 있습니다. 점수는 음수일 수도 있습니다. 친구 3명이 이 줄에 앉으려고 하는데, 서로 바로 옆자리에는 앉지 않으려고 합니다. 즉, 고른 세 좌석의 번호는 서로 2 이상 차이가 나야 합니다.\n\n예를 들어 좌석 점수가 [4, -1, 3, 5, -2, 6]이면 앉을 수 있는 방법은 다음 4가지입니다.\n- 0번, 2번, 4번: 4 + 3 + (-2) = 5\n- 0번, 2번, 5번: 4 + 3 + 6 = 13\n- 0번, 3번, 5번: 4 + 5 + 6 = 15\n- 1번, 3번, 5번: (-1) + 5 + 6 = 10\n\n{{fig:f1}}\n\n따라서 세 좌석 점수 합의 최댓값은 15입니다.\n\n좌석 점수를 번호 순서대로 담은 배열 `seats`가 주어질 때, 서로 붙어 있지 않은 좌석 3개를 골라 얻을 수 있는 점수 합의 최댓값을 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "seats는 좌석 점수를 번호 순서대로 담은 정수 배열이고, seats_len은 seats의 길이입니다.",
+    "seats_len은 5 이상 20 이하입니다.",
+    "seats의 원소는 -50 이상 50 이하인 정수입니다."
+   ],
+   "returns": [
+    "서로 붙어 있지 않은 좌석 3개의 점수 합 중 가장 큰 값을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "seats"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       4,
+       -1,
+       3,
+       5,
+       -2,
+       6
+      ]
+     ],
+     "expected": 15,
+     "explain": "문제 설명의 예와 같습니다."
+    },
+    {
+     "args": [
+      [
+       -3,
+       -8,
+       -2,
+       -6,
+       -4
+      ]
+     ],
+     "expected": -9,
+     "explain": "좌석이 5개이면 0번, 2번, 4번에 앉는 방법뿐이라 (-3) + (-2) + (-4) = -9입니다."
+    },
+    {
+     "args": [
+      [
+       7,
+       8,
+       7,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 14,
+     "explain": "점수가 높은 0번·1번·2번은 서로 붙어 있어 함께 고를 수 없습니다. 0번, 2번과 4번(또는 5번)을 고른 7 + 7 + 0 = 14가 가장 큽니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n#include <limits.h>\n\nint solution(int seats[], int seats_len) {\n    int best = ⟦1⟧;\n    for (int i = 0; i < seats_len; i++) {\n        for (int j = ⟦2⟧; j < seats_len; j++) {\n            for (int k = ⟦3⟧; k < seats_len; k++) {\n                int score = ⟦4⟧;\n                if (score > best) ⟦5⟧;\n            }\n        }\n    }\n    return best;\n}",
+   "blanks": [
+    {
+     "answer": "INT_MIN"
+    },
+    {
+     "answer": "i + 2"
+    },
+    {
+     "answer": "j + 2"
+    },
+    {
+     "answer": "seats[i] + seats[j] + seats[k]"
+    },
+    {
+     "answer": "best = score"
+    }
+   ],
+   "solution": "#include <stdio.h>\n#include <limits.h>\n\nint solution(int seats[], int seats_len) {\n    int best = INT_MIN;\n    for (int i = 0; i < seats_len; i++) {\n        for (int j = i + 2; j < seats_len; j++) {\n            for (int k = j + 2; k < seats_len; k++) {\n                int score = seats[i] + seats[j] + seats[k];\n                if (score > best) best = score;\n            }\n        }\n    }\n    return best;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       50,
+       50,
+       50,
+       50,
+       50
+      ]
+     ],
+     "expected": 150
+    },
+    {
+     "args": [
+      [
+       -50,
+       -50,
+       -50,
+       -50,
+       -50
+      ]
+     ],
+     "expected": -150
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       10,
+       10,
+       10,
+       -50,
+       -50
+      ]
+     ],
+     "expected": -30
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       9,
+       9,
+       9,
+       1,
+       0,
+       1,
+       2
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      [
+       -1,
+       50,
+       -1,
+       50,
+       -1,
+       50,
+       -1
+      ]
+     ],
+     "expected": 150
+    },
+    {
+     "args": [
+      [
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50
+      ]
+     ],
+     "expected": 150
+    },
+    {
+     "args": [
+      [
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50
+      ]
+     ],
+     "expected": -150
+    },
+    {
+     "args": [
+      [
+       -47,
+       -50,
+       23,
+       11,
+       13,
+       20,
+       -37,
+       -46,
+       50,
+       32,
+       49,
+       -46,
+       31,
+       -12,
+       -26,
+       -15,
+       26,
+       -5,
+       23,
+       -3
+      ]
+     ],
+     "expected": 130
+    },
+    {
+     "args": [
+      [
+       -8,
+       50,
+       -38,
+       50,
+       -46,
+       39,
+       -26,
+       9,
+       -2
+      ]
+     ],
+     "expected": 139
+    },
+    {
+     "args": [
+      [
+       -5,
+       -4,
+       6,
+       9,
+       0,
+       3,
+       7,
+       2,
+       10,
+       3,
+       5,
+       5
+      ]
+     ],
+     "expected": 26
+    },
+    {
+     "args": [
+      [
+       5,
+       -50,
+       5,
+       -50,
+       5,
+       -50
+      ]
+     ],
+     "expected": 15
+    }
+   ],
+   "inputCheck": "def valid(seats):\n    return 5 <= len(seats) <= 20 and all(isinstance(x, int) and not isinstance(x, bool) and -50 <= x <= 50 for x in seats)",
+   "cspec": {
+    "derived": {
+     "seats_len": "len(seats)"
+    }
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "좌석이 5개(0번~4번)일 때, 서로 붙어 있지 않게 3자리를 고르는 방법은 몇 가지일까요?",
+     "options": [
+      "1가지",
+      "3가지",
+      "6가지",
+      "10가지"
+     ],
+     "answer": 0,
+     "explain": "0번, 2번, 4번 한 가지뿐이에요. 번호 차이가 1이면 바로 옆자리라서, 세 자리 사이에 빈자리가 하나씩 있어야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "seats = {4, -1, 3, 5, -2, 6}이에요. 반복이 고르는 (i, j, k) 순서대로 score와, 그 차례를 처리한 뒤의 best를 채워 보세요.",
+     "columns": [
+      "i",
+      "j",
+      "k",
+      "score",
+      "best"
+     ],
+     "rows": [
+      [
+       "0",
+       "2",
+       "4",
+       {
+        "a": "5"
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "0",
+       "2",
+       "5",
+       {
+        "a": "13"
+       },
+       {
+        "a": "13"
+       }
+      ],
+      [
+       "0",
+       "3",
+       "5",
+       {
+        "a": "15"
+       },
+       {
+        "a": "15"
+       }
+      ],
+      [
+       "1",
+       "3",
+       "5",
+       {
+        "a": "10"
+       },
+       {
+        "a": "15"
+       }
+      ]
+     ],
+     "check": "def answers():\n    seats = [4, -1, 3, 5, -2, 6]\n    n = len(seats)\n    best = -2147483648\n    out = []\n    for i in range(n):\n        for j in range(i + 2, n):\n            for k in range(j + 2, n):\n                score = seats[i] + seats[j] + seats[k]\n                if score > best:\n                    best = score\n                out += [score, best]\n    return out",
+     "explain": "점수 합은 5, 13, 15, 10 순서로 나오고, best는 더 큰 값이 나올 때만 바뀌어 15에서 멈춰요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "⟦2⟧(j의 시작값)으로 알맞은 것은?",
+     "options": [
+      "i + 2",
+      "i + 1",
+      "i",
+      "2"
+     ],
+     "answer": 0,
+     "explain": "j가 i + 1이면 i번 바로 옆자리를 고르게 돼요. 바로 옆을 건너뛰려면 i + 2부터 시작해요. k도 같은 까닭으로 j + 2부터 시작해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "seats = {-5, -1, -8, -2, -3}이면 올바른 return 값은 무엇일까요?",
+     "a": "-16",
+     "check": "def answers():\n    seats = [-5, -1, -8, -2, -3]\n    return [seats[0] + seats[2] + seats[4]]",
+     "explain": "0번, 2번, 4번뿐이라 (-5) + (-8) + (-3) = -16이에요. best를 0으로 시작하면 -16 > 0이 거짓이라 0이 남는 틀린 답이 나와요. 그래서 int의 가장 작은 값 INT_MIN(#include <limits.h>에 있어요)에서 시작해요."
+    }
+   ],
+   "explain": "j는 i + 2부터, k는 j + 2부터 시작하면 바로 옆자리를 건너뛴 세 자리만 고르게 돼요. 점수 합이 best보다 크면 best = score로 바꾸고, best는 INT_MIN에서 시작해야 점수가 모두 음수일 때도 맞아요. 반복의 끝을 seats_len으로 두어도 시작값이 범위를 넘으면 안쪽 반복이 돌지 않아 안전해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "caption": "예: 점수 합이 가장 큰 세 자리(0번·3번·5번)",
+     "alt": "좌석 0번부터 5번까지의 점수가 차례로 4, -1, 3, 5, -2, 6인 한 줄 좌석 그림입니다. 점수 합이 가장 큰 0번(4점), 3번(5점), 5번(6점) 좌석이 강조되어 있고, 이 세 좌석은 서로 바로 옆자리가 아닙니다.",
+     "index": "auto",
+     "values": [
+      4,
+      -1,
+      3,
+      5,
+      -2,
+      6
+     ],
+     "highlight": [
+      0,
+      3,
+      5
+     ]
+    }
+   ]
+  }
+ ]
+}

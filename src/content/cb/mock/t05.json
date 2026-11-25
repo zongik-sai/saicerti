@@ -1,0 +1,466 @@
+{
+ "course": "cb",
+ "type": 5,
+ "lang": "c",
+ "typeTitle": "인덱스 계산 고치기",
+ "kind": "fix",
+ "skills": [
+  "문자열 인덱스",
+  "양 끝에서 가운데로 비교",
+  "회문(대칭) 판별",
+  "한 줄 수정"
+ ],
+ "intro": "양 끝에서 가운데로 좁혀 가며 두 글자(값)를 짝지어 비교하는 코드에서, 잘못 계산한 인덱스 한 줄을 고쳐요. 길이가 N이면 마지막 인덱스는 N - 1이고, 앞에서 i번째의 짝은 N - 1 - i번째라는 규칙과 C 문자열 끝의 널 문자('\\0')를 함께 연습해요.",
+ "problems": [
+  {
+   "id": "cb-m1-t05",
+   "version": 1,
+   "title": "회문 판별",
+   "statement": "회문(回文, Palindrome)이란 앞쪽부터 읽은 것과 뒤쪽부터 읽은 것이 똑같은 문자열을 말합니다. 아래 단어들은 모두 회문의 예입니다.\n- pop\n- radar\n- noon\n- 1235321\n\n길이가 N인 문자열 s가 주어질 때, 양 끝의 인덱스에서 시작해 가운데 쪽으로 좁혀 가며 글자를 비교하여 s가 회문인지 판별한 결과를 return 하는 solution 함수를 작성하려고 합니다.\n\n하지만 코드의 일부가 잘못되어 있어서 올바르게 동작하지 않습니다. 주어진 코드가 모든 입력에 대해 올바르게 동작하도록 고쳐 주세요. **코드는 한 줄만 수정해야 합니다.**",
+   "params": [
+    "N은 문자열 s의 길이이며, 1 이상 100 이하인 자연수입니다.",
+    "s는 길이가 N인 문자열이며, 알파벳 소문자와 숫자로만 이루어져 있습니다."
+   ],
+   "returns": [
+    "s가 회문이면 true를, 회문이 아니면 false를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N",
+    "s"
+   ],
+   "examples": [
+    {
+     "args": [
+      5,
+      "radar"
+     ],
+     "expected": true,
+     "explain": "앞의 설명에 예로 든 단어입니다. 뒤쪽부터 읽어도 \"radar\"이므로 회문입니다."
+    },
+    {
+     "args": [
+      4,
+      "moon"
+     ],
+     "expected": false,
+     "explain": "\"moon\"을 뒤쪽부터 읽으면 \"noom\"이 되어 원래 문자열과 다르므로 회문이 아닙니다."
+    }
+   ],
+   "code": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(int N, const char *s) {\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N - 1]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "bugLine": 6,
+   "solution": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(int N, const char *s) {\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N - 1 - i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "tests": [
+    {
+     "args": [
+      1,
+      "a"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "zz"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "zy"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      3,
+      "bob"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      3,
+      "bed"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      6,
+      "abccba"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      6,
+      "abcdba"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      4,
+      "aaba"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      7,
+      "1234321"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      7,
+      "8234321"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      50,
+      "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      "12344321"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      "p69kpo9qz9397vxyrzahb8qc4lwtx2mb2k4adggl93b10mxh5995hxm01b39lggda4k2bm2xtwl4cq8bhazryxv7939zq9opk96p"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      "p69kpo9qz9397vxyrzahb8qc4lwtx2mb2k4adggl93b10mxh5l95hxm01b39lggda4k2bm2xtwl4cq8bhazryxv7939zq9opk96p"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      99,
+      "w25h72a18c468g7t83bu07f09ro44n8du3t82m9wsq4j91lht3thl19j4qsw9m28t3ud8n44or90f70ub38t7g864c81a27h52w"
+     ],
+     "expected": true
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(N, s):\n    return isinstance(N, int) and 1 <= N <= 100 and isinstance(s, str) and len(s) == N and all(c in 'abcdefghijklmnopqrstuvwxyz0123456789' for c in s)",
+   "steps": [],
+   "explain": "양 끝에서 가운데로 좁혀 가며 비교할 때, 앞에서 i번째 글자 s[i]의 짝은 뒤에서 i번째 글자인 s[N - 1 - i]입니다. 틀린 코드는 뒤쪽 인덱스에 i가 빠져 있어서 모든 글자를 마지막 글자 s[N - 1]과만 비교합니다. 길이가 N인 문자열의 마지막 인덱스는 N - 1이고, s[N]에는 문자열의 끝을 나타내는 널 문자('\\0')가 들어 있다는 점도 함께 기억해 두세요."
+  },
+  {
+   "id": "cb-m2-t05",
+   "version": 1,
+   "title": "회문 판별",
+   "statement": "회문(回文, Palindrome)이란 앞쪽부터 읽은 것과 뒤쪽부터 읽은 것이 똑같은 문자열을 말합니다. 아래 단어들은 모두 회문의 예입니다.\n- mom\n- kayak\n- deed\n- 7654567\n\n길이가 N인 문자열 s가 주어질 때, 양 끝의 인덱스에서 시작해 가운데 쪽으로 좁혀 가며 글자를 비교하여 s가 회문인지 판별한 결과를 return 하는 solution 함수를 작성하려고 합니다.\n\n하지만 코드의 일부가 잘못되어 있어서 올바르게 동작하지 않습니다. 주어진 코드가 모든 입력에 대해 올바르게 동작하도록 고쳐 주세요. **코드는 한 줄만 수정해야 합니다.**",
+   "params": [
+    "N은 문자열 s의 길이이며, 1 이상 100 이하인 자연수입니다.",
+    "s는 길이가 N인 문자열이며, 알파벳 소문자와 숫자로만 이루어져 있습니다."
+   ],
+   "returns": [
+    "s가 회문이면 true를, 회문이 아니면 false를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N",
+    "s"
+   ],
+   "examples": [
+    {
+     "args": [
+      5,
+      "kayak"
+     ],
+     "expected": true,
+     "explain": "앞의 설명에 예로 든 단어입니다. 뒤쪽부터 읽어도 \"kayak\"이므로 회문입니다."
+    },
+    {
+     "args": [
+      4,
+      "star"
+     ],
+     "expected": false,
+     "explain": "\"star\"를 뒤쪽부터 읽으면 \"rats\"가 되어 원래 문자열과 다르므로 회문이 아닙니다."
+    }
+   ],
+   "code": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(int N, const char *s) {\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N - 1]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "bugLine": 6,
+   "solution": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(int N, const char *s) {\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N - 1 - i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "tests": [
+    {
+     "args": [
+      1,
+      "7"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "oo"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "no"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      3,
+      "ewe"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      3,
+      "ebb"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      6,
+      "xyzzyx"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      6,
+      "xyzwyx"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      4,
+      "ssts"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      5,
+      "12321"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      5,
+      "12329"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      30,
+      "333333333333333333333333333333"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      "abcddcbx"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      100,
+      "rd64x0cik0lw2ac8y2apekk4or550hcyfzx8ijz77lrful11bmmb11lufrl77zji8xzfych055ro4kkepa2y8ca2wl0kic0x46dr"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      "rd64x0cik0lw2ac8y2apekk4or550hcyfzx8ijz77lrful11bamb11lufrl77zji8xzfych055ro4kkepa2y8ca2wl0kic0x46dr"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      99,
+      "n743ikhlfintm91e9knj6o2jp7y7mejcaxqezci7jgy6ajt3clc3tja6ygj7iczeqxacjem7y7pj2o6jnk9e19mtniflhki347n"
+     ],
+     "expected": true
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(N, s):\n    return isinstance(N, int) and 1 <= N <= 100 and isinstance(s, str) and len(s) == N and all(c in 'abcdefghijklmnopqrstuvwxyz0123456789' for c in s)",
+   "steps": [],
+   "explain": "양 끝에서 가운데로 좁혀 가며 비교할 때, 앞에서 i번째 글자 s[i]의 짝은 뒤에서 i번째 글자인 s[N - 1 - i]입니다. 틀린 코드는 뒤쪽 인덱스에 i가 빠져 있어서 모든 글자를 마지막 글자 s[N - 1]과만 비교합니다. 길이가 N인 문자열의 마지막 인덱스는 N - 1이고, s[N]에는 문자열의 끝을 나타내는 널 문자('\\0')가 들어 있다는 점도 함께 기억해 두세요."
+  },
+  {
+   "id": "cb-m3-t05",
+   "version": 1,
+   "title": "회문 판별",
+   "statement": "회문(回文, Palindrome)이란 앞쪽부터 읽은 것과 뒤쪽부터 읽은 것이 똑같은 문자열을 말합니다. 아래 단어들은 모두 회문의 예입니다.\n- wow\n- redder\n- civic\n- 98766789\n\n길이가 N인 문자열 s가 주어질 때, 양 끝의 인덱스에서 시작해 가운데 쪽으로 좁혀 가며 글자를 비교하여 s가 회문인지 판별한 결과를 return 하는 solution 함수를 작성하려고 합니다.\n\n하지만 코드의 일부가 잘못되어 있어서 올바르게 동작하지 않습니다. 주어진 코드가 모든 입력에 대해 올바르게 동작하도록 고쳐 주세요. **코드는 한 줄만 수정해야 합니다.**",
+   "params": [
+    "N은 문자열 s의 길이이며, 1 이상 100 이하인 자연수입니다.",
+    "s는 길이가 N인 문자열이며, 알파벳 소문자와 숫자로만 이루어져 있습니다."
+   ],
+   "returns": [
+    "s가 회문이면 true를, 회문이 아니면 false를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N",
+    "s"
+   ],
+   "examples": [
+    {
+     "args": [
+      6,
+      "redder"
+     ],
+     "expected": true,
+     "explain": "앞의 설명에 예로 든 단어입니다. 뒤쪽부터 읽어도 \"redder\"이므로 회문입니다."
+    },
+    {
+     "args": [
+      5,
+      "lemon"
+     ],
+     "expected": false,
+     "explain": "\"lemon\"을 뒤쪽부터 읽으면 \"nomel\"이 되어 원래 문자열과 다르므로 회문이 아닙니다."
+    }
+   ],
+   "code": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(int N, const char *s) {\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N - 1]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "bugLine": 6,
+   "solution": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(int N, const char *s) {\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N - 1 - i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "tests": [
+    {
+     "args": [
+      1,
+      "x"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "11"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "12"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      3,
+      "tot"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      3,
+      "toe"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      8,
+      "qwerrewq"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      "qwertewq"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      6,
+      "zzzyzz"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      9,
+      "908070809"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      9,
+      "908070806"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      64,
+      "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      4,
+      "7887"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      "n3647x3bckwiqdkdxo2moiiw6u6zdvrjf90y2pjd24owojfcgddgcfjowo42djp2y09fjrvdz6u6wiiom2oxdkdqiwkcb3x7463n"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      "n3647x3bckwiqdkdxo2moiiw6u6zdvrjf90y2pjd24owojfcg5dgcfjowo42djp2y09fjrvdz6u6wiiom2oxdkdqiwkcb3x7463n"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      99,
+      "z9uqpdy0jlm8vxm4o74wl5mtg1eyyesizo3ptpm451oln9vilrliv9nlo154mptp3oziseyye1gtm5lw47o4mxv8mlj0ydpqu9z"
+     ],
+     "expected": true
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(N, s):\n    return isinstance(N, int) and 1 <= N <= 100 and isinstance(s, str) and len(s) == N and all(c in 'abcdefghijklmnopqrstuvwxyz0123456789' for c in s)",
+   "steps": [],
+   "explain": "양 끝에서 가운데로 좁혀 가며 비교할 때, 앞에서 i번째 글자 s[i]의 짝은 뒤에서 i번째 글자인 s[N - 1 - i]입니다. 틀린 코드는 뒤쪽 인덱스에 i가 빠져 있어서 모든 글자를 마지막 글자 s[N - 1]과만 비교합니다. 길이가 N인 문자열의 마지막 인덱스는 N - 1이고, s[N]에는 문자열의 끝을 나타내는 널 문자('\\0')가 들어 있다는 점도 함께 기억해 두세요."
+  }
+ ]
+}

@@ -1,0 +1,3435 @@
+{
+ "course": "cb",
+ "lang": "c",
+ "type": 8,
+ "typeTitle": "조건식 고치기",
+ "kind": "fix",
+ "skills": [
+  "집계 배열(count)",
+  "가장 많이·적게 나온 값",
+  "동점 처리",
+  "논리 연산자 && ||",
+  "한 줄 수정"
+ ],
+ "intro": "값마다 나온 횟수를 배열에 세고 가장 많이(또는 적게) 나온 값을 고르는 코드에서, 잘못 쓴 조건식 한 줄을 찾아 고칩니다. `&&`(그리고)와 `||`(또는)의 차이, 동점일 때 어느 값을 고르는지를 연습합니다.",
+ "problems": [
+  {
+   "id": "cb-t08-a",
+   "version": 1,
+   "title": "가장 많이 나온 주사위 눈",
+   "statement": "주사위를 여러 번 던져서 나온 눈을 던진 순서대로 배열 `rolls`에 기록했습니다. 주사위의 눈은 1부터 6까지입니다. 이 기록에서 가장 많이 나온 눈을 찾으려 합니다. 단, 가장 많이 나온 눈이 여러 개라면 그중 가장 작은 눈을 return 합니다.\n\n예를 들어 `rolls`가 `{3, 5, 3, 6, 5, 2, 3, 5}`일 때 눈마다 나온 횟수를 세면 다음과 같습니다.\n\n{{fig:f1}}\n\n{{fig:f2}}\n\n3과 5가 3번씩으로 가장 많이 나왔으므로, 둘 중 작은 3을 return 합니다.\n\n던진 기록 `rolls`가 매개변수로 주어질 때, 가장 많이 나온 눈을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "alt": "던져서 나온 눈 8개가 차례로 놓여 있습니다: 3, 5, 3, 6, 5, 2, 3, 5. 답인 눈 3인 칸(1·3·7번째)이 강조되어 있습니다.",
+     "caption": "던진 기록 rolls (답인 3이 나온 칸을 강조)",
+     "index": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "values": [
+      3,
+      5,
+      3,
+      6,
+      5,
+      2,
+      3,
+      5
+     ],
+     "highlight": [
+      0,
+      2,
+      6
+     ]
+    },
+    {
+     "id": "f2",
+     "kind": "cells",
+     "alt": "눈마다 나온 횟수를 칸에 적은 그림입니다(칸 위 숫자가 눈): 1: 0번, 2: 1번, 3: 3번, 4: 0번, 5: 3번, 6: 1번. 3의 칸이 강조되어 있습니다.",
+     "caption": "눈별로 나온 횟수 (칸 위는 눈, 칸 안은 횟수)",
+     "index": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "values": [
+      0,
+      1,
+      3,
+      0,
+      3,
+      1
+     ],
+     "highlight": [
+      2
+     ]
+    }
+   ],
+   "params": [
+    "rolls는 주사위를 던져 나온 눈을 순서대로 담은 정수 배열이며, 길이는 1 이상 100 이하입니다.",
+    "rolls의 원소는 1 이상 6 이하인 정수입니다.",
+    "rolls_len은 rolls의 길이입니다."
+   ],
+   "returns": [
+    "가장 많이 나온 눈을 return 합니다. 가장 많이 나온 눈이 여러 개라면 그중 가장 작은 눈을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "rolls"
+   ],
+   "cspec": {
+    "derived": {
+     "rolls_len": "len(rolls)"
+    }
+   },
+   "examples": [
+    {
+     "args": [
+      [
+       3,
+       5,
+       3,
+       6,
+       5,
+       2,
+       3,
+       5
+      ]
+     ],
+     "expected": 3,
+     "explain": "위의 설명과 같습니다."
+    },
+    {
+     "args": [
+      [
+       6,
+       6,
+       1
+      ]
+     ],
+     "expected": 6,
+     "explain": "6이 2번으로 가장 많이 나왔습니다."
+    },
+    {
+     "args": [
+      [
+       2,
+       4,
+       4,
+       2,
+       1
+      ]
+     ],
+     "expected": 2,
+     "explain": "2와 4가 2번씩으로 가장 많으므로, 둘 중 작은 2를 return 합니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int rolls[], int rolls_len) {\n    int count[7] = {0};\n    for (int i = 0; i < rolls_len; i++) {\n        count[rolls[i]]++;\n    }\n    int answer = 0, maxCount = 0;\n    for (int face = 1; face <= 6; face++) {\n        if (count[face] > maxCount && count[face] < maxCount) {\n            maxCount = count[face];\n            answer = face;\n        }\n    }\n    return answer;\n}",
+   "bugLine": 10,
+   "solution": "#include <stdio.h>\n\nint solution(int rolls[], int rolls_len) {\n    int count[7] = {0};\n    for (int i = 0; i < rolls_len; i++) {\n        count[rolls[i]]++;\n    }\n    int answer = 0, maxCount = 0;\n    for (int face = 1; face <= 6; face++) {\n        if (count[face] > maxCount) {\n            maxCount = count[face];\n            answer = face;\n        }\n    }\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       6
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       6,
+       5,
+       4,
+       3,
+       2,
+       1,
+       6,
+       5,
+       4,
+       3,
+       2,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       5,
+       5,
+       6,
+       6,
+       6
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       4,
+       4,
+       4,
+       3,
+       3,
+       3,
+       6
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       6,
+       6,
+       5
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       2,
+       1,
+       1,
+       2,
+       2,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       1,
+       4,
+       1,
+       4,
+       5,
+       1,
+       2,
+       3,
+       5,
+       2,
+       4,
+       2,
+       6,
+       6,
+       3,
+       6,
+       5,
+       3,
+       1,
+       2,
+       3,
+       3,
+       6,
+       5,
+       5,
+       5,
+       6,
+       5,
+       4,
+       4,
+       3,
+       5,
+       4,
+       4,
+       5,
+       6,
+       3,
+       3,
+       6,
+       2,
+       1,
+       4,
+       2,
+       5,
+       6,
+       1,
+       1,
+       4,
+       2,
+       1,
+       2,
+       3,
+       1,
+       1,
+       5,
+       5,
+       2,
+       6,
+       6,
+       2,
+       2,
+       5,
+       2,
+       6,
+       1,
+       4,
+       5,
+       5,
+       1,
+       3,
+       2,
+       1,
+       4,
+       4,
+       1,
+       3,
+       4,
+       4,
+       6,
+       2,
+       2,
+       2,
+       3,
+       6,
+       5,
+       4,
+       5,
+       1,
+       5,
+       3,
+       5,
+       1,
+       2,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       4,
+       5,
+       3,
+       1,
+       4,
+       2,
+       5,
+       6,
+       6,
+       2,
+       3,
+       3,
+       5,
+       6,
+       3,
+       5,
+       1,
+       1,
+       3,
+       2,
+       2,
+       3,
+       2,
+       6,
+       1,
+       5,
+       4,
+       1,
+       5,
+       3,
+       6,
+       3,
+       6,
+       2,
+       5,
+       6,
+       6
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       4,
+       4,
+       6,
+       4,
+       4,
+       6,
+       5,
+       6,
+       4,
+       4,
+       6,
+       4,
+       4,
+       4,
+       4
+      ]
+     ],
+     "expected": 4
+    }
+   ],
+   "inputCheck": "def valid(rolls):\n    return isinstance(rolls, list) and 1 <= len(rolls) <= 100 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 6 for x in rolls)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "코드 4번째 줄의 `int count[7] = {0};`은 칸이 7개(0번~6번)인 정수 배열을 만들고 모든 칸을 0으로 채워요. 첫 번째 반복(5~7번째 줄)이 끝나면 `count[3]`에는 무엇이 들어 있을까요?",
+     "options": [
+      "눈 3이 나온 횟수",
+      "세 번째로 던져서 나온 눈",
+      "3번 이상 나온 눈의 개수",
+      "1부터 3까지 눈의 합"
+     ],
+     "answer": 0,
+     "explain": "`count[rolls[i]]++`는 나온 눈과 같은 번호의 칸을 1 늘려요. 그래서 `count[3]`에는 3이 나온 횟수가 쌓여요. 이렇게 값마다 칸을 하나씩 두고 개수를 세는 배열을 **집계 배열**이라고 해요. 눈은 1~6이라 `count[0]`은 쓰지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 3 따라가기",
+     "prompt": "틀린 코드에 `rolls = {2, 4, 4, 2, 1}`을 넣고, 두 번째 반복(9~14번째 줄)에서 face가 1, 2, 4일 때를 따라가 보세요. C에서 비교식은 참이면 1, 거짓이면 0이에요. 조건이 한 번도 참이 되지 않으면 maxCount는 계속 0이에요.",
+     "columns": [
+      "face",
+      "count[face]",
+      "count[face] > maxCount",
+      "count[face] < maxCount",
+      "조건 전체(&&)"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "2"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "2"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    count = [0] * 7\n    for r in [2, 4, 4, 2, 1]:\n        count[r] += 1\n    maxCount = 0\n    out = []\n    for face in [1, 2, 4]:\n        gt = 1 if count[face] > maxCount else 0\n        lt = 1 if count[face] < maxCount else 0\n        ok = 1 if (gt and lt) else 0\n        if ok:\n            maxCount = count[face]\n        out += [count[face], gt, lt, ok]\n    return out",
+     "explain": "`&&`는 '그리고'라서 양쪽이 모두 참(1)일 때만 참이에요. 어떤 수가 maxCount보다 크면서 동시에 작을 수는 없으니 조건 전체는 언제나 0이에요. 그래서 answer가 한 번도 바뀌지 않고 0이 return 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "틀린 코드는 예시 1에서 3이 아니라 0을 return 해요. 10번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "`if (count[face] > maxCount) {`",
+      "`if (count[face] >= maxCount) {`",
+      "`if (count[face] > maxCount || count[face] < maxCount) {`",
+      "`if (count[face] < maxCount) {`"
+     ],
+     "answer": 0,
+     "explain": "작은 눈부터 차례로 보면서 '지금까지의 최대 횟수보다 많을 때'만 바꾸면, 횟수가 같은 더 큰 눈은 건너뛰어서 동점일 때 작은 눈이 남아요. `>=`로 쓰면 동점인 큰 눈으로 바뀌어 예시 1에서 5가 나와요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 `rolls = {1, 6, 6, 1}`을 넣으면 return 값은 무엇일까요?",
+     "a": "1",
+     "alts": [],
+     "check": "def solution(rolls):\n    count = [0] * 7\n    for r in rolls:\n        count[r] += 1\n    answer = 0\n    maxCount = 0\n    for face in range(1, 7):\n        if count[face] > maxCount:\n            maxCount = count[face]\n            answer = face\n    return answer\n\ndef answers():\n    return [solution([1, 6, 6, 1])]",
+     "explain": "1과 6이 2번씩 동점이에요. face = 1에서 maxCount가 2가 되고, face = 6에서는 2 > 2가 거짓이라 바뀌지 않아요. 그래서 작은 눈 1이 남아요."
+    }
+   ],
+   "explain": "가장 많이 나온 값을 찾을 때는 '지금까지의 최대 횟수보다 많으면' answer를 바꿔요. 틀린 조건 `count[face] > maxCount && count[face] < maxCount`는 '크면서 동시에 작다'여서 절대 참이 될 수 없어요. `if (count[face] > maxCount)`로 고치면, 작은 눈부터 보므로 동점일 때 작은 눈이 남아요."
+  },
+  {
+   "id": "cb-t08-b",
+   "version": 1,
+   "title": "가장 많이 빌린 책 분야",
+   "statement": "도서관에서는 책을 내용에 따라 0번부터 9번까지 10개 분야로 나눕니다. 하루 동안 빌려 간 책의 분야 번호를 빌린 순서대로 배열 `loans`에 기록했습니다. 이 기록에서 가장 많이 빌려 간 분야를 찾으려 합니다. 단, 빌린 횟수가 가장 많은 분야가 여러 개라면 그중 번호가 가장 작은 분야를 return 합니다.\n\n예를 들어 `loans`가 `{8, 4, 8, 1, 4, 9, 4, 8}`일 때 분야마다 빌린 횟수를 세면 다음과 같습니다.\n\n{{fig:f1}}\n\n{{fig:f2}}\n\n4번과 8번 분야가 3회씩으로 가장 많이 빌려졌으므로, 둘 중 번호가 작은 4를 return 합니다.\n\n대출 기록 `loans`가 매개변수로 주어질 때, 가장 많이 빌려 간 분야의 번호를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "alt": "빌려 간 책의 분야 번호 8개가 차례로 놓여 있습니다: 8, 4, 8, 1, 4, 9, 4, 8. 답인 분야 4인 칸(2·5·7번째)이 강조되어 있습니다.",
+     "caption": "대출 기록 loans (답인 4번 분야 칸을 강조)",
+     "index": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "values": [
+      8,
+      4,
+      8,
+      1,
+      4,
+      9,
+      4,
+      8
+     ],
+     "highlight": [
+      1,
+      4,
+      6
+     ]
+    },
+    {
+     "id": "f2",
+     "kind": "cells",
+     "alt": "분야 번호마다 빌린 횟수를 칸에 적은 그림입니다(칸 위 숫자가 분야 번호): 0: 0회, 1: 1회, 2: 0회, 3: 0회, 4: 3회, 5: 0회, 6: 0회, 7: 0회, 8: 3회, 9: 1회. 4의 칸이 강조되어 있습니다.",
+     "caption": "분야별 빌린 횟수 (칸 위는 분야 번호, 칸 안은 횟수)",
+     "index": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "values": [
+      0,
+      1,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      3,
+      1
+     ],
+     "highlight": [
+      4
+     ]
+    }
+   ],
+   "params": [
+    "loans는 빌려 간 책의 분야 번호를 순서대로 담은 정수 배열이며, 길이는 1 이상 100 이하입니다.",
+    "loans의 원소는 0 이상 9 이하인 정수입니다.",
+    "loans_len은 loans의 길이입니다."
+   ],
+   "returns": [
+    "가장 많이 빌려 간 분야의 번호를 return 합니다. 그런 분야가 여러 개라면 그중 가장 작은 번호를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "loans"
+   ],
+   "cspec": {
+    "derived": {
+     "loans_len": "len(loans)"
+    }
+   },
+   "examples": [
+    {
+     "args": [
+      [
+       8,
+       4,
+       8,
+       1,
+       4,
+       9,
+       4,
+       8
+      ]
+     ],
+     "expected": 4,
+     "explain": "위의 설명과 같습니다."
+    },
+    {
+     "args": [
+      [
+       3,
+       7,
+       7,
+       3
+      ]
+     ],
+     "expected": 3,
+     "explain": "3번과 7번 분야가 2회씩이므로, 번호가 작은 3을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       5,
+       2,
+       5
+      ]
+     ],
+     "expected": 5,
+     "explain": "5번 분야가 2회로 가장 많습니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int loans[], int loans_len) {\n    int count[10] = {0};\n    int answer = 0, maxCount = 0;\n    for (int i = 0; i < loans_len; i++) {\n        int field = loans[i];\n        count[field]++;\n        if (count[field] > maxCount || (count[field] == maxCount && field > answer)) {\n            maxCount = count[field];\n            answer = field;\n        }\n    }\n    return answer;\n}",
+   "bugLine": 9,
+   "solution": "#include <stdio.h>\n\nint solution(int loans[], int loans_len) {\n    int count[10] = {0};\n    int answer = 0, maxCount = 0;\n    for (int i = 0; i < loans_len; i++) {\n        int field = loans[i];\n        count[field]++;\n        if (count[field] > maxCount || (count[field] == maxCount && field < answer)) {\n            maxCount = count[field];\n            answer = field;\n        }\n    }\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       9
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       9,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       9,
+       9,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       5,
+       5,
+       5,
+       1,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       9,
+       8,
+       9,
+       8,
+       8
+      ]
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       2,
+       6,
+       6,
+       2,
+       9,
+       9
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       8,
+       2,
+       8,
+       5,
+       5,
+       4,
+       2,
+       5,
+       7,
+       6,
+       1,
+       8,
+       7,
+       8,
+       8,
+       2,
+       8,
+       8,
+       0,
+       5,
+       5,
+       8,
+       8,
+       1,
+       7,
+       1,
+       6,
+       1,
+       8,
+       3,
+       4,
+       8,
+       7,
+       0,
+       8,
+       5,
+       0,
+       7,
+       0,
+       1,
+       6,
+       4,
+       5,
+       6,
+       8,
+       0,
+       9,
+       2,
+       9,
+       0,
+       2,
+       5,
+       7,
+       1,
+       7,
+       1,
+       4,
+       6,
+       7,
+       3,
+       5,
+       3,
+       2,
+       9,
+       4,
+       6,
+       7,
+       7,
+       5,
+       2,
+       6,
+       8,
+       3,
+       2,
+       9,
+       9,
+       5,
+       6,
+       9,
+       9,
+       9,
+       5,
+       5,
+       6,
+       5,
+       3,
+       5,
+       4,
+       6,
+       4,
+       4,
+       0,
+       2,
+       2,
+       9,
+       1,
+       3,
+       8,
+       7,
+       5
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       1,
+       5,
+       3,
+       1,
+       0,
+       5,
+       9,
+       1,
+       6,
+       0,
+       6,
+       6,
+       9,
+       0,
+       1,
+       9,
+       6,
+       1,
+       9,
+       8,
+       0,
+       7,
+       2
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       3,
+       6,
+       4,
+       3,
+       4,
+       3,
+       4,
+       4,
+       3,
+       4,
+       5,
+       6
+      ]
+     ],
+     "expected": 4
+    }
+   ],
+   "inputCheck": "def valid(loans):\n    return isinstance(loans, list) and 1 <= len(loans) <= 100 and all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 9 for x in loans)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`loans = {6, 2, 9, 6, 9}`이면 문제의 규칙대로 무엇을 return 해야 할까요?",
+     "options": [
+      "6",
+      "9",
+      "2",
+      "0"
+     ],
+     "answer": 0,
+     "explain": "6번과 9번 분야가 2회씩으로 가장 많아 동점이에요. 동점이면 번호가 작은 분야를 고르므로 6이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 2 따라가기",
+     "prompt": "틀린 코드에 `loans = {3, 7, 7, 3}`을 넣었을 때, 반복마다 8번째 줄을 실행한 뒤의 `count[field]`, 9번째 줄 조건의 값(참 1, 거짓 0), 그 반복이 끝난 뒤의 answer를 채워 보세요. 처음에 answer와 maxCount는 0이에요.",
+     "columns": [
+      "i",
+      "field",
+      "count[field]",
+      "9번째 줄 조건",
+      "answer"
+     ],
+     "rows": [
+      [
+       "0",
+       "3",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "1",
+       "7",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ],
+      [
+       "2",
+       "7",
+       {
+        "a": "2"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ],
+      [
+       "3",
+       "3",
+       {
+        "a": "2"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ]
+     ],
+     "check": "def answers():\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    out = []\n    for field in [3, 7, 7, 3]:\n        count[field] += 1\n        cond = count[field] > maxCount or (count[field] == maxCount and field > answer)\n        if cond:\n            maxCount = count[field]\n            answer = field\n        out += [count[field], 1 if cond else 0, answer]\n    return out",
+     "explain": "i = 1에서 7번 분야가 3번 분야와 1회씩 동점이 되자 '더 큰 번호'라서 answer가 7로 바뀌었어요. i = 3에서 3번 분야가 다시 2회로 동점이 되었지만 3 > 7이 거짓이라 바뀌지 않았어요. 그래서 3이 아니라 7이 return 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "틀린 코드는 예시 2에서 3이 아니라 7을 return 해요. 9번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "`if (count[field] > maxCount || (count[field] == maxCount && field < answer)) {`",
+      "`if (count[field] > maxCount && (count[field] == maxCount && field > answer)) {`",
+      "`if (count[field] >= maxCount || (count[field] == maxCount && field > answer)) {`",
+      "`if (count[field] > maxCount || (count[field] == maxCount || field > answer)) {`"
+     ],
+     "answer": 0,
+     "explain": "`||`는 '또는'이에요. '횟수가 더 많다' 또는 '횟수가 같으면서(&&) 번호가 더 작다'일 때 answer를 바꿔야 동점에서 작은 번호가 남아요. 첫 `||`를 `&&`로 바꾸면 '더 많으면서 같다'가 되어 조건이 절대 참이 되지 않아요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 `loans = {0, 9, 9, 0, 5}`를 넣으면 return 값은 무엇일까요?",
+     "a": "0",
+     "alts": [],
+     "check": "def solution(loans):\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    for field in loans:\n        count[field] += 1\n        if count[field] > maxCount or (count[field] == maxCount and field < answer):\n            maxCount = count[field]\n            answer = field\n    return answer\n\ndef answers():\n    return [solution([0, 9, 9, 0, 5])]",
+     "explain": "9번 분야가 먼저 2회가 되어 answer가 9가 되지만, 0번 분야가 두 번째로 나왔을 때 횟수가 2회로 같고 0 < 9라서 answer가 0으로 바뀌어요."
+    }
+   ],
+   "explain": "한 번 훑으면서 세는 방식에서는 '더 많이 나왔을 때'와 '횟수가 같은데 규칙상 더 앞서는 값일 때' 두 경우에 answer를 바꿔요. 동점이면 작은 번호를 고르라고 했으니 비교는 `field < answer`여야 해요. 틀린 코드는 `field > answer`라서 동점일 때 큰 번호가 남았어요."
+  },
+  {
+   "id": "cb-t08-c",
+   "version": 1,
+   "title": "무효표를 뺀 반장 선거",
+   "statement": "반장 선거에 기호 1번부터 5번까지 후보 5명이 나왔습니다. 학생들은 투표 용지에 0부터 9까지의 숫자 중 하나를 적어 냈는데, 1부터 5까지가 아닌 숫자를 적은 표는 **무효표**라서 세지 않습니다. 투표 용지에 적힌 숫자는 낸 순서대로 배열 `votes`에 담겨 있습니다. 유효표를 가장 많이 받은 후보의 기호를 구하려 합니다. 단, 가장 많은 표를 받은 후보가 여러 명이라면 그중 기호가 가장 큰 후보를 return 합니다.\n\n예를 들어 `votes`가 `{2, 7, 4, 2, 0, 7, 4, 7, 9}`이면, 무효표인 7, 0, 7, 7, 9를 빼고 후보마다 표를 세면 다음과 같습니다.\n\n{{fig:f1}}\n\n{{fig:f2}}\n\n2번과 4번 후보가 2표씩으로 가장 많이 받았으므로, 둘 중 기호가 큰 4를 return 합니다.\n\n투표 기록 `votes`가 매개변수로 주어질 때, 유효표를 가장 많이 받은 후보의 기호를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "alt": "투표 용지에 적힌 숫자 9개가 차례로 놓여 있습니다: 2, 7, 4, 2, 0, 7, 4, 7, 9. 답인 기호 4인 칸(3·7번째)이 강조되어 있습니다. 무효표인 7, 0, 7, 7, 9의 칸(2·5·6·8·9번째)은 흐리게 그려져 있습니다.",
+     "caption": "투표 기록 votes (흐린 칸은 무효표, 강조한 칸은 4번 표)",
+     "index": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "values": [
+      2,
+      7,
+      4,
+      2,
+      0,
+      7,
+      4,
+      7,
+      9
+     ],
+     "highlight": [
+      2,
+      6
+     ],
+     "dim": [
+      1,
+      4,
+      5,
+      7,
+      8
+     ]
+    },
+    {
+     "id": "f2",
+     "kind": "cells",
+     "alt": "기호마다 받은 유효표 수를 칸에 적은 그림입니다(칸 위 숫자가 기호): 1: 0표, 2: 2표, 3: 0표, 4: 2표, 5: 0표. 4의 칸이 강조되어 있습니다.",
+     "caption": "후보별 유효표 수 (칸 위는 기호, 칸 안은 표 수)",
+     "index": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "values": [
+      0,
+      2,
+      0,
+      2,
+      0
+     ],
+     "highlight": [
+      3
+     ]
+    }
+   ],
+   "params": [
+    "votes는 투표 용지에 적힌 숫자를 낸 순서대로 담은 정수 배열이며, 길이는 1 이상 100 이하입니다.",
+    "votes의 원소는 0 이상 9 이하인 정수입니다.",
+    "유효표(1 이상 5 이하인 숫자)는 적어도 1장 있습니다.",
+    "votes_len은 votes의 길이입니다."
+   ],
+   "returns": [
+    "유효표를 가장 많이 받은 후보의 기호를 return 합니다. 그런 후보가 여러 명이라면 그중 가장 큰 기호를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "votes"
+   ],
+   "cspec": {
+    "derived": {
+     "votes_len": "len(votes)"
+    }
+   },
+   "examples": [
+    {
+     "args": [
+      [
+       2,
+       7,
+       4,
+       2,
+       0,
+       7,
+       4,
+       7,
+       9
+      ]
+     ],
+     "expected": 4,
+     "explain": "위의 설명과 같습니다."
+    },
+    {
+     "args": [
+      [
+       5,
+       1,
+       1,
+       8,
+       8,
+       8
+      ]
+     ],
+     "expected": 1,
+     "explain": "8은 무효표입니다. 유효표는 5번이 1표, 1번이 2표이므로 1을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       3,
+       0,
+       0,
+       5
+      ]
+     ],
+     "expected": 5,
+     "explain": "0은 무효표입니다. 3번과 5번이 1표씩이므로 기호가 큰 5를 return 합니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int votes[], int votes_len) {\n    int count[10] = {0};\n    int answer = 0, maxCount = 0;\n    for (int i = 0; i < votes_len; i++) {\n        int v = votes[i];\n        if (v >= 1 || v <= 5) {\n            count[v]++;\n            if (count[v] > maxCount || (count[v] == maxCount && v > answer)) {\n                maxCount = count[v];\n                answer = v;\n            }\n        }\n    }\n    return answer;\n}",
+   "bugLine": 8,
+   "solution": "#include <stdio.h>\n\nint solution(int votes[], int votes_len) {\n    int count[10] = {0};\n    int answer = 0, maxCount = 0;\n    for (int i = 0; i < votes_len; i++) {\n        int v = votes[i];\n        if (v >= 1 && v <= 5) {\n            count[v]++;\n            if (count[v] > maxCount || (count[v] == maxCount && v > answer)) {\n                maxCount = count[v];\n                answer = v;\n            }\n        }\n    }\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       5
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       9,
+       9,
+       9,
+       5,
+       5
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       6,
+       7,
+       8,
+       9,
+       0,
+       2
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       5,
+       4,
+       3,
+       2,
+       1,
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       5,
+       5,
+       9,
+       9,
+       9,
+       9
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       2
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       7,
+       8,
+       6,
+       1,
+       3,
+       2,
+       3,
+       3,
+       9,
+       9,
+       2,
+       8,
+       0,
+       0,
+       2,
+       8,
+       2,
+       5,
+       0,
+       0,
+       6,
+       9,
+       3,
+       6,
+       7,
+       5,
+       7,
+       7,
+       3,
+       5,
+       7,
+       2,
+       4,
+       0,
+       5,
+       8,
+       0,
+       1,
+       7,
+       7,
+       6,
+       3,
+       4,
+       0,
+       1,
+       2,
+       6,
+       8,
+       9,
+       6,
+       5,
+       6,
+       1,
+       3,
+       8,
+       2,
+       6,
+       5,
+       5,
+       5,
+       7,
+       7,
+       4,
+       5,
+       4,
+       0,
+       5,
+       4,
+       1,
+       3,
+       7,
+       5,
+       5,
+       9,
+       2,
+       7,
+       5,
+       5,
+       1,
+       3,
+       2,
+       9,
+       4,
+       8,
+       0,
+       2,
+       3,
+       1,
+       8,
+       1,
+       6,
+       6,
+       5,
+       4,
+       3,
+       2,
+       4,
+       0
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       5,
+       9,
+       9,
+       8,
+       3,
+       9,
+       2,
+       0,
+       6,
+       2,
+       8,
+       6,
+       3,
+       8,
+       5,
+       8,
+       4,
+       1,
+       8,
+       4,
+       5,
+       9,
+       9,
+       3,
+       5,
+       8,
+       2,
+       9,
+       1,
+       3,
+       9
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       1,
+       7,
+       1,
+       8,
+       7,
+       4,
+       6,
+       1,
+       1,
+       1,
+       4,
+       6,
+       1,
+       6
+      ]
+     ],
+     "expected": 1
+    }
+   ],
+   "inputCheck": "def valid(votes):\n    return isinstance(votes, list) and 1 <= len(votes) <= 100 and all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 9 for x in votes) and any(1 <= x <= 5 for x in votes)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`votes = {6, 3, 6, 3, 6}`이면 문제의 규칙대로 무엇을 return 해야 할까요?",
+     "options": [
+      "3",
+      "6",
+      "0",
+      "5"
+     ],
+     "answer": 0,
+     "explain": "6은 1~5가 아니라서 무효표예요. 3번이나 나왔어도 세지 않아요. 유효표는 3번 후보의 2표뿐이라 3이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "조건식의 값 구하기",
+     "prompt": "C에서 비교식은 참이면 1, 거짓이면 0이에요. `&&`는 '그리고'(둘 다 참이어야 참), `||`는 '또는'(하나만 참이어도 참)이에요. v가 0, 3, 7일 때 각 식의 값을 채워 보세요.",
+     "columns": [
+      "v",
+      "v >= 1",
+      "v <= 5",
+      "v >= 1 || v <= 5",
+      "v >= 1 && v <= 5"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "7",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for v in [0, 3, 7]:\n        a = 1 if v >= 1 else 0\n        b = 1 if v <= 5 else 0\n        out += [a, b, 1 if (a or b) else 0, 1 if (a and b) else 0]\n    return out",
+     "explain": "`v >= 1 || v <= 5`는 어떤 수를 넣어도 둘 중 하나는 참이라서 항상 1이에요. 그래서 틀린 코드는 무효표 0, 7까지 모두 세어 버려요. '1 이상이면서 5 이하'는 `&&`로 써야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "틀린 코드는 예시 1에서 4가 아니라 7을 return 해요. 어떻게 고쳐야 할까요?",
+     "options": [
+      "8번째 줄을 `if (v >= 1 && v <= 5) {`로 바꾼다",
+      "10번째 줄의 첫 `||`를 `&&`로 바꾼다",
+      "8번째 줄을 `if (v > 1 || v < 5) {`로 바꾼다",
+      "4번째 줄을 `int count[6] = {0};`으로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "무효표를 거르는 8번째 줄이 항상 참이라서 7번(무효)이 3표로 1등이 되었어요. `&&`로 고치면 1~5만 세요. 배열을 `count[6]`으로 줄이면 무효표 7, 9를 셀 때 배열 칸 밖(없는 칸)에 쓰게 되어 위험해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 `votes = {9, 9, 1}`을 넣으면 return 값은 무엇일까요?",
+     "a": "1",
+     "alts": [],
+     "check": "def solution(votes):\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    for v in votes:\n        if v >= 1 and v <= 5:\n            count[v] += 1\n            if count[v] > maxCount or (count[v] == maxCount and v > answer):\n                maxCount = count[v]\n                answer = v\n    return answer\n\ndef answers():\n    return [solution([9, 9, 1])]",
+     "explain": "9는 무효표라 건너뛰고, 유효표는 1번의 1표뿐이라 1이에요."
+    }
+   ],
+   "explain": "'1 이상이면서 5 이하'처럼 범위 안에 있는지는 두 비교를 `&&`(그리고)로 이어요. `||`(또는)로 이으면 어떤 수든 참이 되어 무효표까지 세게 돼요. 조건식이 둘 있을 때는 각 조건이 언제 참이 되는지 숫자를 넣어 확인해 보세요."
+  },
+  {
+   "id": "cb-t08-d",
+   "version": 1,
+   "title": "가장 적게 팔린 메뉴",
+   "statement": "분식집에는 0번부터 7번까지 메뉴 8개가 있습니다. 오늘 들어온 주문의 메뉴 번호가 주문 순서대로 배열 `orders`에 담겨 있습니다. 한 번 이상 주문된 메뉴 가운데 가장 적게 주문된 메뉴를 찾으려 합니다. 한 번도 주문되지 않은 메뉴는 생각하지 않습니다. 단, 가장 적게 주문된 메뉴가 여러 개라면 그중 번호가 가장 작은 메뉴를 return 합니다.\n\n예를 들어 `orders`가 `{3, 1, 3, 6, 1, 3, 6}`일 때 메뉴마다 주문된 횟수를 세면 다음과 같습니다.\n\n{{fig:f1}}\n\n주문된 메뉴는 1번 메뉴(2회), 3번 메뉴(3회), 6번 메뉴(2회)입니다. 1번과 6번 메뉴가 2회씩으로 가장 적으므로, 둘 중 번호가 작은 1을 return 합니다.\n\n주문 기록 `orders`가 매개변수로 주어질 때, 가장 적게 주문된 메뉴의 번호를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "alt": "메뉴 번호마다 주문된 횟수를 칸에 적은 그림입니다(칸 위 숫자가 메뉴 번호): 0: 0회, 1: 2회, 2: 0회, 3: 3회, 4: 0회, 5: 0회, 6: 2회, 7: 0회. 1의 칸이 강조되어 있습니다. 횟수가 0인 칸은 흐리게 그려져 있습니다.",
+     "caption": "메뉴별 주문 횟수 (칸 위는 메뉴 번호, 칸 안은 주문 횟수, 흐린 칸은 주문되지 않은 메뉴)",
+     "index": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ],
+     "values": [
+      0,
+      2,
+      0,
+      3,
+      0,
+      0,
+      2,
+      0
+     ],
+     "highlight": [
+      1
+     ],
+     "dim": [
+      0,
+      2,
+      4,
+      5,
+      7
+     ]
+    }
+   ],
+   "params": [
+    "orders는 주문된 메뉴의 번호를 순서대로 담은 정수 배열이며, 길이는 1 이상 100 이하입니다.",
+    "orders의 원소는 0 이상 7 이하인 정수입니다.",
+    "orders_len은 orders의 길이입니다."
+   ],
+   "returns": [
+    "한 번 이상 주문된 메뉴 중 가장 적게 주문된 메뉴의 번호를 return 합니다. 그런 메뉴가 여러 개라면 그중 가장 작은 번호를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "orders"
+   ],
+   "cspec": {
+    "derived": {
+     "orders_len": "len(orders)"
+    }
+   },
+   "examples": [
+    {
+     "args": [
+      [
+       3,
+       1,
+       3,
+       6,
+       1,
+       3,
+       6
+      ]
+     ],
+     "expected": 1,
+     "explain": "위의 설명과 같습니다."
+    },
+    {
+     "args": [
+      [
+       4,
+       4,
+       2
+      ]
+     ],
+     "expected": 2,
+     "explain": "4번 메뉴는 2회, 2번 메뉴는 1회 주문되었으므로 2를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       0,
+       7,
+       7,
+       0,
+       5,
+       5
+      ]
+     ],
+     "expected": 0,
+     "explain": "0번, 5번, 7번 메뉴가 2회씩 주문되었으므로 가장 작은 번호 0을 return 합니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int orders[], int orders_len) {\n    int count[8] = {0};\n    for (int i = 0; i < orders_len; i++) {\n        count[orders[i]]++;\n    }\n    int answer = -1, minCount = 101;\n    for (int menu = 0; menu < 8; menu++) {\n        if (count[menu] > 0 || count[menu] < minCount) {\n            minCount = count[menu];\n            answer = menu;\n        }\n    }\n    return answer;\n}",
+   "bugLine": 10,
+   "solution": "#include <stdio.h>\n\nint solution(int orders[], int orders_len) {\n    int count[8] = {0};\n    for (int i = 0; i < orders_len; i++) {\n        count[orders[i]]++;\n    }\n    int answer = -1, minCount = 101;\n    for (int menu = 0; menu < 8; menu++) {\n        if (count[menu] > 0 && count[menu] < minCount) {\n            minCount = count[menu];\n            answer = menu;\n        }\n    }\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       7
+      ]
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       7,
+       6,
+       5,
+       4,
+       3,
+       2,
+       1,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       7,
+       7,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       7
+      ]
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      [
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       6
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       3,
+       3,
+       5,
+       5,
+       5,
+       4,
+       4
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       6,
+       6,
+       6,
+       2,
+       2,
+       2
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       7,
+       7,
+       1,
+       5,
+       0,
+       1,
+       3,
+       2,
+       5,
+       0,
+       5,
+       5,
+       0,
+       3,
+       6,
+       2,
+       1,
+       7,
+       0,
+       2,
+       0,
+       5,
+       6,
+       5,
+       0,
+       1,
+       5,
+       5,
+       0,
+       3,
+       5,
+       6,
+       7,
+       4,
+       0,
+       5,
+       4,
+       7,
+       7,
+       3,
+       3,
+       5,
+       1,
+       7,
+       6,
+       0,
+       2,
+       2,
+       4,
+       2,
+       5,
+       6,
+       7,
+       3,
+       1,
+       3,
+       2,
+       2,
+       1,
+       4,
+       1,
+       4,
+       2,
+       2,
+       0,
+       4,
+       7,
+       0,
+       0,
+       7,
+       4,
+       3,
+       3,
+       5,
+       4,
+       0,
+       3,
+       0,
+       5,
+       4,
+       0,
+       1,
+       6,
+       4,
+       7,
+       3,
+       5,
+       2,
+       7,
+       0,
+       3,
+       7,
+       3,
+       6,
+       3,
+       5,
+       3,
+       2,
+       5,
+       0
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       6,
+       3,
+       7,
+       2,
+       1,
+       6,
+       2,
+       6,
+       2,
+       7,
+       1,
+       5,
+       2,
+       1,
+       0,
+       7,
+       6,
+       5,
+       0
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       5,
+       3,
+       2,
+       5,
+       4,
+       2,
+       5,
+       2,
+       3
+      ]
+     ],
+     "expected": 4
+    }
+   ],
+   "inputCheck": "def valid(orders):\n    return isinstance(orders, list) and 1 <= len(orders) <= 100 and all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 7 for x in orders)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`orders = {5, 5, 2, 2, 2}`이면 문제의 규칙대로 무엇을 return 해야 할까요?",
+     "options": [
+      "5",
+      "2",
+      "0",
+      "1"
+     ],
+     "answer": 0,
+     "explain": "0번 메뉴처럼 한 번도 주문되지 않은 메뉴는 생각하지 않아요. 주문된 메뉴는 5번 메뉴(2회)와 2번 메뉴(3회)이고, 더 적게 주문된 쪽은 5번이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "틀린 코드에 예시 1을 넣고 두 번째 반복(9~14번째 줄)을 menu = 0부터 3까지 따라가 보세요. 처음에 answer = -1, minCount = 101이에요. 10번째 줄 조건의 값(참 1, 거짓 0)과 그 반복이 끝난 뒤의 minCount, answer를 채워 보세요.",
+     "columns": [
+      "menu",
+      "count[menu]",
+      "10번째 줄 조건",
+      "minCount",
+      "answer"
+     ],
+     "rows": [
+      [
+       "0",
+       "0",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       "2",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       "0",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "3",
+       "3",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "3"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    count = [0] * 8\n    for o in [3, 1, 3, 6, 1, 3, 6]:\n        count[o] += 1\n    answer = -1\n    minCount = 101\n    out = []\n    for menu in range(4):\n        cond = count[menu] > 0 or count[menu] < minCount\n        if cond:\n            minCount = count[menu]\n            answer = menu\n        out += [1 if cond else 0, minCount, answer]\n    return out",
+     "explain": "`||`는 둘 중 하나만 참이어도 참이에요. 표에서 주문된 메뉴는 `count[menu] > 0`이 참이라서, 주문되지 않은 메뉴는 0이 그때의 minCount보다 작아서 조건이 참이 됐어요. 이렇게 조건이 너무 쉽게 참이 되어 answer가 뒤쪽 메뉴로 계속 바뀌어요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "틀린 코드는 예시 1에서 1이 아니라 7을 return 해요. 10번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "`if (count[menu] > 0 && count[menu] < minCount) {`",
+      "`if (count[menu] >= 0 || count[menu] < minCount) {`",
+      "`if (count[menu] > 0 || count[menu] <= minCount) {`",
+      "`if (count[menu] == 0 && count[menu] < minCount) {`"
+     ],
+     "answer": 0,
+     "explain": "'주문된 적이 있고(> 0) 그리고(&&) 지금까지의 최소보다 적을 때'만 바꿔야 해요. 작은 번호부터 보면서 `<`(같으면 안 바꿈)를 쓰니 동점일 때 작은 번호가 남아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "8번째 줄에서 minCount를 0이 아니라 101로 시작하는 까닭은 무엇일까요?",
+     "options": [
+      "주문은 최대 100개라서, 어떤 메뉴의 주문 횟수보다도 큰 값에서 시작해야 첫 비교에서 바뀌기 때문에",
+      "메뉴가 101개 있기 때문에",
+      "101번 메뉴가 답이 아니라는 표시이기 때문에",
+      "주문 횟수의 합이 항상 101이기 때문에"
+     ],
+     "answer": 0,
+     "explain": "가장 작은 값을 찾을 때는 처음 기준을 '나올 수 있는 어떤 값보다도 큰 수'로 잡아요. 0으로 시작하면 `count[menu] < 0`이 절대 참이 아니라서 answer가 바뀌지 않아요."
+    }
+   ],
+   "explain": "가장 적은 값을 찾을 때도 조건을 `&&`로 묶어 '주문된 적이 있다'와 '지금까지의 최소보다 적다'를 동시에 만족할 때만 바꿔요. 틀린 코드는 `||`라서 거의 모든 메뉴에서 조건이 참이 되어 answer가 마지막 메뉴 쪽으로 밀려났어요. 최소를 찾을 때 기준값을 충분히 큰 수(101)로 시작하는 것도 기억해 두세요."
+  },
+  {
+   "id": "cb-t08-e",
+   "version": 1,
+   "title": "행운의 끝자리 숫자",
+   "statement": "경품 행사에 응모한 사람들은 1부터 999까지의 응모 번호를 하나씩 받았습니다. 응모 번호의 일의 자리 숫자(끝자리)를 모두 모았을 때 가장 많이 나온 숫자를 **행운의 숫자**로 정하려 합니다. 단, 가장 많이 나온 끝자리 숫자가 여러 개라면 그중 가장 큰 숫자를 행운의 숫자로 정합니다.\n\n예를 들어 응모 번호가 `{125, 37, 402, 87, 15, 990, 207, 45}`이면 끝자리 숫자는 차례로 5, 7, 2, 7, 5, 0, 7, 5이고, 숫자마다 나온 횟수를 세면 다음과 같습니다.\n\n{{fig:f1}}\n\n{{fig:f2}}\n\n5와 7이 3번씩으로 가장 많이 나왔으므로, 둘 중 큰 7을 return 합니다.\n\n응모 번호를 담은 배열 `tickets`가 매개변수로 주어질 때, 행운의 숫자를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "caption": "응모 번호 tickets (칸 아래는 끝자리 숫자, 끝자리가 7인 칸을 강조)",
+     "alt": "응모 번호 8개가 차례로 놓여 있고, 칸 아래에 끝자리 숫자가 적혀 있습니다: 125(끝자리 5), 37(끝자리 7), 402(끝자리 2), 87(끝자리 7), 15(끝자리 5), 990(끝자리 0), 207(끝자리 7), 45(끝자리 5). 끝자리가 답인 7인 칸(2·4·7번째)이 강조되어 있습니다.",
+     "index": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "values": [
+      125,
+      37,
+      402,
+      87,
+      15,
+      990,
+      207,
+      45
+     ],
+     "highlight": [
+      1,
+      3,
+      6
+     ],
+     "marks": [
+      {
+       "at": 0,
+       "label": "5"
+      },
+      {
+       "at": 1,
+       "label": "7"
+      },
+      {
+       "at": 2,
+       "label": "2"
+      },
+      {
+       "at": 3,
+       "label": "7"
+      },
+      {
+       "at": 4,
+       "label": "5"
+      },
+      {
+       "at": 5,
+       "label": "0"
+      },
+      {
+       "at": 6,
+       "label": "7"
+      },
+      {
+       "at": 7,
+       "label": "5"
+      }
+     ]
+    },
+    {
+     "id": "f2",
+     "kind": "cells",
+     "alt": "끝자리 숫자마다 나온 횟수를 칸에 적은 그림입니다(칸 위 숫자가 끝자리 숫자): 0: 1번, 1: 0번, 2: 1번, 3: 0번, 4: 0번, 5: 3번, 6: 0번, 7: 3번, 8: 0번, 9: 0번. 7의 칸이 강조되어 있습니다.",
+     "caption": "끝자리 숫자별 나온 횟수 (칸 위는 끝자리 숫자, 칸 안은 횟수)",
+     "index": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "values": [
+      1,
+      0,
+      1,
+      0,
+      0,
+      3,
+      0,
+      3,
+      0,
+      0
+     ],
+     "highlight": [
+      7
+     ]
+    }
+   ],
+   "params": [
+    "tickets는 응모 번호를 담은 정수 배열이며, 길이는 1 이상 100 이하입니다.",
+    "tickets의 원소는 1 이상 999 이하인 정수이며, 서로 다릅니다.",
+    "tickets_len은 tickets의 길이입니다."
+   ],
+   "returns": [
+    "응모 번호의 끝자리 숫자 중 가장 많이 나온 숫자를 return 합니다. 그런 숫자가 여러 개라면 그중 가장 큰 숫자를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "tickets"
+   ],
+   "cspec": {
+    "derived": {
+     "tickets_len": "len(tickets)"
+    }
+   },
+   "examples": [
+    {
+     "args": [
+      [
+       125,
+       37,
+       402,
+       87,
+       15,
+       990,
+       207,
+       45
+      ]
+     ],
+     "expected": 7,
+     "explain": "위의 설명과 같습니다."
+    },
+    {
+     "args": [
+      [
+       12,
+       32,
+       9
+      ]
+     ],
+     "expected": 2,
+     "explain": "끝자리 숫자는 2, 2, 9이므로 2번 나온 2를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       100,
+       3,
+       50
+      ]
+     ],
+     "expected": 0,
+     "explain": "끝자리 숫자는 0, 3, 0이므로 2번 나온 0을 return 합니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int tickets[], int tickets_len) {\n    int count[10] = {0};\n    int answer = 0, maxCount = 0;\n    for (int i = 0; i < tickets_len; i++) {\n        int digit = tickets[i] % 10;\n        count[digit]++;\n        if (count[digit] > maxCount || (count[digit] == maxCount || digit > answer)) {\n            maxCount = count[digit];\n            answer = digit;\n        }\n    }\n    return answer;\n}",
+   "bugLine": 9,
+   "solution": "#include <stdio.h>\n\nint solution(int tickets[], int tickets_len) {\n    int count[10] = {0};\n    int answer = 0, maxCount = 0;\n    for (int i = 0; i < tickets_len; i++) {\n        int digit = tickets[i] % 10;\n        count[digit]++;\n        if (count[digit] > maxCount || (count[digit] == maxCount && digit > answer)) {\n            maxCount = count[digit];\n            answer = digit;\n        }\n    }\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       999
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       10
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       100,
+       200,
+       999
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       1,
+       11,
+       21,
+       2,
+       12,
+       22
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       990,
+       9
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       9,
+       19,
+       29,
+       39,
+       49,
+       59,
+       69,
+       79,
+       89,
+       99,
+       109,
+       119,
+       129,
+       139,
+       149,
+       159,
+       169,
+       179,
+       189,
+       199,
+       209,
+       219,
+       229,
+       239,
+       249,
+       259,
+       269,
+       279,
+       289,
+       299,
+       309,
+       319,
+       329,
+       339,
+       349,
+       359,
+       369,
+       379,
+       389,
+       399,
+       409,
+       419,
+       429,
+       439,
+       449,
+       459,
+       469,
+       479,
+       489,
+       499,
+       509,
+       519,
+       529,
+       539,
+       549,
+       559,
+       569,
+       579,
+       589,
+       599,
+       609,
+       619,
+       629,
+       639,
+       649,
+       659,
+       669,
+       679,
+       689,
+       699,
+       709,
+       719,
+       729,
+       739,
+       749,
+       759,
+       769,
+       779,
+       789,
+       799,
+       809,
+       819,
+       829,
+       839,
+       849,
+       859,
+       869,
+       879,
+       889,
+       899,
+       909,
+       919,
+       929,
+       939,
+       949,
+       959,
+       969,
+       979,
+       989,
+       999
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       5,
+       15,
+       3,
+       13,
+       23
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       40,
+       41,
+       31,
+       50
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       506,
+       225,
+       871,
+       877,
+       75,
+       724,
+       288,
+       57,
+       924,
+       478,
+       477,
+       738,
+       744,
+       581,
+       900,
+       346,
+       768,
+       718,
+       464,
+       501,
+       281,
+       988,
+       93,
+       794,
+       981,
+       509,
+       452,
+       695,
+       351,
+       490,
+       426,
+       923,
+       691,
+       256,
+       198,
+       196,
+       341,
+       182,
+       967,
+       589,
+       232,
+       2,
+       846,
+       826,
+       966,
+       842,
+       265,
+       813,
+       195,
+       395,
+       362,
+       88,
+       895,
+       299,
+       369,
+       700,
+       696,
+       189,
+       321,
+       542,
+       19,
+       583,
+       123,
+       465,
+       30,
+       591,
+       442,
+       926,
+       621,
+       263,
+       955,
+       567,
+       957,
+       843,
+       645,
+       462,
+       392,
+       422,
+       766,
+       771,
+       106,
+       903,
+       498,
+       628,
+       486,
+       662,
+       296,
+       364,
+       860,
+       378,
+       231,
+       46,
+       1,
+       87,
+       277,
+       319,
+       939,
+       582,
+       783,
+       205
+      ]
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       81,
+       11,
+       395,
+       549,
+       107,
+       967,
+       44,
+       346,
+       259,
+       473,
+       467,
+       482,
+       730,
+       118,
+       248,
+       64,
+       673,
+       603,
+       862,
+       6,
+       362,
+       470,
+       388,
+       320,
+       390,
+       29,
+       671
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       724,
+       829,
+       318,
+       129,
+       15,
+       323,
+       372,
+       515,
+       678,
+       155,
+       154
+      ]
+     ],
+     "expected": 5
+    }
+   ],
+   "inputCheck": "def valid(tickets):\n    return isinstance(tickets, list) and 1 <= len(tickets) <= 100 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 999 for x in tickets) and len(set(tickets)) == len(tickets)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "응모 번호 402의 끝자리(일의 자리) 숫자를 구하는 C 식은 무엇일까요?",
+     "options": [
+      "`402 % 10`",
+      "`402 / 10`",
+      "`402 % 100`",
+      "`402 - 10`"
+     ],
+     "answer": 0,
+     "explain": "`%`는 나눗셈의 나머지예요. 402 ÷ 10 = 40 … 2라서 `402 % 10`은 2예요. C에서 정수끼리 `/`를 하면 몫만 남아서 `402 / 10`은 40이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 2 따라가기",
+     "prompt": "틀린 코드에 `tickets = {12, 32, 9}`를 넣었을 때, 반복마다 digit, 8번째 줄 뒤의 `count[digit]`, 9번째 줄 조건의 값(참 1, 거짓 0), 그 반복이 끝난 뒤의 maxCount와 answer를 채워 보세요.",
+     "columns": [
+      "tickets[i]",
+      "digit",
+      "count[digit]",
+      "9번째 줄 조건",
+      "maxCount",
+      "answer"
+     ],
+     "rows": [
+      [
+       "12",
+       {
+        "a": "2"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "32",
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "9"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "9"
+       }
+      ]
+     ],
+     "check": "def answers():\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    out = []\n    for t in [12, 32, 9]:\n        digit = t % 10\n        count[digit] += 1\n        cond = count[digit] > maxCount or (count[digit] == maxCount or digit > answer)\n        if cond:\n            maxCount = count[digit]\n            answer = digit\n        out += [digit, count[digit], 1 if cond else 0, maxCount, answer]\n    return out",
+     "explain": "마지막 9는 한 번밖에 안 나왔는데도 `digit > answer`(9 > 2)가 참이라 조건 전체가 참이 됐어요. 그래서 maxCount가 1로 줄고 answer가 9로 바뀌었어요. 괄호 안은 '횟수가 같으면서 더 큰 숫자'여야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "틀린 코드는 예시 2에서 2가 아니라 9를 return 해요. 9번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "`if (count[digit] > maxCount || (count[digit] == maxCount && digit > answer)) {`",
+      "`if (count[digit] > maxCount && (count[digit] == maxCount || digit > answer)) {`",
+      "`if (count[digit] >= maxCount || (count[digit] == maxCount || digit > answer)) {`",
+      "`if (count[digit] > maxCount || (count[digit] == maxCount || digit < answer)) {`"
+     ],
+     "answer": 0,
+     "explain": "'더 많이 나왔다' 또는(`||`) '횟수가 같고 그리고(`&&`) 더 큰 숫자다'일 때만 answer를 바꿔야 해요. 괄호 안을 `||`로 두면 횟수가 적어도 숫자만 크면 바뀌어 버려요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 `tickets = {7, 17, 8, 28}`을 넣으면 return 값은 무엇일까요?",
+     "a": "8",
+     "alts": [],
+     "check": "def solution(tickets):\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    for t in tickets:\n        digit = t % 10\n        count[digit] += 1\n        if count[digit] > maxCount or (count[digit] == maxCount and digit > answer):\n            maxCount = count[digit]\n            answer = digit\n    return answer\n\ndef answers():\n    return [solution([7, 17, 8, 28])]",
+     "explain": "끝자리는 7, 7, 8, 8이에요. 7이 먼저 2번이 되고, 8이 두 번째로 나올 때 횟수가 같고 8 > 7이라 answer가 8로 바뀌어요."
+    }
+   ],
+   "explain": "`a || (b && c)`는 'a이거나, b이면서 c'라는 뜻이에요. 틀린 코드는 괄호 안을 `b || c`로 써서 '더 큰 숫자이기만 하면' answer를 바꿨고, 그 바람에 maxCount까지 줄어들었어요. 끝자리 숫자는 `% 10`(10으로 나눈 나머지)으로 구해요."
+  }
+ ]
+}
