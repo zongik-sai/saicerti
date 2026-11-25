@@ -1,0 +1,476 @@
+{
+ "course": "cb",
+ "type": 9,
+ "typeTitle": "규칙대로 반복 계산",
+ "kind": "write",
+ "lang": "c",
+ "skills": [
+  "while 반복문",
+  "확인하는 시점 정하기",
+  "날짜(횟수) 세기",
+  "값 누적하기",
+  "break로 반복 끝내기"
+ ],
+ "intro": "낮에 오르고 밤에 미끄러지는 것처럼 같은 규칙이 하루(한 번)마다 되풀이될 때, 목표에 처음 닿는 날을 구하는 유형이에요. while 반복문으로 하루씩 따라가며 값을 바꾸고, 목표에 닿았는지를 언제 확인하는지(오른 직후인지, 하루가 끝난 뒤인지) 정확히 지키는 연습을 합니다.",
+ "problems": [
+  {
+   "id": "cb-m1-t09",
+   "version": 1,
+   "title": "원숭이의 나무 오르기",
+   "statement": "원숭이가 땅(높이 0)에서 출발하여 높이가 H인 나무의 꼭대기를 향해 올라갑니다.\n\n- 낮(DAY)에는 U만큼 위로 올라갑니다.\n- 밤(NIGHT)에는 D만큼 아래로 미끄러져 내려옵니다.\n- 다만, 낮에 올라간 직후의 높이가 H 이상이면 그날 곧바로 꼭대기에 도달한 것으로 봅니다.\n\n{{fig:f1}}\n\n원숭이가 나무 꼭대기에 처음으로 도달하는 날을 알아내려고 합니다.\n\n예를 들어 나무의 높이 H = 17, 낮에 오르는 높이 U = 6, 밤에 미끄러지는 높이 D = 4가 주어지면 다음과 같습니다.\n\n- 1일차: 낮에 0 + 6 = 6, 밤에 6 - 4 = 2\n- 2일차: 낮에 2 + 6 = 8, 밤에 8 - 4 = 4\n- 3일차: 낮에 4 + 6 = 10, 밤에 10 - 4 = 6\n- ...\n- 6일차: 낮에 10 + 6 = 16, 밤에 16 - 4 = 12\n- 7일차: 낮에 12 + 6 = 18이 되어 H = 17 이상이므로, 밤이 오기 전에 꼭대기에 도달합니다.\n\n따라서 원숭이는 7일차에 처음으로 꼭대기에 도달합니다.\n\n원숭이가 나무 꼭대기에 처음으로 도달하는 날을 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "svg",
+     "alt": "두 칸으로 된 그림입니다. 왼쪽 '낮(DAY)' 칸: 해 아래에 나무가 땅(높이 0)부터 꼭대기(높이 H, 점선)까지 서 있고, 원숭이(동그라미)가 위쪽 화살표를 따라 +U만큼 올라갑니다. 오른쪽 '밤(NIGHT)' 칸: 달 아래 같은 나무에서 원숭이가 아래쪽 화살표를 따라 −D만큼 미끄러져 내려옵니다.",
+     "caption": "낮에는 U만큼 오르고(실선 화살표) 밤에는 D만큼 미끄러집니다(점선 화살표). 점선 동그라미는 움직이기 전, 실선 동그라미는 움직인 뒤의 원숭이 위치입니다.",
+     "svg": "<svg viewBox='0 0 440 210' xmlns='http://www.w3.org/2000/svg'><text x='105' y='22' text-anchor='middle' font-size='16' font-weight='bold'>낮 (DAY)</text><rect x='5' y='32' width='200' height='172' rx='8' fill='none' stroke='currentColor' stroke-width='1'/><line x1='15' y1='58' x2='195' y2='58' stroke='currentColor' stroke-width='1.5' stroke-dasharray='6 4'/><text x='195' y='52' text-anchor='end' font-size='12'>꼭대기(높이 H)</text><line x1='15' y1='180' x2='195' y2='180' stroke='currentColor' stroke-width='2.5'/><text x='195' y='197' text-anchor='end' font-size='12'>땅(높이 0)</text><line x1='55' y1='58' x2='55' y2='180' stroke='currentColor' stroke-width='1.5'/><line x1='71' y1='58' x2='71' y2='180' stroke='currentColor' stroke-width='1.5'/><text x='63' y='197' text-anchor='middle' font-size='12'>나무</text><circle cx='120' cy='160' r='6' fill='none' stroke='currentColor' stroke-width='1.5' stroke-dasharray='2 2'/><line x1='120' y1='152' x2='120' y2='90' stroke='currentColor' stroke-width='2.5'/><polyline points='113,100 120,88 127,100' fill='none' stroke='currentColor' stroke-width='2.5'/><circle cx='120' cy='80' r='6' fill='none' stroke='currentColor' stroke-width='2'/><text x='134' y='128' font-size='20' font-weight='bold'>+U</text><circle cx='180' cy='15' r='6' fill='none' stroke='currentColor' stroke-width='1.5'/><line x1='180' y1='7.5' x2='180' y2='5' stroke='currentColor' stroke-width='1.2'/><line x1='180' y1='22.5' x2='180' y2='25' stroke='currentColor' stroke-width='1.2'/><line x1='172.5' y1='15' x2='170' y2='15' stroke='currentColor' stroke-width='1.2'/><line x1='187.5' y1='15' x2='190' y2='15' stroke='currentColor' stroke-width='1.2'/><line x1='185.25' y1='20.25' x2='187' y2='22' stroke='currentColor' stroke-width='1.2'/><line x1='174.75' y1='9.75' x2='173' y2='8' stroke='currentColor' stroke-width='1.2'/><line x1='185.25' y1='9.75' x2='187' y2='8' stroke='currentColor' stroke-width='1.2'/><line x1='174.75' y1='20.25' x2='173' y2='22' stroke='currentColor' stroke-width='1.2'/><text x='335' y='22' text-anchor='middle' font-size='16' font-weight='bold'>밤 (NIGHT)</text><rect x='235' y='32' width='200' height='172' rx='8' fill='none' stroke='currentColor' stroke-width='1'/><line x1='245' y1='58' x2='425' y2='58' stroke='currentColor' stroke-width='1.5' stroke-dasharray='6 4'/><text x='425' y='52' text-anchor='end' font-size='12'>꼭대기(높이 H)</text><line x1='245' y1='180' x2='425' y2='180' stroke='currentColor' stroke-width='2.5'/><text x='425' y='197' text-anchor='end' font-size='12'>땅(높이 0)</text><line x1='285' y1='58' x2='285' y2='180' stroke='currentColor' stroke-width='1.5'/><line x1='301' y1='58' x2='301' y2='180' stroke='currentColor' stroke-width='1.5'/><text x='293' y='197' text-anchor='middle' font-size='12'>나무</text><circle cx='350' cy='80' r='6' fill='none' stroke='currentColor' stroke-width='1.5' stroke-dasharray='2 2'/><line x1='350' y1='88' x2='350' y2='150' stroke='currentColor' stroke-width='2.5' stroke-dasharray='7 4'/><polyline points='343,140 350,152 357,140' fill='none' stroke='currentColor' stroke-width='2.5'/><circle cx='350' cy='160' r='6' fill='none' stroke='currentColor' stroke-width='2'/><text x='364' y='128' font-size='20' font-weight='bold'>−D</text><path d='M 414 6 A 9 9 0 1 0 414 24 A 7 7 0 1 1 414 6 Z' fill='none' stroke='currentColor' stroke-width='1.5'/></svg>"
+    }
+   ],
+   "params": [
+    "H (10 ≤ H ≤ 10,000): 나무의 높이입니다.",
+    "U (1 ≤ U ≤ 1,000): 낮 동안 올라가는 높이입니다.",
+    "D (1 ≤ D < U ≤ 1,000): 밤 동안 미끄러져 내려오는 높이입니다."
+   ],
+   "returns": [
+    "원숭이가 꼭대기에 처음으로 도달하는 날(며칠째인지)을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "H",
+    "U",
+    "D"
+   ],
+   "examples": [
+    {
+     "args": [
+      17,
+      6,
+      4
+     ],
+     "explain": "문제 설명의 예와 같습니다. 7일차 낮에 18이 되어 17 이상이므로 7을 return 합니다.",
+     "expected": 7
+    },
+    {
+     "args": [
+      12,
+      15,
+      2
+     ],
+     "explain": "1일차 낮에 0 + 15 = 15가 되어 곧바로 12 이상이므로, 원숭이는 1일차에 꼭대기에 도달합니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int H, int U, int D) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int H, int U, int D) {\n    int answer = 0;\n    int height = 0;\n    while (1) {\n        answer++;\n        height += U;\n        if (height >= H) {\n            break;\n        }\n        height -= D;\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      10,
+      10,
+      9
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      10,
+      2,
+      1
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      10000,
+      2,
+      1
+     ],
+     "expected": 9999
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      999
+     ],
+     "expected": 9001
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      1
+     ],
+     "expected": 11
+    },
+    {
+     "args": [
+      100,
+      7,
+      3
+     ],
+     "expected": 25
+    },
+    {
+     "args": [
+      50,
+      11,
+      2
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      37,
+      9,
+      5
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      999,
+      999,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1000,
+      999,
+      998
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      5000,
+      37,
+      12
+     ],
+     "expected": 200
+    },
+    {
+     "args": [
+      23,
+      6,
+      1
+     ],
+     "expected": 5
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(H, U, D):\n    if not all(type(x) is int for x in (H, U, D)):\n        return False\n    return 10 <= H <= 10000 and 1 <= U <= 1000 and 1 <= D < U",
+   "steps": [],
+   "explain": "하루를 반복 한 번으로 보고, 날짜(answer)를 1 늘린 뒤 높이에 U를 더하고 곧바로 H 이상인지 확인해요. 도달했으면 break로 반복을 끝내고, 아니면 밤에 D를 빼요. 밤까지 뺀 뒤에 확인하면 낮에 이미 도달한 날을 놓쳐 늦은 답이 나오고, `>`로 쓰면 높이가 H와 딱 같은 날을 놓쳐요."
+  },
+  {
+   "id": "cb-m2-t09",
+   "version": 1,
+   "title": "원숭이의 나무 오르기",
+   "statement": "원숭이가 땅(높이 0)에서 출발하여 높이가 H인 나무의 꼭대기를 향해 올라갑니다.\n\n- 낮(DAY)에는 U만큼 위로 올라갑니다.\n- 밤(NIGHT)에는 D만큼 아래로 미끄러져 내려옵니다.\n- 다만, 낮에 올라간 직후의 높이가 H 이상이면 그날 곧바로 꼭대기에 도달한 것으로 봅니다.\n\n{{fig:f1}}\n\n원숭이가 나무 꼭대기에 처음으로 도달하는 날을 알아내려고 합니다.\n\n예를 들어 나무의 높이 H = 28, 낮에 오르는 높이 U = 7, 밤에 미끄러지는 높이 D = 4가 주어지면 다음과 같습니다.\n\n- 1일차: 낮에 0 + 7 = 7, 밤에 7 - 4 = 3\n- 2일차: 낮에 3 + 7 = 10, 밤에 10 - 4 = 6\n- 3일차: 낮에 6 + 7 = 13, 밤에 13 - 4 = 9\n- ...\n- 7일차: 낮에 18 + 7 = 25, 밤에 25 - 4 = 21\n- 8일차: 낮에 21 + 7 = 28이 되어 H = 28 이상이므로, 밤이 오기 전에 꼭대기에 도달합니다.\n\n따라서 원숭이는 8일차에 처음으로 꼭대기에 도달합니다.\n\n원숭이가 나무 꼭대기에 처음으로 도달하는 날을 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "svg",
+     "alt": "두 칸으로 된 그림입니다. 왼쪽 '낮(DAY)' 칸: 해 아래에 나무가 땅(높이 0)부터 꼭대기(높이 H, 점선)까지 서 있고, 원숭이(동그라미)가 위쪽 화살표를 따라 +U만큼 올라갑니다. 오른쪽 '밤(NIGHT)' 칸: 달 아래 같은 나무에서 원숭이가 아래쪽 화살표를 따라 −D만큼 미끄러져 내려옵니다.",
+     "caption": "낮에는 U만큼 오르고(실선 화살표) 밤에는 D만큼 미끄러집니다(점선 화살표). 점선 동그라미는 움직이기 전, 실선 동그라미는 움직인 뒤의 원숭이 위치입니다.",
+     "svg": "<svg viewBox='0 0 440 210' xmlns='http://www.w3.org/2000/svg'><text x='105' y='22' text-anchor='middle' font-size='16' font-weight='bold'>낮 (DAY)</text><rect x='5' y='32' width='200' height='172' rx='8' fill='none' stroke='currentColor' stroke-width='1'/><line x1='15' y1='58' x2='195' y2='58' stroke='currentColor' stroke-width='1.5' stroke-dasharray='6 4'/><text x='195' y='52' text-anchor='end' font-size='12'>꼭대기(높이 H)</text><line x1='15' y1='180' x2='195' y2='180' stroke='currentColor' stroke-width='2.5'/><text x='195' y='197' text-anchor='end' font-size='12'>땅(높이 0)</text><line x1='55' y1='58' x2='55' y2='180' stroke='currentColor' stroke-width='1.5'/><line x1='71' y1='58' x2='71' y2='180' stroke='currentColor' stroke-width='1.5'/><text x='63' y='197' text-anchor='middle' font-size='12'>나무</text><circle cx='120' cy='160' r='6' fill='none' stroke='currentColor' stroke-width='1.5' stroke-dasharray='2 2'/><line x1='120' y1='152' x2='120' y2='90' stroke='currentColor' stroke-width='2.5'/><polyline points='113,100 120,88 127,100' fill='none' stroke='currentColor' stroke-width='2.5'/><circle cx='120' cy='80' r='6' fill='none' stroke='currentColor' stroke-width='2'/><text x='134' y='128' font-size='20' font-weight='bold'>+U</text><circle cx='180' cy='15' r='6' fill='none' stroke='currentColor' stroke-width='1.5'/><line x1='180' y1='7.5' x2='180' y2='5' stroke='currentColor' stroke-width='1.2'/><line x1='180' y1='22.5' x2='180' y2='25' stroke='currentColor' stroke-width='1.2'/><line x1='172.5' y1='15' x2='170' y2='15' stroke='currentColor' stroke-width='1.2'/><line x1='187.5' y1='15' x2='190' y2='15' stroke='currentColor' stroke-width='1.2'/><line x1='185.25' y1='20.25' x2='187' y2='22' stroke='currentColor' stroke-width='1.2'/><line x1='174.75' y1='9.75' x2='173' y2='8' stroke='currentColor' stroke-width='1.2'/><line x1='185.25' y1='9.75' x2='187' y2='8' stroke='currentColor' stroke-width='1.2'/><line x1='174.75' y1='20.25' x2='173' y2='22' stroke='currentColor' stroke-width='1.2'/><text x='335' y='22' text-anchor='middle' font-size='16' font-weight='bold'>밤 (NIGHT)</text><rect x='235' y='32' width='200' height='172' rx='8' fill='none' stroke='currentColor' stroke-width='1'/><line x1='245' y1='58' x2='425' y2='58' stroke='currentColor' stroke-width='1.5' stroke-dasharray='6 4'/><text x='425' y='52' text-anchor='end' font-size='12'>꼭대기(높이 H)</text><line x1='245' y1='180' x2='425' y2='180' stroke='currentColor' stroke-width='2.5'/><text x='425' y='197' text-anchor='end' font-size='12'>땅(높이 0)</text><line x1='285' y1='58' x2='285' y2='180' stroke='currentColor' stroke-width='1.5'/><line x1='301' y1='58' x2='301' y2='180' stroke='currentColor' stroke-width='1.5'/><text x='293' y='197' text-anchor='middle' font-size='12'>나무</text><circle cx='350' cy='80' r='6' fill='none' stroke='currentColor' stroke-width='1.5' stroke-dasharray='2 2'/><line x1='350' y1='88' x2='350' y2='150' stroke='currentColor' stroke-width='2.5' stroke-dasharray='7 4'/><polyline points='343,140 350,152 357,140' fill='none' stroke='currentColor' stroke-width='2.5'/><circle cx='350' cy='160' r='6' fill='none' stroke='currentColor' stroke-width='2'/><text x='364' y='128' font-size='20' font-weight='bold'>−D</text><path d='M 414 6 A 9 9 0 1 0 414 24 A 7 7 0 1 1 414 6 Z' fill='none' stroke='currentColor' stroke-width='1.5'/></svg>"
+    }
+   ],
+   "params": [
+    "H (10 ≤ H ≤ 10,000): 나무의 높이입니다.",
+    "U (1 ≤ U ≤ 1,000): 낮 동안 올라가는 높이입니다.",
+    "D (1 ≤ D < U ≤ 1,000): 밤 동안 미끄러져 내려오는 높이입니다."
+   ],
+   "returns": [
+    "원숭이가 꼭대기에 처음으로 도달하는 날(며칠째인지)을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "H",
+    "U",
+    "D"
+   ],
+   "examples": [
+    {
+     "args": [
+      28,
+      7,
+      4
+     ],
+     "explain": "문제 설명의 예와 같습니다. 8일차 낮에 28이 되어 28 이상이므로 8을 return 합니다.",
+     "expected": 8
+    },
+    {
+     "args": [
+      15,
+      15,
+      3
+     ],
+     "explain": "1일차 낮에 0 + 15 = 15가 되어 곧바로 15 이상이므로, 원숭이는 1일차에 꼭대기에 도달합니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int H, int U, int D) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int H, int U, int D) {\n    int answer = 0;\n    int height = 0;\n    while (1) {\n        answer++;\n        height += U;\n        if (height >= H) {\n            break;\n        }\n        height -= D;\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      10,
+      9,
+      8
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10,
+      3,
+      2
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      10000,
+      3,
+      2
+     ],
+     "expected": 9998
+    },
+    {
+     "args": [
+      10000,
+      999,
+      998
+     ],
+     "expected": 9002
+    },
+    {
+     "args": [
+      10000,
+      500,
+      1
+     ],
+     "expected": 21
+    },
+    {
+     "args": [
+      200,
+      13,
+      6
+     ],
+     "expected": 28
+    },
+    {
+     "args": [
+      64,
+      10,
+      2
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      41,
+      8,
+      7
+     ],
+     "expected": 34
+    },
+    {
+     "args": [
+      500,
+      500,
+      499
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      501,
+      500,
+      499
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      7777,
+      123,
+      45
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      18,
+      4,
+      1
+     ],
+     "expected": 6
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(H, U, D):\n    if not all(type(x) is int for x in (H, U, D)):\n        return False\n    return 10 <= H <= 10000 and 1 <= U <= 1000 and 1 <= D < U",
+   "steps": [],
+   "explain": "하루를 반복 한 번으로 보고, 날짜(answer)를 1 늘린 뒤 높이에 U를 더하고 곧바로 H 이상인지 확인해요. 도달했으면 break로 반복을 끝내고, 아니면 밤에 D를 빼요. 밤까지 뺀 뒤에 확인하면 낮에 이미 도달한 날을 놓쳐 늦은 답이 나오고, `>`로 쓰면 높이가 H와 딱 같은 날을 놓쳐요."
+  },
+  {
+   "id": "cb-m3-t09",
+   "version": 1,
+   "title": "원숭이의 나무 오르기",
+   "statement": "원숭이가 땅(높이 0)에서 출발하여 높이가 H인 나무의 꼭대기를 향해 올라갑니다.\n\n- 낮(DAY)에는 U만큼 위로 올라갑니다.\n- 밤(NIGHT)에는 D만큼 아래로 미끄러져 내려옵니다.\n- 다만, 낮에 올라간 직후의 높이가 H 이상이면 그날 곧바로 꼭대기에 도달한 것으로 봅니다.\n\n{{fig:f1}}\n\n원숭이가 나무 꼭대기에 처음으로 도달하는 날을 알아내려고 합니다.\n\n예를 들어 나무의 높이 H = 30, 낮에 오르는 높이 U = 8, 밤에 미끄러지는 높이 D = 5가 주어지면 다음과 같습니다.\n\n- 1일차: 낮에 0 + 8 = 8, 밤에 8 - 5 = 3\n- 2일차: 낮에 3 + 8 = 11, 밤에 11 - 5 = 6\n- 3일차: 낮에 6 + 8 = 14, 밤에 14 - 5 = 9\n- ...\n- 8일차: 낮에 21 + 8 = 29, 밤에 29 - 5 = 24\n- 9일차: 낮에 24 + 8 = 32가 되어 H = 30 이상이므로, 밤이 오기 전에 꼭대기에 도달합니다.\n\n따라서 원숭이는 9일차에 처음으로 꼭대기에 도달합니다.\n\n원숭이가 나무 꼭대기에 처음으로 도달하는 날을 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "svg",
+     "alt": "두 칸으로 된 그림입니다. 왼쪽 '낮(DAY)' 칸: 해 아래에 나무가 땅(높이 0)부터 꼭대기(높이 H, 점선)까지 서 있고, 원숭이(동그라미)가 위쪽 화살표를 따라 +U만큼 올라갑니다. 오른쪽 '밤(NIGHT)' 칸: 달 아래 같은 나무에서 원숭이가 아래쪽 화살표를 따라 −D만큼 미끄러져 내려옵니다.",
+     "caption": "낮에는 U만큼 오르고(실선 화살표) 밤에는 D만큼 미끄러집니다(점선 화살표). 점선 동그라미는 움직이기 전, 실선 동그라미는 움직인 뒤의 원숭이 위치입니다.",
+     "svg": "<svg viewBox='0 0 440 210' xmlns='http://www.w3.org/2000/svg'><text x='105' y='22' text-anchor='middle' font-size='16' font-weight='bold'>낮 (DAY)</text><rect x='5' y='32' width='200' height='172' rx='8' fill='none' stroke='currentColor' stroke-width='1'/><line x1='15' y1='58' x2='195' y2='58' stroke='currentColor' stroke-width='1.5' stroke-dasharray='6 4'/><text x='195' y='52' text-anchor='end' font-size='12'>꼭대기(높이 H)</text><line x1='15' y1='180' x2='195' y2='180' stroke='currentColor' stroke-width='2.5'/><text x='195' y='197' text-anchor='end' font-size='12'>땅(높이 0)</text><line x1='55' y1='58' x2='55' y2='180' stroke='currentColor' stroke-width='1.5'/><line x1='71' y1='58' x2='71' y2='180' stroke='currentColor' stroke-width='1.5'/><text x='63' y='197' text-anchor='middle' font-size='12'>나무</text><circle cx='120' cy='160' r='6' fill='none' stroke='currentColor' stroke-width='1.5' stroke-dasharray='2 2'/><line x1='120' y1='152' x2='120' y2='90' stroke='currentColor' stroke-width='2.5'/><polyline points='113,100 120,88 127,100' fill='none' stroke='currentColor' stroke-width='2.5'/><circle cx='120' cy='80' r='6' fill='none' stroke='currentColor' stroke-width='2'/><text x='134' y='128' font-size='20' font-weight='bold'>+U</text><circle cx='180' cy='15' r='6' fill='none' stroke='currentColor' stroke-width='1.5'/><line x1='180' y1='7.5' x2='180' y2='5' stroke='currentColor' stroke-width='1.2'/><line x1='180' y1='22.5' x2='180' y2='25' stroke='currentColor' stroke-width='1.2'/><line x1='172.5' y1='15' x2='170' y2='15' stroke='currentColor' stroke-width='1.2'/><line x1='187.5' y1='15' x2='190' y2='15' stroke='currentColor' stroke-width='1.2'/><line x1='185.25' y1='20.25' x2='187' y2='22' stroke='currentColor' stroke-width='1.2'/><line x1='174.75' y1='9.75' x2='173' y2='8' stroke='currentColor' stroke-width='1.2'/><line x1='185.25' y1='9.75' x2='187' y2='8' stroke='currentColor' stroke-width='1.2'/><line x1='174.75' y1='20.25' x2='173' y2='22' stroke='currentColor' stroke-width='1.2'/><text x='335' y='22' text-anchor='middle' font-size='16' font-weight='bold'>밤 (NIGHT)</text><rect x='235' y='32' width='200' height='172' rx='8' fill='none' stroke='currentColor' stroke-width='1'/><line x1='245' y1='58' x2='425' y2='58' stroke='currentColor' stroke-width='1.5' stroke-dasharray='6 4'/><text x='425' y='52' text-anchor='end' font-size='12'>꼭대기(높이 H)</text><line x1='245' y1='180' x2='425' y2='180' stroke='currentColor' stroke-width='2.5'/><text x='425' y='197' text-anchor='end' font-size='12'>땅(높이 0)</text><line x1='285' y1='58' x2='285' y2='180' stroke='currentColor' stroke-width='1.5'/><line x1='301' y1='58' x2='301' y2='180' stroke='currentColor' stroke-width='1.5'/><text x='293' y='197' text-anchor='middle' font-size='12'>나무</text><circle cx='350' cy='80' r='6' fill='none' stroke='currentColor' stroke-width='1.5' stroke-dasharray='2 2'/><line x1='350' y1='88' x2='350' y2='150' stroke='currentColor' stroke-width='2.5' stroke-dasharray='7 4'/><polyline points='343,140 350,152 357,140' fill='none' stroke='currentColor' stroke-width='2.5'/><circle cx='350' cy='160' r='6' fill='none' stroke='currentColor' stroke-width='2'/><text x='364' y='128' font-size='20' font-weight='bold'>−D</text><path d='M 414 6 A 9 9 0 1 0 414 24 A 7 7 0 1 1 414 6 Z' fill='none' stroke='currentColor' stroke-width='1.5'/></svg>"
+    }
+   ],
+   "params": [
+    "H (10 ≤ H ≤ 10,000): 나무의 높이입니다.",
+    "U (1 ≤ U ≤ 1,000): 낮 동안 올라가는 높이입니다.",
+    "D (1 ≤ D < U ≤ 1,000): 밤 동안 미끄러져 내려오는 높이입니다."
+   ],
+   "returns": [
+    "원숭이가 꼭대기에 처음으로 도달하는 날(며칠째인지)을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "H",
+    "U",
+    "D"
+   ],
+   "examples": [
+    {
+     "args": [
+      30,
+      8,
+      5
+     ],
+     "explain": "문제 설명의 예와 같습니다. 9일차 낮에 32가 되어 30 이상이므로 9를 return 합니다.",
+     "expected": 9
+    },
+    {
+     "args": [
+      11,
+      20,
+      7
+     ],
+     "explain": "1일차 낮에 0 + 20 = 20이 되어 곧바로 11 이상이므로, 원숭이는 1일차에 꼭대기에 도달합니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int H, int U, int D) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int H, int U, int D) {\n    int answer = 0;\n    int height = 0;\n    while (1) {\n        answer++;\n        height += U;\n        if (height >= H) {\n            break;\n        }\n        height -= D;\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      11,
+      10,
+      9
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10,
+      4,
+      3
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      9999,
+      2,
+      1
+     ],
+     "expected": 9998
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      500
+     ],
+     "expected": 19
+    },
+    {
+     "args": [
+      10000,
+      750,
+      1
+     ],
+     "expected": 14
+    },
+    {
+     "args": [
+      300,
+      21,
+      20
+     ],
+     "expected": 280
+    },
+    {
+     "args": [
+      88,
+      15,
+      6
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      59,
+      6,
+      5
+     ],
+     "expected": 54
+    },
+    {
+     "args": [
+      1000,
+      1000,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1000,
+      998,
+      997
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      4321,
+      99,
+      98
+     ],
+     "expected": 4223
+    },
+    {
+     "args": [
+      27,
+      7,
+      3
+     ],
+     "expected": 6
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(H, U, D):\n    if not all(type(x) is int for x in (H, U, D)):\n        return False\n    return 10 <= H <= 10000 and 1 <= U <= 1000 and 1 <= D < U",
+   "steps": [],
+   "explain": "하루를 반복 한 번으로 보고, 날짜(answer)를 1 늘린 뒤 높이에 U를 더하고 곧바로 H 이상인지 확인해요. 도달했으면 break로 반복을 끝내고, 아니면 밤에 D를 빼요. 밤까지 뺀 뒤에 확인하면 낮에 이미 도달한 날을 놓쳐 늦은 답이 나오고, `>`로 쓰면 높이가 H와 딱 같은 날을 놓쳐요."
+  }
+ ]
+}
