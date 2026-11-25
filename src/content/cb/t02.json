@@ -752,7 +752,7 @@
      "a": "87",
      "alts": [],
      "check": "def answers():\n    m = [[12, 30, 5, 18, 7], [9, 41, 0, 22, 15], [27, 8, 33, 4, 11], [6, 35, 14, 19, 2], [20, 16, 10, 25, 13]]\n    best = 0\n    for i in range(5):\n        row = sum(m[i][j] for j in range(5))\n        col = sum(m[i][j] for j in range(5))\n        if row > best:\n            best = row\n        if col > best:\n            best = col\n    return [best]",
-     "explain": "col에도 행이 더해지면 세로줄은 하나도 비교하지 못해요. 그래서 행의 합 가운데 가장 큰 87가 나오고, 진짜 답인 1열의 합 130을 놓쳐요."
+     "explain": "col에도 행이 더해지면 세로줄은 하나도 비교하지 못해요. 그래서 행의 합 가운데 가장 큰 87이 나오고, 진짜 답인 1열의 합 130을 놓쳐요."
     }
    ],
    "explain": "같은 바깥 반복 안에서 `apples[i][j]`로 i행을, 행과 열 번호를 바꾼 `apples[j][i]`로 i열을 함께 더해요. 줄의 합을 구할 때마다 best와 비교해 더 크면 바꿔요. 행과 열의 인덱스 순서를 바꿔 쓰는 실수가 가장 흔해요.",
@@ -3366,7 +3366,7 @@
       ]
      ],
      "check": "def answers():\n    m = [[14, 3, 8, 6, 20], [2, 11, 5, 17, 4], [9, 7, 6, 10, 15], [1, 12, 30, 9, 3], [16, 0, 22, 5, 13]]\n    out = []\n    x = plus = 0\n    for i in range(5):\n        x += m[i][i] + m[i][4 - i]\n        plus += m[2][i] + m[i][2]\n        out += [m[i][4 - i], x, plus]\n    return out",
-     "explain": "반복이 끝나면 x = 124, plus = 118예요. 두 값 모두 가운데 칸 6을 두 번 더한 상태라 한 번씩 빼 줘야 해요."
+     "explain": "반복이 끝나면 x = 124, plus = 118이에요. 두 값 모두 가운데 칸 6을 두 번 더한 상태라 한 번씩 빼 줘야 해요."
     },
     {
      "id": "s3",
@@ -3597,7 +3597,7 @@
    "id": "cb-t02-e",
    "version": 1,
    "title": "마방진에서 벗어난 정도",
-   "statement": "가로와 세로의 칸 수가 같은 N x N 숫자 판에서 가로줄(행)의 합, 세로줄(열)의 합, 두 대각선의 합이 모두 같으면 그 판을 **마방진**이라고 합니다.\n\nN x N 숫자 판이 2차원 배열 `square`로 주어질 때, 가로줄 N개, 세로줄 N개, 대각선 2개(왼쪽 위에서 오른쪽 아래로 가는 메인 대각선, 오른쪽 위에서 왼쪽 아래로 가는 보조 대각선)의 합, 모두 2N + 2개의 값 가운데 최댓값에서 최솟값을 뺀 값을 구하려 합니다. 판이 마방진이면 이 값은 0입니다.\n\n예를 들어 `square`가 `{{8, 1, 6, 12}, {3, 15, 7, 2}, {11, 4, 9, 5}, {10, 13, 2, 14}}`인 4 x 4 판이면 줄마다 합은 아래 그림과 같습니다.\n\n{{fig:f1}}\n\n10개의 합 가운데 최댓값은 메인 대각선의 합 46, 최솟값은 2열의 합 24이므로 46 - 24 = 22을 return 합니다.\n\n숫자 판이 주어질 때, 모든 가로줄·세로줄·대각선의 합 가운데 최댓값과 최솟값의 차를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "statement": "가로와 세로의 칸 수가 같은 N x N 숫자 판에서 가로줄(행)의 합, 세로줄(열)의 합, 두 대각선의 합이 모두 같으면 그 판을 **마방진**이라고 합니다.\n\nN x N 숫자 판이 2차원 배열 `square`로 주어질 때, 가로줄 N개, 세로줄 N개, 대각선 2개(왼쪽 위에서 오른쪽 아래로 가는 메인 대각선, 오른쪽 위에서 왼쪽 아래로 가는 보조 대각선)의 합, 모두 2N + 2개의 값 가운데 최댓값에서 최솟값을 뺀 값을 구하려 합니다. 판이 마방진이면 이 값은 0입니다.\n\n예를 들어 `square`가 `{{8, 1, 6, 12}, {3, 15, 7, 2}, {11, 4, 9, 5}, {10, 13, 2, 14}}`인 4 x 4 판이면 줄마다 합은 아래 그림과 같습니다.\n\n{{fig:f1}}\n\n10개의 합 가운데 최댓값은 메인 대각선의 합 46, 최솟값은 2열의 합 24이므로 46 - 24 = 22를 return 합니다.\n\n숫자 판이 주어질 때, 모든 가로줄·세로줄·대각선의 합 가운데 최댓값과 최솟값의 차를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
    "params": [
     "`square`는 N행 N열 정수 2차원 배열이며, N은 3 이상 6 이하입니다.",
     "`square`의 원소는 1 이상 99 이하인 정수입니다.",
@@ -3640,7 +3640,7 @@
        ]
       ]
      ],
-     "explain": "최댓값 46(메인 대각선)에서 최솟값 24(2열)을 빼면 22입니다.",
+     "explain": "최댓값은 메인 대각선의 합 46, 최솟값은 2열의 합 24이므로 46 - 24 = 22입니다.",
      "expected": 22
     },
     {
@@ -4324,7 +4324,7 @@
     {
      "id": "f1",
      "kind": "svg",
-     "alt": "4행 4열 격자. 위쪽에 열 번호 0~3, 왼쪽에 행 번호 0~3. 0행: 8, 1, 6, 12. 1행: 3, 15, 7, 2. 2행: 11, 4, 9, 5. 3행: 10, 13, 2, 14. 가로줄마다 오른쪽으로 가는 화살표 끝에 행의 합: 0행 27, 1행 27, 2행 29, 3행 39. 세로줄마다 아래로 가는 화살표 끝에 열의 합: 0열 32, 1열 33, 2열 24, 3열 33. 점선 화살표 2개가 X자로 지나감: 메인 대각선(왼쪽 위 → 오른쪽 아래) 합 46은 오른쪽 아래 모서리에, 보조 대각선(오른쪽 위 → 왼쪽 아래) 합 33는 왼쪽 아래 모서리에 적혀 있음. 가장 큰 합 46(메인 대각선)과 가장 작은 합 24(2열의 합)이 굵은 글씨에 네모로 강조되어 있음.",
+     "alt": "4행 4열 격자. 위쪽에 열 번호 0~3, 왼쪽에 행 번호 0~3. 0행: 8, 1, 6, 12. 1행: 3, 15, 7, 2. 2행: 11, 4, 9, 5. 3행: 10, 13, 2, 14. 가로줄마다 오른쪽으로 가는 화살표 끝에 행의 합: 0행 27, 1행 27, 2행 29, 3행 39. 세로줄마다 아래로 가는 화살표 끝에 열의 합: 0열 32, 1열 33, 2열 24, 3열 33. 점선 화살표 2개가 X자로 지나감: 메인 대각선(왼쪽 위 → 오른쪽 아래) 합 46은 오른쪽 아래 모서리에, 보조 대각선(오른쪽 위 → 왼쪽 아래) 합 33는 왼쪽 아래 모서리에 적혀 있음. 메인 대각선의 합 46과(가장 큼) 2열의 합 24(가장 작음)이 굵은 글씨에 네모로 강조되어 있음.",
      "caption": "→ 행의 합, ↓ 열의 합, 점선 ↘ 메인 대각선의 합(오른쪽 아래), 점선 ↙ 보조 대각선의 합(왼쪽 아래). 네모 친 수가 가장 큰 합과 가장 작은 합입니다.",
      "svg": "<svg viewBox='0 0 314 256' xmlns='http://www.w3.org/2000/svg' font-size='15'><text x='82' y='20' text-anchor='middle' font-size='12'>0</text><text x='126' y='20' text-anchor='middle' font-size='12'>1</text><text x='170' y='20' text-anchor='middle' font-size='12'>2</text><text x='214' y='20' text-anchor='middle' font-size='12'>3</text><text x='46' y='56' text-anchor='middle' font-size='12'>0</text><text x='46' y='100' text-anchor='middle' font-size='12'>1</text><text x='46' y='144' text-anchor='middle' font-size='12'>2</text><text x='46' y='188' text-anchor='middle' font-size='12'>3</text><line x1='65' y1='35' x2='256' y2='226' stroke='currentColor' stroke-width='1.4' stroke-dasharray='5 4' stroke-opacity='0.55'/><polyline points='247.9,224.2 256,226 254.2,217.9' fill='none' stroke='currentColor' stroke-width='1.6'/><line x1='231' y1='35' x2='40' y2='226' stroke='currentColor' stroke-width='1.4' stroke-dasharray='5 4' stroke-opacity='0.55'/><polyline points='41.8,217.9 40,226 48.1,224.2' fill='none' stroke='currentColor' stroke-width='1.6'/><rect x='60' y='30' width='176' height='176' fill='none' stroke='currentColor' stroke-width='1.5'/><line x1='104' y1='30' x2='104' y2='206' stroke='currentColor' stroke-width='0.8'/><line x1='60' y1='74' x2='236' y2='74' stroke='currentColor' stroke-width='0.8'/><line x1='148' y1='30' x2='148' y2='206' stroke='currentColor' stroke-width='0.8'/><line x1='60' y1='118' x2='236' y2='118' stroke='currentColor' stroke-width='0.8'/><line x1='192' y1='30' x2='192' y2='206' stroke='currentColor' stroke-width='0.8'/><line x1='60' y1='162' x2='236' y2='162' stroke='currentColor' stroke-width='0.8'/><text x='82' y='57' text-anchor='middle'>8</text><text x='126' y='57' text-anchor='middle'>1</text><text x='170' y='57' text-anchor='middle'>6</text><text x='214' y='57' text-anchor='middle'>12</text><text x='82' y='101' text-anchor='middle'>3</text><text x='126' y='101' text-anchor='middle'>15</text><text x='170' y='101' text-anchor='middle'>7</text><text x='214' y='101' text-anchor='middle'>2</text><text x='82' y='145' text-anchor='middle'>11</text><text x='126' y='145' text-anchor='middle'>4</text><text x='170' y='145' text-anchor='middle'>9</text><text x='214' y='145' text-anchor='middle'>5</text><text x='82' y='189' text-anchor='middle'>10</text><text x='126' y='189' text-anchor='middle'>13</text><text x='170' y='189' text-anchor='middle'>2</text><text x='214' y='189' text-anchor='middle'>14</text><line x1='241' y1='52' x2='260' y2='52' stroke='currentColor' stroke-width='1.4'/><polyline points='253,56.5 260,52 253,47.5' fill='none' stroke='currentColor' stroke-width='1.6'/><text x='286' y='57' text-anchor='middle'>27</text><line x1='241' y1='96' x2='260' y2='96' stroke='currentColor' stroke-width='1.4'/><polyline points='253,100.5 260,96 253,91.5' fill='none' stroke='currentColor' stroke-width='1.6'/><text x='286' y='101' text-anchor='middle'>27</text><line x1='241' y1='140' x2='260' y2='140' stroke='currentColor' stroke-width='1.4'/><polyline points='253,144.5 260,140 253,135.5' fill='none' stroke='currentColor' stroke-width='1.6'/><text x='286' y='145' text-anchor='middle'>29</text><line x1='241' y1='184' x2='260' y2='184' stroke='currentColor' stroke-width='1.4'/><polyline points='253,188.5 260,184 253,179.5' fill='none' stroke='currentColor' stroke-width='1.6'/><text x='286' y='189' text-anchor='middle'>39</text><line x1='82' y1='210' x2='82' y2='225' stroke='currentColor' stroke-width='1.4'/><polyline points='77.5,218 82,225 86.5,218' fill='none' stroke='currentColor' stroke-width='1.6'/><text x='82' y='243' text-anchor='middle'>32</text><line x1='126' y1='210' x2='126' y2='225' stroke='currentColor' stroke-width='1.4'/><polyline points='121.5,218 126,225 130.5,218' fill='none' stroke='currentColor' stroke-width='1.6'/><text x='126' y='243' text-anchor='middle'>33</text><line x1='170' y1='210' x2='170' y2='225' stroke='currentColor' stroke-width='1.4'/><polyline points='165.5,218 170,225 174.5,218' fill='none' stroke='currentColor' stroke-width='1.6'/><rect x='148' y='227' width='44' height='22' rx='4' fill='none' stroke='currentColor' stroke-width='2'/><text x='170' y='243' text-anchor='middle' font-weight='bold'>24</text><line x1='214' y1='210' x2='214' y2='225' stroke='currentColor' stroke-width='1.4'/><polyline points='209.5,218 214,225 218.5,218' fill='none' stroke='currentColor' stroke-width='1.6'/><text x='214' y='243' text-anchor='middle'>33</text><rect x='264' y='227' width='44' height='22' rx='4' fill='none' stroke='currentColor' stroke-width='2'/><text x='286' y='243' text-anchor='middle' font-weight='bold'>46</text><text x='26' y='243' text-anchor='middle'>33</text></svg>"
     }

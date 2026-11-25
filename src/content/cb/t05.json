@@ -1,0 +1,1461 @@
+{
+ "course": "cb",
+ "type": 5,
+ "lang": "c",
+ "typeTitle": "인덱스 계산 고치기",
+ "kind": "fix",
+ "skills": [
+  "문자열 인덱스",
+  "양 끝에서 가운데로 비교",
+  "회문(대칭) 판별",
+  "한 줄 수정"
+ ],
+ "intro": "양 끝에서 가운데로 좁혀 가며 두 글자(값)를 짝지어 비교하는 코드에서, 잘못 계산한 인덱스 한 줄을 고쳐요. 길이가 N이면 마지막 인덱스는 N - 1이고, 앞에서 i번째의 짝은 N - 1 - i번째라는 규칙과 C 문자열 끝의 널 문자('\\0')를 함께 연습해요.",
+ "problems": [
+  {
+   "id": "cb-t05-a",
+   "version": 1,
+   "title": "좌우 대칭 구슬 줄",
+   "statement": "구슬을 한 줄로 꿴 장식 줄이 좌우 대칭인지 확인하려 합니다. 구슬의 색은 알파벳 소문자 한 글자로 나타내며, 왼쪽 끝 구슬부터 차례로 이어 쓴 문자열을 `beads`라고 합니다. 예를 들어 `\"rgbybgr\"`은 빨강(r), 초록(g), 파랑(b), 노랑(y), 파랑, 초록, 빨강 구슬을 차례로 꿴 줄입니다.\n\n줄의 양 끝에서 출발해 가운데 쪽으로 한 칸씩 좁혀 가며 마주 보는 두 구슬의 색을 비교했을 때, 모든 짝의 색이 같으면 좌우 대칭입니다. 구슬 수가 홀수이면 가운데 구슬은 짝이 없으므로 비교하지 않습니다.\n\n{{fig:f1}}\n\n구슬의 수 `N`과 구슬 줄 `beads`가 매개변수로 주어질 때, 구슬 줄이 좌우 대칭이면 true, 아니면 false를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "N은 구슬의 수이며, 1 이상 50 이하인 자연수입니다.",
+    "beads는 길이가 N인 문자열이며, 알파벳 소문자로만 이루어져 있습니다."
+   ],
+   "returns": [
+    "구슬 줄이 좌우 대칭이면 true를, 아니면 false를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N",
+    "beads"
+   ],
+   "examples": [
+    {
+     "args": [
+      7,
+      "rgbybgr"
+     ],
+     "expected": true,
+     "explain": "마주 보는 짝 (r, r), (g, g), (b, b)의 색이 모두 같으므로 좌우 대칭입니다. 가운데 y는 비교하지 않습니다."
+    },
+    {
+     "args": [
+      6,
+      "rygbyr"
+     ],
+     "expected": false,
+     "explain": "바깥쪽 두 짝 (r, r), (y, y)는 같지만, 가운데 짝 (g, b)의 색이 다르므로 좌우 대칭이 아닙니다."
+    }
+   ],
+   "code": "#include <stdbool.h>\n\nbool solution(int N, const char *beads) {\n    for (int i = 0; i < N / 2; i++) {\n        if (beads[i] != beads[N - i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "bugLine": 5,
+   "solution": "#include <stdbool.h>\n\nbool solution(int N, const char *beads) {\n    for (int i = 0; i < N / 2; i++) {\n        if (beads[i] != beads[N - 1 - i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "tests": [
+    {
+     "args": [
+      1,
+      "r"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "gg"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "gb"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      3,
+      "pwp"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      3,
+      "pww"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      4,
+      "oyyo"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      4,
+      "oyro"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      5,
+      "bbbbb"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      "rgbyybgr"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      "rgbyybgw"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      9,
+      "wbgoyogbw"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      9,
+      "pbgoyogbr"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      50,
+      "akorhbqmfvpydjtoybtuyjuxbbxujyutbyotjdypvfmqbhroka"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      50,
+      "akorhbqmfvpydjtoybtuyjuxabxujyutbyotjdypvfmqbhroka"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      49,
+      "tjxusftchinvkyhllwiyszkazakzsyiwllhykvnihctfsuxjt"
+     ],
+     "expected": true
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(N, beads):\n    return isinstance(N, int) and 1 <= N <= 50 and isinstance(beads, str) and len(beads) == N and all('a' <= c <= 'z' for c in beads)",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "alt": "인덱스 0부터 6까지 7칸에 구슬 색 r, g, b, y, b, g, r이 차례로 들어 있습니다. 칸 아래 화살표가 마주 보는 두 구슬을 잇습니다: 인덱스 0과 6, 1과 5, 2와 4. 가운데 인덱스 3의 y는 짝이 없어 흐리게 표시했습니다.",
+     "caption": "구슬 줄 \"rgbybgr\"에서 마주 보는 짝",
+     "index": "auto",
+     "values": [
+      "r",
+      "g",
+      "b",
+      "y",
+      "b",
+      "g",
+      "r"
+     ],
+     "dim": [
+      3
+     ],
+     "arrows": [
+      {
+       "from": 0,
+       "to": 6,
+       "label": "짝"
+      },
+      {
+       "from": 1,
+       "to": 5,
+       "label": "짝"
+      },
+      {
+       "from": 2,
+       "to": 4,
+       "label": "짝"
+      }
+     ]
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "N = 7인 구슬 줄 beads에서 오른쪽 끝 구슬은 어떻게 나타낼까요?",
+     "options": [
+      "beads[6]",
+      "beads[7]",
+      "beads[8]",
+      "beads[1]"
+     ],
+     "answer": 0,
+     "explain": "인덱스는 문자열 안에서 글자의 자리 번호이고 0부터 세요. 그래서 구슬 7개는 beads[0]~beads[6]이에요. C 문자열은 맨 끝에 널 문자 '\\0'(문자열이 여기서 끝난다는 표시)이 하나 더 붙어 있어서, beads[7]에는 구슬이 아니라 '\\0'이 들어 있어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "마주 보는 짝 찾기",
+     "prompt": "예시 1(N = 7, beads = \"rgbybgr\")에서 i번째 구슬과 마주 보는 구슬의 인덱스와 색을 채워 보세요. 문자는 'r'처럼 써요.",
+     "columns": [
+      "i",
+      "beads[i]",
+      "마주 보는 구슬의 인덱스",
+      "마주 보는 구슬의 색"
+     ],
+     "rows": [
+      [
+       "0",
+       "'r'",
+       {
+        "a": "6"
+       },
+       {
+        "a": "'r'",
+        "alts": [
+         "r"
+        ]
+       }
+      ],
+      [
+       "1",
+       "'g'",
+       {
+        "a": "5"
+       },
+       {
+        "a": "'g'",
+        "alts": [
+         "g"
+        ]
+       }
+      ],
+      [
+       "2",
+       "'b'",
+       {
+        "a": "4"
+       },
+       {
+        "a": "'b'",
+        "alts": [
+         "b"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    N = 7\n    beads = 'rgbybgr'\n    out = []\n    for i in range(3):\n        j = N - 1 - i\n        out += [j, \"'\" + beads[j] + \"'\"]\n    return out",
+     "explain": "i가 1 늘 때마다 마주 보는 구슬은 왼쪽으로 1칸 와요. 두 인덱스를 더하면 늘 6(= N - 1)이 된다는 점을 기억해 두세요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "처음 코드로 예시 1을 실행하면, i = 0일 때 beads[0]과 무엇을 비교할까요?",
+     "options": [
+      "beads[7], 곧 널 문자 '\\0'",
+      "beads[6], 곧 'r'",
+      "beads[1], 곧 'g'",
+      "beads[0] 자기 자신"
+     ],
+     "answer": 0,
+     "explain": "N - i = 7 - 0 = 7이라서 beads[7]을 읽어요. 그 자리는 구슬이 아니라 문자열 끝 표시 '\\0'이라 'r'과 다르니 바로 false를 return 해요. 그래서 처음 코드는 구슬이 2개 이상이면 늘 false가 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "5번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if (beads[i] != beads[N - 1 - i]) {",
+      "if (beads[i] != beads[N - 1]) {",
+      "if (beads[i] != beads[N + 1 - i]) {",
+      "if (beads[i + 1] != beads[N - i]) {"
+     ],
+     "answer": 0,
+     "explain": "i번째 구슬의 짝은 뒤에서 i번째 구슬이고, 마지막 구슬의 인덱스가 N - 1이므로 짝은 N - 1 - i예요. N - 1만 쓰면 늘 마지막 구슬과만 비교하고, N + 1 - i는 문자열 범위를 벗어나요."
+    }
+   ],
+   "explain": "길이가 N인 문자열의 마지막 글자는 s[N - 1]이고, s[N]에는 널 문자 '\\0'이 들어 있어요. 양 끝에서 가운데로 좁혀 가며 비교할 때 i번째 글자의 짝은 N - 1 - i번째예요. \"개수 N\"과 \"마지막 인덱스 N - 1\"을 헷갈리는 것이 가장 흔한 실수예요."
+  },
+  {
+   "id": "cb-t05-b",
+   "version": 1,
+   "title": "징검다리 높이 대칭",
+   "statement": "개울을 건너는 징검다리 돌들의 높이(cm)를 한쪽 끝 돌부터 차례로 배열 `heights`에 담았습니다. 징검다리의 양 끝에서 출발해 가운데 쪽으로 한 칸씩 좁혀 가며 마주 보는 두 돌의 높이를 비교했을 때, 모든 짝의 높이가 같으면 이 징검다리는 대칭입니다. 돌의 수가 홀수이면 가운데 돌은 짝이 없으므로 비교하지 않습니다.\n- 예를 들어 돌의 높이가 차례로 {3, 5, 8, 5, 3}이면 (3, 3), (5, 5) 짝의 높이가 각각 같으므로 대칭입니다.\n\n돌의 높이를 담은 배열 `heights`와 그 길이 `heights_len`이 매개변수로 주어질 때, 징검다리가 대칭이면 true, 아니면 false를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "heights는 돌의 높이를 담은 정수 배열이고, heights_len은 heights의 길이입니다.",
+    "heights_len은 1 이상 50 이하입니다.",
+    "heights의 원소는 1 이상 100 이하인 자연수입니다."
+   ],
+   "returns": [
+    "징검다리가 대칭이면 true를, 아니면 false를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "heights"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       3,
+       5,
+       8,
+       5,
+       3
+      ]
+     ],
+     "expected": true,
+     "explain": "앞의 설명에 나온 징검다리입니다. 가운데 돌 8은 비교하지 않습니다."
+    },
+    {
+     "args": [
+      [
+       4,
+       4,
+       7,
+       4
+      ]
+     ],
+     "expected": false,
+     "explain": "첫 번째 짝 (4, 4)는 같지만 두 번째 짝 (4, 7)의 높이가 다르므로 대칭이 아닙니다."
+    }
+   ],
+   "code": "#include <stdbool.h>\n\nbool solution(int heights[], int heights_len) {\n    for (int i = 0; i < heights_len / 2; i++) {\n        if (heights[i] != heights[heights_len - 1]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "bugLine": 5,
+   "solution": "#include <stdbool.h>\n\nbool solution(int heights[], int heights_len) {\n    for (int i = 0; i < heights_len / 2; i++) {\n        if (heights[i] != heights[heights_len - 1 - i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       7
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       2,
+       2
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       2,
+       9
+      ]
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       100,
+       50,
+       100
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       6,
+       6,
+       6,
+       1,
+       6
+      ]
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      [
+       9,
+       1,
+       1,
+       9
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       9,
+       1,
+       2,
+       9
+      ]
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       10,
+       20,
+       30,
+       30,
+       20,
+       10
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       10,
+       20,
+       30,
+       20,
+       10,
+       10
+      ]
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      [
+       8,
+       3,
+       8
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       1,
+       100,
+       1,
+       100
+      ]
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      [
+       97,
+       97,
+       42,
+       82,
+       79,
+       94,
+       57,
+       51,
+       60,
+       16,
+       91,
+       57,
+       20,
+       30,
+       54,
+       57,
+       26,
+       77,
+       57,
+       7,
+       79,
+       95,
+       83,
+       26,
+       39,
+       39,
+       26,
+       83,
+       95,
+       79,
+       7,
+       57,
+       77,
+       26,
+       57,
+       54,
+       30,
+       20,
+       57,
+       91,
+       16,
+       60,
+       51,
+       57,
+       94,
+       79,
+       82,
+       42,
+       97,
+       97
+      ]
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      [
+       97,
+       97,
+       42,
+       82,
+       79,
+       94,
+       57,
+       51,
+       60,
+       16,
+       91,
+       57,
+       20,
+       30,
+       54,
+       57,
+       26,
+       77,
+       57,
+       7,
+       79,
+       95,
+       83,
+       26,
+       40,
+       39,
+       26,
+       83,
+       95,
+       79,
+       7,
+       57,
+       77,
+       26,
+       57,
+       54,
+       30,
+       20,
+       57,
+       91,
+       16,
+       60,
+       51,
+       57,
+       94,
+       79,
+       82,
+       42,
+       97,
+       97
+      ]
+     ],
+     "expected": false
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(heights):\n    return isinstance(heights, list) and 1 <= len(heights) <= 50 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 100 for x in heights)",
+   "cspec": {
+    "derived": {
+     "heights_len": "len(heights)"
+    }
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "heights_len이 5일 때, for (int i = 0; i < heights_len / 2; i++)에서 i는 어떤 값들을 가질까요?",
+     "options": [
+      "0, 1",
+      "0, 1, 2",
+      "0, 1, 2, 3, 4",
+      "1, 2"
+     ],
+     "answer": 0,
+     "explain": "C에서 정수끼리 나누면 소수점 아래를 버려요. 5 / 2는 2.5가 아니라 2라서 i는 0과 1만 돌아요. 짝이 없는 가운데 돌(인덱스 2)은 비교하지 않아도 되니 딱 맞아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 2 따라가기",
+     "prompt": "처음 코드 그대로 heights = {4, 4, 7, 4}(heights_len = 4)를 따라가 보세요. \"다른가\" 칸에는 != 의 결과가 참이면 1, 거짓이면 0을 써요. 마지막 칸에는 문제 설명대로라면 실제로 마주 보는 돌의 높이를 써요.",
+     "columns": [
+      "i",
+      "heights[i]",
+      "heights[heights_len - 1]",
+      "다른가(1/0)",
+      "실제로 마주 보는 돌의 높이"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "4"
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "4"
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ]
+     ],
+     "check": "def answers():\n    heights = [4, 4, 7, 4]\n    n = len(heights)\n    out = []\n    for i in range(n // 2):\n        out += [heights[i], heights[n - 1], int(heights[i] != heights[n - 1]), heights[n - 1 - i]]\n    return out",
+     "explain": "틀린 코드는 i가 바뀌어도 늘 마지막 돌 heights[3]과만 비교해요. 그래서 실제로 높이가 다른 짝 (4, 7)을 놓치고 true를 return 해요(정답은 false)."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "5번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if (heights[i] != heights[heights_len - 1 - i]) {",
+      "if (heights[i] != heights[heights_len - i]) {",
+      "if (heights[i] != heights[heights_len - 1] - i) {",
+      "if (heights[i] != heights[heights_len - 2 - i]) {"
+     ],
+     "answer": 0,
+     "explain": "뒤쪽 인덱스도 i만큼 앞으로 와야 해요. heights_len - i는 i = 0일 때 배열 밖(heights[heights_len])을 읽고, heights[heights_len - 1] - i는 인덱스가 아니라 높이 값에서 i를 빼는 식이에요. 대괄호 [ ] 안에서 계산해야 인덱스가 바뀌어요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "돌이 하나뿐이면(heights_len = 1) 고친 코드에서 for 반복 안의 비교를 몇 번 할까요?",
+     "a": "0",
+     "check": "def answers():\n    heights_len = 1\n    return [len(range(heights_len // 2))]",
+     "explain": "1 / 2 = 0이라 반복을 한 번도 하지 않고 바로 true를 return 해요. 돌이 하나뿐인 징검다리는 늘 대칭이에요."
+    }
+   ],
+   "explain": "i번째 돌의 짝은 뒤에서 i번째 돌, 곧 heights[heights_len - 1 - i]예요. 뒤쪽 인덱스에 i를 빼먹으면 늘 마지막 돌과만 비교해서, 짝이 틀려도 true가 나올 수 있어요. 배열의 마지막 인덱스는 길이 - 1이라는 점도 함께 기억해요."
+  },
+  {
+   "id": "cb-t05-c",
+   "version": 1,
+   "title": "거꾸로 쓴 쪽지 확인",
+   "statement": "두 친구가 단어를 거꾸로 써서 쪽지로 주고받는 놀이를 합니다. 거꾸로 쓴 단어란 원래 단어의 맨 뒤 글자부터 맨 앞 글자까지 차례로 이어 쓴 단어입니다.\n- 예를 들어 \"stressed\"를 거꾸로 쓰면 \"desserts\"가 됩니다.\n\n원래 단어 `word`와 쪽지에 적힌 단어 `note`가 주어질 때, `word`의 앞에서 i번째 글자와 `note`의 뒤에서 i번째 글자를 차례로 비교하여, `note`가 `word`를 거꾸로 쓴 단어이면 true, 아니면 false를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "word와 note는 알파벳 소문자로만 이루어진 문자열입니다.",
+    "word와 note의 길이는 서로 같으며, 1 이상 50 이하입니다."
+   ],
+   "returns": [
+    "note가 word를 거꾸로 쓴 단어이면 true를, 아니면 false를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "word",
+    "note"
+   ],
+   "examples": [
+    {
+     "args": [
+      "stressed",
+      "desserts"
+     ],
+     "expected": true,
+     "explain": "앞의 설명과 같습니다."
+    },
+    {
+     "args": [
+      "drawer",
+      "redraw"
+     ],
+     "expected": false,
+     "explain": "\"drawer\"를 거꾸로 쓰면 \"reward\"이므로 \"redraw\"와 다릅니다."
+    },
+    {
+     "args": [
+      "live",
+      "evil"
+     ],
+     "expected": true,
+     "explain": "\"live\"를 거꾸로 쓰면 \"evil\"입니다."
+    }
+   ],
+   "code": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(const char *word, const char *note) {\n    int len = strlen(word);\n    for (int i = 0; i < len; i++) {\n        if (word[i] != note[len - 1 + i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "bugLine": 7,
+   "solution": "#include <stdbool.h>\n#include <string.h>\n\nbool solution(const char *word, const char *note) {\n    int len = strlen(word);\n    for (int i = 0; i < len; i++) {\n        if (word[i] != note[len - 1 - i]) {\n            return false;\n        }\n    }\n    return true;\n}",
+   "tests": [
+    {
+     "args": [
+      "a",
+      "a"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "a",
+      "b"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      "ab",
+      "ba"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "ab",
+      "ab"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      "aa",
+      "aa"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "abc",
+      "cba"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "abc",
+      "cab"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      "abca",
+      "acba"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "abca",
+      "abca"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      "level",
+      "level"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "parts",
+      "strap"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "parts",
+      "strip"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      "stop",
+      "post"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      "pcddrvmwrfszkswuogosjawafckdyiqliznnychwhlnopywtbb",
+      "bbtwyponlhwhcynnzilqiydkcfawajsogouwskzsfrwmvrddcp"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      "pcddrvmwrfszkswuogosjawafckdyiqliznnychwhlnopywtbb",
+      "bbtwyponlhwhcynnzilqiydkczawajsogouwskzsfrwmvrddcp"
+     ],
+     "expected": false
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(word, note):\n    return isinstance(word, str) and isinstance(note, str) and 1 <= len(word) <= 50 and len(word) == len(note) and all('a' <= c <= 'z' for c in word + note)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "word = \"parts\"(len = 5)일 때, 첫 글자 word[0]인 'p'는 note의 어느 글자와 같아야 할까요?",
+     "options": [
+      "note[4](note의 마지막 글자)",
+      "note[0](note의 첫 글자)",
+      "note[5]",
+      "note[1]"
+     ],
+     "answer": 0,
+     "explain": "거꾸로 쓰면 word의 첫 글자가 note의 맨 뒤로 가요. strlen은 문자열의 글자 수를 세는 함수인데, 맨 끝의 널 문자 '\\0'(문자열 끝 표시)은 세지 않아요. 그래서 마지막 글자의 인덱스는 len - 1 = 4예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "word = \"stressed\", note = \"desserts\"(len = 8)를 처음 코드 그대로 따라가 보세요. 문자는 's'처럼 써요. note[8]에는 글자가 아니라 널 문자 '\\0'이 들어 있어요. \"다른가\" 칸에는 참이면 1, 거짓이면 0을 써요.",
+     "columns": [
+      "i",
+      "word[i]",
+      "len - 1 + i",
+      "note[len - 1 + i]",
+      "다른가(1/0)"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "'s'",
+        "alts": [
+         "s"
+        ]
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "'s'",
+        "alts": [
+         "s"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "'t'",
+        "alts": [
+         "t"
+        ]
+       },
+       {
+        "a": "8"
+       },
+       "'\\0'",
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    word = 'stressed'\n    note = 'desserts' + chr(0)\n    n = 8\n    out = []\n    for i in range(2):\n        j = n - 1 + i\n        out += [\"'\" + word[i] + \"'\", j]\n        if note[j] != chr(0):\n            out.append(\"'\" + note[j] + \"'\")\n        out.append(int(word[i] != note[j]))\n    return out",
+     "explain": "i = 1에서 벌써 note의 끝(널 문자)에 닿아 false를 return 해요. 뒤에서부터 앞으로 오려면 인덱스가 i만큼 줄어야 하는데, 틀린 코드는 i를 더하고 있어요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "7번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if (word[i] != note[len - 1 - i]) {",
+      "if (word[i] != note[len - i]) {",
+      "if (word[i] != note[i]) {",
+      "if (word[i] != note[len + 1 - i]) {"
+     ],
+     "answer": 0,
+     "explain": "note의 뒤에서 i번째 글자는 note[len - 1 - i]예요. note[len - i]는 i = 0일 때 널 문자를 읽고, note[i]는 거꾸로가 아니라 같은 자리끼리 비교해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에서 len = 8, i = 3일 때 word[3]은 note의 몇 번 인덱스 글자와 비교할까요?",
+     "a": "4",
+     "check": "def answers():\n    len_ = 8\n    i = 3\n    return [len_ - 1 - i]",
+     "explain": "8 - 1 - 3 = 4예요. 앞에서 3번 인덱스(네 번째 글자)의 짝은 뒤에서 네 번째 글자인 4번 인덱스예요. 두 인덱스를 더하면 늘 len - 1 = 7이에요."
+    }
+   ],
+   "explain": "뒤에서 i번째 글자의 인덱스는 len - 1 - i예요. 뒤쪽에서 앞으로 오려면 i를 빼야 하는데 더하면 바로 문자열 끝(널 문자)을 넘어가요. strlen은 널 문자를 빼고 센 글자 수라 마지막 글자는 len - 1번이라는 점을 기억해요."
+  },
+  {
+   "id": "cb-t05-d",
+   "version": 1,
+   "title": "앞뒤가 같은 불빛 신호",
+   "statement": "등대는 짧은 불빛과 긴 불빛을 이어 신호를 보냅니다. 짧은 불빛은 `.`, 긴 불빛은 `-`로 적어 신호를 문자열로 나타낼 때, 앞에서부터 읽으나 뒤에서부터 읽으나 같은 신호를 **대칭 신호**라고 합니다.\n- 예를 들어 \"--...--\"는 뒤에서부터 읽어도 \"--...--\"이므로 대칭 신호입니다.\n\n신호의 길이 `N`과 신호 `signal`이 매개변수로 주어질 때, 왼쪽 인덱스 `left`와 오른쪽 인덱스 `right`를 양 끝에서 출발시켜 가운데 쪽으로 한 칸씩 좁혀 가며 두 글자를 비교하여, 대칭 신호이면 true, 아니면 false를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "N은 신호의 길이이며, 1 이상 100 이하인 자연수입니다.",
+    "signal은 길이가 N인 문자열이며, '.'와 '-'로만 이루어져 있습니다."
+   ],
+   "returns": [
+    "signal이 대칭 신호이면 true를, 아니면 false를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N",
+    "signal"
+   ],
+   "examples": [
+    {
+     "args": [
+      7,
+      "--...--"
+     ],
+     "expected": true,
+     "explain": "앞의 설명과 같습니다."
+    },
+    {
+     "args": [
+      6,
+      "-.-.--"
+     ],
+     "expected": false,
+     "explain": "뒤에서부터 읽으면 \"--.-.-\"이므로 대칭 신호가 아닙니다. 맨 앞과 맨 뒤의 '-'는 같지만, 두 번째 글자 '.'와 뒤에서 두 번째 글자 '-'가 다릅니다."
+    }
+   ],
+   "code": "#include <stdbool.h>\n\nbool solution(int N, const char *signal) {\n    int left = 0;\n    int right = N - 2;\n    while (left < right) {\n        if (signal[left] != signal[right]) {\n            return false;\n        }\n        left++;\n        right--;\n    }\n    return true;\n}",
+   "bugLine": 5,
+   "solution": "#include <stdbool.h>\n\nbool solution(int N, const char *signal) {\n    int left = 0;\n    int right = N - 1;\n    while (left < right) {\n        if (signal[left] != signal[right]) {\n            return false;\n        }\n        left++;\n        right--;\n    }\n    return true;\n}",
+   "tests": [
+    {
+     "args": [
+      1,
+      "."
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      "--"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      2,
+      ".-"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      3,
+      ".-."
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      3,
+      "..-"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      4,
+      "-..-"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      4,
+      "-.--"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      5,
+      "-----"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      6,
+      "..--.."
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      6,
+      ".-..-."
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      "-.-..-.-"
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      8,
+      "-.-.--.-"
+     ],
+     "expected": false
+    },
+    {
+     "args": [
+      9,
+      "...-.-..."
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      100,
+      "...---..-....-....--...-.----...--..---------..-....-..---------..--...----.-...--....-....-..---..."
+     ],
+     "expected": true
+    },
+    {
+     "args": [
+      99,
+      "..--.-.---...---.-.-----.-.--...---.-...----..--.-.--..----...-.---...--.-.-----.-.---...---.-.--.-"
+     ],
+     "expected": false
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(N, signal):\n    return isinstance(N, int) and 1 <= N <= 100 and isinstance(signal, str) and len(signal) == N and all(c in '.-' for c in signal)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "신호 \"-..-.\"를 뒤에서부터 읽으면 무엇일까요?",
+     "options": [
+      ".-..-",
+      "-..-.",
+      ".-.-.",
+      "-.-.."
+     ],
+     "answer": 0,
+     "explain": "맨 뒤 글자부터 차례로 읽으면 \".-..-\"예요. 원래 신호 \"-..-.\"와 다르니 대칭 신호가 아니에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 2 따라가기",
+     "prompt": "N = 6, signal = \"-.-.--\"를 처음 코드 그대로 따라가 보세요. 한 줄이 while 반복 한 번이에요. 문자는 '-'처럼 쓰고, \"다른가\" 칸에는 참이면 1, 거짓이면 0을 써요.",
+     "columns": [
+      "left",
+      "right",
+      "signal[left]",
+      "signal[right]",
+      "다른가(1/0)"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "4"
+       },
+       {
+        "a": "'-'",
+        "alts": [
+         "-"
+        ]
+       },
+       {
+        "a": "'-'",
+        "alts": [
+         "-"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "3"
+       },
+       {
+        "a": "'.'",
+        "alts": [
+         "."
+        ]
+       },
+       {
+        "a": "'.'",
+        "alts": [
+         "."
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    N = 6\n    signal = '-.-.--'\n    left, right = 0, N - 2\n    out = []\n    while left < right:\n        diff = signal[left] != signal[right]\n        out += [right, \"'\" + signal[left] + \"'\", \"'\" + signal[right] + \"'\", int(diff)]\n        if diff:\n            break\n        left += 1\n        right -= 1\n    return out",
+     "explain": "두 번 모두 같아서 넘어간 뒤 left = 2, right = 2가 되면 left < right가 거짓이라 반복이 끝나고 true를 return 해요(정답은 false). 마지막 글자 signal[5]는 한 번도 비교하지 않았어요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "5번째 줄: int right = N - 1;",
+      "5번째 줄: int right = N;",
+      "6번째 줄: while (left <= right) {",
+      "7번째 줄: if (signal[left] != signal[right + 1]) {"
+     ],
+     "answer": 0,
+     "explain": "right는 처음에 마지막 글자(인덱스 N - 1)를 가리켜야 해요. N으로 두면 널 문자를 읽고, right + 1로 고치면 짝은 맞아 보여도 반복이 한 번 모자라 길이가 짝수일 때 가운데 짝을 비교하지 못해요(예: N = 2, \".-\")."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 예시 1(N = 7, \"--...--\")을 넣으면 if 문의 비교를 모두 몇 번 할까요?",
+     "a": "3",
+     "check": "def answers():\n    N = 7\n    signal = '--...--'\n    left, right = 0, N - 1\n    count = 0\n    while left < right:\n        count += 1\n        if signal[left] != signal[right]:\n            break\n        left += 1\n        right -= 1\n    return [count]",
+     "explain": "(0, 6), (1, 5), (2, 4)를 비교한 뒤 left = 3, right = 3이 되어 멈춰요. 가운데 글자는 짝이 없으니 비교하지 않아요."
+    }
+   ],
+   "explain": "두 인덱스로 양 끝에서 좁혀 올 때 left는 0, right는 마지막 인덱스 N - 1에서 출발해야 해요. 출발점이 한 칸 어긋나면 모든 짝이 한 칸씩 어긋나요. 길이가 N이면 마지막 인덱스는 N - 1이라는 점이 핵심이에요."
+  },
+  {
+   "id": "cb-t05-e",
+   "version": 1,
+   "title": "회문으로 고칠 글자 수",
+   "statement": "앞에서부터 읽으나 뒤에서부터 읽으나 같은 문자열을 회문이라고 합니다. 축제 현수막에 알파벳 소문자로 적은 문구 `s`의 글자 몇 개를 바꾸어 회문으로 만들려고 합니다. 한 번에 글자 하나를 원하는 알파벳 소문자로 바꿀 수 있습니다.\n\n양 끝에서 가운데 쪽으로 한 칸씩 좁혀 가며 마주 보는 두 글자를 비교할 때, 두 글자가 다르면 둘 중 한 글자만 다른 쪽과 같게 바꾸면 됩니다. 따라서 바꿔야 하는 글자 수의 최솟값은 서로 다른 짝의 수와 같습니다.\n- 예를 들어 \"abccbx\"는 (a, x) 짝만 다르므로 글자 1개를 바꾸면(x를 a로, 또는 a를 x로) 회문이 됩니다.\n\n문구의 길이 `N`과 문구 `s`가 매개변수로 주어질 때, 회문으로 만들기 위해 바꿔야 하는 글자 수의 최솟값을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "N은 문구의 길이이며, 1 이상 100 이하인 자연수입니다.",
+    "s는 길이가 N인 문자열이며, 알파벳 소문자로만 이루어져 있습니다."
+   ],
+   "returns": [
+    "바꿔야 하는 글자 수의 최솟값을 return 합니다. s가 이미 회문이면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N",
+    "s"
+   ],
+   "examples": [
+    {
+     "args": [
+      6,
+      "abccbx"
+     ],
+     "expected": 1,
+     "explain": "앞의 설명과 같습니다. (b, b), (c, c) 짝은 이미 같습니다."
+    },
+    {
+     "args": [
+      7,
+      "racecar"
+     ],
+     "expected": 0,
+     "explain": "이미 회문이므로 바꿀 글자가 없습니다."
+    },
+    {
+     "args": [
+      5,
+      "lemon"
+     ],
+     "expected": 2,
+     "explain": "(l, n), (e, o) 두 짝이 다르므로 2글자를 바꿔야 합니다. 가운데 m은 짝이 없습니다."
+    }
+   ],
+   "code": "int solution(int N, const char *s) {\n    int count = 0;\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N / 2 + i]) {\n            count++;\n        }\n    }\n    return count;\n}",
+   "bugLine": 4,
+   "solution": "int solution(int N, const char *s) {\n    int count = 0;\n    for (int i = 0; i < N / 2; i++) {\n        if (s[i] != s[N - 1 - i]) {\n            count++;\n        }\n    }\n    return count;\n}",
+   "tests": [
+    {
+     "args": [
+      1,
+      "q"
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      "zz"
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      "az"
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3,
+      "abc"
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3,
+      "aba"
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      4,
+      "abcd"
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      4,
+      "abba"
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      4,
+      "abab"
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      6,
+      "xyzzyx"
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      8,
+      "abcdefgh"
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      9,
+      "aaaabaaaa"
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      10,
+      "abcdeedcbz"
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      100,
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      "abababababababababababababababababababababababababababababababababababababababababababababababababab"
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      99,
+      "bacabacbcaabccbabacaaabaaaabbbcccccabcbbcbcaabcbcbbaccacaabccaaabacbacbabbbacaabaccbcacacbacbacbbac"
+     ],
+     "expected": 38
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(N, s):\n    return isinstance(N, int) and 1 <= N <= 100 and isinstance(s, str) and len(s) == N and all('a' <= c <= 'z' for c in s)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "마주 보는 두 글자 (a, x)가 서로 다를 때, 이 짝을 같게 만들려면 최소 몇 글자를 바꿔야 할까요?",
+     "options": [
+      "1글자",
+      "2글자",
+      "0글자",
+      "알 수 없다"
+     ],
+     "answer": 0,
+     "explain": "둘 중 한 글자만 다른 쪽과 같은 글자로 바꾸면 돼요(x를 a로). 그래서 서로 다른 짝 하나마다 1글자씩 세면 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "틀린 코드로 예시 2 따라가기",
+     "prompt": "N = 7, s = \"racecar\"를 처음 코드 그대로 따라가 보세요. 문자는 'r'처럼 써요. 마지막 칸에는 그 반복이 끝난 뒤의 count를 써요.",
+     "columns": [
+      "i",
+      "N / 2 + i",
+      "s[i]",
+      "s[N / 2 + i]",
+      "반복 뒤 count"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "3"
+       },
+       "'r'",
+       {
+        "a": "'e'",
+        "alts": [
+         "e"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "4"
+       },
+       "'a'",
+       {
+        "a": "'c'",
+        "alts": [
+         "c"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "5"
+       },
+       "'c'",
+       {
+        "a": "'a'",
+        "alts": [
+         "a"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    N = 7\n    s = 'racecar'\n    count = 0\n    out = []\n    for i in range(N // 2):\n        j = N // 2 + i\n        if s[i] != s[j]:\n            count += 1\n        out += [j, \"'\" + s[j] + \"'\", count]\n    return out",
+     "explain": "N / 2는 7 / 2 = 3이에요(정수 나눗셈은 소수점 아래를 버려요). 틀린 코드는 앞쪽 절반과 뒤쪽 절반을 같은 방향으로 짝지어서, 이미 회문인 \"racecar\"에서도 3을 return 해요. 마주 보는 짝은 (0, 6), (1, 5), (2, 4)처럼 한쪽 인덱스가 늘면 다른 쪽은 줄어야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "4번째 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if (s[i] != s[N - 1 - i]) {",
+      "if (s[i] != s[N / 2 - i]) {",
+      "if (s[i] != s[N - i]) {",
+      "if (s[i] != s[N / 2 + 1 + i]) {"
+     ],
+     "answer": 0,
+     "explain": "i번째 글자와 마주 보는 글자는 뒤에서 i번째, 곧 s[N - 1 - i]예요. s[N - i]는 i = 0일 때 널 문자 '\\0'(문자열 끝 표시)과 비교해서 늘 하나를 더 세요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "고친 코드에 N = 4, s = \"abab\"를 넣으면 무엇을 return 할까요?",
+     "a": "2",
+     "check": "def answers():\n    def solution(N, s):\n        count = 0\n        for i in range(N // 2):\n            if s[i] != s[N - 1 - i]:\n                count += 1\n        return count\n    return [solution(4, 'abab')]",
+     "explain": "(a, b), (b, a) 두 짝이 모두 달라서 2예요. 틀린 코드는 (a, a), (b, b)로 잘못 짝지어 0을 return 해요."
+    }
+   ],
+   "explain": "마주 보는 짝은 앞의 i번째와 뒤의 i번째, 곧 s[i]와 s[N - 1 - i]예요. 앞쪽 인덱스가 1 늘면 뒤쪽 인덱스는 1 줄어야 하는데, N / 2 + i처럼 같은 방향으로 늘리면 짝이 아닌 글자끼리 비교하게 돼요. 다른 짝마다 한 글자만 바꾸면 되므로 서로 다른 짝의 수가 답이에요."
+  }
+ ]
+}

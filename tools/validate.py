@@ -270,8 +270,8 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
             if badg:
                 i = badg[0] - 1
                 err(where, f'gcc 대조 실패(예시 먼저 번호) {badg[:6]} — #{badg[0]}: {g[i].get("error") or g[i].get("value")!r} ≠ {allc[i]["expected"]!r}')
-        except Exception as ex:  # noqa: BLE001
-            err(where, f'gcc 대조 실행 실패: {ex}')
+        except Exception as gexc:  # noqa: BLE001
+            err(where, f'gcc 대조 실행 실패: {gexc}')
     else:
         spec = None
     r, e = run_harness(p['solution'], p['funcName'], allc, mode, spec)
