@@ -15,6 +15,28 @@ export function pyRepr(v: Json): string {
   return '{' + Object.entries(v).map(([k, x]) => `${pyRepr(k)}: ${pyRepr(x)}`).join(', ') + '}';
 }
 
+/** JSON 값을 C 표기로(C 문제 예시 표): 배열 {1, 2}, 문자열 "abc", true/false, NULL */
+export function cRepr(v: Json): string {
+  if (v === null) return 'NULL';
+  if (v === true) return 'true';
+  if (v === false) return 'false';
+  if (typeof v === 'number') return String(v);
+  if (typeof v === 'string') return '"' + v.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"';
+  if (Array.isArray(v)) return '{' + v.map(cRepr).join(', ') + '}';
+  return '{' + Object.values(v).map(cRepr).join(', ') + '}';
+}
+
+export function reprFor(lang: 'python' | 'c', v: Json): string {
+  return lang === 'c' ? cRepr(v) : pyRepr(v);
+}
+
+export function reprPretty(lang: 'python' | 'c', v: Json): string {
+  const flat = reprFor(lang, v);
+  if (flat.length <= 60 || !Array.isArray(v) || !v.every((x) => Array.isArray(x))) return flat;
+  const [o, c] = lang === 'c' ? ['{', '}'] : ['[', ']'];
+  return o + v.map((row) => reprFor(lang, row)).join(',\n ') + c;
+}
+
 /** 2차원 리스트처럼 긴 값은 행마다 줄바꿈 */
 export function pyReprPretty(v: Json): string {
   const flat = pyRepr(v);

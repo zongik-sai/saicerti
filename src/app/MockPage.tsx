@@ -99,7 +99,9 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
           <ul className="rich" style={{ paddingLeft: '1.2rem' }}>
             <li>‘예시로 실행’으로 예시 결과는 바로 볼 수 있어요.</li>
             <li>‘제출하기’를 누르면 숨은 테스트까지 채점해 두고, 결과는 시험을 끝낸 뒤 한꺼번에 보여 줘요. 여러 번 제출하면 마지막 제출로 채점해요.</li>
-            <li>시간 제한은 없고 걸린 시간을 보여 줘요. 다 풀면 ‘시험 끝내기’를 눌러요.</li>
+            <li>
+              시간 제한은 없고 걸린 시간을 보여 줘요{meta.examMinutes ? `(실제 시험은 ${meta.examMinutes}분에 10문제)` : ''}. 다 풀면 ‘시험 끝내기’를 눌러요.
+            </li>
           </ul>
           <button className="btn primary" onClick={() => start(1)}>
             모의고사 {set.n}회 시작하기
@@ -119,6 +121,7 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
         <strong>모의고사 {set.n}회</strong>
         <span className="faint" aria-live="off">
           걸린 시간 {elapsedText(ms.startedAt, now)}
+          {meta.examMinutes ? ` / 실제 시험 ${meta.examMinutes}분` : ''}
         </span>
         <span className="faint">
           제출 {submitted}/{set.items.length}
@@ -156,7 +159,7 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
             {ms.results[tkey(item.type.type)] && <span className="badge">제출함</span>}
           </div>
           <h1 style={{ marginTop: '0.4rem' }}>{item.problem.title}</h1>
-          <StatementBody problem={item.problem} />
+          <StatementBody problem={item.problem} lang={item.type.lang ?? 'python'} />
         </section>
         <section aria-label="풀이">
           <MockCodePanel
@@ -187,6 +190,7 @@ interface CodeProps {
 function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNext }: CodeProps) {
   const { problem, type } = item;
   const kind = type.kind;
+  const lang = type.lang ?? 'python';
   const engine = useEngine();
   const dkey = `${problem.id}:r${round}`;
   const draft = useMemo(() => readDraft(learnerKey, dkey, problem.version), [learnerKey, dkey, problem.version]);
@@ -223,7 +227,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
     setSubmittedNote(null);
     if (block) return;
     setBusy('run');
-    const result = await py().run(fullCode, problem.funcName, problem.examples, problem.compare ?? 'exact', 5000);
+    const result = await py().run(fullCode, problem.funcName, problem.examples, problem.compare ?? 'exact', 5000, lang, problem.cspec);
     setBusy(null);
     setShown({ mode: 'run', result, exampleCount: problem.examples.length });
   };
@@ -234,7 +238,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
     if (block) return;
     setBusy('submit');
     const cases = [...problem.examples, ...problem.tests];
-    const result: RunResult = await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', 9000);
+    const result: RunResult = await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', 9000, lang, problem.cspec);
     setBusy(null);
     if (result.kind === 'fail') {
       setNotice(`채점하지 못했어요: ${result.message} 다시 제출해 주세요.`);
@@ -254,10 +258,10 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
         <span className="task">{KIND_TASK[kind]}</span>
       </div>
       {kind === 'blank' ? (
-        <BlankCode code={problem.code} values={blanks} onChange={(i, v) => setBlanks((old) => old.map((x, j) => (j === i ? v : x)))} disabled={busy !== null} />
+        <BlankCode lang={lang} code={problem.code} values={blanks} onChange={(i, v) => setBlanks((old) => old.map((x, j) => (j === i ? v : x)))} disabled={busy !== null} />
       ) : (
         <Suspense fallback={<div className="code-box" style={{ minHeight: '14rem', padding: '1rem' }} role="status">편집기 불러오는 중…</div>}>
-          <CodeEditor value={code} onChange={setCode} changedLines={changed ?? undefined} label={kind === 'fix' ? '한 줄 수정 코드 편집기' : '함수 작성 코드 편집기'} />
+          <CodeEditor lang={lang} value={code} onChange={setCode} changedLines={changed ?? undefined} label={kind === 'fix' ? '한 줄 수정 코드 편집기' : '함수 작성 코드 편집기'} />
         </Suspense>
       )}
       {kind === 'fix' && (
@@ -318,7 +322,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
           )}
         </div>
       )}
-      {shown && <ResultsView shown={shown} problem={problem} />}
+      {shown && <ResultsView shown={shown} problem={problem} lang={lang} />}
     </div>
   );
 }
@@ -396,7 +400,7 @@ function MockResults({ course, set, ms, crumb, confirmRetry, setConfirmRetry, on
             </h2>
             <p>{inline(it.problem.explain)}</p>
             <h3 style={{ marginTop: '0.6rem' }}>모범 답안</h3>
-            <CodeView code={it.problem.solution} />
+            <CodeView lang={it.type.lang ?? 'python'} code={it.problem.solution} />
             <p style={{ marginTop: '0.6rem' }}>
               <Link to={`${meta.path}/${it.type.problems[0]?.id ?? ''}`.replace(/\/$/, '')} className="btn small">
                 이 유형 연습 문제 풀기 →

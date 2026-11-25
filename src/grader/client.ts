@@ -4,7 +4,7 @@
  * - 정해진 시간 안에 끝나지 않으면(무한 반복 등) 워커를 끝내고 새로 만든다.
  */
 import { BASE_URL } from '../lib/config';
-import type { Case, CompareMode } from '../content/types';
+import type { Case, CompareMode, CSpec, Lang } from '../content/types';
 
 export interface PyError {
   type: string;
@@ -92,14 +92,14 @@ class PyRunner {
     this.pending.clear();
   }
 
-  async run(code: string, func: string, cases: Case[], mode: CompareMode, timeoutMs = 4000): Promise<RunResult> {
+  async run(code: string, func: string, cases: Case[], mode: CompareMode, timeoutMs = 4000, lang: Lang = 'python', spec?: CSpec): Promise<RunResult> {
     try {
       await this.ensure();
     } catch (e) {
       return { kind: 'fail', message: e instanceof Error ? e.message : String(e) };
     }
     const started = performance.now();
-    const { reply } = this.post({ type: 'run', code, func, cases: JSON.stringify(cases.map((c) => ({ args: c.args, expected: c.expected }))), mode });
+    const { reply } = this.post({ type: 'run', code, func, cases: JSON.stringify(cases.map((c) => ({ args: c.args, expected: c.expected }))), mode, lang, spec: JSON.stringify(spec ?? {}) });
     let timer: ReturnType<typeof setTimeout> | undefined;
     const timeout = new Promise<'timeout'>((r) => {
       timer = setTimeout(() => r('timeout'), timeoutMs);

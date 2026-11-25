@@ -180,7 +180,6 @@ function Home() {
       </div>
       <h2 style={{ marginTop: '1.6rem' }}>준비 중인 과정</h2>
       <div className="soon">
-        <div>프로그래밍 C 기본 (COS Pro 2급 C)</div>
         <div>프로그래밍 C 심화 (COS Pro 1급 C)</div>
         <div>Data 2급 · Data 1급</div>
       </div>

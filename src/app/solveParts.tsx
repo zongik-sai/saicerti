@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Problem } from '../content/types';
+import type { Lang, Problem } from '../content/types';
 import { Bullets, Rich, inline } from '../components/Rich';
 import { ExamplesTable } from '../components/Results';
 import { py, type EngineStatus } from '../grader/client';
@@ -42,12 +42,12 @@ export function fixBlockReason(changed: number[] | null): string | null {
 }
 
 /** 시험지 형식: 문제 설명 · 매개변수 설명 · return 값 설명 · 예시 */
-export function StatementBody({ problem }: { problem: Problem }) {
+export function StatementBody({ problem, lang = 'python' }: { problem: Problem; lang?: Lang }) {
   return (
     <>
       <div className="sec">
         <h3>문제 설명</h3>
-        <Rich text={problem.statement} />
+        <Rich text={problem.statement} figures={problem.figures} />
       </div>
       <div className="sec">
         <h3>매개변수 설명</h3>
@@ -59,7 +59,7 @@ export function StatementBody({ problem }: { problem: Problem }) {
       </div>
       <div className="sec">
         <h3>예시</h3>
-        <ExamplesTable problem={problem} />
+        <ExamplesTable problem={problem} lang={lang} />
         {problem.examples.some((e) => e.explain) && (
           <div style={{ marginTop: '0.5rem' }}>
             {problem.examples.map((e, i) =>

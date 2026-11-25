@@ -1,4 +1,8 @@
 import { Fragment, type ReactNode } from 'react';
+import type { Figure } from '../content/types';
+import { FigureView } from './Figure';
+
+const FIG = /^\s*\{\{fig:([\w-]+)\}\}\s*$/;
 
 /** 인라인: `코드`, **굵게** */
 export function inline(text: string, keyBase = 'i'): ReactNode[] {
@@ -18,8 +22,8 @@ export function inline(text: string, keyBase = 'i'): ReactNode[] {
   return out;
 }
 
-/** 문제 설명: 문단(빈 줄), 줄바꿈, '- ' 글머리표 */
-export function Rich({ text, className = 'rich' }: { text: string; className?: string }) {
+/** 문제 설명: 문단(빈 줄), 줄바꿈, '- ' 글머리표, 한 줄짜리 {{fig:ID}} = 그림 */
+export function Rich({ text, className = 'rich', figures }: { text: string; className?: string; figures?: Figure[] }) {
   const blocks = text.replace(/\r/g, '').split(/\n{2,}/);
   return (
     <div className={className}>
@@ -56,7 +60,13 @@ export function Rich({ text, className = 'rich' }: { text: string; className?: s
           }
         };
         lines.forEach((l, j) => {
-          if (/^\s*[-•]\s+/.test(l)) {
+          const fm = FIG.exec(l);
+          if (fm) {
+            flushPara(`p${j}`);
+            flush(`u${j}`);
+            const fig = figures?.find((f) => f.id === fm[1]);
+            items.push(fig ? <FigureView key={`f${j}`} fig={fig} /> : <p key={`f${j}`} className="faint">[그림 {fm[1]}]</p>);
+          } else if (/^\s*[-•]\s+/.test(l)) {
             flushPara(`p${j}`);
             list.push(l);
           } else {

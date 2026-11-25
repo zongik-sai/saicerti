@@ -1,8 +1,8 @@
-import type { Example, Problem } from '../content/types';
+import type { Example, Lang, Problem } from '../content/types';
 import type { PyError, RunResult } from '../grader/client';
-import { pyRepr, pyReprPretty } from '../lib/pyrepr';
+import { reprFor, reprPretty } from '../lib/pyrepr';
 
-export function ExamplesTable({ problem }: { problem: Problem }) {
+export function ExamplesTable({ problem, lang = 'python' }: { problem: Problem; lang?: Lang }) {
   return (
     <div className="scroll-x">
       <table className="ex-table">
@@ -21,11 +21,11 @@ export function ExamplesTable({ problem }: { problem: Problem }) {
             <tr key={i}>
               {ex.args.map((a, j) => (
                 <td key={j}>
-                  <pre>{pyReprPretty(a)}</pre>
+                  <pre>{reprPretty(lang, a)}</pre>
                 </td>
               ))}
               <td>
-                <pre>{pyReprPretty(ex.expected)}</pre>
+                <pre>{reprPretty(lang, ex.expected)}</pre>
               </td>
             </tr>
           ))}
@@ -54,7 +54,7 @@ export interface Shown {
 }
 
 /** 실행(예시) / 채점(전체) 결과 */
-export function ResultsView({ shown, problem }: { shown: Shown; problem: Problem }) {
+export function ResultsView({ shown, problem, lang = 'python' }: { shown: Shown; problem: Problem; lang?: Lang }) {
   const r = shown.result;
   if (r.kind === 'fail') return <div className="err-box">파이썬을 실행하지 못했어요: {r.message} 잠시 뒤 다시 눌러 보세요.</div>;
   if (r.kind === 'timeout')
@@ -68,7 +68,7 @@ export function ResultsView({ shown, problem }: { shown: Shown; problem: Problem
   const stdout = out.stdout ? (
     <>
       <h4 className="faint" style={{ margin: '0.6rem 0 0' }}>
-        print 출력{out.stdoutCut ? ' (길어서 앞부분만)' : ''}
+        {lang === 'c' ? 'printf 출력' : 'print 출력'}{out.stdoutCut ? ' (길어서 앞부분만)' : ''}
       </h4>
       <pre className="stdout">{out.stdout}</pre>
     </>
@@ -106,7 +106,7 @@ export function ResultsView({ shown, problem }: { shown: Shown; problem: Problem
                 <tr key={i}>
                   <td>{i + 1}</td>
                   <td>
-                    <pre>{pyRepr(cases[i].expected)}</pre>
+                    <pre>{reprFor(lang, cases[i].expected)}</pre>
                   </td>
                   <td>{x.error ? <pre className="fail">{x.error.message}</pre> : <pre>{x.got}</pre>}</td>
                   <td>{x.ok ? <span className="pass">통과</span> : <span className="fail">실패</span>}</td>
