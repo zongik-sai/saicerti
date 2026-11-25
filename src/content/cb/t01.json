@@ -1,0 +1,1408 @@
+{
+ "course": "cb",
+ "type": 1,
+ "typeTitle": "반복으로 수열 채우기",
+ "kind": "blank",
+ "lang": "c",
+ "skills": [
+  "배열 선언과 크기",
+  "for 반복문의 시작·끝",
+  "점화식(앞 칸으로 다음 칸 계산)",
+  "인덱스(0부터 셈)"
+ ],
+ "intro": "앞 칸의 값으로 다음 칸을 정하는 규칙(점화식)을 보고, for 반복문으로 배열을 앞에서부터 차례로 채우는 연습을 해요. 배열을 몇 칸으로 만들지, 반복을 몇에서 시작해 어디서 끝낼지(인덱스는 0부터)를 정확히 정하는 것이 핵심이에요.",
+ "problems": [
+  {
+   "id": "cb-t01-a",
+   "version": 1,
+   "title": "계단 블록 세기",
+   "statement": "블록을 쌓아 계단을 만듭니다. 1번째 칸은 블록 1개, 2번째 칸은 블록 2개, 3번째 칸은 블록 3개처럼 i번째 칸은 블록 i개를 쌓아 만듭니다. 계단 n칸을 만드는 데 필요한 블록의 총수를 `block[n]`이라고 하면 다음과 같습니다.\n\n- `block[0] = 0`\n- `block[n] = block[n-1] + n` (n ≥ 1)\n\n즉, 계단 n칸에 필요한 블록 수는 (n-1)칸까지의 블록 수에 새로 만드는 n번째 칸의 블록 n개를 더한 값입니다. 예를 들어 아래 그림은 `block[0]`부터 `block[7]`까지를 나열한 것입니다. 색칠한 칸은 처음에 정해 둔 값이고, `block[4]`는 `block[3]`에 4를 더한 10입니다.\n\n{{fig:f1}}\n\n정수 N이 주어질 때, 반복문으로 `block` 배열을 앞에서부터 채워 계단 N칸을 만드는 데 필요한 블록의 총수를 return 하는 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "N은 0 이상 1000 이하인 정수입니다."
+   ],
+   "returns": [
+    "계단 N칸을 만드는 데 필요한 블록의 총수(`block[N]`)를 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      4
+     ],
+     "expected": 10,
+     "explain": "1 + 2 + 3 + 4 = 10이므로 계단 4칸에는 블록 10개가 필요합니다. 그림의 `block[4]`와 같습니다."
+    },
+    {
+     "args": [
+      12
+     ],
+     "expected": 78,
+     "explain": "`block[7] = 28`에서 시작해 8, 9, 10, 11, 12를 차례로 더하면 `block[12] = 78`입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int N) {\n    int block[⟦1⟧];\n    block[0] = 0;\n    for (int i = ⟦2⟧; i <= N; i++) {\n        block[i] = ⟦3⟧;\n    }\n    return block[N];\n}",
+   "blanks": [
+    {
+     "answer": "N + 1",
+     "alts": [
+      "N+1",
+      "1001"
+     ]
+    },
+    {
+     "answer": "1"
+    },
+    {
+     "answer": "block[i - 1] + i",
+     "alts": [
+      "block[i-1] + i",
+      "i + block[i - 1]"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int N) {\n    int block[N + 1];\n    block[0] = 0;\n    for (int i = 1; i <= N; i++) {\n        block[i] = block[i - 1] + i;\n    }\n    return block[N];\n}",
+   "tests": [
+    {
+     "args": [
+      0
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      5
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      7
+     ],
+     "expected": 28
+    },
+    {
+     "args": [
+      10
+     ],
+     "expected": 55
+    },
+    {
+     "args": [
+      25
+     ],
+     "expected": 325
+    },
+    {
+     "args": [
+      99
+     ],
+     "expected": 4950
+    },
+    {
+     "args": [
+      100
+     ],
+     "expected": 5050
+    },
+    {
+     "args": [
+      500
+     ],
+     "expected": 125250
+    },
+    {
+     "args": [
+      999
+     ],
+     "expected": 499500
+    },
+    {
+     "args": [
+      1000
+     ],
+     "expected": 500500
+    }
+   ],
+   "inputCheck": "def valid(N):\n    return type(N) is int and 0 <= N <= 1000",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`block[3]`은 무엇을 뜻할까요?",
+     "options": [
+      "계단 3칸을 만드는 데 필요한 블록의 총수",
+      "3번째 칸 하나에 쌓는 블록 수",
+      "블록 3개로 만들 수 있는 계단 칸 수",
+      "배열의 3번째 칸이 비어 있는지 여부"
+     ],
+     "answer": 0,
+     "explain": "배열은 같은 종류의 값을 칸에 나란히 담는 묶음이고, `block[3]`은 인덱스(칸 번호, 0부터 셈)가 3인 칸이에요. 이 문제에서는 계단 3칸까지 쓰인 블록을 모두 더한 값 1 + 2 + 3 = 6을 담아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "그림에 `block[7] = 28`까지 나와 있어요. 반복문이 이어서 i = 8부터 12까지 돌 때, 바로 앞 칸 `block[i - 1]`과 새로 채우는 `block[i]`를 채워 보세요.",
+     "columns": [
+      "i",
+      "block[i - 1]",
+      "block[i]"
+     ],
+     "rows": [
+      [
+       "8",
+       {
+        "a": "28"
+       },
+       {
+        "a": "36"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "36"
+       },
+       {
+        "a": "45"
+       }
+      ],
+      [
+       "10",
+       {
+        "a": "45"
+       },
+       {
+        "a": "55"
+       }
+      ],
+      [
+       "11",
+       {
+        "a": "55"
+       },
+       {
+        "a": "66"
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "66"
+       },
+       {
+        "a": "78"
+       }
+      ]
+     ],
+     "check": "def answers():\n    block = [0] * 13\n    out = []\n    for i in range(1, 13):\n        block[i] = block[i - 1] + i\n        if i >= 8:\n            out += [block[i - 1], block[i]]\n    return out",
+     "explain": "매번 바로 앞 칸의 값에 i를 더해요. 28 + 8 = 36, 36 + 9 = 45, … 이렇게 이어 가면 `block[12] = 78`이 되어 예시 2의 답과 같아요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "N = 5일 때 `block[0]`부터 `block[5]`까지 쓰려면 배열은 적어도 몇 칸이어야 할까요?",
+     "options": [
+      "6칸",
+      "5칸",
+      "4칸",
+      "7칸"
+     ],
+     "answer": 0,
+     "explain": "C에서 `int block[6];`처럼 배열을 만들면 쓸 수 있는 인덱스는 0부터 5까지예요. 인덱스 0부터 N까지 모두 쓰려면 N보다 한 칸 더 필요해요. 배열 밖 칸에 쓰면 프로그램이 오류로 멈추거나 엉뚱한 값이 나와요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "⟦2⟧에 0을 넣어 i = 0부터 반복하면 어떤 일이 생길까요?",
+     "options": [
+      "첫 계산에서 `block[-1]`을 읽게 되어 배열 밖을 건드린다",
+      "`block[0]`을 한 번 더 0으로 계산할 뿐 문제없다",
+      "반복문이 한 번도 실행되지 않는다",
+      "`block[N]`을 계산하지 못한다"
+     ],
+     "answer": 0,
+     "explain": "i = 0이면 `block[0] = block[-1] + 0`을 계산해요. 인덱스 -1인 칸은 없으므로 배열 밖을 읽는 잘못이에요. `block[0]`은 반복문 전에 이미 정했으니 그다음 칸부터 반복해요."
+    }
+   ],
+   "explain": "`block[0]`부터 `block[N]`까지 N + 1칸을 써야 하므로 배열 크기는 `N + 1`이에요. `block[0]`은 미리 0으로 정했으니 반복은 i = 1부터 시작하고, 매번 바로 앞 칸에 i를 더해요. 크기를 N으로 잡으면 마지막 `block[N]`이 배열 밖이 되어 오류가 나요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      0,
+      1,
+      3,
+      6,
+      10,
+      15,
+      21,
+      28
+     ],
+     "highlight": [
+      0
+     ],
+     "arrows": [
+      {
+       "from": 3,
+       "to": 4,
+       "label": "+4"
+      }
+     ],
+     "caption": "block[0] ~ block[7] (색칠한 칸: 처음에 정해 둔 값)",
+     "alt": "인덱스 0부터 7까지 8칸으로 된 배열 block 그림이다. 칸의 값은 차례로 0, 1, 3, 6, 10, 15, 21, 28이다. 0번 칸(값 0)만 처음에 정해 둔 값이라 색칠되어 있다. 3번 칸에서 4번 칸으로 \"+4\"라고 적힌 화살표가 있어, block[4] = block[3] + 4 = 6 + 4 = 10임을 보여 준다."
+    }
+   ]
+  },
+  {
+   "id": "cb-t01-b",
+   "version": 1,
+   "title": "징검다리 건너는 방법",
+   "statement": "개울에 징검다리 돌이 한 줄로 놓여 있습니다. 출발 자리를 0번이라 하고, 돌에는 차례로 1번, 2번, 3번, … 번호가 붙어 있습니다. 한 번 뛸 때는 1칸, 2칸, 3칸 중 하나만큼 앞으로 갈 수 있습니다.\n\n출발 자리에서 n번 돌까지 가는 방법의 수를 `way[n]`이라고 하면 다음과 같습니다. n번 돌에 오기 바로 전에는 (n-1)번, (n-2)번, (n-3)번 자리 중 한 곳에 있었기 때문입니다. (`way[0]`은 출발 자리에 그대로 있는 경우 1가지로 셉니다.)\n\n- `way[0] = 1`, `way[1] = 1`, `way[2] = 2`\n- `way[n] = way[n-1] + way[n-2] + way[n-3]` (n ≥ 3)\n\n예를 들어 아래 그림은 `way[0]`부터 `way[6]`까지를 나열한 것입니다. 색칠한 세 칸은 처음에 정해 둔 값이고, `way[6]`은 바로 앞 세 칸의 합 4 + 7 + 13 = 24입니다.\n\n{{fig:f1}}\n\n정수 N이 주어질 때, 반복문을 이용해 출발 자리에서 N번 돌까지 가는 방법의 수를 return 하는 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "N은 1 이상 30 이하인 정수입니다."
+   ],
+   "returns": [
+    "출발 자리에서 N번 돌까지 가는 방법의 수(`way[N]`)를 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      4
+     ],
+     "expected": 7,
+     "explain": "4번 돌까지는 1+1+1+1, 1+1+2, 1+2+1, 2+1+1, 2+2, 1+3, 3+1의 7가지 방법이 있습니다. `way[4] = way[3] + way[2] + way[1] = 4 + 2 + 1 = 7`입니다."
+    },
+    {
+     "args": [
+      10
+     ],
+     "expected": 274,
+     "explain": "그림의 `way[6] = 24`에서 같은 규칙으로 `way[10]`까지 채우면 274입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 1) return 1;\n    if (N == 2) return 2;\n    int way[⟦1⟧];\n    way[0] = 1;\n    way[1] = 1;\n    way[2] = 2;\n    for (int i = ⟦2⟧; i <= N; i++) {\n        way[i] = ⟦3⟧;\n    }\n    return way[N];\n}",
+   "blanks": [
+    {
+     "answer": "N + 1",
+     "alts": [
+      "N+1",
+      "31"
+     ]
+    },
+    {
+     "answer": "3"
+    },
+    {
+     "answer": "way[i - 1] + way[i - 2] + way[i - 3]",
+     "alts": [
+      "way[i-1] + way[i-2] + way[i-3]",
+      "way[i - 3] + way[i - 2] + way[i - 1]"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int N) {\n    if (N == 1) return 1;\n    if (N == 2) return 2;\n    int way[N + 1];\n    way[0] = 1;\n    way[1] = 1;\n    way[2] = 2;\n    for (int i = 3; i <= N; i++) {\n        way[i] = way[i - 1] + way[i - 2] + way[i - 3];\n    }\n    return way[N];\n}",
+   "tests": [
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      5
+     ],
+     "expected": 13
+    },
+    {
+     "args": [
+      6
+     ],
+     "expected": 24
+    },
+    {
+     "args": [
+      7
+     ],
+     "expected": 44
+    },
+    {
+     "args": [
+      8
+     ],
+     "expected": 81
+    },
+    {
+     "args": [
+      15
+     ],
+     "expected": 5768
+    },
+    {
+     "args": [
+      20
+     ],
+     "expected": 121415
+    },
+    {
+     "args": [
+      28
+     ],
+     "expected": 15902591
+    },
+    {
+     "args": [
+      29
+     ],
+     "expected": 29249425
+    },
+    {
+     "args": [
+      30
+     ],
+     "expected": 53798080
+    }
+   ],
+   "inputCheck": "def valid(N):\n    return type(N) is int and 1 <= N <= 30",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "3번 돌까지 가는 방법을 빠짐없이 고른 것은? (한 번에 뛴 칸 수를 순서대로 적었어요.)",
+     "options": [
+      "1+1+1, 1+2, 2+1, 3",
+      "1+1+1, 1+2, 3",
+      "1+2, 2+1, 3",
+      "1+1+1, 1+2, 2+1, 3, 2+2"
+     ],
+     "answer": 0,
+     "explain": "뛰는 순서가 다르면 다른 방법이에요(1+2와 2+1은 달라요). 2+2는 4칸을 가서 3번 돌을 지나쳐 버려요. 그래서 `way[3] = 4`예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "그림 다음 칸 이어서 채우기",
+     "prompt": "그림에 `way[6] = 24`까지 나와 있어요. 반복문이 이어서 i = 7, 8, 9일 때 더하는 세 칸의 값과 새로 채우는 `way[i]`를 채워 보세요.",
+     "columns": [
+      "i",
+      "way[i - 3]",
+      "way[i - 2]",
+      "way[i - 1]",
+      "way[i]"
+     ],
+     "rows": [
+      [
+       "7",
+       {
+        "a": "7"
+       },
+       {
+        "a": "13"
+       },
+       {
+        "a": "24"
+       },
+       {
+        "a": "44"
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "13"
+       },
+       {
+        "a": "24"
+       },
+       {
+        "a": "44"
+       },
+       {
+        "a": "81"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "24"
+       },
+       {
+        "a": "44"
+       },
+       {
+        "a": "81"
+       },
+       {
+        "a": "149"
+       }
+      ]
+     ],
+     "check": "def answers():\n    way = [1, 1, 2] + [0] * 7\n    out = []\n    for i in range(3, 10):\n        way[i] = way[i - 1] + way[i - 2] + way[i - 3]\n        if i >= 7:\n            out += [way[i - 3], way[i - 2], way[i - 1], way[i]]\n    return out",
+     "explain": "`way[7] = 7 + 13 + 24 = 44`, `way[8] = 13 + 24 + 44 = 81`, `way[9] = 24 + 44 + 81 = 149`예요. 한 줄 내려갈 때마다 더하는 세 칸이 한 칸씩 오른쪽으로 밀려요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "N = 1일 때 맨 위의 `if (N == 1) return 1;`이 없다면 어떤 일이 생길까요? (이때 배열 way는 `way[0]`, `way[1]` 두 칸뿐이에요.)",
+     "options": [
+      "`way[2] = 2;`를 실행할 때 배열 밖에 쓰게 된다",
+      "아무 문제 없이 1을 return 한다",
+      "반복문이 끝나지 않고 계속 돈다",
+      "`way[1]`이 0으로 바뀐다"
+     ],
+     "answer": 0,
+     "explain": "두 칸짜리 배열에는 인덱스 2인 칸이 없어요. 그런데 `way[2] = 2;`는 그 칸에 값을 넣으려 하므로 배열 범위를 벗어나요. 그래서 N이 1이나 2일 때는 배열을 만들기 전에 바로 답을 return 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "`way[0]`, `way[1]`, `way[2]`는 반복문 전에 미리 정해 두었어요. 반복문의 i는 몇부터 시작해야 할까요?",
+     "a": "3",
+     "check": "def answers():\n    given = [0, 1, 2]\n    return [max(given) + 1]",
+     "explain": "이미 정한 칸 다음인 3번 칸부터 계산해야 해요. i = 2부터 시작하면 `way[2] = way[1] + way[0] + way[-1]`처럼 없는 칸(-1)을 읽게 돼요."
+    }
+   ],
+   "explain": "배열은 `way[0]`부터 `way[N]`까지 N + 1칸이 필요하고, 미리 정한 세 칸 다음인 i = 3부터 N까지 바로 앞 세 칸을 더해 채워요. N이 1·2일 때는 배열이 세 칸보다 작아 `way[2] = 2;`가 배열 밖에 쓰게 되므로 맨 위에서 바로 return 해요. 두 칸만 더하는(피보나치처럼) 실수를 조심하세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      1,
+      1,
+      2,
+      4,
+      7,
+      13,
+      24
+     ],
+     "highlight": [
+      0,
+      1,
+      2
+     ],
+     "groups": [
+      {
+       "from": 3,
+       "to": 5,
+       "label": "4 + 7 + 13"
+      }
+     ],
+     "arrows": [
+      {
+       "from": 5,
+       "to": 6,
+       "label": "24"
+      }
+     ],
+     "caption": "way[0] ~ way[6] (색칠한 칸: 처음에 정해 둔 값)",
+     "alt": "인덱스 0부터 6까지 7칸으로 된 배열 way 그림이다. 칸의 값은 차례로 1, 1, 2, 4, 7, 13, 24이다. 0번, 1번, 2번 칸(값 1, 1, 2)은 처음에 정해 둔 값이라 색칠되어 있다. 3번부터 5번 칸 아래에 \"4 + 7 + 13\"이라고 적힌 묶음 표시가 있고, 그 합 24가 6번 칸으로 가는 화살표로 이어져 way[6] = 24임을 보여 준다."
+    }
+   ]
+  },
+  {
+   "id": "cb-t01-c",
+   "version": 1,
+   "title": "삼각형 나선 무늬",
+   "statement": "정삼각형 타일을 소용돌이(나선) 모양으로 이어 붙여 무늬를 만듭니다. 타일에는 붙인 순서대로 0번, 1번, 2번, … 번호를 붙입니다. 처음 세 타일(0번, 1번, 2번)은 한 변의 길이가 1이고, 그다음부터 n번 타일의 한 변 길이는 두 개 앞(n-2번)과 세 개 앞(n-3번) 타일의 변 길이를 더한 값입니다. n번 타일의 한 변 길이를 `side[n]`이라고 하면 다음과 같습니다.\n\n- `side[0] = 1`, `side[1] = 1`, `side[2] = 1`\n- `side[n] = side[n-2] + side[n-3]` (n ≥ 3)\n\n바로 앞 타일(n-1번)의 길이는 더하지 않는다는 점에 주의합니다. 예를 들어 아래 그림은 0번부터 10번 타일까지의 변 길이를 나열한 것입니다. 색칠한 세 칸은 처음에 정해 둔 값이고, 7번 칸은 5번 칸과 4번 칸의 합 3 + 2 = 5입니다.\n\n{{fig:f1}}\n\n정수 N이 주어질 때, 반복문을 이용해 N번 타일의 한 변 길이를 구해 return 하는 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "N은 0 이상 60 이하인 정수입니다."
+   ],
+   "returns": [
+    "N번 타일의 한 변 길이(`side[N]`)를 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      6
+     ],
+     "expected": 4,
+     "explain": "`side[6] = side[4] + side[3] = 2 + 2 = 4`입니다. 그림의 6번 칸과 같습니다."
+    },
+    {
+     "args": [
+      20
+     ],
+     "expected": 200,
+     "explain": "그림의 `side[10] = 12`에서 같은 규칙으로 `side[20]`까지 채우면 200입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int N) {\n    if (N <= 2) return 1;\n    int side[N + 1];\n    side[0] = 1;\n    side[1] = 1;\n    side[2] = 1;\n    for (int i = ⟦1⟧; i <= ⟦2⟧; i++) {\n        side[i] = ⟦3⟧;\n    }\n    return side[N];\n}",
+   "blanks": [
+    {
+     "answer": "3"
+    },
+    {
+     "answer": "N"
+    },
+    {
+     "answer": "side[i - 2] + side[i - 3]",
+     "alts": [
+      "side[i-2] + side[i-3]",
+      "side[i - 3] + side[i - 2]"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int N) {\n    if (N <= 2) return 1;\n    int side[N + 1];\n    side[0] = 1;\n    side[1] = 1;\n    side[2] = 1;\n    for (int i = 3; i <= N; i++) {\n        side[i] = side[i - 2] + side[i - 3];\n    }\n    return side[N];\n}",
+   "tests": [
+    {
+     "args": [
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      4
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      5
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      9
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      10
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      15
+     ],
+     "expected": 49
+    },
+    {
+     "args": [
+      30
+     ],
+     "expected": 3329
+    },
+    {
+     "args": [
+      45
+     ],
+     "expected": 226030
+    },
+    {
+     "args": [
+      59
+     ],
+     "expected": 11584946
+    },
+    {
+     "args": [
+      60
+     ],
+     "expected": 15346786
+    }
+   ],
+   "inputCheck": "def valid(N):\n    return type(N) is int and 0 <= N <= 60",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`side[9]`를 구할 때 더하는 두 칸은 무엇일까요?",
+     "options": [
+      "side[7]과 side[6]",
+      "side[8]과 side[7]",
+      "side[8]과 side[6]",
+      "side[6]과 side[5]"
+     ],
+     "answer": 0,
+     "explain": "n = 9이면 두 개 앞은 9 - 2 = 7, 세 개 앞은 9 - 3 = 6이에요. 바로 앞 칸 `side[8]`은 더하지 않아요. 그래서 `side[9] = 5 + 4 = 9`예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "그림 다음 칸 이어서 채우기",
+     "prompt": "그림에 `side[10] = 12`까지 나와 있어요. 반복문이 이어서 i = 11, 12, 13, 14일 때 더하는 두 칸의 값과 새로 채우는 `side[i]`를 채워 보세요.",
+     "columns": [
+      "i",
+      "side[i - 3]",
+      "side[i - 2]",
+      "side[i]"
+     ],
+     "rows": [
+      [
+       "11",
+       {
+        "a": "7"
+       },
+       {
+        "a": "9"
+       },
+       {
+        "a": "16"
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "9"
+       },
+       {
+        "a": "12"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "13",
+       {
+        "a": "12"
+       },
+       {
+        "a": "16"
+       },
+       {
+        "a": "28"
+       }
+      ],
+      [
+       "14",
+       {
+        "a": "16"
+       },
+       {
+        "a": "21"
+       },
+       {
+        "a": "37"
+       }
+      ]
+     ],
+     "check": "def answers():\n    side = [1, 1, 1] + [0] * 12\n    out = []\n    for i in range(3, 15):\n        side[i] = side[i - 2] + side[i - 3]\n        if i >= 11:\n            out += [side[i - 3], side[i - 2], side[i]]\n    return out",
+     "explain": "`side[11] = 7 + 9 = 16`, `side[12] = 9 + 12 = 21`, `side[13] = 12 + 16 = 28`, `side[14] = 16 + 21 = 37`이에요. 바로 앞 칸은 건너뛰고 그 앞의 두 칸을 더해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "⟦2⟧에 N 대신 `N - 1`을 쓰면 어떻게 될까요?",
+     "options": [
+      "`side[N]` 칸을 채우지 않은 채 return 해서 엉뚱한 값이 나온다",
+      "결과가 똑같다",
+      "`side[N + 1]`까지 채워서 배열 밖에 쓰게 된다",
+      "반복문이 끝나지 않고 계속 돈다"
+     ],
+     "answer": 0,
+     "explain": "`i <= N - 1`이면 마지막으로 채우는 칸이 `side[N - 1]`이에요. `side[N]`에는 값을 넣은 적이 없어서 초기화하지 않은 값(무엇이 들어 있는지 모르는 값)을 return 하게 돼요. 마지막 칸까지 채우려면 `i <= N`이어야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "N = 2일 때 solution 함수가 return 하는 값은 무엇일까요?",
+     "a": "1",
+     "check": "def answers():\n    side = [1, 1, 1]\n    return [side[2]]",
+     "explain": "N이 2 이하이면 맨 위의 if문에서 바로 1을 return 해요. 처음 세 타일의 변 길이는 모두 1이에요."
+    }
+   ],
+   "explain": "`side[0]`~`side[2]`는 미리 정했으니 반복은 i = 3부터 `i <= N`까지 돌며, 두 칸 앞과 세 칸 앞을 더해 `side[i]`를 채워요. 끝을 `N - 1`로 잡으면 `side[N]`을 채우지 못하고, 습관처럼 `side[i - 1] + side[i - 2]`(피보나치)로 쓰면 틀려요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      4,
+      5,
+      7,
+      9,
+      12
+     ],
+     "highlight": [
+      0,
+      1,
+      2
+     ],
+     "marks": [
+      {
+       "at": 4,
+       "label": "i-3"
+      },
+      {
+       "at": 5,
+       "label": "i-2"
+      },
+      {
+       "at": 7,
+       "label": "i"
+      }
+     ],
+     "caption": "i = 7일 때: side[7] = side[5] + side[4] = 3 + 2 = 5 (색칠한 칸: 처음에 정해 둔 값)",
+     "alt": "인덱스 0부터 10까지 11칸으로 된 배열 side 그림이다. 칸의 값은 차례로 1, 1, 1, 2, 2, 3, 4, 5, 7, 9, 12이다. 0번, 1번, 2번 칸(값 1, 1, 1)은 처음에 정해 둔 값이라 색칠되어 있다. 4번 칸 아래에 \"i-3\", 5번 칸 아래에 \"i-2\", 7번 칸 아래에 \"i\"라고 적혀 있어, i = 7일 때 side[7]은 side[5] + side[4] = 3 + 2 = 5임을 보여 준다(바로 앞 6번 칸은 더하지 않는다)."
+    }
+   ]
+  },
+  {
+   "id": "cb-t01-d",
+   "version": 1,
+   "title": "마법 콩나무의 키",
+   "statement": "마법 콩나무를 심은 날을 0일째라고 하며, 이날 콩나무의 키는 1cm입니다. 그 뒤로 홀수 번째 날(1일째, 3일째, 5일째, …)에는 키가 전날의 2배가 되고, 짝수 번째 날(2일째, 4일째, …)에는 전날보다 1cm 자랍니다. n일째 콩나무의 키를 `height[n]`이라고 하면 다음과 같습니다.\n\n- `height[0] = 1`\n- n이 홀수이면 `height[n] = height[n-1] * 2`\n- n이 2 이상의 짝수이면 `height[n] = height[n-1] + 1`\n\n예를 들어 아래 그림은 0일째부터 6일째까지의 키를 나열한 것입니다. 색칠한 칸은 처음에 정해 둔 값이고, 칸 아래에는 그날 적용한 규칙을 적었습니다.\n\n{{fig:f1}}\n\n정수 N이 주어질 때, 반복문을 이용해 N일째 콩나무의 키(cm)를 return 하는 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "N은 0 이상 50 이하인 정수입니다."
+   ],
+   "returns": [
+    "N일째 콩나무의 키(`height[N]`, 단위 cm)를 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      5
+     ],
+     "expected": 14,
+     "explain": "1 → 2(×2) → 3(+1) → 6(×2) → 7(+1) → 14(×2)이므로 5일째 키는 14cm입니다."
+    },
+    {
+     "args": [
+      12
+     ],
+     "expected": 127,
+     "explain": "그림의 6일째 키 15cm에서 같은 규칙을 이어 가면 12일째 키는 127cm입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int N) {\n    int height[⟦1⟧];\n    height[0] = 1;\n    for (int i = 1; i <= N; i++) {\n        if (⟦2⟧) {\n            height[i] = ⟦3⟧;\n        } else {\n            height[i] = ⟦4⟧;\n        }\n    }\n    return height[N];\n}",
+   "blanks": [
+    {
+     "answer": "N + 1",
+     "alts": [
+      "N+1",
+      "51"
+     ]
+    },
+    {
+     "answer": "i % 2 == 1",
+     "alts": [
+      "i % 2 != 0",
+      "i % 2",
+      "i%2==1"
+     ]
+    },
+    {
+     "answer": "height[i - 1] * 2",
+     "alts": [
+      "2 * height[i - 1]",
+      "height[i-1] * 2",
+      "height[i - 1] + height[i - 1]"
+     ]
+    },
+    {
+     "answer": "height[i - 1] + 1",
+     "alts": [
+      "height[i-1] + 1",
+      "1 + height[i - 1]"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int N) {\n    int height[N + 1];\n    height[0] = 1;\n    for (int i = 1; i <= N; i++) {\n        if (i % 2 == 1) {\n            height[i] = height[i - 1] * 2;\n        } else {\n            height[i] = height[i - 1] + 1;\n        }\n    }\n    return height[N];\n}",
+   "tests": [
+    {
+     "args": [
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      2
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      3
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      4
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      7
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      8
+     ],
+     "expected": 31
+    },
+    {
+     "args": [
+      10
+     ],
+     "expected": 63
+    },
+    {
+     "args": [
+      20
+     ],
+     "expected": 2047
+    },
+    {
+     "args": [
+      33
+     ],
+     "expected": 262142
+    },
+    {
+     "args": [
+      48
+     ],
+     "expected": 33554431
+    },
+    {
+     "args": [
+      49
+     ],
+     "expected": 67108862
+    },
+    {
+     "args": [
+      50
+     ],
+     "expected": 67108863
+    }
+   ],
+   "inputCheck": "def valid(N):\n    return type(N) is int and 0 <= N <= 50",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "3일째에는 콩나무의 키가 어떻게 바뀔까요?",
+     "options": [
+      "전날 키의 2배가 된다",
+      "전날보다 1cm 자란다",
+      "전날과 같다",
+      "0일째 키의 3배가 된다"
+     ],
+     "answer": 0,
+     "explain": "3은 홀수라서 전날(2일째) 키 3cm의 2배인 6cm가 돼요. 그림의 3번 칸 아래에 ×2라고 적혀 있어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "그림 다음 날 이어서 채우기",
+     "prompt": "`i % 2`는 i를 2로 나눈 나머지예요(홀수면 1, 짝수면 0). 그림에 6일째 키 15cm까지 나와 있어요. i = 7부터 10까지 `i % 2`와 `height[i]`를 채워 보세요.",
+     "columns": [
+      "i",
+      "i % 2",
+      "height[i]"
+     ],
+     "rows": [
+      [
+       "7",
+       {
+        "a": "1"
+       },
+       {
+        "a": "30"
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "0"
+       },
+       {
+        "a": "31"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "1"
+       },
+       {
+        "a": "62"
+       }
+      ],
+      [
+       "10",
+       {
+        "a": "0"
+       },
+       {
+        "a": "63"
+       }
+      ]
+     ],
+     "check": "def answers():\n    height = [1] + [0] * 10\n    out = []\n    for i in range(1, 11):\n        if i % 2 == 1:\n            height[i] = height[i - 1] * 2\n        else:\n            height[i] = height[i - 1] + 1\n        if i >= 7:\n            out += [i % 2, height[i]]\n    return out",
+     "explain": "`i % 2`가 1인 날(7, 9일째)은 2배, 0인 날(8, 10일째)은 1cm를 더해요. 15 → 30 → 31 → 62 → 63이 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "⟦3⟧이 키를 2배로 만드는 식일 때, ⟦2⟧에 들어갈 조건으로 알맞은 것은?",
+     "options": [
+      "i % 2 == 1",
+      "i % 2 == 0",
+      "i / 2 == 1",
+      "height[i] % 2 == 1"
+     ],
+     "answer": 0,
+     "explain": "`%`는 나머지, `/`는 몫이에요(C에서 정수끼리 나누면 소수점 아래를 버려요). 홀수를 2로 나눈 나머지는 1이므로 `i % 2 == 1`이 \"홀수 번째 날\"이라는 뜻이에요. `height[i]`는 아직 채우지 않은 칸이라 조건에 쓰면 안 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "N = 0일 때 for 반복문 안쪽은 몇 번 실행될까요?",
+     "a": "0",
+     "check": "def answers():\n    N = 0\n    count = 0\n    i = 1\n    while i <= N:\n        count += 1\n        i += 1\n    return [count]",
+     "explain": "i = 1에서 시작하는데 조건 `i <= 0`이 처음부터 거짓이라 한 번도 실행되지 않아요. 그래서 `height[0] = 1`을 그대로 return 해요. 이때도 배열은 `height[0]` 한 칸이 있어야 해요."
+    }
+   ],
+   "explain": "배열은 `height[0]`부터 `height[N]`까지 N + 1칸이 필요해요. 반복할 때마다 `i % 2 == 1`(홀수 번째 날)이면 전날 키의 2배, 아니면 전날 키 + 1을 넣어요. 2배와 +1을 반대로 넣거나, 아직 채우지 않은 `height[i]`로 조건을 쓰는 실수를 조심하세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      1,
+      2,
+      3,
+      6,
+      7,
+      14,
+      15
+     ],
+     "highlight": [
+      0
+     ],
+     "marks": [
+      {
+       "at": 1,
+       "label": "×2"
+      },
+      {
+       "at": 2,
+       "label": "+1"
+      },
+      {
+       "at": 3,
+       "label": "×2"
+      },
+      {
+       "at": 4,
+       "label": "+1"
+      },
+      {
+       "at": 5,
+       "label": "×2"
+      },
+      {
+       "at": 6,
+       "label": "+1"
+      }
+     ],
+     "caption": "height[0] ~ height[6] (칸 아래: 그날 적용한 규칙)",
+     "alt": "인덱스 0부터 6까지 7칸으로 된 배열 height 그림이다. 칸의 값은 차례로 1, 2, 3, 6, 7, 14, 15이다. 0번 칸(값 1)은 처음에 정해 둔 값이라 색칠되어 있다. 칸 아래에는 1번부터 6번 칸까지 차례로 ×2, +1, ×2, +1, ×2, +1이 적혀 있어, 홀수 번째 날은 전날의 2배, 짝수 번째 날은 전날보다 1 큰 값임을 보여 준다."
+    }
+   ]
+  },
+  {
+   "id": "cb-t01-e",
+   "version": 1,
+   "title": "일의 자리 카드 놀이",
+   "statement": "카드 N장을 한 줄로 놓고 맨 앞 카드부터 0번, 1번, 2번, … 번호를 붙입니다. 0번 카드에는 수 first를, 1번 카드에는 수 second를 적습니다. 2번 카드부터는 바로 앞 두 카드에 적힌 수를 더한 뒤, 그 합의 **일의 자리 숫자**만 적습니다. i번 카드에 적힌 수를 `card[i]`라고 하면 다음과 같습니다.\n\n- `card[0] = first`, `card[1] = second`\n- `card[i]` = (`card[i-1] + card[i-2]`)의 일의 자리 숫자 (i ≥ 2)\n\n예를 들어 first가 1, second가 1이고 카드가 8장이면 카드에 적힌 수는 아래 그림과 같습니다. 색칠한 두 칸은 처음에 적은 수이고, 6번 카드에는 5 + 8 = 13의 일의 자리인 3을 적습니다.\n\n{{fig:f1}}\n\n이때 카드 8장에 적힌 수의 합은 1 + 1 + 2 + 3 + 5 + 8 + 3 + 1 = 24입니다.\n\n정수 first, second, N이 주어질 때, 카드 N장에 적힌 수를 모두 더한 값을 return 하는 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "first와 second는 0 이상 9 이하인 정수입니다.",
+    "N은 2 이상 100 이하인 정수입니다."
+   ],
+   "returns": [
+    "카드 N장(0번 ~ N-1번 카드)에 적힌 수의 합을 정수로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "first",
+    "second",
+    "N"
+   ],
+   "examples": [
+    {
+     "args": [
+      1,
+      1,
+      8
+     ],
+     "expected": 24,
+     "explain": "카드에 1, 1, 2, 3, 5, 8, 3, 1을 적으므로 합은 24입니다. 문제 설명의 예와 같습니다."
+    },
+    {
+     "args": [
+      4,
+      7,
+      6
+     ],
+     "expected": 36,
+     "explain": "카드에 4, 7, 1, 8, 9, 7을 적습니다(4 + 7 = 11 → 1, 8 + 9 = 17 → 7). 합은 36입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int first, int second, int N) {\n    int card[⟦1⟧];\n    card[0] = first;\n    card[1] = second;\n    int total = first + second;\n    for (int i = 2; ⟦2⟧; i++) {\n        card[i] = ⟦3⟧;\n        total += ⟦4⟧;\n    }\n    return total;\n}",
+   "blanks": [
+    {
+     "answer": "N",
+     "alts": [
+      "N + 1",
+      "100"
+     ]
+    },
+    {
+     "answer": "i < N",
+     "alts": [
+      "i <= N - 1",
+      "N > i"
+     ]
+    },
+    {
+     "answer": "(card[i - 1] + card[i - 2]) % 10",
+     "alts": [
+      "(card[i-1] + card[i-2]) % 10",
+      "(card[i - 2] + card[i - 1]) % 10"
+     ]
+    },
+    {
+     "answer": "card[i]"
+    }
+   ],
+   "solution": "#include <stdio.h>\n\nint solution(int first, int second, int N) {\n    int card[N];\n    card[0] = first;\n    card[1] = second;\n    int total = first + second;\n    for (int i = 2; i < N; i++) {\n        card[i] = (card[i - 1] + card[i - 2]) % 10;\n        total += card[i];\n    }\n    return total;\n}",
+   "tests": [
+    {
+     "args": [
+      0,
+      0,
+      2
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      9,
+      9,
+      2
+     ],
+     "expected": 18
+    },
+    {
+     "args": [
+      5,
+      5,
+      3
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      0,
+      0,
+      100
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      9,
+      9,
+      100
+     ],
+     "expected": 465
+    },
+    {
+     "args": [
+      0,
+      5,
+      10
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      1,
+      1,
+      60
+     ],
+     "expected": 280
+    },
+    {
+     "args": [
+      2,
+      7,
+      100
+     ],
+     "expected": 450
+    },
+    {
+     "args": [
+      9,
+      0,
+      13
+     ],
+     "expected": 77
+    },
+    {
+     "args": [
+      3,
+      4,
+      25
+     ],
+     "expected": 123
+    },
+    {
+     "args": [
+      7,
+      7,
+      50
+     ],
+     "expected": 236
+    },
+    {
+     "args": [
+      1,
+      0,
+      99
+     ],
+     "expected": 456
+    }
+   ],
+   "inputCheck": "def valid(first, second, N):\n    return all(type(x) is int for x in (first, second, N)) and 0 <= first <= 9 and 0 <= second <= 9 and 2 <= N <= 100",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "카드가 8장일 때 마지막 카드의 번호는 몇 번일까요?",
+     "options": [
+      "7번",
+      "8번",
+      "9번",
+      "6번"
+     ],
+     "answer": 0,
+     "explain": "번호를 0부터 붙이므로 8장은 0번부터 7번까지예요. 그래서 배열 card는 N칸이면 충분하고, 마지막 칸은 `card[N - 1]`이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "직접 따라가기",
+     "prompt": "first = 3, second = 8, N = 6일 때를 따라가요. 반복문 전에 `total = 3 + 8 = 11`이에요. 반복할 때마다 앞 두 카드의 합, 새로 적는 `card[i]`, 더한 뒤의 `total`을 채워 보세요.",
+     "columns": [
+      "i",
+      "card[i - 2] + card[i - 1]",
+      "card[i]",
+      "total"
+     ],
+     "rows": [
+      [
+       "2",
+       {
+        "a": "11"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "9"
+       },
+       {
+        "a": "9"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "10"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "21"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "9"
+       },
+       {
+        "a": "9"
+       },
+       {
+        "a": "30"
+       }
+      ]
+     ],
+     "check": "def answers():\n    first, second, N = 3, 8, 6\n    card = [first, second] + [0] * (N - 2)\n    total = first + second\n    out = []\n    for i in range(2, N):\n        s = card[i - 2] + card[i - 1]\n        card[i] = s % 10\n        total += card[i]\n        out += [s, card[i], total]\n    return out",
+     "explain": "카드는 3, 8, 1, 9, 0, 9가 되고 합은 30이에요. 1 + 9 = 10처럼 합이 10이면 일의 자리는 0이라 total이 그대로예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`(card[i - 1] + card[i - 2]) % 10`에서 `% 10`은 어떤 일을 할까요?",
+     "options": [
+      "10으로 나눈 나머지, 곧 일의 자리 숫자를 구한다",
+      "10으로 나눈 몫, 곧 십의 자리 숫자를 구한다",
+      "합에 10을 곱한다",
+      "합의 10퍼센트를 구한다"
+     ],
+     "answer": 0,
+     "explain": "`%`는 나눗셈의 나머지를 구해요. 13 % 10 = 3, 17 % 10 = 7처럼 0 이상인 수를 10으로 나눈 나머지는 일의 자리 숫자예요. 몫을 구하는 것은 `/`예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "⟦2⟧의 반복 조건으로 알맞은 것은?",
+     "options": [
+      "i < N",
+      "i <= N",
+      "i < N - 1",
+      "i > N"
+     ],
+     "answer": 0,
+     "explain": "카드는 0번부터 N - 1번까지예요. `i <= N`이면 없는 카드 `card[N]`까지 만들어 배열 밖에 쓰고, `i < N - 1`이면 마지막 카드를 빠뜨려요. `i > N`은 처음부터 거짓이라 반복이 돌지 않아요."
+    }
+   ],
+   "explain": "카드는 0번부터 N - 1번까지 N장이므로 배열 크기는 N, 반복 조건은 `i < N`이에요. 매번 앞 두 카드의 합을 `% 10`으로 일의 자리만 남겨 `card[i]`에 넣고, 그 값을 total에 더해요. 피보나치 문제처럼 N + 1칸·`i <= N`으로 쓰면 카드가 한 장 더 생겨 합이 달라져요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "cells",
+     "index": "auto",
+     "values": [
+      1,
+      1,
+      2,
+      3,
+      5,
+      8,
+      3,
+      1
+     ],
+     "highlight": [
+      0,
+      1
+     ],
+     "groups": [
+      {
+       "from": 4,
+       "to": 5,
+       "label": "5 + 8 = 13"
+      }
+     ],
+     "arrows": [
+      {
+       "from": 5,
+       "to": 6,
+       "label": "3"
+      }
+     ],
+     "caption": "first = 1, second = 1, 카드 8장 (색칠한 칸: 처음에 적은 수)",
+     "alt": "인덱스 0부터 7까지 8칸으로 된 배열 card 그림이다. 칸의 값은 차례로 1, 1, 2, 3, 5, 8, 3, 1이다. 0번, 1번 칸(값 1, 1)은 처음에 적은 수라 색칠되어 있다. 4번과 5번 칸 아래에 \"5 + 8 = 13\"이라는 묶음 표시가 있고, 일의 자리 3이 6번 칸으로 가는 화살표로 이어져 card[6] = 3임을 보여 준다."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1626 @@
+{
+ "course": "cb",
+ "type": 9,
+ "typeTitle": "규칙대로 반복 계산",
+ "kind": "write",
+ "lang": "c",
+ "skills": [
+  "while 반복문",
+  "확인하는 시점 정하기",
+  "날짜(횟수) 세기",
+  "값 누적하기",
+  "break로 반복 끝내기"
+ ],
+ "intro": "낮에 오르고 밤에 미끄러지는 것처럼 같은 규칙이 하루(한 번)마다 되풀이될 때, 목표에 처음 닿는 날을 구하는 유형이에요. while 반복문으로 하루씩 따라가며 값을 바꾸고, 목표에 닿았는지를 언제 확인하는지(오른 직후인지, 하루가 끝난 뒤인지) 정확히 지키는 연습을 합니다.",
+ "problems": [
+  {
+   "id": "cb-t09-a",
+   "version": 1,
+   "title": "저금통 목표 금액",
+   "statement": "민서는 빈 저금통(0원)에 돈을 모아 목표 금액 `goal`원을 만들려고 합니다. 저금통의 돈은 매일 다음 순서로 바뀝니다.\n\n- 아침: 용돈 `allowance`원을 받아 저금통에 넣습니다.\n- 저녁: 저금통에서 `spend`원을 꺼내 간식을 사 먹습니다.\n- 목표 달성 여부는 **저녁에 돈을 꺼낸 뒤** 저금통에 남은 금액으로만 확인합니다.\n\n예를 들어 goal = 7000, allowance = 3000, spend = 1000이면 날마다 저금통의 돈은 다음과 같습니다.\n\n{{fig:f1}}\n\n3일째 아침에는 7000원이 되지만, 저녁에 1000원을 꺼내면 6000원이므로 아직 목표를 달성하지 못한 것입니다. 4일째 저녁에 남은 금액이 8000원이 되어 처음으로 7000원 이상이 되므로 답은 4입니다.\n\n저녁에 저금통에 남은 금액이 처음으로 goal원 이상이 되는 날이 며칠째인지 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "goal = 7000, allowance = 3000, spend = 1000일 때 날짜별 저금통 금액 표. 1일째 아침에 넣은 뒤 3000원, 저녁에 꺼낸 뒤 2000원, 달성 아니요. 2일째 5000원, 4000원, 아니요. 3일째 7000원, 6000원, 아니요. 4일째 9000원, 8000원, 예(강조된 줄).",
+     "head": [
+      "날짜",
+      "아침에 넣은 뒤",
+      "저녁에 꺼낸 뒤",
+      "목표 달성"
+     ],
+     "rows": [
+      [
+       "1일째",
+       3000,
+       2000,
+       "아니요"
+      ],
+      [
+       "2일째",
+       5000,
+       4000,
+       "아니요"
+      ],
+      [
+       "3일째",
+       7000,
+       6000,
+       "아니요"
+      ],
+      [
+       "4일째",
+       9000,
+       8000,
+       "예"
+      ]
+     ],
+     "highlight": [
+      3
+     ]
+    }
+   ],
+   "params": [
+    "goal은 목표 금액(원)이며, 1,000 이상 100,000 이하인 정수입니다.",
+    "allowance는 아침에 받는 용돈(원)이며, 100 이상 10,000 이하인 100의 배수입니다.",
+    "spend는 저녁에 쓰는 돈(원)이며, 0 이상이고 allowance보다 작은 100의 배수입니다."
+   ],
+   "returns": [
+    "저녁에 저금통에 남은 금액이 처음으로 goal원 이상이 되는 날이 며칠째인지 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "goal",
+    "allowance",
+    "spend"
+   ],
+   "examples": [
+    {
+     "args": [
+      7000,
+      3000,
+      1000
+     ],
+     "explain": "문제 설명의 예와 같습니다. 4일째 저녁에 8000원이 남아 처음으로 7000원 이상이 됩니다.",
+     "expected": 4
+    },
+    {
+     "args": [
+      2500,
+      1000,
+      400
+     ],
+     "explain": "저녁에 남는 금액은 600, 1200, 1800, 2400, 3000원입니다. 4일째 아침에는 2800원이지만 저녁에 2400원이 되므로, 처음 2500원 이상이 되는 날은 5일째입니다.",
+     "expected": 5
+    },
+    {
+     "args": [
+      1000,
+      1000,
+      0
+     ],
+     "explain": "1일째 저녁에 1000원이 남아 바로 목표 금액 이상이 됩니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int goal, int allowance, int spend) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int goal, int allowance, int spend) {\n    int answer = 0;\n    int money = 0;\n    while (money < goal) {\n        answer++;\n        money += allowance;\n        money -= spend;\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      1000,
+      100,
+      0
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      100000,
+      100,
+      0
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      100000,
+      10000,
+      9900
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      1000,
+      10000,
+      9900
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      1001,
+      1000,
+      0
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      1500,
+      1000,
+      500
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      99999,
+      10000,
+      100
+     ],
+     "expected": 11
+    },
+    {
+     "args": [
+      5000,
+      2500,
+      2400
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      1000,
+      900,
+      800
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      3333,
+      700,
+      200
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      100000,
+      10000,
+      0
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      64000,
+      8000,
+      0
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      1200,
+      1300,
+      100
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1200,
+      1300,
+      200
+     ],
+     "expected": 2
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(goal, allowance, spend):\n    if not all(type(x) is int for x in (goal, allowance, spend)):\n        return False\n    return 1000 <= goal <= 100000 and 100 <= allowance <= 10000 and allowance % 100 == 0 and 0 <= spend < allowance and spend % 100 == 0",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "저금통의 돈이 목표 금액 이상인지는 하루 중 언제 확인할까요?",
+     "options": [
+      "아침에 용돈을 넣은 직후",
+      "저녁에 돈을 꺼낸 뒤",
+      "아침과 저녁 중 한 번이라도 넘으면 달성",
+      "아침에 용돈을 넣기 전"
+     ],
+     "answer": 1,
+     "explain": "문제에서 '저녁에 돈을 꺼낸 뒤' 남은 금액으로만 확인한다고 했어요. 그래서 예시의 3일째처럼 아침에 잠깐 7000원이 되어도, 저녁에 6000원으로 줄면 아직 달성이 아니에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "예시 2(goal = 2500, allowance = 1000, spend = 400)를 하루씩 따라가 보세요. `money`는 저금통의 돈이고, 마지막 칸은 저녁에 확인하는 `money >= goal`의 값이에요(C에서 조건식은 참이면 1, 거짓이면 0).",
+     "columns": [
+      "날짜",
+      "아침에 넣은 뒤",
+      "저녁에 꺼낸 뒤",
+      "money >= goal"
+     ],
+     "rows": [
+      [
+       "1일째",
+       "1000",
+       "600",
+       "0"
+      ],
+      [
+       "2일째",
+       {
+        "a": "1600"
+       },
+       {
+        "a": "1200"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "3일째",
+       {
+        "a": "2200"
+       },
+       {
+        "a": "1800"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "4일째",
+       {
+        "a": "2800"
+       },
+       {
+        "a": "2400"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "5일째",
+       {
+        "a": "3400"
+       },
+       {
+        "a": "3000"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    goal, allowance, spend = 2500, 1000, 400\n    out = []\n    money = 600\n    for day in range(2, 6):\n        morning = money + allowance\n        money = morning - spend\n        out += [morning, money, 1 if money >= goal else 0]\n    return out",
+     "explain": "4일째 아침에는 2800원으로 2500원을 넘지만, 확인은 저녁에만 해요. 저녁에는 2400원이라 0(거짓)이고, 5일째 저녁에 3000원이 되어 처음으로 1(참)이 되므로 답은 5예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`money`를 저녁에 꺼낸 뒤의 금액이라고 할 때, 하루씩 되풀이하는 반복문의 조건으로 알맞은 것은?",
+     "options": [
+      "while (money < goal)",
+      "while (money <= goal)",
+      "while (money > goal)",
+      "while (money == goal)"
+     ],
+     "answer": 0,
+     "explain": "`while (조건) { … }`은 조건이 참(1)인 동안 { } 안을 되풀이하는 반복문이에요. 목표 금액 '이상'이 되면 멈춰야 하므로, 아직 goal보다 작은 동안만 반복해요. `<=`로 쓰면 money가 goal과 딱 같을 때도 하루를 더 반복해서 하루 늦은 답이 나와요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 1(goal = 7000, allowance = 3000, spend = 1000)에서 확인을 실수로 **아침에 넣은 직후**에 하면 며칠째가 나올까요? 숫자만 쓰세요.",
+     "a": "3",
+     "check": "def answers():\n    goal, allowance, spend = 7000, 3000, 1000\n    money, day = 0, 0\n    while True:\n        day += 1\n        money += allowance\n        if money >= goal:\n            return [day]\n        money -= spend",
+     "explain": "3일째 아침에 7000원이 되는 순간 멈춰서 3이 나와요. 하지만 이 문제는 저녁에 꺼낸 뒤에만 확인하므로 정답은 4예요. 언제 확인하는지가 답을 바꿔요."
+    }
+   ],
+   "explain": "하루를 반복 한 번으로 보고, 날짜(answer)를 1 늘린 뒤 아침에 allowance를 더하고 저녁에 spend를 빼요. 확인은 저녁 뒤에만 하므로 `while (money < goal)` 조건 하나로 충분해요. 아침에 잠깐 목표를 넘는 날을 달성으로 세지 않도록 주의해요."
+  },
+  {
+   "id": "cb-t09-b",
+   "version": 1,
+   "title": "영어 단어 외우기",
+   "statement": "지우는 영어 단어 시험을 준비하고 있습니다. 처음에 지우가 외운 단어는 0개이고, 매일 다음 순서가 되풀이됩니다.\n\n- 낮: 새 단어를 `learn`개 외웁니다.\n- 낮 공부가 끝나면 바로 모의 시험을 봅니다. 이때 외운 단어가 `goal`개 이상이면 합격하고 공부를 마칩니다.\n- 밤: 합격하지 못했다면, 자는 동안 외운 단어 가운데 `forget`개를 잊어버립니다.\n\n예를 들어 goal = 13, learn = 5, forget = 2이면 다음과 같습니다.\n\n{{fig:f1}}\n\n4일째 낮 공부를 마치면 외운 단어가 9 + 5 = 14개로 13개 이상이므로, 밤이 되기 전에 그날 바로 합격합니다. 따라서 답은 4입니다.\n\n지우가 처음으로 모의 시험에 합격하는 날이 며칠째인지 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "goal = 13, learn = 5, forget = 2일 때 날짜별 외운 단어 수 표. 1일째 낮 공부 후 5개, 불합격, 밤에 잊은 뒤 3개. 2일째 8개, 불합격, 6개. 3일째 11개, 불합격, 9개. 4일째 14개, 합격, 밤은 계산하지 않음(강조된 줄).",
+     "head": [
+      "날짜",
+      "낮 공부 후",
+      "모의 시험",
+      "밤에 잊은 뒤"
+     ],
+     "rows": [
+      [
+       "1일째",
+       5,
+       "불합격",
+       3
+      ],
+      [
+       "2일째",
+       8,
+       "불합격",
+       6
+      ],
+      [
+       "3일째",
+       11,
+       "불합격",
+       9
+      ],
+      [
+       "4일째",
+       14,
+       "합격",
+       "-"
+      ]
+     ],
+     "highlight": [
+      3
+     ]
+    }
+   ],
+   "params": [
+    "goal은 합격에 필요한 단어 수이며, 10 이상 10,000 이하인 정수입니다.",
+    "learn은 낮에 외우는 단어 수이며, 1 이상 1,000 이하인 정수입니다.",
+    "forget은 밤에 잊어버리는 단어 수이며, 1 이상이고 learn보다 작은 정수입니다."
+   ],
+   "returns": [
+    "처음으로 모의 시험에 합격하는 날이 며칠째인지 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "goal",
+    "learn",
+    "forget"
+   ],
+   "examples": [
+    {
+     "args": [
+      13,
+      5,
+      2
+     ],
+     "explain": "문제 설명의 예와 같습니다. 4일째 낮 공부 후 14개가 되어 그날 합격합니다.",
+     "expected": 4
+    },
+    {
+     "args": [
+      10,
+      4,
+      1
+     ],
+     "explain": "낮 공부 후 단어 수는 4, 7, 10개입니다. 3일째 낮 공부 후 10개로 10개 이상이 되어 3일째에 합격합니다.",
+     "expected": 3
+    },
+    {
+     "args": [
+      20,
+      25,
+      10
+     ],
+     "explain": "1일째 낮 공부 후 25개로 바로 20개 이상이 되므로 1일째에 합격합니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int goal, int learn, int forget) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int goal, int learn, int forget) {\n    int answer = 0;\n    int words = 0;\n    while (1) {\n        answer++;\n        words += learn;\n        if (words >= goal) {\n            break;\n        }\n        words -= forget;\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      10,
+      10,
+      9
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      10,
+      2,
+      1
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      10000,
+      2,
+      1
+     ],
+     "expected": 9999
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      999
+     ],
+     "expected": 9001
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      1
+     ],
+     "expected": 11
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      500
+     ],
+     "expected": 19
+    },
+    {
+     "args": [
+      100,
+      7,
+      3
+     ],
+     "expected": 25
+    },
+    {
+     "args": [
+      50,
+      11,
+      2
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      37,
+      9,
+      5
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      999,
+      999,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1000,
+      999,
+      998
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      5000,
+      37,
+      12
+     ],
+     "expected": 200
+    },
+    {
+     "args": [
+      11,
+      10,
+      9
+     ],
+     "expected": 2
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(goal, learn, forget):\n    if not all(type(x) is int for x in (goal, learn, forget)):\n        return False\n    return 10 <= goal <= 10000 and 1 <= learn <= 1000 and 1 <= forget < learn",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "어느 날 낮 공부 후 외운 단어가 goal개 이상이 되었는데, 그날 밤 잊어버리면 goal개보다 적어져요. 이날은 어떻게 볼까요?",
+     "options": [
+      "그날 합격한 것이다",
+      "밤에 줄어들었으니 아직 합격이 아니다",
+      "다음 날 낮에 다시 확인해야 한다",
+      "합격도 불합격도 아니다"
+     ],
+     "answer": 0,
+     "explain": "낮 공부가 끝나자마자 모의 시험을 보므로, 낮 공부 후 goal개 이상이면 그날 바로 합격이에요. 밤에 잊어버리는 일은 합격한 뒤라서 계산하지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "예시 2(goal = 10, learn = 4, forget = 1)를 하루씩 따라가 보세요. `words`는 외운 단어 수이고, `words >= goal`은 낮 공부 직후에 확인해요(참이면 1, 거짓이면 0).",
+     "columns": [
+      "날짜",
+      "낮 공부 후 words",
+      "words >= goal",
+      "밤에 잊은 뒤 words"
+     ],
+     "rows": [
+      [
+       "1일째",
+       {
+        "a": "4"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "2일째",
+       {
+        "a": "7"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "6"
+       }
+      ],
+      [
+       "3일째",
+       {
+        "a": "10"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       "(합격해서 계산 안 함)"
+      ]
+     ],
+     "check": "def answers():\n    goal, learn, forget = 10, 4, 1\n    out = []\n    words = 0\n    while True:\n        words += learn\n        ok = words >= goal\n        out += [words, 1 if ok else 0]\n        if ok:\n            return out\n        words -= forget\n        out.append(words)",
+     "explain": "낮 공부 후 4, 7, 10개예요. 3일째 낮에 10개가 되어 `words >= goal`이 처음 1(참)이 되므로 그날 바로 합격하고, 밤 계산은 하지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "하루 동안 할 일을 반복문 안에 옮길 때 알맞은 순서는?",
+     "options": [
+      "날짜 1 늘리기 → words += learn → 합격이면 반복 멈추기 → words -= forget",
+      "날짜 1 늘리기 → words += learn → words -= forget → 합격이면 반복 멈추기",
+      "합격이면 반복 멈추기 → words += learn → words -= forget → 날짜 1 늘리기",
+      "words -= forget → words += learn → 합격이면 반복 멈추기 → 날짜 1 늘리기"
+     ],
+     "answer": 0,
+     "explain": "낮(더하기) 바로 다음에 확인하고, 밤(빼기)은 그 뒤에 와야 해요. `while (1)`은 조건이 늘 참이라 계속 되풀이하다가, `break;`를 만나면 반복을 빠져나와요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 1(goal = 13, learn = 5, forget = 2)에서 확인을 실수로 **밤에 잊은 뒤**에 하면 며칠째가 나올까요? 숫자만 쓰세요.",
+     "a": "5",
+     "check": "def answers():\n    goal, learn, forget = 13, 5, 2\n    words, day = 0, 0\n    while True:\n        day += 1\n        words += learn\n        words -= forget\n        if words >= goal:\n            return [day]",
+     "explain": "밤 뒤에 확인하면 4일째 밤에 12개로 13개 미만이라 넘어가고, 5일째 밤 15개에서야 멈춰 5가 나와요. 정답 4보다 하루 늦어요."
+    }
+   ],
+   "explain": "하루를 반복 한 번으로 보고 날짜를 1 늘린 뒤, 낮에 learn을 더하고 바로 goal 이상인지 확인해요. 합격이면 break로 반복을 끝내고, 아니면 밤에 forget을 빼요. 밤까지 뺀 뒤에 확인하면 하루 늦은 답이 나올 수 있어요."
+  },
+  {
+   "id": "cb-t09-c",
+   "version": 1,
+   "title": "대피소 물탱크",
+   "statement": "산속 대피소에 물탱크가 하나 있습니다. 처음 물탱크에는 물이 `water`리터 들어 있고, 매일 다음 순서가 되풀이됩니다.\n\n- 낮: 대피소 사람들이 물을 `use`리터 씁니다.\n- 낮에 물을 쓴 뒤 남은 물이 0리터 이하가 되면, 그날 물이 바닥난 것으로 봅니다(모자란 양은 따지지 않습니다).\n- 밤: 물이 바닥나지 않았다면, 밤사이 내린 빗물이 물탱크에 `rain`리터 모입니다.\n\n예를 들어 water = 10, use = 4, rain = 1이면 다음과 같습니다.\n\n{{fig:f1}}\n\n3일째 낮에 물을 쓰면 4 - 4 = 0리터가 되어 0리터 이하이므로 그날 물이 바닥납니다. 따라서 답은 3입니다.\n\n물탱크의 물이 처음으로 바닥나는 날이 며칠째인지 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "water = 10, use = 4, rain = 1일 때 날짜별 물의 양 표. 1일째 낮에 쓴 뒤 6리터, 남음, 밤에 빗물이 모인 뒤 7리터. 2일째 3리터, 남음, 4리터. 3일째 0리터, 바닥남, 밤은 계산하지 않음(강조된 줄).",
+     "head": [
+      "날짜",
+      "낮에 쓴 뒤",
+      "상태",
+      "밤에 빗물이 모인 뒤"
+     ],
+     "rows": [
+      [
+       "1일째",
+       6,
+       "남음",
+       7
+      ],
+      [
+       "2일째",
+       3,
+       "남음",
+       4
+      ],
+      [
+       "3일째",
+       0,
+       "바닥남",
+       "-"
+      ]
+     ],
+     "highlight": [
+      2
+     ]
+    }
+   ],
+   "params": [
+    "water는 처음 물탱크에 든 물의 양(리터)이며, 10 이상 10,000 이하인 정수입니다.",
+    "use는 낮에 쓰는 물의 양(리터)이며, 1 이상 1,000 이하인 정수입니다.",
+    "rain은 밤에 모이는 빗물의 양(리터)이며, 0 이상이고 use보다 작은 정수입니다."
+   ],
+   "returns": [
+    "물탱크의 물이 처음으로 바닥나는 날이 며칠째인지 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "water",
+    "use",
+    "rain"
+   ],
+   "examples": [
+    {
+     "args": [
+      10,
+      4,
+      1
+     ],
+     "explain": "문제 설명의 예와 같습니다. 3일째 낮에 물을 쓴 뒤 0리터가 되어 바닥납니다.",
+     "expected": 3
+    },
+    {
+     "args": [
+      30,
+      8,
+      3
+     ],
+     "explain": "낮에 쓴 뒤 남은 물은 22, 17, 12, 7, 2리터이고, 6일째 낮에 5 - 8 = -3리터가 되어 바닥납니다.",
+     "expected": 6
+    },
+    {
+     "args": [
+      12,
+      20,
+      5
+     ],
+     "explain": "1일째 낮에 12 - 20 = -8리터로 0리터 이하가 되므로 첫날 바로 바닥납니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int water, int use, int rain) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int water, int use, int rain) {\n    int answer = 0;\n    while (water > 0) {\n        answer++;\n        water -= use;\n        if (water > 0) {\n            water += rain;\n        }\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      10,
+      10,
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      10,
+      9,
+      8
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      10000,
+      1,
+      0
+     ],
+     "expected": 10000
+    },
+    {
+     "args": [
+      10000,
+      2,
+      1
+     ],
+     "expected": 9999
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      999
+     ],
+     "expected": 9001
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      0
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      5000,
+      300,
+      100
+     ],
+     "expected": 25
+    },
+    {
+     "args": [
+      100,
+      7,
+      3
+     ],
+     "expected": 25
+    },
+    {
+     "args": [
+      64,
+      16,
+      0
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      65,
+      16,
+      0
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      999,
+      1000,
+      999
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      77,
+      13,
+      12
+     ],
+     "expected": 65
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(water, use, rain):\n    if not all(type(x) is int for x in (water, use, rain)):\n        return False\n    return 10 <= water <= 10000 and 1 <= use <= 1000 and 0 <= rain < use",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "낮에 물을 쓴 뒤 남은 물이 정확히 0리터가 되었어요. 어떻게 볼까요?",
+     "options": [
+      "그날 물이 바닥난 것이다",
+      "아직 바닥나지 않았으니 밤에 빗물을 더한다",
+      "다음 날 낮에 다시 확인한다"
+     ],
+     "answer": 0,
+     "explain": "'0리터 이하'는 0보다 작은 경우와 0과 같은 경우를 모두 포함해요. 그래서 0리터가 된 날도 바닥난 날이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "예시 2(water = 30, use = 8, rain = 3)를 하루씩 따라가 보세요. `water <= 0`은 낮에 물을 쓴 직후에 확인해요(참이면 1, 거짓이면 0).",
+     "columns": [
+      "날짜",
+      "낮에 쓴 뒤 water",
+      "water <= 0",
+      "밤에 빗물이 모인 뒤 water"
+     ],
+     "rows": [
+      [
+       "1일째",
+       "22",
+       "0",
+       "25"
+      ],
+      [
+       "2일째",
+       {
+        "a": "17"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "20"
+       }
+      ],
+      [
+       "3일째",
+       {
+        "a": "12"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "15"
+       }
+      ],
+      [
+       "4일째",
+       {
+        "a": "7"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "10"
+       }
+      ],
+      [
+       "5일째",
+       {
+        "a": "2"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "6일째",
+       {
+        "a": "-3"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       },
+       "(바닥나서 계산 안 함)"
+      ]
+     ],
+     "check": "def answers():\n    water, use, rain = 30, 8, 3\n    out = []\n    water = 25\n    while True:\n        water -= use\n        out += [water, 1 if water <= 0 else 0]\n        if water <= 0:\n            return out\n        water += rain\n        out.append(water)",
+     "explain": "날마다 8을 빼고 3을 더해 25 → 20 → 15 → 10 → 5로 줄어요. 6일째 낮에 5 - 8 = -3이 되어 처음으로 1(참)이 되므로 답은 6이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "물이 바닥났는지 확인하는 조건을 C로 바르게 쓴 것은?",
+     "options": [
+      "water <= 0",
+      "water < 0",
+      "water == 0",
+      "water >= 0"
+     ],
+     "answer": 0,
+     "explain": "'0 이하'는 `<=`로 써요. `water == 0`은 -3처럼 0을 지나쳐 버린 경우를 놓치고, `water < 0`은 딱 0이 된 날을 놓쳐요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 1(water = 10, use = 4, rain = 1)에서 바닥나는 조건을 실수로 `water < 0`으로 쓰면 며칠째가 나올까요? 숫자만 쓰세요.",
+     "a": "4",
+     "check": "def answers():\n    water, use, rain = 10, 4, 1\n    day = 0\n    while True:\n        day += 1\n        water -= use\n        if water < 0:\n            return [day]\n        water += rain",
+     "explain": "3일째 낮에 0리터가 되어도 `0 < 0`은 거짓이라 넘어가고, 밤에 1리터가 모여 4일째 낮에 -3리터가 될 때 멈춰서 4가 나와요. 정답은 3이에요."
+    }
+   ],
+   "explain": "하루를 반복 한 번으로 보고 날짜를 1 늘린 뒤 낮에 use만큼 빼고, 그 직후 0 이하인지 확인해요. 바닥나지 않았을 때만 밤에 rain을 더해요. 값이 줄어드는 문제라서 조건의 방향(`<=`)과 0을 포함하는지를 꼭 확인해요."
+  },
+  {
+   "id": "cb-t09-d",
+   "version": 1,
+   "title": "수조 히터 켜고 끄기",
+   "statement": "열대어 수조의 히터는 켜진 상태로 시작해서 **1분마다 켜짐과 꺼짐을 번갈아** 합니다. 처음 물의 온도는 `start`도입니다.\n\n- 히터가 켜져 있는 1분 동안 물의 온도가 `up`도 올라갑니다.\n- 히터가 꺼져 있는 1분 동안 물의 온도가 `down`도 내려갑니다.\n- 어느 1분이 끝났을 때 물의 온도가 `target`도 이상이면 그 즉시 히터 사용을 마칩니다.\n\n예를 들어 start = 20, target = 26, up = 3, down = 1이면 다음과 같습니다.\n\n{{fig:f1}}\n\n히터가 켜진 5분째가 끝날 때 물의 온도가 27도가 되어 처음으로 26도 이상이 됩니다. 히터가 꺼져 있던 2분째와 4분째도 걸린 시간에 들어가므로 답은 5입니다.\n\n물의 온도가 처음으로 target도 이상이 될 때까지 걸린 시간이 몇 분인지 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "start = 20, target = 26, up = 3, down = 1일 때 1분마다 물의 온도 표. 1분 켜짐 23도, 2분 꺼짐 22도, 3분 켜짐 25도, 4분 꺼짐 24도, 5분 켜짐 27도(강조된 줄, 처음으로 26도 이상).",
+     "head": [
+      "시간",
+      "히터",
+      "그 1분이 끝난 뒤 온도"
+     ],
+     "rows": [
+      [
+       "1분",
+       "켜짐",
+       23
+      ],
+      [
+       "2분",
+       "꺼짐",
+       22
+      ],
+      [
+       "3분",
+       "켜짐",
+       25
+      ],
+      [
+       "4분",
+       "꺼짐",
+       24
+      ],
+      [
+       "5분",
+       "켜짐",
+       27
+      ]
+     ],
+     "highlight": [
+      4
+     ]
+    }
+   ],
+   "params": [
+    "start는 처음 물의 온도이고, target은 목표 온도입니다. 둘 다 0 이상 100 이하인 정수이며, start는 target보다 작습니다.",
+    "up은 히터가 켜진 1분 동안 오르는 온도이며, 1 이상 10 이하인 정수입니다.",
+    "down은 히터가 꺼진 1분 동안 내려가는 온도이며, 1 이상이고 up보다 작은 정수입니다."
+   ],
+   "returns": [
+    "물의 온도가 처음으로 target도 이상이 될 때까지 걸린 시간(분)을 return 합니다. 히터가 꺼져 있던 시간도 포함합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "start",
+    "target",
+    "up",
+    "down"
+   ],
+   "examples": [
+    {
+     "args": [
+      20,
+      26,
+      3,
+      1
+     ],
+     "explain": "문제 설명의 예와 같습니다. 5분째가 끝날 때 27도가 되어 처음으로 26도 이상이 됩니다.",
+     "expected": 5
+    },
+    {
+     "args": [
+      0,
+      10,
+      5,
+      3
+     ],
+     "explain": "1분마다 온도는 5, 2, 7, 4, 9, 6, 11도가 됩니다. 7분째가 끝날 때 처음으로 10도 이상이 됩니다.",
+     "expected": 7
+    },
+    {
+     "args": [
+      25,
+      28,
+      4,
+      2
+     ],
+     "explain": "1분째가 끝날 때 29도가 되어 바로 28도 이상이 됩니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int start, int target, int up, int down) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int start, int target, int up, int down) {\n    int answer = 0;\n    int temp = start;\n    while (1) {\n        answer++;\n        temp += up;\n        if (temp >= target) {\n            break;\n        }\n        answer++;\n        temp -= down;\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      0,
+      100,
+      2,
+      1
+     ],
+     "expected": 197
+    },
+    {
+     "args": [
+      99,
+      100,
+      2,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      0,
+      1,
+      2,
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      0,
+      100,
+      10,
+      9
+     ],
+     "expected": 181
+    },
+    {
+     "args": [
+      0,
+      100,
+      10,
+      1
+     ],
+     "expected": 21
+    },
+    {
+     "args": [
+      50,
+      60,
+      3,
+      2
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      10,
+      20,
+      5,
+      3
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      36,
+      40,
+      4,
+      3
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      35,
+      40,
+      4,
+      3
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      0,
+      50,
+      7,
+      4
+     ],
+     "expected": 31
+    },
+    {
+     "args": [
+      20,
+      37,
+      6,
+      5
+     ],
+     "expected": 23
+    },
+    {
+     "args": [
+      1,
+      99,
+      9,
+      8
+     ],
+     "expected": 179
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(start, target, up, down):\n    if not all(type(x) is int for x in (start, target, up, down)):\n        return False\n    return 0 <= start < target <= 100 and 1 <= up <= 10 and 1 <= down < up",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "걸린 시간(분)은 어떻게 세어야 할까요?",
+     "options": [
+      "켜진 1분과 꺼진 1분을 모두 센다",
+      "켜진 1분만 센다",
+      "꺼진 1분만 센다",
+      "켜짐·꺼짐 한 쌍(2분)을 1로 센다"
+     ],
+     "answer": 0,
+     "explain": "문제에서 히터가 꺼져 있던 시간도 걸린 시간에 들어간다고 했어요. 예시 1에서 켜진 1·3·5분째와 꺼진 2·4분째를 모두 세어 5분이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "예시 2(start = 0, target = 10, up = 5, down = 3)를 1분씩 따라가 보세요. 꺼진 1분 뒤에는 온도가 내려가기만 하므로 확인하지 않아요(-). `temp >= target`은 참이면 1, 거짓이면 0이에요.",
+     "columns": [
+      "시간",
+      "히터",
+      "1분이 끝난 뒤 temp",
+      "temp >= target"
+     ],
+     "rows": [
+      [
+       "1분",
+       "켜짐",
+       {
+        "a": "5"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2분",
+       "꺼짐",
+       {
+        "a": "2"
+       },
+       "-"
+      ],
+      [
+       "3분",
+       "켜짐",
+       {
+        "a": "7"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "4분",
+       "꺼짐",
+       {
+        "a": "4"
+       },
+       "-"
+      ],
+      [
+       "5분",
+       "켜짐",
+       {
+        "a": "9"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "6분",
+       "꺼짐",
+       {
+        "a": "6"
+       },
+       "-"
+      ],
+      [
+       "7분",
+       "켜짐",
+       {
+        "a": "11"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    start, target, up, down = 0, 10, 5, 3\n    out = []\n    temp = start\n    while True:\n        temp += up\n        out += [temp, 1 if temp >= target else 0]\n        if temp >= target:\n            return out\n        temp -= down\n        out.append(temp)",
+     "explain": "켜진 1분마다 5도 오르고 꺼진 1분마다 3도 내려가 5, 2, 7, 4, 9, 6, 11도가 돼요. 켜진 7분째에 11도가 되어 처음으로 1(참)이 되므로 답은 7이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "반복 한 번에 켜짐 1분과 꺼짐 1분을 함께 처리하려고 해요. 반복 안의 알맞은 순서는?",
+     "options": [
+      "1분 늘리기 → temp += up → 목표 이상이면 멈추기 → 1분 늘리기 → temp -= down",
+      "1분 늘리기 → temp += up - down → 목표 이상이면 멈추기",
+      "2분 늘리기 → temp += up - down → 목표 이상이면 멈추기",
+      "1분 늘리기 → temp += up → 1분 늘리기 → temp -= down → 목표 이상이면 멈추기"
+     ],
+     "answer": 0,
+     "explain": "up - down을 한꺼번에 더하거나 꺼진 뒤에 확인하면, 켜진 직후의 높은 온도를 확인할 기회를 놓쳐요. 1분이 지날 때마다 answer를 1씩 늘려야 꺼진 시간도 빠짐없이 세어져요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 1(start = 20, target = 26, up = 3, down = 1)에서 실수로 **켜진 시간만** 세면 몇이 나올까요? 숫자만 쓰세요.",
+     "a": "3",
+     "check": "def answers():\n    start, target, up, down = 20, 26, 3, 1\n    temp, on = start, 0\n    while True:\n        on += 1\n        temp += up\n        if temp >= target:\n            return [on]\n        temp -= down",
+     "explain": "켜진 1·3·5분째 세 번만 세어 3이 나와요. 꺼진 2·4분째도 시간이 흐르므로 정답은 5예요."
+    }
+   ],
+   "explain": "반복 한 번에 켜진 1분(answer++, temp += up, 바로 확인)과 꺼진 1분(answer++, temp -= down)을 차례로 처리해요. 온도는 켜진 1분이 끝날 때만 올라가므로 그때 확인하면 돼요. 꺼진 시간도 걸린 시간이라는 점, 처음 온도가 0이 아니라 start라는 점을 빠뜨리지 않아요."
+  },
+  {
+   "id": "cb-t09-e",
+   "version": 1,
+   "title": "실력이 느는 암벽 등반",
+   "statement": "등반가가 높이 `height`미터인 큰 암벽을 여러 날에 걸쳐 오릅니다. 등반가는 바닥(높이 0)에서 출발하고, 매일 다음 순서가 되풀이됩니다.\n\n- 낮: 위로 올라갑니다. 첫째 날에는 `climb`미터를 오르고, 실력이 늘어 날마다 전날보다 1미터씩 더 오릅니다(둘째 날 climb + 1미터, 셋째 날 climb + 2미터, …).\n- 낮에 오른 뒤 높이가 height미터 이상이면, 그날 꼭대기에 도착한 것으로 봅니다.\n- 밤: 꼭대기에 도착하지 못했다면, 암벽에 매달려 자는 동안 `slip`미터 아래로 미끄러집니다.\n\n예를 들어 height = 30, climb = 4, slip = 3이면 다음과 같습니다.\n\n{{fig:f1}}\n\n7일째 낮에는 10미터를 올라 21 + 10 = 31미터가 되므로, 30미터 이상이 되어 그날 꼭대기에 도착합니다. 따라서 답은 7입니다.\n\n등반가가 처음으로 꼭대기에 도착하는 날이 며칠째인지 return 하도록 solution 함수를 완성해 주세요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "height = 30, climb = 4, slip = 3일 때 날짜별 높이 표(오르는 높이, 낮에 오른 뒤, 밤에 미끄러진 뒤). 1일째 4, 4, 1. 2일째 5, 6, 3. 3일째 6, 9, 6. 4일째 7, 13, 10. 5일째 8, 18, 15. 6일째 9, 24, 21. 7일째 10, 31, 도착해서 밤은 계산하지 않음(강조된 줄).",
+     "head": [
+      "날짜",
+      "그날 오르는 높이",
+      "낮에 오른 뒤",
+      "밤에 미끄러진 뒤"
+     ],
+     "rows": [
+      [
+       "1일째",
+       4,
+       4,
+       1
+      ],
+      [
+       "2일째",
+       5,
+       6,
+       3
+      ],
+      [
+       "3일째",
+       6,
+       9,
+       6
+      ],
+      [
+       "4일째",
+       7,
+       13,
+       10
+      ],
+      [
+       "5일째",
+       8,
+       18,
+       15
+      ],
+      [
+       "6일째",
+       9,
+       24,
+       21
+      ],
+      [
+       "7일째",
+       10,
+       31,
+       "- (도착)"
+      ]
+     ],
+     "highlight": [
+      6
+     ]
+    }
+   ],
+   "params": [
+    "height는 암벽의 높이(미터)이며, 10 이상 10,000 이하인 정수입니다.",
+    "climb은 첫째 날 낮에 오르는 높이(미터)이며, 1 이상 1,000 이하인 정수입니다.",
+    "slip은 밤에 미끄러지는 높이(미터)이며, 1 이상이고 climb보다 작은 정수입니다."
+   ],
+   "returns": [
+    "처음으로 꼭대기에 도착하는 날이 며칠째인지 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "height",
+    "climb",
+    "slip"
+   ],
+   "examples": [
+    {
+     "args": [
+      30,
+      4,
+      3
+     ],
+     "explain": "문제 설명의 예와 같습니다. 7일째 낮에 31미터가 되어 꼭대기에 도착합니다.",
+     "expected": 7
+    },
+    {
+     "args": [
+      20,
+      5,
+      4
+     ],
+     "explain": "낮에 오른 뒤 높이는 5, 7, 10, 14, 19, 25미터입니다. 6일째 낮에 처음으로 20미터 이상이 됩니다.",
+     "expected": 6
+    },
+    {
+     "args": [
+      10,
+      12,
+      11
+     ],
+     "explain": "1일째 낮에 12미터를 올라 바로 10미터 이상이 되므로 1일째에 도착합니다.",
+     "expected": 1
+    }
+   ],
+   "code": "#include <stdio.h>\n\nint solution(int height, int climb, int slip) {\n    // 여기에 코드를 작성해 주세요.\n    int answer = 0;\n    return answer;\n}\n",
+   "solution": "#include <stdio.h>\n\nint solution(int height, int climb, int slip) {\n    int answer = 0;\n    int pos = 0;\n    int today = climb;\n    while (1) {\n        answer++;\n        pos += today;\n        if (pos >= height) {\n            break;\n        }\n        pos -= slip;\n        today++;\n    }\n    return answer;\n}\n",
+   "tests": [
+    {
+     "args": [
+      10,
+      10,
+      9
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      10000,
+      2,
+      1
+     ],
+     "expected": 141
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      999
+     ],
+     "expected": 134
+    },
+    {
+     "args": [
+      10000,
+      1000,
+      1
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      11,
+      10,
+      9
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      100,
+      3,
+      2
+     ],
+     "expected": 14
+    },
+    {
+     "args": [
+      5000,
+      50,
+      49
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      1000,
+      999,
+      998
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      55,
+      2,
+      1
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      300,
+      20,
+      19
+     ],
+     "expected": 24
+    },
+    {
+     "args": [
+      10000,
+      500,
+      250
+     ],
+     "expected": 37
+    },
+    {
+     "args": [
+      45,
+      9,
+      8
+     ],
+     "expected": 9
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(height, climb, slip):\n    if not all(type(x) is int for x in (height, climb, slip)):\n        return False\n    return 10 <= height <= 10000 and 1 <= climb <= 1000 and 1 <= slip < climb",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "climb = 4일 때, 넷째 날 낮에 오르는 높이는 몇 미터일까요?",
+     "options": [
+      "4미터",
+      "7미터",
+      "8미터",
+      "10미터"
+     ],
+     "answer": 1,
+     "explain": "첫째 날 4, 둘째 날 5, 셋째 날 6, 넷째 날 7미터예요. n째 날에는 climb + (n - 1)미터를 올라요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "예시 2(height = 20, climb = 5, slip = 4)를 하루씩 따라가 보세요. `today`는 그날 오르는 높이, `pos`는 등반가의 높이예요.",
+     "columns": [
+      "날짜",
+      "today",
+      "낮에 오른 뒤 pos",
+      "밤에 미끄러진 뒤 pos"
+     ],
+     "rows": [
+      [
+       "1일째",
+       "5",
+       "5",
+       "1"
+      ],
+      [
+       "2일째",
+       {
+        "a": "6"
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "3일째",
+       {
+        "a": "7"
+       },
+       {
+        "a": "10"
+       },
+       {
+        "a": "6"
+       }
+      ],
+      [
+       "4일째",
+       {
+        "a": "8"
+       },
+       {
+        "a": "14"
+       },
+       {
+        "a": "10"
+       }
+      ],
+      [
+       "5일째",
+       {
+        "a": "9"
+       },
+       {
+        "a": "19"
+       },
+       {
+        "a": "15"
+       }
+      ],
+      [
+       "6일째",
+       {
+        "a": "10"
+       },
+       {
+        "a": "25"
+       },
+       "(도착해서 계산 안 함)"
+      ]
+     ],
+     "check": "def answers():\n    height, climb, slip = 20, 5, 4\n    out = []\n    pos, today = 1, climb + 1\n    while True:\n        pos += today\n        out += [today, pos]\n        if pos >= height:\n            return out\n        pos -= slip\n        out.append(pos)\n        today += 1",
+     "explain": "today가 6, 7, 8, 9, 10으로 하루에 1씩 늘어요. 6일째 낮에 15 + 10 = 25미터가 되어 처음으로 20미터 이상이 되므로 답은 6이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "그날 오르는 높이를 담은 변수 `today`를 1 늘리는 `today++;`는 어디에 두어야 할까요?",
+     "options": [
+      "그날 오르기와 미끄러지기를 모두 마친 뒤(반복의 끝)",
+      "반복을 시작하자마자, 낮에 오르기 전",
+      "반복문에 들어가기 전에 한 번만",
+      "꼭대기에 도착했을 때"
+     ],
+     "answer": 0,
+     "explain": "첫째 날에는 climb을 그대로 올라야 하므로, 그날 오른 다음에 1을 늘려 다음 날을 준비해요. `today++;`는 today에 1을 더하는 C 문장이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 1(height = 30, climb = 4, slip = 3)에서 `today++;`를 실수로 **낮에 오르기 전**에 두면 무엇이 return 될까요? 숫자만 쓰세요.",
+     "a": "6",
+     "check": "def answers():\n    height, climb, slip = 30, 4, 3\n    pos, day, today = 0, 0, climb\n    while True:\n        day += 1\n        today += 1\n        pos += today\n        if pos >= height:\n            return [day]\n        pos -= slip",
+     "explain": "첫째 날부터 5미터, 6미터, …를 올라 하루씩 앞당겨지므로 6이 나와요. 정답은 7이에요. 바뀌는 값을 언제 바꾸는지가 중요해요."
+    }
+   ],
+   "explain": "원숭이 나무 오르기와 같은 틀(날짜 늘리기 → 오르기 → 바로 확인 → 미끄러지기)에, 그날 오르는 높이 today를 하루 끝에 1씩 늘리는 일이 더해졌어요. today의 처음 값은 climb이고, 늘리는 자리가 오르기 전이면 첫날부터 틀려요. 낮에 오른 직후에 확인하는 것도 잊지 않아요."
+  }
+ ]
+}

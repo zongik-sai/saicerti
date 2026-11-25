@@ -29,6 +29,8 @@ def err(where, msg):
 
 
 CTX = {'lang': 'python'}
+# 함수 정의 찾기: 파이썬 def f( / C 반환형 f(
+FUNC_DEF = {'python': r'def\s+{f}\s*\(', 'c': r'[\w\*]\s+\**{f}\s*\('}
 
 
 def run_harness(code, func, cases, mode, spec=None):
@@ -194,7 +196,7 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
     if not isinstance(an, list) or not an or not all(isinstance(x, str) and IDENT.match(x) for x in an):
         err(where, 'argNames 오류')
         return
-    if not re.search(rf'def\s+{p["funcName"]}\s*\(', p['solution']):
+    if not re.search(FUNC_DEF[CTX['lang']].format(f=re.escape(p['funcName'])), p['solution']):
         err(where, '정답 코드에 funcName 함수 정의 없음')
     mode = p.get('compare', 'exact')
     if mode not in ('exact', 'float'):
@@ -324,7 +326,7 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
             err(where, '처음 코드가 이미 모든 테스트를 통과함')
         if MARK.search(code):
             err(where, '함수 작성 코드에 빈칸 표시가 있음')
-        if not re.search(rf'def\s+{p["funcName"]}\s*\(', code):
+        if not re.search(FUNC_DEF[CTX['lang']].format(f=re.escape(p['funcName'])), code):
             err(where, '처음 코드에 funcName 함수 정의 없음')
     if mock and p.get('steps') == []:
         return  # 모의고사: 중간 점검 없이 실전처럼
