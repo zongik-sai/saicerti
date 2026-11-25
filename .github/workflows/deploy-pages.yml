@@ -42,7 +42,9 @@ jobs:
         run: npm run lint
       - name: Unit tests (진도 합치기·표 채점 규칙 등)
         run: npm test
-      - name: 'Content check (문제 100개 — 정답·테스트·빈칸·한 줄 수정·중간 점검 정답)'
+      - name: 'C interpreter tests (브라우저 C 채점기 — gcc 결과와 대조)'
+        run: python3 tools/test_cinterp.py
+      - name: 'Content check (문제 240개 — 정답·테스트·빈칸·한 줄 수정·중간 점검 정답, C는 gcc 대조)'
         run: python3 tools/validate.py
       - name: Configure Pages
         id: pages
@@ -56,7 +58,7 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_ENABLE_DEMO: 'false'
         run: npm run build
-      - name: Verify build paths (base·파이썬 워커·Pyodide)
+      - name: Verify build paths (base·채점 워커·Pyodide·C 채점기)
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path && format('{0}/', steps.pages.outputs.base_path) || format('/{0}/', github.event.repository.name) }}
         run: node scripts/verify-dist.mjs dist

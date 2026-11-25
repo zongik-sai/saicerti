@@ -1,5 +1,5 @@
 /**
- * 파이썬 채점기(메인 화면 쪽). public/pyworker.js(Web Worker)에 학생 코드와 테스트를 보내고 결과를 받는다.
+ * 채점기(메인 화면 쪽, 파이썬·C 공용). public/pyworker.js(Web Worker)에 학생 코드와 테스트를 보내고 결과를 받는다.
  * - 코드는 브라우저 안에서만 실행한다(서버로 보내지 않음).
  * - 정해진 시간 안에 끝나지 않으면(무한 반복 등) 워커를 끝내고 새로 만든다.
  */
@@ -31,6 +31,7 @@ type Reply = { id: number; ok: boolean; result?: RunOutput; error?: string };
 class PyRunner {
   private worker: Worker | null = null;
   private ready: Promise<void> | null = null;
+  private cReady: Promise<void> | null = null;
   private seq = 0;
   private pending = new Map<number, (r: Reply) => void>();
   status: EngineStatus = 'idle';
@@ -55,8 +56,29 @@ class PyRunner {
     return { id, reply };
   }
 
-  /** 워커를 만들고 Pyodide를 불러 둔다(이미 준비됐으면 바로 끝남). */
-  ensure(): Promise<void> {
+  /** 워커를 만들고 Pyodide를 불러 둔다(이미 준비됐으면 바로 끝남). C면 C 채점기(pycparser·cinterp)까지 불러 둔다. */
+  ensure(lang: Lang = 'python'): Promise<void> {
+    return lang === 'c' ? this.ensureC() : this.ensurePy();
+  }
+
+  private ensureC(): Promise<void> {
+    if (this.cReady) return this.cReady;
+    const ready = this.ensurePy().then(async () => {
+      if (!this.worker) throw new Error('중단됨');
+      this.set('loading');
+      const r = await this.post({ type: 'initC' }).reply;
+      if (!r.ok) throw new Error(r.error || 'C 채점기를 불러오지 못했어요.');
+      this.set('ready');
+    });
+    ready.catch(() => {
+      if (this.cReady === ready) this.cReady = null;
+      if (this.status === 'loading') this.set('error');
+    });
+    this.cReady = ready;
+    return ready;
+  }
+
+  private ensurePy(): Promise<void> {
     if (this.ready) return this.ready;
     this.set('loading');
     const w = new Worker(`${BASE_URL}pyworker.js`);
@@ -88,13 +110,14 @@ class PyRunner {
     this.worker?.terminate();
     this.worker = null;
     this.ready = null;
+    this.cReady = null;
     for (const fn of this.pending.values()) fn({ id: -1, ok: false, error: '중단됨' });
     this.pending.clear();
   }
 
   async run(code: string, func: string, cases: Case[], mode: CompareMode, timeoutMs = 4000, lang: Lang = 'python', spec?: CSpec): Promise<RunResult> {
     try {
-      await this.ensure();
+      await this.ensure(lang);
     } catch (e) {
       return { kind: 'fail', message: e instanceof Error ? e.message : String(e) };
     }
@@ -111,7 +134,7 @@ class PyRunner {
       // 무한 반복 등: 워커를 끝내고 다음 실행을 위해 새로 준비한다
       this.reset();
       this.set('idle');
-      void this.ensure().catch(() => undefined);
+      void this.ensure(lang).catch(() => undefined);
       return { kind: 'timeout', ms };
     }
     if (!r.ok || !r.result) return { kind: 'fail', message: r.error || '실행하지 못했어요.' };

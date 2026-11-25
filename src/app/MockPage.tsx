@@ -191,7 +191,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
   const { problem, type } = item;
   const kind = type.kind;
   const lang = type.lang ?? 'python';
-  const engine = useEngine();
+  const engine = useEngine(lang);
   const dkey = `${problem.id}:r${round}`;
   const draft = useMemo(() => readDraft(learnerKey, dkey, problem.version), [learnerKey, dkey, problem.version]);
   const nBlanks = kind === 'blank' ? countBlanks(problem.code) : 0;
@@ -303,7 +303,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
         )}
       </div>
       <p className="engine" aria-live="polite">
-        {engineText(engine)}
+        {engineText(engine, lang)}
       </p>
       {notice && (
         <p className="notice warn" role="alert">
@@ -322,7 +322,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
           )}
         </div>
       )}
-      {shown && <ResultsView shown={shown} problem={problem} lang={lang} />}
+      {shown && <ResultsView shown={shown} problem={problem} lang={lang} submitLabel="제출하기" />}
     </div>
   );
 }

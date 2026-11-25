@@ -185,7 +185,7 @@ p { margin: 0 0 0.6rem; }
 
 /* 문제 화면 */
 .solve { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 1rem; align-items: start; }
-@media (max-width: 960px) { .solve { grid-template-columns: 1fr; } }
+@media (max-width: 960px) { .solve { grid-template-columns: minmax(0, 1fr); } }
 .statement { position: sticky; top: 4rem; max-height: calc(100vh - 5rem); overflow: auto; }
 @media (max-width: 960px) { .statement { position: static; max-height: none; } }
 .statement h1 { font-size: 1.3rem; }

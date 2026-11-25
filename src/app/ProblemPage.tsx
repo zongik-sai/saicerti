@@ -166,7 +166,7 @@ interface CodeProps {
 }
 
 function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNext }: CodeProps) {
-  const engine = useEngine();
+  const engine = useEngine(lang);
   const draft = useMemo(() => readDraft(learnerKey, problem.id, problem.version), [learnerKey, problem.id, problem.version]);
   const nBlanks = kind === 'blank' ? countBlanks(problem.code) : 0;
   const [code, setCode] = useState<string>(kind === 'blank' ? problem.code : draft?.code ?? problem.code);
@@ -270,7 +270,7 @@ function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNe
         )}
       </div>
       <p className="engine" aria-live="polite">
-        {engineText(engine)}
+        {engineText(engine, lang)}
       </p>
       {notice && (
         <p className="notice warn" role="alert">

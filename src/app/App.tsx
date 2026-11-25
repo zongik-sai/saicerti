@@ -142,7 +142,7 @@ function Home() {
       <section className="hero">
         <h1>자격증 코딩, 손으로 따라가고 코드로 확인해요</h1>
         <p className="muted" style={{ maxWidth: '44rem' }}>
-          COS Pro Python 시험 유형마다 비슷한 연습 문제 5개. 먼저 표를 채우며 코드를 손으로 따라가 보고, 그다음 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
+          COS Pro Python·C 시험 유형마다 비슷한 연습 문제 5개와 모의고사 3회. 먼저 표를 채우며 코드를 손으로 따라가 보고, 그다음 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
         </p>
       </section>
       <div className="courses">

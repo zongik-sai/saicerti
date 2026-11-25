@@ -54,9 +54,9 @@ export interface Shown {
 }
 
 /** 실행(예시) / 채점(전체) 결과 */
-export function ResultsView({ shown, problem, lang = 'python' }: { shown: Shown; problem: Problem; lang?: Lang }) {
+export function ResultsView({ shown, problem, lang = 'python', submitLabel = '채점하기' }: { shown: Shown; problem: Problem; lang?: Lang; submitLabel?: string }) {
   const r = shown.result;
-  if (r.kind === 'fail') return <div className="err-box">파이썬을 실행하지 못했어요: {r.message} 잠시 뒤 다시 눌러 보세요.</div>;
+  if (r.kind === 'fail') return <div className="err-box">{lang === 'c' ? 'C 채점기를' : '파이썬을'} 실행하지 못했어요: {r.message} 잠시 뒤 다시 눌러 보세요.</div>;
   if (r.kind === 'timeout')
     return (
       <div className="err-box" role="alert">
@@ -89,7 +89,7 @@ export function ResultsView({ shown, problem, lang = 'python' }: { shown: Shown;
           <strong className={pass === all ? 'ok' : 'bad'}>
             예시 {all}개 중 {pass}개 통과
           </strong>
-          <span className="faint">{r.ms}ms · 채점하려면 ‘채점하기’를 눌러요</span>
+          <span className="faint">{r.ms}ms · {submitLabel === '채점하기' ? '채점하려면' : '답안을 내려면'} ‘{submitLabel}’를 눌러요</span>
         </div>
         <div className="scroll-x">
           <table className="res-table">
