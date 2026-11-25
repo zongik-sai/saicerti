@@ -26,7 +26,7 @@ export type Step =
 
 /** 문제 속 그림(시험지의 이미지를 화면에서 다시 그림). 설명 글에서 한 줄짜리 `{{fig:ID}}`로 넣는다 */
 export type Figure =
-  | { id: string; kind: 'cells'; caption?: string; alt: string; index?: (string | number)[] | 'auto' | 'auto1'; values: (string | number)[]; highlight?: number[]; dim?: number[]; marks?: { at: number; label: string }[]; arrows?: { from: number; to: number; label?: string }[]; groups?: { from: number; to: number; label: string }[] }
+  | { id: string; kind: 'cells'; caption?: string; alt: string; index?: (string | number)[] | 'auto' | 'auto1'; values: (string | number)[]; highlight?: number[]; dim?: number[]; marks?: { at: number; label: string }[]; arrows?: { from: number; to: number; label?: string; both?: boolean }[]; groups?: { from: number; to: number; label: string }[] }
   | { id: string; kind: 'grid'; caption?: string; alt: string; rows: (string | number)[][]; rowLabels?: string[]; colLabels?: string[]; highlight?: [number, number][]; dim?: [number, number][] }
   | { id: string; kind: 'table'; caption?: string; alt: string; head: string[]; rows: (string | number)[][]; highlight?: number[] }
   | { id: string; kind: 'svg'; caption?: string; alt: string; svg: string };

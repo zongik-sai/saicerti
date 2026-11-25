@@ -25,6 +25,10 @@ function Cells({ fig }: { fig: Extract<Figure, { kind: 'cells' }> }) {
   const hi = new Set(fig.highlight ?? []);
   const dim = new Set(fig.dim ?? []);
   const marks = new Map((fig.marks ?? []).map((m) => [m.at, m.label]));
+  // 겹치지 않는 묶음·화살표는 같은 줄에(원본 그림처럼 한 줄로), 겹치면 아래 줄로
+  const groupRows = packRows(fig.groups ?? []);
+  const groupLevels = groupRows.reduce((m, x) => Math.max(m, x.row + 1), 0);
+  const arrowRows = packRows(fig.arrows ?? []);
   return (
     <div className="fig-scroll">
       <div className="fig-cells" style={{ gridTemplateColumns: `repeat(${n}, minmax(2.4rem, auto))` }}>
@@ -44,19 +48,33 @@ function Cells({ fig }: { fig: Extract<Figure, { kind: 'cells' }> }) {
               {marks.get(i) ?? ''}
             </div>
           ))}
-        {(fig.groups ?? []).map((g, i) => (
-          <div key={`g${i}`} className="fig-group" style={{ gridColumn: `${Math.min(g.from, g.to) + 1} / ${Math.max(g.from, g.to) + 2}`, gridRow: 4 + i }}>
+        {groupRows.map(({ g, row }, i) => (
+          <div key={`g${i}`} className="fig-group" style={{ gridColumn: `${Math.min(g.from, g.to) + 1} / ${Math.max(g.from, g.to) + 2}`, gridRow: 4 + row }}>
             <span>{g.label}</span>
           </div>
         ))}
-        {(fig.arrows ?? []).map((a, i) => (
-          <div key={`a${i}`} className={`fig-arrow ${a.to >= a.from ? 'right' : 'left'}`} style={{ gridColumn: `${Math.min(a.from, a.to) + 1} / ${Math.max(a.from, a.to) + 2}`, gridRow: 4 + (fig.groups?.length ?? 0) + i }}>
+        {arrowRows.map(({ g: a, row }, i) => (
+          <div key={`a${i}`} className={`fig-arrow ${a.both ? 'both' : a.to >= a.from ? 'right' : 'left'}`} style={{ gridColumn: `${Math.min(a.from, a.to) + 1} / ${Math.max(a.from, a.to) + 2}`, gridRow: 4 + groupLevels + row }}>
             <span>{a.label ?? ''}</span>
           </div>
         ))}
       </div>
     </div>
   );
+}
+
+function packRows<T extends { from: number; to: number }>(items: T[]): { g: T; row: number }[] {
+  const ends: number[] = [];
+  return items.map((g) => {
+    const lo = Math.min(g.from, g.to);
+    const hi = Math.max(g.from, g.to);
+    let row = ends.findIndex((e) => e < lo);
+    if (row < 0) {
+      row = ends.length;
+      ends.push(hi);
+    } else ends[row] = hi;
+    return { g, row };
+  });
 }
 
 function Grid({ fig }: { fig: Extract<Figure, { kind: 'grid' }> }) {
