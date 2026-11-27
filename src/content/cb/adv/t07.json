@@ -167,7 +167,7 @@
       ]
      ],
      "expected": 1,
-     "explain": "3번 버튼은 1번·3번, 4번 버튼은 1번·2번·4번, 1번 버튼은 1번 책상만 바꿉니다. 등은 1011 → 0001 → 1100 → 0100 순서로 바뀌어 2번 책상 하나만 켜져 있습니다."
+     "explain": "3번 버튼은 1번·3번, 4번 버튼은 1번·2번·4번, 1번 버튼은 1번 책상만 바꿉니다. 1번~4번 책상의 상태는 {1, 0, 1, 1} → {0, 0, 0, 1} → {1, 1, 0, 0} → {0, 1, 0, 0} 순서로 바뀌어 2번 책상 하나만 켜져 있습니다."
     }
    ],
    "code": "#include <stdio.h>\n\nint solution(int init[], int init_len, int presses[], int presses_len) {\n    int desk[101] = {0};\n    for (int i = 1; i <= init_len; i++) {\n        desk[i] = init[i - 1];\n    }\n    for (int p = 0; p < presses_len; p++) {\n        int k = presses[p];\n        for (int d = 1; d <= k; d++) {\n            if (k % d == 0) {\n                desk[d] = 1 - desk[k];\n            }\n        }\n    }\n    int count = 0;\n    for (int i = 1; i <= init_len; i++) {\n        if (desk[i] == 1) count++;\n    }\n    return count;\n}",
@@ -1034,6 +1034,7 @@
      "a": "3",
      "alts": [],
      "check": "def run(init, presses):\n    desk = [0] + list(init)\n    for k in presses:\n        for d in range(1, k + 1):\n            if k % d == 0:\n                desk[d] = 1 - desk[d]\n    return sum(desk[1:])\ndef answers():\n    return [run([1, 1, 1, 1], [4, 2])]",
+     "code": "start",
      "explain": "4번 버튼은 1번, 2번, 4번 책상을 바꿔 3번만 켜진 채로 남아요. 이어서 2번 버튼이 1번, 2번 책상을 다시 켜서 켜진 등은 1번, 2번, 3번으로 3개예요."
     }
    ],
@@ -2238,7 +2239,8 @@
      "a": "3",
      "alts": [],
      "check": "def sim(n, cmds, buggy=False):\n    z = [0] * (n + 1)\n    hist = []\n    for kind, a, b in cmds:\n        for i in range(a, b + 1):\n            if kind == 1:\n                z[i] = 1\n            elif kind == 2:\n                z[i] = 0\n            else:\n                z[i] = int(z[i] == 1) if buggy else int(z[i] == 0)\n        hist.append(sum(z[1:]))\n    return hist\ndef answers():\n    return [sim(5, [[3, 1, 4], [2, 2, 2], [3, 2, 5], [1, 5, 5]])[-1]]",
-     "explain": "상태는 11110 → 10110 → 11001 → 11001 순서로 바뀌어요. 마지막 켜기 명령은 이미 켜진 5번 노즐을 그대로 두므로 켜진 노즐은 1번, 2번, 5번으로 3개예요."
+     "code": "start",
+     "explain": "1번~5번 노즐의 상태는 {1, 1, 1, 1, 0} → {1, 0, 1, 1, 0} → {1, 1, 0, 0, 1} → {1, 1, 0, 0, 1} 순서로 바뀌어요. 마지막 켜기 명령은 이미 켜진 5번 노즐을 그대로 두므로 켜진 노즐은 1번, 2번, 5번으로 3개예요."
     }
    ],
    "explain": "C에서 `(nozzle[i] == 1)`은 비교 결과인 1 또는 0이 되므로, 0이면 0, 1이면 1을 그대로 다시 넣어 상태가 바뀌지 않아요. 비교식으로 뒤집으려면 `nozzle[i] = (nozzle[i] == 0);`처럼 꺼져 있을 때 1이 되게 써야 해요(`1 - nozzle[i]`나 `!nozzle[i]`도 같은 뜻이에요). 켜기·끄기처럼 값을 정하는 명령과 상태를 뒤집는 명령을 구별해 보세요."
@@ -2966,7 +2968,7 @@
      "prompt": "n = 5, ops = `{{0, 2}, {1, 2}, {4, 3}}`이에요. 조작을 하나 마칠 때마다, 문제 규칙대로 1번 촛불이 그때까지 바뀐 횟수와 1번 촛불의 상태(켜짐 1, 꺼짐 0), 켜진 촛불 수, best를 채워 보세요.",
      "columns": [
       "조작",
-      "1번이 바뀐 횟수",
+      "1번 촛불이 바뀐 횟수",
       "1번 촛불 상태",
       "켜진 촛불 수",
       "best"
@@ -3026,7 +3028,7 @@
      "kind": "table",
      "code": "start",
      "title": "틀린 코드의 촛불 값",
-     "prompt": "처음 코드의 6번째 줄은 `candle[idx] = (candle[idx] + 1) % n;`이에요. n = 5일 때 어떤 촛불이 1번, 2번, … 바뀔 때마다 틀린 코드의 candle 값과, count_lit가 그 촛불을 켜졌다고 세는지(세면 1, 안 세면 0), 문제 규칙대로의 상태를 채워 보세요.",
+     "prompt": "처음 코드의 6번째 줄은 `candle[idx] = (candle[idx] + 1) % n;`이에요. n = 5일 때 어떤 촛불이 한 번, 두 번, …, 다섯 번 바뀔 때마다 틀린 코드의 candle 값과, count_lit가 그 촛불을 켜졌다고 세는지(세면 1, 안 세면 0), 문제 규칙대로의 상태를 채워 보세요.",
      "columns": [
       "바뀐 횟수",
       "틀린 코드: candle 값",
@@ -3129,7 +3131,7 @@
    "id": "cb-t07-adv4",
    "version": 1,
    "title": "양쪽 끝에서 세는 복도 전등",
-   "statement": "긴 복도 천장에 왼쪽 끝부터 차례로 1번, 2번, …, n번 전등 n개가 달려 있고, 처음에는 모든 전등이 꺼져 있습니다. 관리 프로그램에 정수 명령 k가 차례로 들어오면 아래와 같이 전등의 상태를 바꿉니다. 상태를 바꾸면 켜져 있던 전등은 꺼지고, 꺼져 있던 전등은 켜집니다.\n\n- k가 양수이면: 왼쪽 끝에서부터 세어 k번째, 2k번째, 3k번째, … 전등의 상태를 바꿉니다.\n- k가 음수이면: 오른쪽 끝에서부터 세어 -k번째, -2k번째, -3k번째, … 전등의 상태를 바꿉니다. 예를 들어 n이 8이면 오른쪽 끝에서 1번째 전등은 8번, 2번째 전등은 7번 전등입니다.\n- k가 0이면: 아무 전등도 바꾸지 않습니다.\n\n예를 들어 n이 8이고 명령이 `{3, -2, 0, -5}`이면 전등의 상태는 아래와 같이 바뀝니다(●는 켜진 전등, ○는 꺼진 전등입니다).\n\n{{fig:f1}}\n\n명령 -2는 오른쪽 끝에서 2번째, 4번째, 6번째, 8번째인 7번, 5번, 3번, 1번 전등을 바꾸고, 명령 -5는 오른쪽 끝에서 5번째인 4번 전등을 바꿉니다. 따라서 명령을 모두 처리한 뒤 켜져 있는 전등 가운데 가장 왼쪽은 1번, 가장 오른쪽은 7번입니다.\n\n전등의 개수 `n`과 명령을 순서대로 담은 배열 `cmds`가 매개변수로 주어질 때, 명령을 모두 처리한 뒤 켜져 있는 전등 가운데 [가장 왼쪽 전등의 번호, 가장 오른쪽 전등의 번호]를 return 하도록 solution 함수를 작성했습니다. 켜진 전등이 하나뿐이면 두 값이 같고, 켜진 전등이 하나도 없으면 [-1, -1]을 return 합니다. 하지만 코드의 일부가 잘못되어 있어서 일부 입력에서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
+   "statement": "긴 복도 천장에 왼쪽 끝부터 차례로 1번, 2번, …, n번 전등 n개가 달려 있고, 처음에는 모든 전등이 꺼져 있습니다. 관리 프로그램에 정수 명령 k가 차례로 들어오면 아래와 같이 전등의 상태를 바꿉니다. 상태를 바꾸면 켜져 있던 전등은 꺼지고, 꺼져 있던 전등은 켜집니다.\n\n- k가 양수이면: 왼쪽 끝에서부터 세어 k번째, 2k번째, 3k번째, … 전등의 상태를 바꿉니다.\n- k가 음수이면: 오른쪽 끝에서부터 세어 -k번째, -2k번째, -3k번째, … 전등의 상태를 바꿉니다. 예를 들어 n이 8이면 오른쪽 끝에서 1번째 전등은 8번, 2번째 전등은 7번 전등입니다.\n- k가 0이면: 아무 전등도 바꾸지 않습니다.\n\n예를 들어 n이 8이고 명령이 `{3, -2, 0, -5}`이면 전등의 상태는 아래와 같이 바뀝니다(●는 켜진 전등, ○는 꺼진 전등입니다).\n\n{{fig:f1}}\n\n명령 -2는 오른쪽 끝에서 2번째, 4번째, 6번째, 8번째인 7번, 5번, 3번, 1번 전등을 바꾸고, 명령 -5는 오른쪽 끝에서 5번째인 4번 전등을 바꿉니다. 따라서 명령을 모두 처리한 뒤 켜져 있는 전등 가운데 가장 왼쪽은 1번, 가장 오른쪽은 7번입니다.\n\n전등의 개수 `n`과 명령을 순서대로 담은 배열 `cmds`가 매개변수로 주어질 때, 명령을 모두 처리한 뒤 켜져 있는 전등 가운데 가장 왼쪽 전등의 번호와 가장 오른쪽 전등의 번호를 차례로 담은 배열을 return 하도록 solution 함수를 작성했습니다. 켜진 전등이 하나뿐이면 두 값이 같고, 켜진 전등이 하나도 없으면 `{-1, -1}`을 return 합니다. 하지만 코드의 일부가 잘못되어 있어서 일부 입력에서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
    "figures": [
     {
      "id": "f1",
@@ -3274,7 +3276,7 @@
     "cmds의 원소는 -n 이상 n 이하인 정수입니다(0과 음수도 들어올 수 있습니다)."
    ],
    "returns": [
-    "[가장 왼쪽에 있는 켜진 전등의 번호, 가장 오른쪽에 있는 켜진 전등의 번호]를 담은 길이 2인 배열을 return 합니다. 켜진 전등이 없으면 [-1, -1]을 return 합니다."
+    "{가장 왼쪽에 있는 켜진 전등의 번호, 가장 오른쪽에 있는 켜진 전등의 번호}를 담은 길이 2인 배열을 return 합니다. 켜진 전등이 없으면 {-1, -1}을 return 합니다."
    ],
    "funcName": "solution",
    "argNames": [
@@ -3318,7 +3320,7 @@
       -1,
       -1
      ],
-     "explain": "명령 -1은 오른쪽 끝에서 1번째, 2번째, …인 전등을 모두 바꿔 5개가 다 켜지고, 명령 1이 다시 모두 바꿔 다 꺼집니다. 켜진 전등이 없으므로 [-1, -1]을 return 합니다."
+     "explain": "명령 -1은 오른쪽 끝에서 1번째, 2번째, …인 전등을 모두 바꿔 5개가 다 켜지고, 명령 1이 다시 모두 바꿔 다 꺼집니다. 켜진 전등이 없으므로 {-1, -1}을 return 합니다."
     },
     {
      "args": [
@@ -3331,7 +3333,7 @@
       1,
       1
      ],
-     "explain": "명령 -6은 오른쪽 끝에서 6번째인 1번 전등만 바꿉니다. 켜진 전등이 1번 하나뿐이므로 [1, 1]을 return 합니다."
+     "explain": "명령 -6은 오른쪽 끝에서 6번째인 1번 전등만 바꿉니다. 켜진 전등이 1번 하나뿐이므로 {1, 1}을 return 합니다."
     }
    ],
    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nvoid flip(int lamp[], int idx) {\n    lamp[idx] = 1 - lamp[idx];\n}\n\nint* solution(int n, int cmds[], int cmds_len) {\n    int lamp[101] = {0};\n    for (int r = 0; r < cmds_len; r++) {\n        int k = cmds[r];\n        if (k == 0) continue;\n        int step = (k > 0) ? k : -k;\n        for (int m = step; m <= n; m += step) {\n            if (k > 0) flip(lamp, m);\n            else flip(lamp, n - m);\n        }\n    }\n    int* answer = (int*)malloc(sizeof(int) * 2);\n    answer[0] = -1;\n    answer[1] = -1;\n    for (int i = 1; i <= n; i++) {\n        if (lamp[i] == 1) {\n            answer[0] = i;\n            break;\n        }\n    }\n    for (int i = n; i >= 1; i--) {\n        if (lamp[i] == 1) {\n            answer[1] = i;\n            break;\n        }\n    }\n    return answer;\n}",
@@ -3815,7 +3817,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    for k in [-2, -5]:\n        for m in range(-k, 9, -k):\n            out += [8 - m, 8 - m + 1]\n    return out",
-     "explain": "틀린 코드는 바꿔야 할 전등보다 한 칸 왼쪽을 바꿔요. m이 n과 같을 때는 전등이 없는 lamp[0]을 바꾸고 1번 전등은 그대로 둬서, 예시 3에서 [-1, -1]을 return 해요."
+     "explain": "틀린 코드는 바꿔야 할 전등보다 한 칸 왼쪽을 바꿔요. m이 n과 같을 때는 전등이 없는 lamp[0]을 바꾸고 1번 전등은 그대로 둬서, 예시 3에서 {-1, -1}을 return 해요."
     },
     {
      "id": "s7",
@@ -3841,6 +3843,7 @@
       "-1, -1"
      ],
      "check": "def run(n, cmds, buggy=False):\n    lamp = [0] * (n + 1)\n    hist = []\n    for k in cmds:\n        if k != 0:\n            s = abs(k)\n            for m in range(s, n + 1, s):\n                i = m if k > 0 else (n - m if buggy else n - m + 1)\n                lamp[i] = 1 - lamp[i]\n        on = [i for i in range(1, n + 1) if lamp[i] == 1]\n        hist.append((len(on), on[0] if on else -1, on[-1] if on else -1, list(lamp[1:])))\n    return hist\ndef res(n, cmds, buggy=False):\n    h = run(n, cmds, buggy)[-1]\n    return [h[1], h[2]]\ndef answers():\n    return [res(4, [1, 0, -1])]",
+     "code": "start",
      "explain": "명령 1은 모든 전등을 켜고, 명령 0은 건너뛰고, 명령 -1은 오른쪽 끝부터 모든 전등을 다시 꺼요. 켜진 전등이 없으므로 {-1, -1}이에요."
     }
    ],
@@ -3850,7 +3853,7 @@
    "id": "cb-t07-adv5",
    "version": 1,
    "title": "타일 색을 바꾸는 로봇",
-   "statement": "복도 바닥에 0번부터 n - 1번까지 번호가 붙은 타일 n개가 왼쪽부터 한 줄로 깔려 있습니다. 타일은 흰색 또는 검은색입니다.\n\n- 흰색 타일: 0\n- 검은색 타일: 1\n\n바닥 무늬를 바꾸는 로봇이 start번 타일 위에 서 있다가, 아래 두 가지 일을 차례로 하는 것을 moves번 되풀이합니다.\n\n- 먼저, 지금 서 있는 타일의 색을 바꿉니다. 흰색은 검은색으로, 검은색은 흰색으로 바뀝니다.\n- 그다음, 색을 바꾼 뒤 그 타일이 검은색이면 오른쪽(번호가 1 큰 타일)으로, 흰색이면 왼쪽(번호가 1 작은 타일)으로 한 칸 움직입니다. 단, 움직일 곳에 타일이 없으면(복도 밖이면) 움직이지 않고 그 자리에 있습니다.\n\n예를 들어 타일의 처음 색이 `{0, 1, 1, 0, 0}`이고 start가 2, moves가 6이면 아래와 같이 바뀝니다(●는 검은색, ○는 흰색 타일이고, 괄호로 묶은 칸이 로봇이 서 있는 타일입니다).\n\n{{fig:f1}}\n\n따라서 6번 되풀이한 뒤 검은색 타일은 4개이고, 로봇은 4번 타일 위에 있습니다.\n\n타일의 처음 색을 번호 순서대로 담은 배열 `tiles`와 로봇의 처음 위치 `start`, 되풀이하는 횟수 `moves`가 매개변수로 주어질 때, [검은색 타일의 수, 로봇이 서 있는 타일의 번호]를 return 하도록 solution 함수를 작성했습니다. flipped 함수는 바꾼 색을 돌려주고, next_pos 함수는 로봇이 움직일 위치를 돌려줍니다. 하지만 코드의 일부가 잘못되어 있어서 일부 입력에서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
+   "statement": "복도 바닥에 0번부터 n - 1번까지 번호가 붙은 타일 n개가 왼쪽부터 한 줄로 깔려 있습니다. 타일은 흰색 또는 검은색입니다.\n\n- 흰색 타일: 0\n- 검은색 타일: 1\n\n바닥 무늬를 바꾸는 로봇이 start번 타일 위에 서 있다가, 아래 두 가지 일을 차례로 하는 것을 moves번 되풀이합니다.\n\n- 먼저, 지금 서 있는 타일의 색을 바꿉니다. 흰색은 검은색으로, 검은색은 흰색으로 바뀝니다.\n- 그다음, 색을 바꾼 뒤 그 타일이 검은색이면 오른쪽(번호가 1 큰 타일)으로, 흰색이면 왼쪽(번호가 1 작은 타일)으로 한 칸 움직입니다. 단, 움직일 곳에 타일이 없으면(복도 밖이면) 움직이지 않고 그 자리에 있습니다.\n\n예를 들어 타일의 처음 색이 `{0, 1, 1, 0, 0}`이고 start가 2, moves가 6이면 아래와 같이 바뀝니다(●는 검은색, ○는 흰색 타일이고, 괄호로 묶은 칸이 로봇이 서 있는 타일입니다).\n\n{{fig:f1}}\n\n따라서 6번 되풀이한 뒤 검은색 타일은 4개이고, 로봇은 4번 타일 위에 있습니다.\n\n타일의 처음 색을 번호 순서대로 담은 배열 `tiles`와 로봇의 처음 위치 `start`, 되풀이하는 횟수 `moves`가 매개변수로 주어질 때, 검은색 타일의 수와 로봇이 서 있는 타일의 번호를 차례로 담은 배열을 return 하도록 solution 함수를 작성했습니다. flipped 함수는 바꾼 색을 돌려주고, next_pos 함수는 로봇이 움직일 위치를 돌려줍니다. 하지만 코드의 일부가 잘못되어 있어서 일부 입력에서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 모든 입력에 대해 프로그램이 올바르게 동작하도록 해 주세요.",
    "figures": [
     {
      "id": "f1",
@@ -3962,7 +3965,7 @@
     "moves는 되풀이하는 횟수이며, 1 이상 100 이하인 자연수입니다."
    ],
    "returns": [
-    "moves번 되풀이한 뒤 [검은색 타일의 수, 로봇이 서 있는 타일의 번호]를 담은 길이 2인 배열을 return 합니다."
+    "moves번 되풀이한 뒤 {검은색 타일의 수, 로봇이 서 있는 타일의 번호}를 담은 길이 2인 배열을 return 합니다."
    ],
    "funcName": "solution",
    "argNames": [
@@ -4011,7 +4014,7 @@
       0,
       0
      ],
-     "explain": "1번 타일이 검은색이 되어 2번으로 가고, 2번 타일이 검은색이 되지만 오른쪽에 타일이 없어 2번에 그대로 있습니다. 이어서 2번, 1번 타일이 차례로 흰색이 되며 로봇은 1번, 0번으로 갑니다. 검은색 타일이 없으므로 [0, 0]을 return 합니다."
+     "explain": "1번 타일이 검은색이 되어 2번으로 가고, 2번 타일이 검은색이 되지만 오른쪽에 타일이 없어 2번에 그대로 있습니다. 이어서 2번, 1번 타일이 차례로 흰색이 되며 로봇은 1번, 0번으로 갑니다. 검은색 타일이 없으므로 {0, 0}을 return 합니다."
     }
    ],
    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint flipped(int color) {\n    return 1 - color;\n}\n\nint next_pos(int pos, int color, int n) {\n    int next = (color == 1) ? pos + 1 : pos - 1;\n    if (next < 0 || next >= n) return pos;\n    return next;\n}\n\nint* solution(int tiles[], int tiles_len, int start, int moves) {\n    int board[30];\n    for (int i = 0; i < tiles_len; i++) {\n        board[i] = tiles[i];\n    }\n    int pos = start;\n    for (int t = 0; t < moves; t++) {\n        flipped(board[pos]);\n        pos = next_pos(pos, board[pos], tiles_len);\n    }\n    int black = 0;\n    for (int i = 0; i < tiles_len; i++) {\n        if (board[i] == 1) black++;\n    }\n    int* answer = (int*)malloc(sizeof(int) * 2);\n    answer[0] = black;\n    answer[1] = pos;\n    return answer;\n}",
@@ -4593,6 +4596,7 @@
       "0, 0"
      ],
      "check": "def run(tiles, start, moves, buggy=False):\n    b = list(tiles)\n    n = len(b)\n    pos = start\n    hist = []\n    for t in range(moves):\n        if not buggy:\n            b[pos] = 1 - b[pos]\n        color = b[pos]\n        nxt = pos + 1 if color == 1 else pos - 1\n        if 0 <= nxt < n:\n            pos = nxt\n        hist.append((color, pos, list(b)))\n    return [sum(b), pos], hist\ndef answers():\n    return [run([1], 0, 3)[0]]",
+     "code": "start",
      "explain": "타일이 하나뿐이라 로봇은 어느 쪽으로도 움직일 수 없어요. 색만 검은색 → 흰색 → 검은색 → 흰색으로 세 번 바뀌어 흰색이 되므로 {0, 0}이에요."
     }
    ],
