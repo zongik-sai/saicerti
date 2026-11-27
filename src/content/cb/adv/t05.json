@@ -945,6 +945,7 @@
      "q": "고친 코드에 notes = \"cdec\", k = 1을 넣으면 무엇을 return 할까요?",
      "a": "1",
      "check": "def same_bar(notes, k, a, b):\n    for j in range(k):\n        if notes[a * k + j] != notes[b * k + j]:\n            return False\n    return True\n\ndef solution(notes, k):\n    bars = len(notes) // k\n    count = 0\n    for i in range(bars // 2):\n        if not same_bar(notes, k, i, bars - 1 - i):\n            count += 1\n    return count\n\ndef answers():\n    return [solution('cdec', 1)]",
+     "code": "start",
      "explain": "k = 1이면 음표 하나가 한 마디라서 글자 단위로 양 끝을 비교하는 것과 같아요. (c, c)는 같고 (d, e)만 달라 1이에요. 이때는 b * k + k - 1 - j도 b와 같아서 처음 코드도 같은 답을 내요."
     }
    ],
@@ -1726,6 +1727,7 @@
      "q": "고친 코드에 ring = \"abcb\"를 넣으면 무엇을 return 할까요?",
      "a": "-1",
      "check": "def flower_at(ring, n, start, step):\n    return ring[(start + step) % n]\n\ndef is_good_start(ring, n, start):\n    for i in range(n // 2):\n        if flower_at(ring, n, start, i) != flower_at(ring, n, start, n - 1 - i):\n            return False\n    return True\n\ndef solution(ring):\n    n = len(ring)\n    for start in range(n):\n        if is_good_start(ring, n, start):\n            return start\n    return -1\n\ndef answers():\n    return [solution('abcb')]",
+     "code": "start",
      "explain": "\"abcb\", \"bcba\", \"cbab\", \"babc\" 모두 뒤에서부터 읽으면 달라서 좋은 출발점이 없어요. 그래서 반복이 끝난 뒤 -1을 return 해요. 처음 코드는 0번 꽃을 기준으로 양옆이 같다고 보고 0을 return 해요."
     }
    ],
@@ -2230,6 +2232,7 @@
       "{0, 1}"
      ],
      "check": "def spread(w, n, left, right):\n    while left >= 0 and right < n and w[left] == w[right]:\n        left -= 1\n        right += 1\n    return right - left - 1\n\ndef solution(weather):\n    n = len(weather)\n    answer = [0, 0]\n    for c in range(n):\n        odd = spread(weather, n, c, c)\n        if odd > answer[1]:\n            answer = [c - odd // 2, odd]\n        even = spread(weather, n, c, c + 1)\n        if even > answer[1]:\n            answer = [c - even // 2 + 1, even]\n    return answer\n\ndef answers():\n    return [solution('cr')]",
+     "code": "start",
      "explain": "c와 r이 달라 짝수 길이 대칭 기간은 길이가 0이고, 하루짜리 기간 두 개가 가장 길어요. 더 길 때(>)만 바꾸므로 먼저 찾은 0번 날의 기간이 남아 [0, 1]이에요."
     },
     {
@@ -2321,6 +2324,7 @@
       ]
      ],
      "check": "def spread(w, n, left, right):\n    while left >= 0 and right < n and w[left] == w[right]:\n        left -= 1\n        right += 1\n    return right - left - 1\n\ndef solution(weather):\n    n = len(weather)\n    answer = [0, 0]\n    for c in range(n):\n        odd = spread(weather, n, c, c)\n        if odd > answer[1]:\n            answer = [c - odd // 2, odd]\n        even = spread(weather, n, c, c + 1)\n        if even > answer[1]:\n            answer = [c - even // 2 + 1, even]\n    return answer\n\ndef answers():\n    w = 'crrcw'\n    n = len(w)\n    answer = [0, 0]\n    out = []\n    for c in range(n):\n        odd = spread(w, n, c, c)\n        if odd > answer[1]:\n            answer = [c - odd // 2, odd]\n        even = spread(w, n, c, c + 1)\n        if even > answer[1]:\n            answer = [c - even // 2 + 1, even]\n        out += [odd, even, str(answer)]\n    return out",
+     "code": "start",
      "explain": "c = 1일 때 짝수 가운데(1번과 2번 날 사이)에서 \"crrc\"를 찾아 길이 4, 시작 날 1 - 4 / 2 + 1 = 0이 돼요. 그 뒤로는 길이 4보다 긴 기간이 없어서 [0, 4]가 그대로 남아요."
     }
    ],
