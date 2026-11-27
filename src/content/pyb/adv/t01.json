@@ -3894,24 +3894,24 @@
        }
       ],
       [
-       "[[-100]]",
+       "[[-60, -40]]",
        "100",
        {
-        "a": "[1, -100]"
+        "a": "[1, -40]"
        }
       ],
       [
-       "[[5, 1], [1, 5]]",
-       "3",
+       "[[7, 1], [1, 7]]",
+       "4",
        {
         "a": "[2, 1]"
        }
       ],
       [
-       "[[2], [2]]",
-       "2",
+       "[[-3], [-3]]",
+       "0",
        {
-        "a": "[1, 2]"
+        "a": "[1, -3]"
        }
       ],
       [
@@ -3922,8 +3922,8 @@
        }
       ]
      ],
-     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    cases = [[[], 3], [[[-100]], 100], [[[5, 1], [1, 5]], 3], [[[2], [2]], 2], [[[], [9, -9]], 0]]\n    return [solution(b, l) for b, l in cases]",
-     "explain": "줄이 없으면 []예요. [[5, 1], [1, 5]]는 1번째 줄에서 5, 2번째 줄에서 1을 줍는데 3과의 차이가 같아 더 작은 1을 골라 [2, 1]이고, [[2], [2]]는 수까지 같아 위쪽 줄인 [1, 2]예요. [[], [9, -9]]는 2번째 줄에서 가장 작은 -9를 주워요."
+     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    cases = [[[], 3], [[[-60, -40]], 100], [[[7, 1], [1, 7]], 4], [[[-3], [-3]], 0], [[[], [9, -9]], 0]]\n    return [solution(b, l) for b, l in cases]",
+     "explain": "줄이 없으면 []이고, 모두 음수인 [[-60, -40]]은 1번째 줄에서 가장 큰 -40을 주워 [1, -40]이에요. [[7, 1], [1, 7]]은 7과 1의 차이가 4와 똑같이 3이라 더 작은 1을 골라 [2, 1]이고, [[-3], [-3]]은 수까지 같아 위쪽 줄인 [1, -3]이에요. [[], [9, -9]]는 2번째 줄에서 가장 작은 -9를 주워요."
     }
    ],
    "explain": "pick은 줄 번호의 홀짝(`num % 2 == 1`)으로 max 또는 min을 고르고, solution은 빈 줄을 건너뛰며 줄 번호 `i + 1`을 넘겨요. 차이는 `abs(value - lucky)`로 구하고, 아직 후보가 없거나(best_num == 0) 차이가 더 작으면 후보를 바꾸며, 차이가 같을 때는 수가 더 작을 때(`<`)만 바꿔요. 등호를 넣거나 첫 후보 조건을 빼면 동점·경계 사례에서 틀려요.",
