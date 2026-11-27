@@ -329,7 +329,8 @@ function ProblemRoute({ course, learnerKey, remote, preview }: RouteProps) {
       );
     }
   }
-  return <ProblemPage course={course} type={f.type} problem={f.problem} index={f.index} adv={f.adv} learnerKey={learnerKey} remote={remote} />;
+  // 문제마다 새로 그린다(앞 문제의 단계 위치·탭이 남지 않게: 단계 수가 다른 문제로 옮길 때 안전)
+  return <ProblemPage key={f.problem.id} course={course} type={f.type} problem={f.problem} index={f.index} adv={f.adv} learnerKey={learnerKey} remote={remote} />;
 }
 
 /** 아직 잠긴 곳(심화·모의고사)에 주소로 바로 들어왔을 때 */

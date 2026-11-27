@@ -278,6 +278,7 @@
       ]
      ],
      "check": "def solution(choices):\n    answer = 1\n    last = len(choices) - 1\n    for i in range(last):\n        answer *= choices[i]\n    return answer * (choices[last] + 1)\n\n\ndef answers():\n    choices = [3, 2, 4]\n    out = []\n    answer = 1\n    last = len(choices) - 1\n    for i in range(last):\n        answer *= choices[i]\n        out += [choices[i], answer]\n    return out",
+     "code": "start",
      "explain": "반복문은 마지막 교시(인덱스 2)를 빼고 1교시와 2교시의 활동 수만 곱해요. 반복이 끝나면 answer = 6이고, 자유 시간은 return 줄에서 따로 계산해요."
     },
     {
@@ -330,6 +331,7 @@
       ]
      ],
      "check": "def solution(choices):\n    answer = 1\n    last = len(choices) - 1\n    for i in range(last):\n        answer *= choices[i]\n    return answer * (choices[last] + 1)\n\n\ndef answers():\n    out = []\n    for choices in [[3, 2, 4], [2, 5, 1, 1], [5]]:\n        answer = 1\n        last = len(choices) - 1\n        for i in range(last):\n            answer *= choices[i]\n        out += [answer, answer * choices[last] + 1, solution(choices)]\n    return out",
+     "code": "start",
      "explain": "틀린 식은 answer × (활동 수)를 먼저 계산하고 1을 더해서, 쉬는 경우를 딱 1가지만 더한 셈이에요. 앞 교시를 고르는 방법이 1가지뿐인 [5]에서만 우연히 맞아요."
     },
     {
@@ -343,6 +345,7 @@
       "return answer * choices[last] * 2"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "괄호로 (활동 수 + 1)을 먼저 계산한 뒤 곱해야 해요. `(answer * choices[last]) + 1`은 괄호가 있어도 처음 식과 계산 순서가 같고, `(answer + 1) * choices[last]`는 쉬기를 엉뚱한 곳에 더한 셈이에요."
     }
    ],
@@ -503,7 +506,7 @@
       "(모든 경우의 수) ÷ 2"
      ],
      "answer": 0,
-     "explain": "행운이 1번, 2번, … 나오는 경우를 하나하나 세기보다, 전체에서 '한 번도 없는' 경우를 빼는 편이 쉬워요. 이렇게 반대쪽 경우(여사건)를 빼서 세요. 행운이 없는 경우가 꼭 1가지인 것은 아니에요."
+     "explain": "행운이 1번, 2번, … 나오는 경우를 하나하나 세기보다, 전체에서 '한 번도 없는' 경우를 빼는 편이 쉬워요. 이렇게 반대쪽 경우(여사건)를 빼서 세는 방법을 자주 써요. 행운이 없는 경우가 꼭 1가지인 것은 아니에요."
     },
     {
      "id": "s4",
@@ -536,19 +539,20 @@
       ]
      ],
      "check": "def solution(tools):\n    total = 1\n    unlucky = 1\n    for t in tools:\n        if t == 'C':\n            total *= 2\n            unlucky *= 1\n        else:\n            total *= 6\n            unlucky *= 5\n    return total - unlucky\n\n\ndef answers():\n    out = []\n    total = 1\n    unlucky = 1\n    for t in 'CD':\n        if t == 'C':\n            total *= 2\n            unlucky *= 1\n        else:\n            total *= 6\n            unlucky *= 5\n        out += [total, unlucky]\n    return out",
+     "code": "start",
      "explain": "동전은 2가지 중 뒷면 1가지만 행운이 아니라서 unlucky에 1을 곱하고, 주사위는 6가지 중 5가지가 행운이 아니라서 5를 곱해요."
     },
     {
      "id": "s5",
      "kind": "table",
-     "title": "틀린 return 식과 올바른 식 비교",
-     "prompt": "반복이 끝난 뒤의 total과 unlucky, 틀린 return 식 `total - 1`의 값, 올바른 값 `total - unlucky`를 채워 보세요.",
+     "title": "틀린 return 식과 정답 비교",
+     "prompt": "반복이 끝난 뒤의 total과 unlucky, 틀린 return 식 `total - 1`의 값, 그리고 문제에서 원하는 정답(행운이 적어도 한 번 나오는 경우의 수)을 채워 보세요. 정답은 앞에서 고른 방법으로 계산해 보세요.",
      "columns": [
       "tools",
       "total",
       "unlucky",
       "total - 1",
-      "total - unlucky"
+      "정답"
      ],
      "rows": [
       [
@@ -597,8 +601,9 @@
        }
       ]
      ],
-     "check": "def solution(tools):\n    total = 1\n    unlucky = 1\n    for t in tools:\n        if t == 'C':\n            total *= 2\n            unlucky *= 1\n        else:\n            total *= 6\n            unlucky *= 5\n    return total - unlucky\n\n\ndef answers():\n    out = []\n    for tools in ['DDC', 'CCC', 'D']:\n        total = 1\n        unlucky = 1\n        for t in tools:\n            if t == 'C':\n                total *= 2\n                unlucky *= 1\n            else:\n                total *= 6\n                unlucky *= 5\n        out += [total, unlucky, total - 1, total - unlucky]\n    return out",
-     "explain": "반복문은 total과 unlucky를 모두 맞게 구해요. 틀린 return 식은 unlucky를 쓰지 않고 1만 빼서, unlucky가 1인 'CCC'에서만 우연히 맞아요."
+     "check": "def solution(tools):\n    total = 1\n    unlucky = 1\n    for t in tools:\n        if t == 'C':\n            total *= 2\n            unlucky *= 1\n        else:\n            total *= 6\n            unlucky *= 5\n    return total - unlucky\n\n\ndef answers():\n    out = []\n    for tools in ['DDC', 'CCC', 'D']:\n        total = 1\n        unlucky = 1\n        for t in tools:\n            if t == 'C':\n                total *= 2\n                unlucky *= 1\n            else:\n                total *= 6\n                unlucky *= 5\n        out += [total, unlucky, total - 1, solution(tools)]\n    return out",
+     "code": "start",
+     "explain": "반복문은 total과 unlucky를 모두 맞게 구해요. 틀린 return 식은 unlucky를 쓰지 않고 1만 빼서, 행운이 없는 경우가 딱 1가지인 'CCC'에서만 우연히 맞아요."
     },
     {
      "id": "s6",
@@ -611,7 +616,8 @@
       "어떤 경우에도 틀린다"
      ],
      "answer": 0,
-     "explain": "'C'만 있으면 unlucky = 1 × 1 × … = 1이라서 total - 1과 total - unlucky가 같아요. 'D'가 하나라도 있으면 unlucky에 5가 곱해져 1보다 커지므로 틀려요. 그래서 'D' 한 글자만 있을 때도 틀려요."
+     "code": "start",
+     "explain": "'C'만 있으면 행운이 한 번도 없는 경우(모두 뒷면)가 딱 1가지(unlucky = 1)라서 1을 빼도 맞아요. 'D'가 하나라도 있으면 unlucky에 5가 곱해져 1보다 커지므로 틀려요. 그래서 'D' 한 글자만 있을 때도 틀려요."
     },
     {
      "id": "s7",
@@ -624,6 +630,7 @@
       "return total - 5"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "반복문이 이미 total과 unlucky를 올바르게 구했어요. 전체에서 행운이 한 번도 없는 경우를 빼면 돼요. `return unlucky`는 '행운이 한 번도 없는 경우의 수'를 돌려주는 셈이에요."
     }
    ],
@@ -1126,6 +1133,7 @@
       ]
      ],
      "check": "def fold_count(thick, rate, goal):\n    count = 0\n    while thick < goal:\n        thick *= rate\n        count += 1\n    return count\n\ndef final_thick(thick, rate, goal):\n    while thick < goal:\n        thick *= rate\n    return thick\n\ndef solution(papers, goal):\n    minutes = 0\n    thickest = 0\n    for p in papers:\n        minutes += fold_count(p[0], p[1], goal)\n        thickest = max(thickest, final_thick(p[0], p[1], goal))\n    return [minutes, thickest]\n\n\ndef answers():\n    out = []\n    thick, rate, goal = 3, 2, 20\n    count = 0\n    while thick < goal:\n        thick *= rate\n        count += 1\n        out += [thick, count, thick < goal]\n    return out",
+     "code": "start",
      "explain": "세 번째 반복 뒤 thick = 24는 20 이상이라 반복이 멈춰요. 이때 접은 횟수는 count = 3인데, 틀린 코드는 `return thick`이라서 24를 돌려줘요."
     },
     {
@@ -1188,6 +1196,7 @@
       ]
      ],
      "check": "def fold_count(thick, rate, goal):\n    count = 0\n    while thick < goal:\n        thick *= rate\n        count += 1\n    return count\n\ndef final_thick(thick, rate, goal):\n    while thick < goal:\n        thick *= rate\n    return thick\n\ndef solution(papers, goal):\n    minutes = 0\n    thickest = 0\n    for p in papers:\n        minutes += fold_count(p[0], p[1], goal)\n        thickest = max(thickest, final_thick(p[0], p[1], goal))\n    return [minutes, thickest]\n\n\ndef answers():\n    out = []\n    minutes = 0\n    thickest = 0\n    for p in [[3, 2], [10, 3], [25, 2]]:\n        c = fold_count(p[0], p[1], 20)\n        t = final_thick(p[0], p[1], 20)\n        minutes += c\n        thickest = max(thickest, t)\n        out += [c, t, minutes, thickest]\n    return out",
+     "code": "start",
      "explain": "minutes는 접은 횟수를 차례로 더하고, thickest는 지금까지 본 두께 중 가장 큰 값을 기억해요. 마지막에 [4, 30]을 돌려줘요."
     },
     {
@@ -1196,6 +1205,7 @@
      "q": "틀린 코드(fold_count가 `return thick`)로 예시 1을 실행하면 return 값의 첫 번째 값(minutes)은 얼마일까요?",
      "a": "79",
      "check": "def fold_count(thick, rate, goal):\n    count = 0\n    while thick < goal:\n        thick *= rate\n        count += 1\n    return count\n\ndef final_thick(thick, rate, goal):\n    while thick < goal:\n        thick *= rate\n    return thick\n\ndef solution(papers, goal):\n    minutes = 0\n    thickest = 0\n    for p in papers:\n        minutes += fold_count(p[0], p[1], goal)\n        thickest = max(thickest, final_thick(p[0], p[1], goal))\n    return [minutes, thickest]\n\n\ndef answers():\n    ns = {}\n    exec('def fold_count(thick, rate, goal):\\n    count = 0\\n    while thick < goal:\\n        thick *= rate\\n        count += 1\\n    return thick\\n\\ndef final_thick(thick, rate, goal):\\n    while thick < goal:\\n        thick *= rate\\n    return thick\\n\\ndef solution(papers, goal):\\n    minutes = 0\\n    thickest = 0\\n    for p in papers:\\n        minutes += fold_count(p[0], p[1], goal)\\n        thickest = max(thickest, final_thick(p[0], p[1], goal))\\n    return [minutes, thickest]', ns)\n    return [ns[\"solution\"]([[3, 2], [10, 3], [25, 2]], 20)[0]]",
+     "code": "start",
      "explain": "틀린 fold_count가 접은 횟수 대신 다 접은 두께 24, 30, 25를 돌려줘서 minutes = 24 + 30 + 25 = 79가 돼요. 두 번째 값 30은 final_thick이 맞게 구해서 맞아요."
     },
     {
@@ -1209,6 +1219,7 @@
       "fold_count의 `while thick < goal:`을 `while thick <= goal:`로"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "fold_count는 반복문으로 접은 횟수를 count에 맞게 세었는데, return에서 두께를 돌려줘요. 이 줄만 고치면 돼요. final_thick에는 count라는 변수가 없고, `<=`로 바꾸면 두께가 goal과 같을 때도 한 번 더 접어 버려요."
     }
    ],
@@ -1530,6 +1541,7 @@
       "2, 3, 4"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "`range(1, 4)`는 1부터 4 바로 앞까지 1, 2, 3을 만들어요. 그래서 bundle_score는 인덱스 start부터 k장을 곱해요. solution의 `range(1, len(cards) - k + 1)`은 두 번째 묶음부터 마지막 묶음까지의 시작 인덱스예요."
     },
     {
@@ -1576,6 +1588,7 @@
       ]
      ],
      "check": "def bundle_score(cards, start, k):\n    score = 1\n    for i in range(start, start + k):\n        score *= cards[i]\n    return score\n\ndef solution(cards, k):\n    if len(cards) < k:\n        return -1\n    best_start = 0\n    best = bundle_score(cards, 0, k)\n    for s in range(1, len(cards) - k + 1):\n        now = bundle_score(cards, s, k)\n        if now > best:\n            best = now\n            best_start = s\n    return best_start + 1\n\n\ndef answers():\n    out = []\n    for start in range(3):\n        sc = bundle_score([3, -5, 2, 2], start, 2)\n        out += [sc, abs(sc)]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 -15를 15로 바꿔 돌려줘서, 실제로는 점수가 가장 작은 첫 묶음이 가장 큰 것처럼 보여요. 그래서 3이 아닌 1을 돌려줘요."
     },
     {
@@ -1653,6 +1666,7 @@
       ]
      ],
      "check": "def bundle_score(cards, start, k):\n    score = 1\n    for i in range(start, start + k):\n        score *= cards[i]\n    return score\n\ndef solution(cards, k):\n    if len(cards) < k:\n        return -1\n    best_start = 0\n    best = bundle_score(cards, 0, k)\n    for s in range(1, len(cards) - k + 1):\n        now = bundle_score(cards, s, k)\n        if now > best:\n            best = now\n            best_start = s\n    return best_start + 1\n\n\ndef answers():\n    cards, k = [4, -2, 1, 2, 1, 2], 2\n    out = []\n    best_start = 0\n    best = bundle_score(cards, 0, k)\n    for s in range(1, len(cards) - k + 1):\n        now = bundle_score(cards, s, k)\n        bigger = now > best\n        if bigger:\n            best = now\n            best_start = s\n        out += [now, bigger, best, best_start]\n    return out",
+     "code": "start",
      "explain": "점수가 같을 때는 `now > best`가 거짓이라 best_start가 바뀌지 않아요. 그래서 먼저 나온 묶음이 남고, return 값은 best_start + 1 = 3이에요."
     },
     {
@@ -1666,6 +1680,7 @@
       "bundle_score의 `score = 1`을 `score = 0`으로"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "곱한 값의 부호를 그대로 살려야 음수 점수가 작게 비교돼요. `>=`로 바꾸면 동점일 때 오른쪽 묶음을 고르게 되고, `score = 0`이면 곱이 늘 0이 돼요. 번호는 1부터 세니 best_start + 1은 맞아요."
     },
     {
@@ -1674,6 +1689,7 @@
      "q": "올바르게 고친 코드에서 cards = [-1, -2, -3], k = 1이면 return 값은 무엇일까요?",
      "a": "1",
      "check": "def bundle_score(cards, start, k):\n    score = 1\n    for i in range(start, start + k):\n        score *= cards[i]\n    return score\n\ndef solution(cards, k):\n    if len(cards) < k:\n        return -1\n    best_start = 0\n    best = bundle_score(cards, 0, k)\n    for s in range(1, len(cards) - k + 1):\n        now = bundle_score(cards, s, k)\n        if now > best:\n            best = now\n            best_start = s\n    return best_start + 1\n\n\ndef answers():\n    return [solution([-1, -2, -3], 1)]",
+     "code": "start",
      "explain": "점수는 -1, -2, -3이고 그중 가장 큰 점수는 -1이에요. 절댓값으로 비교하면 3을 돌려주는 실수를 해요."
     }
    ],
@@ -1940,6 +1956,7 @@
       "digit_product(n)은 n을 자리 곱하기 한 번 한 결과, persistence(n)은 마지막에 남는 한 자리 수, solution은 그 수를 센다"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "작은 일부터 나누면 자리 곱하기 한 번(digit_product) → 그것을 되풀이한 횟수(persistence) → 범위 전체 세기(solution) 순서예요. 뒤의 함수가 앞의 함수를 불러 써요."
     },
     {
@@ -1986,6 +2003,7 @@
       ]
      ],
      "check": "def digit_product(n):\n    result = 1\n    for ch in str(n):\n        result *= int(ch)\n    return result\n\ndef persistence(n):\n    count = 0\n    while n >= 10:\n        n = digit_product(n)\n        count += 1\n    return count\n\ndef solution(lo, hi, k):\n    total = 0\n    smallest = -1\n    for x in range(lo, hi + 1):\n        if persistence(x) >= k:\n            total += 1\n            if smallest == -1:\n                smallest = x\n    return [total, smallest]\n\n\ndef answers():\n    out = []\n    n = 39\n    count = 0\n    while n >= 10:\n        n = digit_product(n)\n        count += 1\n        out += [n, count]\n    return out",
+     "code": "start",
      "explain": "n이 4가 되면 `n >= 10`이 거짓이라 멈추고, 그때 count = 3이 39의 끈기예요. 이렇게 되려면 digit_product가 모든 자리를 곱해 줘야 해요."
     },
     {
@@ -2032,6 +2050,7 @@
       ]
      ],
      "check": "def answers():\n    n = 39\n    out = []\n    result = 1\n    out.append(result)\n    for ch in str(n):\n        out.append(ch)\n        result *= int(ch)\n        out.append(result)\n        out.append(result)\n        break\n    return out",
+     "code": "start",
      "explain": "첫 번째 반복에서 3만 곱하고 바로 return 해서 3을 돌려줘요. 두 번째 자리 9는 곱해지지 않아요."
     },
     {
@@ -2040,6 +2059,7 @@
      "q": "틀린 코드로 persistence(6788)을 계산하면 얼마가 나올까요? (올바른 끈기는 6이에요.)",
      "a": "1",
      "check": "def answers():\n    ns = {}\n    exec('def digit_product(n):\\n    result = 1\\n    for ch in str(n):\\n        result *= int(ch)\\n        return result\\n\\ndef persistence(n):\\n    count = 0\\n    while n >= 10:\\n        n = digit_product(n)\\n        count += 1\\n    return count\\n\\ndef solution(lo, hi, k):\\n    total = 0\\n    smallest = -1\\n    for x in range(lo, hi + 1):\\n        if persistence(x) >= k:\\n            total += 1\\n            if smallest == -1:\\n                smallest = x\\n    return [total, smallest]', ns)\n    return [ns[\"persistence\"](6788)]",
+     "code": "start",
      "explain": "틀린 digit_product는 첫 자리 숫자 6만 돌려줘요. n = 6이 되어 반복이 한 번 만에 끝나니 1이에요. 그래서 틀린 코드에서는 두 자리 이상인 모든 수의 끈기가 1이 되어, k가 2 이상이면 늘 [0, -1]이 나와요."
     },
     {
@@ -2053,6 +2073,7 @@
       "solution의 `if persistence(x) >= k:`를 `if persistence(x) > k:`로 바꾼다"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "return이 for 문 밖(for와 같은 들여쓰기)에 있어야 모든 자리를 곱한 뒤 돌려줘요. `result = 0`이면 곱이 늘 0이 되고, 나머지 두 보기는 '10 이상이면 계속', 'k 이상' 규칙을 어겨요."
     },
     {
@@ -2061,6 +2082,7 @@
      "q": "올바르게 고친 코드에서 lo = 10, hi = 10, k = 2이면 return 값은 무엇일까요? 리스트 모양으로 써 보세요.",
      "a": "[0, -1]",
      "check": "def digit_product(n):\n    result = 1\n    for ch in str(n):\n        result *= int(ch)\n    return result\n\ndef persistence(n):\n    count = 0\n    while n >= 10:\n        n = digit_product(n)\n        count += 1\n    return count\n\ndef solution(lo, hi, k):\n    total = 0\n    smallest = -1\n    for x in range(lo, hi + 1):\n        if persistence(x) >= k:\n            total += 1\n            if smallest == -1:\n                smallest = x\n    return [total, smallest]\n\n\ndef answers():\n    return [solution(10, 10, 2)]",
+     "code": "start",
      "explain": "10은 1 × 0 = 0으로 끈기가 1이라서 k = 2에 못 미쳐요. 끈기가 2 이상인 번호표가 하나도 없으니 [0, -1]이에요."
     },
     {
@@ -2137,6 +2159,7 @@
       ]
      ],
      "check": "def digit_product(n):\n    result = 1\n    for ch in str(n):\n        result *= int(ch)\n    return result\n\ndef persistence(n):\n    count = 0\n    while n >= 10:\n        n = digit_product(n)\n        count += 1\n    return count\n\ndef solution(lo, hi, k):\n    total = 0\n    smallest = -1\n    for x in range(lo, hi + 1):\n        if persistence(x) >= k:\n            total += 1\n            if smallest == -1:\n                smallest = x\n    return [total, smallest]\n\n\ndef answers():\n    out = []\n    total = 0\n    smallest = -1\n    for x in range(54, 59):\n        p = persistence(x)\n        if p >= 3:\n            total += 1\n            if smallest == -1:\n                smallest = x\n        out += [p, total, smallest]\n    return out",
+     "code": "start",
      "explain": "54(20 → 0), 56(30 → 0), 58(40 → 0)은 끈기가 2이고, 55(25 → 10 → 0)와 57(35 → 15 → 5)은 끈기가 3이에요. 작은 번호부터 훑으니 처음 찾은 55가 가장 작은 번호로 남고, 결과는 [2, 55]예요."
     }
    ],
