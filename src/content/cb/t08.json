@@ -530,6 +530,7 @@
       "1부터 3까지 눈의 합"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "`count[rolls[i]]++`는 나온 눈과 같은 번호의 칸을 1 늘려요. 그래서 `count[3]`에는 3이 나온 횟수가 쌓여요. 이렇게 값마다 칸을 하나씩 두고 개수를 세는 배열을 **집계 배열**이라고 해요. 눈은 1~6이라 `count[0]`은 쓰지 않아요."
     },
     {
@@ -619,6 +620,7 @@
       ]
      ],
      "check": "def answers():\n    count = [0] * 7\n    for r in [2, 4, 4, 2, 1]:\n        count[r] += 1\n    maxCount = 0\n    out = []\n    for face in [1, 2, 4]:\n        gt = 1 if count[face] > maxCount else 0\n        lt = 1 if count[face] < maxCount else 0\n        ok = 1 if (gt and lt) else 0\n        if ok:\n            maxCount = count[face]\n        out += [count[face], gt, lt, ok]\n    return out",
+     "code": "start",
      "explain": "`&&`는 '그리고'라서 양쪽이 모두 참(1)일 때만 참이에요. 어떤 수가 maxCount보다 크면서 동시에 작을 수는 없으니 조건 전체는 언제나 0이에요. 그래서 answer가 한 번도 바뀌지 않고 0이 return 돼요."
     },
     {
@@ -632,6 +634,7 @@
       "`if (count[face] < maxCount) {`"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "작은 눈부터 차례로 보면서 '지금까지의 최대 횟수보다 많을 때'만 바꾸면, 횟수가 같은 더 큰 눈은 건너뛰어서 동점일 때 작은 눈이 남아요. `>=`로 쓰면 동점인 큰 눈으로 바뀌어 예시 1에서 5가 나와요."
     },
     {
@@ -641,6 +644,7 @@
      "a": "1",
      "alts": [],
      "check": "def solution(rolls):\n    count = [0] * 7\n    for r in rolls:\n        count[r] += 1\n    answer = 0\n    maxCount = 0\n    for face in range(1, 7):\n        if count[face] > maxCount:\n            maxCount = count[face]\n            answer = face\n    return answer\n\ndef answers():\n    return [solution([1, 6, 6, 1])]",
+     "code": "start",
      "explain": "1과 6이 2번씩 동점이에요. face = 1에서 maxCount가 2가 되고, face = 6에서는 2 > 2가 거짓이라 바뀌지 않아요. 그래서 작은 눈 1이 남아요."
     }
    ],
@@ -1336,6 +1340,7 @@
       ]
      ],
      "check": "def answers():\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    out = []\n    for field in [3, 7, 7, 3]:\n        count[field] += 1\n        cond = count[field] > maxCount or (count[field] == maxCount and field > answer)\n        if cond:\n            maxCount = count[field]\n            answer = field\n        out += [count[field], 1 if cond else 0, answer]\n    return out",
+     "code": "start",
      "explain": "i = 1에서 7번 분야가 3번 분야와 1회씩 동점이 되자 '더 큰 번호'라서 answer가 7로 바뀌었어요. i = 3에서 3번 분야가 다시 2회로 동점이 되었지만 3 > 7이 거짓이라 바뀌지 않았어요. 그래서 3이 아니라 7이 return 돼요."
     },
     {
@@ -1349,6 +1354,7 @@
       "`if (count[field] > maxCount || (count[field] == maxCount || field > answer)) {`"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "`||`는 '또는'이에요. '횟수가 더 많다' 또는 '횟수가 같으면서(&&) 번호가 더 작다'일 때 answer를 바꿔야 동점에서 작은 번호가 남아요. 첫 `||`를 `&&`로 바꾸면 '더 많으면서 같다'가 되어 조건이 절대 참이 되지 않아요."
     },
     {
@@ -1358,6 +1364,7 @@
      "a": "0",
      "alts": [],
      "check": "def solution(loans):\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    for field in loans:\n        count[field] += 1\n        if count[field] > maxCount or (count[field] == maxCount and field < answer):\n            maxCount = count[field]\n            answer = field\n    return answer\n\ndef answers():\n    return [solution([0, 9, 9, 0, 5])]",
+     "code": "start",
      "explain": "9번 분야가 먼저 2회가 되어 answer가 9가 되지만, 0번 분야가 두 번째로 나왔을 때 횟수가 2회로 같고 0 < 9라서 answer가 0으로 바뀌어요."
     }
    ],
@@ -2096,6 +2103,7 @@
       "4번째 줄을 `int count[6] = {0};`으로 바꾼다"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "무효표를 거르는 8번째 줄이 항상 참이라서 7번(무효)이 3표로 1등이 되었어요. `&&`로 고치면 1~5만 세요. 배열을 `count[6]`으로 줄이면 무효표 7, 9를 셀 때 배열 칸 밖(없는 칸)에 쓰게 되어 위험해요."
     },
     {
@@ -2105,6 +2113,7 @@
      "a": "1",
      "alts": [],
      "check": "def solution(votes):\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    for v in votes:\n        if v >= 1 and v <= 5:\n            count[v] += 1\n            if count[v] > maxCount or (count[v] == maxCount and v > answer):\n                maxCount = count[v]\n                answer = v\n    return answer\n\ndef answers():\n    return [solution([9, 9, 1])]",
+     "code": "start",
      "explain": "9는 무효표라 건너뛰고, 유효표는 1번의 1표뿐이라 1이에요."
     }
    ],
@@ -2767,6 +2776,7 @@
       ]
      ],
      "check": "def answers():\n    count = [0] * 8\n    for o in [3, 1, 3, 6, 1, 3, 6]:\n        count[o] += 1\n    answer = -1\n    minCount = 101\n    out = []\n    for menu in range(4):\n        cond = count[menu] > 0 or count[menu] < minCount\n        if cond:\n            minCount = count[menu]\n            answer = menu\n        out += [1 if cond else 0, minCount, answer]\n    return out",
+     "code": "start",
      "explain": "`||`는 둘 중 하나만 참이어도 참이에요. 표에서 주문된 메뉴는 `count[menu] > 0`이 참이라서, 주문되지 않은 메뉴는 0이 그때의 minCount보다 작아서 조건이 참이 됐어요. 이렇게 조건이 너무 쉽게 참이 되어 answer가 뒤쪽 메뉴로 계속 바뀌어요."
     },
     {
@@ -2780,6 +2790,7 @@
       "`if (count[menu] == 0 && count[menu] < minCount) {`"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "'주문된 적이 있고(> 0) 그리고(&&) 지금까지의 최소보다 적을 때'만 바꿔야 해요. 작은 번호부터 보면서 `<`(같으면 안 바꿈)를 쓰니 동점일 때 작은 번호가 남아요."
     },
     {
@@ -2793,6 +2804,7 @@
       "주문 횟수의 합이 항상 101이기 때문에"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "가장 작은 값을 찾을 때는 처음 기준을 '나올 수 있는 어떤 값보다도 큰 수'로 잡아요. 0으로 시작하면 `count[menu] < 0`이 절대 참이 아니라서 answer가 바뀌지 않아요."
     }
    ],
@@ -3404,6 +3416,7 @@
       ]
      ],
      "check": "def answers():\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    out = []\n    for t in [12, 32, 9]:\n        digit = t % 10\n        count[digit] += 1\n        cond = count[digit] > maxCount or (count[digit] == maxCount or digit > answer)\n        if cond:\n            maxCount = count[digit]\n            answer = digit\n        out += [digit, count[digit], 1 if cond else 0, maxCount, answer]\n    return out",
+     "code": "start",
      "explain": "마지막 9는 한 번밖에 안 나왔는데도 `digit > answer`(9 > 2)가 참이라 조건 전체가 참이 됐어요. 그래서 maxCount가 1로 줄고 answer가 9로 바뀌었어요. 괄호 안은 '횟수가 같으면서 더 큰 숫자'여야 해요."
     },
     {
@@ -3417,6 +3430,7 @@
       "`if (count[digit] > maxCount || (count[digit] == maxCount || digit < answer)) {`"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "'더 많이 나왔다' 또는(`||`) '횟수가 같고 그리고(`&&`) 더 큰 숫자다'일 때만 answer를 바꿔야 해요. 괄호 안을 `||`로 두면 횟수가 적어도 숫자만 크면 바뀌어 버려요."
     },
     {
@@ -3426,6 +3440,7 @@
      "a": "8",
      "alts": [],
      "check": "def solution(tickets):\n    count = [0] * 10\n    answer = 0\n    maxCount = 0\n    for t in tickets:\n        digit = t % 10\n        count[digit] += 1\n        if count[digit] > maxCount or (count[digit] == maxCount and digit > answer):\n            maxCount = count[digit]\n            answer = digit\n    return answer\n\ndef answers():\n    return [solution([7, 17, 8, 28])]",
+     "code": "start",
      "explain": "끝자리는 7, 7, 8, 8이에요. 7이 먼저 2번이 되고, 8이 두 번째로 나올 때 횟수가 같고 8 > 7이라 answer가 8로 바뀌어요."
     }
    ],

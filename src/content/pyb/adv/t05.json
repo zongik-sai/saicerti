@@ -1,0 +1,3123 @@
+{
+ "course": "pyb",
+ "type": 5,
+ "typeTitle": "반복 멈춤 조건 고치기",
+ "kind": "fix",
+ "skills": [
+  "누적합",
+  "break·continue",
+  "while 조건",
+  "보조 함수",
+  "음수·상한 처리",
+  "한 줄 수정"
+ ],
+ "intro": "기본 문제처럼 '더하기 전에 먼저 확인하는' 멈춤 조건을 고치되, 노래 사이 쉬는 시간, 건너뛰기(continue)와 멈추기(break)의 구분, while 조건, 음수와 100% 상한까지 함께 따져요. 틀린 줄이 더 긴 코드와 보조 함수 속에 숨어 있어서, 표로 따라가며 어디서 어긋나는지 찾아야 해요.",
+ "problems": [
+  {
+   "id": "pyb-t05-adv1",
+   "version": 1,
+   "title": "쉬는 시간 신청곡 방송",
+   "statement": "방송부가 쉬는 시간 동안 학생들이 신청한 노래를 신청한 순서대로 틀어 주려 합니다. 노래와 노래 사이에는 다음 곡을 준비하느라 `gap`초씩 쉬며, 첫 번째 노래 앞에는 쉬지 않습니다.\n\n노래는 쉬는 시간 `limit`초 안에 끝까지 틀 수 있을 때만 틉니다. 노래가 쉬는 시간이 끝나는 순간에 딱 맞게 끝나는 것은 괜찮습니다. 어떤 노래를 틀면(그 노래 앞의 `gap`초까지 더해) 지난 시간이 `limit`초를 넘게 될 때는 그 노래를 틀지 않고 방송을 끝냅니다. 뒤에 더 짧은 노래가 남아 있어도 틀지 않습니다.\n- 예를 들어 `limit`가 600초, `gap`이 10초이고 노래 길이가 차례대로 [180, 200, 240, 60]초라면, 두 곡을 틀었을 때 180 + 10 + 200 = 390초가 지납니다. 세 번째 노래를 틀려면 10 + 240 = 250초가 더 필요해 640초가 되므로 방송을 끝냅니다. 따라서 틀어 준 노래는 2곡입니다.\n\n쉬는 시간 `limit`, 노래 사이에 쉬는 시간 `gap`, 신청곡의 길이를 신청 순서대로 담은 리스트 `songs`가 매개변수로 주어질 때, 틀어 준 노래의 수를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "limit는 쉬는 시간(초)이며, 1 이상 3600 이하인 자연수입니다.",
+    "gap은 노래 사이에 쉬는 시간(초)이며, 0 이상 60 이하인 정수입니다.",
+    "songs의 길이는 1 이상 20 이하입니다.",
+    "songs의 원소는 각 노래의 길이(초)이며, 1 이상 600 이하인 자연수입니다."
+   ],
+   "returns": [
+    "틀어 준 노래의 수를 return 합니다. 첫 번째 노래부터 틀 수 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "limit",
+    "gap",
+    "songs"
+   ],
+   "examples": [
+    {
+     "args": [
+      600,
+      10,
+      [
+       180,
+       200,
+       240,
+       60
+      ]
+     ],
+     "explain": "180초 노래 뒤 10초를 쉬고 200초 노래를 틀면 390초가 지납니다. 세 번째 노래는 10 + 240 = 250초가 더 필요해 640초가 되므로 방송을 끝냅니다.",
+     "expected": 2
+    },
+    {
+     "args": [
+      400,
+      20,
+      [
+       120,
+       130,
+       110,
+       50
+      ]
+     ],
+     "explain": "120 + (20 + 130) + (20 + 110) = 400초로 limit와 딱 맞으므로 세 곡을 틉니다. 네 번째 노래를 틀면 470초가 되어 방송을 끝냅니다.",
+     "expected": 3
+    },
+    {
+     "args": [
+      390,
+      20,
+      [
+       120,
+       130,
+       110,
+       50
+      ]
+     ],
+     "explain": "두 곡을 튼 뒤 270초가 지났습니다. 세 번째 노래는 앞의 쉬는 시간까지 20 + 110 = 130초가 필요해 400초가 되므로, 390초를 넘어 방송을 끝냅니다.",
+     "expected": 2
+    }
+   ],
+   "code": "def solution(limit, gap, songs):\n    used = 0\n    count = 0\n    for song in songs:\n        if count == 0:\n            need = song\n        else:\n            need = gap + song\n        if used > limit:\n            break\n        used += need\n        count += 1\n    return count",
+   "bugLine": 9,
+   "solution": "def solution(limit, gap, songs):\n    used = 0\n    count = 0\n    for song in songs:\n        if count == 0:\n            need = song\n        else:\n            need = gap + song\n        if used + need > limit:\n            break\n        used += need\n        count += 1\n    return count",
+   "tests": [
+    {
+     "args": [
+      1,
+      0,
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1,
+      0,
+      [
+       2
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      100,
+      0,
+      [
+       50,
+       50,
+       1
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      100,
+      1,
+      [
+       50,
+       50
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      101,
+      1,
+      [
+       50,
+       50
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      3600,
+      60,
+      [
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600,
+       600
+      ]
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      3600,
+      0,
+      [
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      3599,
+      0,
+      [
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180
+      ]
+     ],
+     "expected": 19
+    },
+    {
+     "args": [
+      300,
+      30,
+      [
+       400,
+       10,
+       10
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      500,
+      15,
+      [
+       100,
+       200,
+       300,
+       10
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      250,
+      25,
+      [
+       100,
+       100,
+       10
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      60,
+      5,
+      [
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      1000,
+      60,
+      [
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      120,
+      10,
+      [
+       60,
+       50,
+       1
+      ]
+     ],
+     "expected": 2
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(limit, gap, songs):\n    return isinstance(limit, int) and 1 <= limit <= 3600 and isinstance(gap, int) and 0 <= gap <= 60 and isinstance(songs, list) and 1 <= len(songs) <= 20 and all(isinstance(x, int) and 1 <= x <= 600 for x in songs)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "노래를 4곡 틀었다면, 노래 사이에 쉬는 시간(gap)은 모두 몇 번 들어갔을까요?",
+     "options": [
+      "3",
+      "4",
+      "5",
+      "2"
+     ],
+     "answer": 0,
+     "explain": "쉬는 시간은 노래와 노래 '사이'에만 있고 첫 곡 앞에는 없어요. 4곡이면 사이는 3군데라서 gap이 3번 들어가요. 그래서 코드는 첫 곡(count가 0일 때)만 need = song으로 따로 처리해요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "limit = 400, gap = 20이고, 지금까지 두 곡을 틀어 270초가 지났어요. 다음 노래가 110초라면, 이 노래까지 틀었을 때 지난 시간은 몇 초일까요?",
+     "a": "400",
+     "check": "def answers():\n    used, gap, song = 270, 20, 110\n    return [used + gap + song]",
+     "explain": "두 번째 곡 다음이라 쉬는 시간 20초가 먼저 들어가요. 270 + 20 + 110 = 400초로 limit와 같으니, 이 노래는 틀 수 있어요(딱 맞게 끝나는 것은 괜찮아요)."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "노래 하나를 처리할 때 할 일을 올바른 순서로 고른 것은?",
+     "options": [
+      "이번에 더 필요한 시간(need)을 구한다 → 더하면 limit를 넘는지 확인한다 → 넘지 않으면 시간을 더하고 곡 수를 센다",
+      "지금까지 지난 시간이 limit를 넘었는지 확인한다 → need를 구한다 → 시간을 더하고 곡 수를 센다",
+      "need를 구한다 → 시간을 더하고 곡 수를 센다 → limit를 넘었으면 곡 수에서 1을 뺀다"
+     ],
+     "answer": 0,
+     "explain": "틀지 말아야 할 노래를 미리 걸러 내려면, 그 노래에 필요한 시간(앞의 쉬는 시간 포함)을 먼저 구해서 '더하면 넘는지'를 확인해야 해요. 이미 지난 시간만 확인하면 넘친 다음에야 알게 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 limit = 600, gap = 10, songs = [180, 200, 240, 60]을 따라가 보세요. `if used > limit:` 검사에는 표의 바로 윗줄에 적은 '반복 뒤 used'를 써요(첫 줄은 처음 값 0). break로 멈춘 줄은 used와 count가 그대로예요.",
+     "columns": [
+      "song",
+      "need",
+      "used > limit",
+      "반복 뒤 used",
+      "반복 뒤 count"
+     ],
+     "rows": [
+      [
+       "180",
+       {
+        "a": "180"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "180"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "200",
+       {
+        "a": "210"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "390"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "240",
+       {
+        "a": "250"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "640"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "60",
+       {
+        "a": "70"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "640"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    limit, gap = 600, 10\n    used = 0\n    count = 0\n    out = []\n    for song in [180, 200, 240, 60]:\n        if count == 0:\n            need = song\n        else:\n            need = gap + song\n        stop = used > limit\n        if not stop:\n            used += need\n            count += 1\n        out += [need, stop, used, count]\n        if stop:\n            break\n    return out",
+     "code": "start",
+     "explain": "틀린 코드는 노래를 틀기 전에 '지금까지 지난 시간(used)'만 검사해요. 그래서 240초 노래를 틀어 640초로 넘친 다음에야 멈추고, 2가 아니라 3을 return 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "규칙대로 예시 3 따라가기",
+     "prompt": "이번에는 문제의 규칙대로 limit = 390, gap = 20, songs = [120, 130, 110, 50]을 따라가 보세요. '틀면 지난 시간'은 지금까지 지난 시간에 need를 더한 값이고, 이 값이 limit를 넘는 줄에서 방송을 끝내요.",
+     "columns": [
+      "song",
+      "need",
+      "틀면 지난 시간",
+      "limit를 넘는가",
+      "반복 뒤 count"
+     ],
+     "rows": [
+      [
+       "120",
+       {
+        "a": "120"
+       },
+       {
+        "a": "120"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "130",
+       {
+        "a": "150"
+       },
+       {
+        "a": "270"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "110",
+       {
+        "a": "130"
+       },
+       {
+        "a": "400"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def answers():\n    limit, gap = 390, 20\n    used = 0\n    count = 0\n    out = []\n    for song in [120, 130, 110, 50]:\n        need = song if count == 0 else gap + song\n        over = used + need > limit\n        if not over:\n            used += need\n            count += 1\n        out += [need, used + need if over else used, over, count]\n        if over:\n            break\n    return out",
+     "explain": "세 번째 노래는 노래 길이만 더하면 270 + 110 = 380초라 괜찮아 보이지만, 앞의 쉬는 시간 20초까지 더하면 400초라 390초를 넘어요. 그래서 방송을 끝내고 2를 return 해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "`if used > limit:` 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if used + need > limit:",
+      "if used + song > limit:",
+      "if used + need >= limit:",
+      "if used >= limit:"
+     ],
+     "answer": 0,
+     "explain": "이번 노래를 틀면 지나게 될 시간은 앞의 쉬는 시간까지 포함한 used + need예요. used + song은 쉬는 시간을 빼먹어 예시 3에서 3곡을 틀게 되고, >= 를 쓰면 딱 맞게 끝나는 예시 2의 세 번째 노래도 못 틀어요."
+    }
+   ],
+   "explain": "노래를 틀기 전에 '이번 노래까지 틀면 넘는지(used + need > limit)'를 먼저 확인해야 해요. 이미 지난 시간(used)만 보면 넘친 다음에야 멈추고, 노래 길이(song)만 더해 보면 노래 사이에 쉬는 시간을 빼먹어요. 딱 맞게 끝나는 것은 괜찮으니 > 를 써요."
+  },
+  {
+   "id": "pyb-t05-adv2",
+   "version": 1,
+   "title": "놀이공원 자유 시간",
+   "statement": "현장 체험 학습으로 놀이공원에 간 학생이 자유 시간 `limit`분 동안 안내도에 적힌 순서대로 놀이기구를 타려 합니다. 놀이기구마다 탈 수 있는 최소 키(cm)와, 줄을 서서 타고 내리기까지 걸리는 시간(분)이 정해져 있습니다.\n\n- 학생의 키 `height`가 놀이기구의 최소 키보다 작으면 그 놀이기구는 타지 않고 다음 놀이기구로 넘어갑니다. 이때는 시간이 들지 않습니다. 키가 최소 키와 같으면 탈 수 있습니다.\n- 탈 수 있는 놀이기구라도, 타고 나면 쓴 시간이 `limit`분을 넘게 될 때는 그 놀이기구를 타지 않고 모임 장소로 돌아갑니다. 그 뒤의 놀이기구는 타지 않습니다. 쓴 시간이 `limit`분과 딱 맞는 것은 괜찮습니다.\n\n학생의 키 `height`, 자유 시간 `limit`, 안내도 순서대로 놀이기구의 정보를 담은 2차원 리스트 `rides`가 매개변수로 주어질 때, 탄 놀이기구의 수와 쓴 시간을 [수, 시간] 형태로 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "height는 학생의 키(cm)이며, 100 이상 200 이하인 자연수입니다.",
+    "limit는 자유 시간(분)이며, 1 이상 300 이하인 자연수입니다.",
+    "rides의 길이는 1 이상 15 이하입니다.",
+    "rides의 각 원소는 [최소 키, 걸리는 시간] 형태의 리스트입니다.",
+    "최소 키는 100 이상 200 이하, 걸리는 시간은 1 이상 120 이하인 자연수입니다."
+   ],
+   "returns": [
+    "[탄 놀이기구의 수, 쓴 시간(분)]을 return 합니다. 하나도 타지 못했으면 [0, 0]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "height",
+    "limit",
+    "rides"
+   ],
+   "examples": [
+    {
+     "args": [
+      140,
+      100,
+      [
+       [
+        120,
+        30
+       ],
+       [
+        150,
+        20
+       ],
+       [
+        130,
+        45
+       ],
+       [
+        110,
+        25
+       ],
+       [
+        100,
+        10
+       ]
+      ]
+     ],
+     "explain": "두 번째 놀이기구는 최소 키가 150cm라 건너뜁니다. 30 + 45 + 25 = 100분으로 자유 시간과 딱 맞으므로 세 개를 탑니다. 마지막 놀이기구를 타면 110분이 되어 돌아갑니다.",
+     "expected": [
+      3,
+      100
+     ]
+    },
+    {
+     "args": [
+      125,
+      60,
+      [
+       [
+        130,
+        10
+       ],
+       [
+        120,
+        25
+       ],
+       [
+        140,
+        5
+       ],
+       [
+        125,
+        40
+       ],
+       [
+        100,
+        5
+       ]
+      ]
+     ],
+     "explain": "첫 번째와 세 번째 놀이기구는 키가 모자라 건너뜁니다. 네 번째 놀이기구는 키가 최소 키와 같아 탈 수 있지만, 타면 25 + 40 = 65분이 되어 60분을 넘으므로 돌아갑니다. 마지막 놀이기구도 타지 않습니다.",
+     "expected": [
+      1,
+      25
+     ]
+    },
+    {
+     "args": [
+      110,
+      50,
+      [
+       [
+        120,
+        100
+       ],
+       [
+        100,
+        20
+       ],
+       [
+        150,
+        5
+       ],
+       [
+        110,
+        30
+       ]
+      ]
+     ],
+     "explain": "100분이 걸리는 첫 번째 놀이기구는 키가 모자라 건너뛸 뿐, 돌아가는 까닭이 되지 않습니다. 20 + 30 = 50분으로 딱 맞게 두 개를 탑니다.",
+     "expected": [
+      2,
+      50
+     ]
+    }
+   ],
+   "code": "def solution(height, limit, rides):\n    used = 0\n    count = 0\n    for ride in rides:\n        if height < ride[0]:\n            continue\n        if used + ride[1] >= limit:\n            break\n        used += ride[1]\n        count += 1\n    return [count, used]",
+   "bugLine": 7,
+   "solution": "def solution(height, limit, rides):\n    used = 0\n    count = 0\n    for ride in rides:\n        if height < ride[0]:\n            continue\n        if used + ride[1] > limit:\n            break\n        used += ride[1]\n        count += 1\n    return [count, used]",
+   "tests": [
+    {
+     "args": [
+      100,
+      1,
+      [
+       [
+        100,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      100,
+      1,
+      [
+       [
+        101,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      100,
+      1,
+      [
+       [
+        100,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      200,
+      300,
+      [
+       [
+        200,
+        120
+       ],
+       [
+        200,
+        120
+       ],
+       [
+        200,
+        60
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      300
+     ]
+    },
+    {
+     "args": [
+      200,
+      300,
+      [
+       [
+        200,
+        120
+       ],
+       [
+        200,
+        120
+       ],
+       [
+        200,
+        61
+       ],
+       [
+        100,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      240
+     ]
+    },
+    {
+     "args": [
+      150,
+      100,
+      [
+       [
+        160,
+        10
+       ],
+       [
+        170,
+        10
+       ],
+       [
+        180,
+        10
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      150,
+      50,
+      [
+       [
+        160,
+        120
+       ],
+       [
+        150,
+        50
+       ],
+       [
+        100,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      50
+     ]
+    },
+    {
+     "args": [
+      130,
+      90,
+      [
+       [
+        100,
+        30
+       ],
+       [
+        140,
+        1
+       ],
+       [
+        100,
+        30
+       ],
+       [
+        140,
+        1
+       ],
+       [
+        100,
+        30
+       ],
+       [
+        100,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      90
+     ]
+    },
+    {
+     "args": [
+      120,
+      45,
+      [
+       [
+        100,
+        50
+       ],
+       [
+        100,
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      180,
+      120,
+      [
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ]
+      ]
+     ],
+     "expected": [
+      12,
+      120
+     ]
+    },
+    {
+     "args": [
+      180,
+      119,
+      [
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ],
+       [
+        100,
+        10
+       ]
+      ]
+     ],
+     "expected": [
+      11,
+      110
+     ]
+    },
+    {
+     "args": [
+      135,
+      70,
+      [
+       [
+        136,
+        10
+       ],
+       [
+        135,
+        35
+       ],
+       [
+        140,
+        20
+       ],
+       [
+        120,
+        35
+       ],
+       [
+        100,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      70
+     ]
+    },
+    {
+     "args": [
+      160,
+      200,
+      [
+       [
+        150,
+        60
+       ],
+       [
+        170,
+        60
+       ],
+       [
+        155,
+        80
+       ],
+       [
+        165,
+        1
+       ],
+       [
+        160,
+        70
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      140
+     ]
+    },
+    {
+     "args": [
+      110,
+      100,
+      [
+       [
+        100,
+        40
+       ],
+       [
+        120,
+        30
+       ],
+       [
+        105,
+        30
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      70
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(height, limit, rides):\n    return isinstance(height, int) and 100 <= height <= 200 and isinstance(limit, int) and 1 <= limit <= 300 and isinstance(rides, list) and 1 <= len(rides) <= 15 and all(isinstance(r, list) and len(r) == 2 and all(isinstance(v, int) for v in r) and 100 <= r[0] <= 200 and 1 <= r[1] <= 120 for r in rides)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "키가 140cm인 학생이 최소 키 150cm인 놀이기구를 만났어요. 어떻게 할까요?",
+     "options": [
+      "타지 않고, 시간도 쓰지 않고 다음 놀이기구로 넘어간다",
+      "타지 않고 바로 모임 장소로 돌아간다",
+      "그 놀이기구에 걸리는 시간만큼 기다린 뒤 다음 놀이기구로 넘어간다"
+     ],
+     "answer": 0,
+     "explain": "키가 모자란 놀이기구는 건너뛰기만 해요. 반복문에서 이번 것만 건너뛰고 다음 차례로 가는 명령은 continue이고, 반복을 아예 끝내는 명령은 break예요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "자유 시간이 100분이고 지금까지 75분을 썼어요. 다음 놀이기구는 탈 수 있는 키이고 25분이 걸려요. 어떻게 할까요?",
+     "options": [
+      "탄다(쓴 시간이 딱 100분이 된다)",
+      "타지 않고 모임 장소로 돌아간다",
+      "타지 않고 다음 놀이기구로 넘어간다"
+     ],
+     "answer": 0,
+     "explain": "타고 나서 쓴 시간이 limit와 같은 것은 괜찮아요. limit를 '넘을' 때만 돌아가니까, 이 경우에는 타요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "놀이기구 하나마다 확인하는 순서로 알맞은 것은?",
+     "options": [
+      "키가 모자라면 건너뛴다 → 타고 나면 limit를 넘는지 확인해 넘으면 돌아간다 → 시간을 더하고 탄 수를 센다",
+      "타고 나면 limit를 넘는지 확인해 넘으면 돌아간다 → 키가 모자라면 건너뛴다 → 시간을 더하고 탄 수를 센다",
+      "시간을 더하고 탄 수를 센다 → 키가 모자라면 건너뛴다 → limit를 넘었으면 돌아간다"
+     ],
+     "answer": 0,
+     "explain": "키가 모자란 놀이기구는 시간이 들지 않으니, 시간 검사보다 먼저 걸러야 해요. 순서를 바꾸면 타지도 못할 긴 놀이기구(예시 3의 첫 놀이기구) 때문에 일찍 돌아가 버려요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 height = 140, limit = 100, rides = [[120, 30], [150, 20], [130, 45], [110, 25], [100, 10]]을 따라가 보세요. continue로 건너뛴 줄은 아래쪽 if를 실행하지 않아요('-'로 표시). break로 멈춘 줄은 used와 count가 그대로예요.",
+     "columns": [
+      "ride",
+      "height < ride[0]",
+      "used + ride[1] >= limit",
+      "반복 뒤 used",
+      "반복 뒤 count"
+     ],
+     "rows": [
+      [
+       "[120, 30]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "30"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "[150, 20]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "-",
+       {
+        "a": "30"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "[130, 45]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "75"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "[110, 25]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "75"
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def answers():\n    height, limit = 140, 100\n    used = 0\n    count = 0\n    out = []\n    for ride in [[120, 30], [150, 20], [130, 45], [110, 25], [100, 10]]:\n        skip = height < ride[0]\n        out.append(skip)\n        if skip:\n            out += [used, count]\n            continue\n        stop = used + ride[1] >= limit\n        out.append(stop)\n        if not stop:\n            used += ride[1]\n            count += 1\n        out += [used, count]\n        if stop:\n            break\n    return out",
+     "code": "start",
+     "explain": "틀린 코드는 쓴 시간이 limit와 딱 같아지는 경우(75 + 25 = 100)에도 멈춰요. 그래서 [3, 100]이 아니라 [2, 75]를 return 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "규칙대로 예시 3 따라가기",
+     "prompt": "이번에는 문제의 규칙대로 height = 110, limit = 50, rides = [[120, 100], [100, 20], [150, 5], [110, 30]]을 따라가 보세요. 건너뛴 놀이기구는 시간 검사를 하지 않아요('-'로 표시).",
+     "columns": [
+      "ride",
+      "키가 모자란가",
+      "타고 나면 쓴 시간",
+      "limit를 넘는가",
+      "반복 뒤 [count, used]"
+     ],
+     "rows": [
+      [
+       "[120, 100]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "-",
+       "-",
+       {
+        "a": "[0, 0]"
+       }
+      ],
+      [
+       "[100, 20]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "20"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[1, 20]"
+       }
+      ],
+      [
+       "[150, 5]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "-",
+       "-",
+       {
+        "a": "[1, 20]"
+       }
+      ],
+      [
+       "[110, 30]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "50"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[2, 50]"
+       }
+      ]
+     ],
+     "check": "def answers():\n    height, limit = 110, 50\n    used = 0\n    count = 0\n    out = []\n    for ride in [[120, 100], [100, 20], [150, 5], [110, 30]]:\n        skip = height < ride[0]\n        out.append(skip)\n        if skip:\n            out.append([count, used])\n            continue\n        over = used + ride[1] > limit\n        out += [used + ride[1], over]\n        if over:\n            break\n        used += ride[1]\n        count += 1\n        out.append([count, used])\n    return out",
+     "explain": "첫 놀이기구는 100분이나 걸리지만 키가 모자라 건너뛰므로 돌아가지 않아요. 마지막 놀이기구는 키가 최소 키와 같아 탈 수 있고, 쓴 시간이 딱 50분이 되어 괜찮아요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "`if used + ride[1] >= limit:` 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if used + ride[1] > limit:",
+      "if used > limit:",
+      "if used + ride[0] > limit:",
+      "if used + ride[1] < limit:"
+     ],
+     "answer": 0,
+     "explain": "타고 난 뒤의 시간(used + ride[1])이 limit를 '넘을' 때만 돌아가야 해요. used > limit는 이미 넘친 뒤에야 멈추고, ride[0]은 시간이 아니라 최소 키예요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "고친 코드에 height = 120, limit = 45, rides = [[100, 50], [100, 5]]를 넣으면 무엇을 return 할까요? 리스트 모양으로 써 주세요.",
+     "a": "[0, 0]",
+     "check": "def answers():\n    def solution(height, limit, rides):\n        used = 0\n        count = 0\n        for ride in rides:\n            if height < ride[0]:\n                continue\n            if used + ride[1] > limit:\n                break\n            used += ride[1]\n            count += 1\n        return [count, used]\n    return [solution(120, 45, [[100, 50], [100, 5]])]",
+     "code": "start",
+     "explain": "첫 놀이기구는 탈 수 있는 키지만 50분이 걸려 45분을 넘으므로 바로 돌아가요. 키 때문에 건너뛴 것이 아니라 시간 때문에 멈춘 것이라, 뒤의 5분짜리 놀이기구도 타지 않아요."
+    }
+   ],
+   "explain": "건너뛰기(continue)와 돌아가기(break)를 구분하고, 멈춤 조건은 '타고 나면 limit를 넘는가(used + ride[1] > limit)'로 써야 해요. >= 로 쓰면 자유 시간과 딱 맞게 끝나는 놀이기구도 못 타요. 키가 모자란 놀이기구는 시간 검사 전에 건너뛰므로, 아무리 길어도 돌아가는 까닭이 되지 않아요."
+  },
+  {
+   "id": "pyb-t05-adv3",
+   "version": 1,
+   "title": "학원 가기 전 숙제하기",
+   "statement": "한 학생이 집에 도착한 시각부터 학원에 가려고 집을 나서는 시각까지 숙제를 하려 합니다. 숙제는 목록에 적힌 순서대로 하나씩 하며, 숙제마다 걸리는 시간(분)이 정해져 있습니다.\n\n숙제는 집을 나서는 시각까지 끝낼 수 있을 때만 시작합니다. 숙제가 집을 나서는 시각에 딱 맞게 끝나는 것은 괜찮습니다. 끝낼 수 없는 숙제를 만나면 그 숙제부터는 하지 않습니다.\n\n시각은 \"HH:MM\" 형태의 문자열(시 두 자리, 분 두 자리)입니다. 코드는 다음과 같이 나뉘어 있습니다.\n- to_minutes 함수: \"HH:MM\" 시각을 0시 0분부터 지난 분(分)으로 바꿉니다. 예를 들어 \"16:05\"는 16 × 60 + 5 = 965입니다.\n- to_clock 함수: 분을 다시 \"HH:MM\" 형태의 문자열로 바꿉니다. 예를 들어 965는 \"16:05\"입니다.\n- solution 함수: while 문으로 숙제를 차례대로 하고, 끝낸 숙제의 수와 마지막 숙제를 끝낸 시각을 구합니다.\n\n집에 도착한 시각 `arrive`, 집을 나서는 시각 `leave`, 숙제마다 걸리는 시간을 순서대로 담은 리스트 `homework`가 매개변수로 주어질 때, [끝낸 숙제의 수, 마지막 숙제를 끝낸 시각]을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "arrive와 leave는 \"HH:MM\" 형태의 문자열입니다. HH는 00 이상 23 이하, MM은 00 이상 59 이하입니다.",
+    "arrive는 leave보다 늦지 않습니다(같을 수 있습니다).",
+    "homework의 길이는 1 이상 15 이하입니다.",
+    "homework의 원소는 각 숙제에 걸리는 시간(분)이며, 1 이상 180 이하인 자연수입니다."
+   ],
+   "returns": [
+    "[끝낸 숙제의 수, 마지막 숙제를 끝낸 시각]을 return 합니다. 시각은 \"HH:MM\" 형태의 문자열입니다. 숙제를 하나도 끝내지 못했으면 [0, arrive]를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "arrive",
+    "leave",
+    "homework"
+   ],
+   "examples": [
+    {
+     "args": [
+      "16:10",
+      "18:00",
+      [
+       40,
+       30,
+       50,
+       10
+      ]
+     ],
+     "explain": "16:10부터 40분, 30분 숙제를 하면 17:20입니다. 50분 숙제를 하면 18:10에 끝나 늦으므로 멈춥니다.",
+     "expected": [
+      2,
+      "17:20"
+     ]
+    },
+    {
+     "args": [
+      "19:45",
+      "21:00",
+      [
+       25,
+       50,
+       5
+      ]
+     ],
+     "explain": "25분 숙제를 하면 20:10, 50분 숙제를 하면 21:00으로 딱 맞습니다. 5분 숙제는 21:05에 끝나므로 하지 않습니다.",
+     "expected": [
+      2,
+      "21:00"
+     ]
+    },
+    {
+     "args": [
+      "09:05",
+      "09:30",
+      [
+       30,
+       5
+      ]
+     ],
+     "explain": "첫 숙제부터 09:35에 끝나 늦으므로 하나도 하지 못합니다. 뒤의 5분 숙제도 하지 않습니다.",
+     "expected": [
+      0,
+      "09:05"
+     ]
+    }
+   ],
+   "code": "def to_minutes(clock):\n    hour = int(clock[0]) * 10 + int(clock[1])\n    minute = int(clock[3]) * 10 + int(clock[4])\n    return hour * 60 + minute\n\n\ndef to_clock(minutes):\n    hour = minutes // 60\n    minute = minutes % 60\n    return str(hour // 10) + str(hour % 10) + \":\" + str(minute // 10) + str(minute % 10)\n\n\ndef solution(arrive, leave, homework):\n    now = to_minutes(arrive)\n    end = to_minutes(leave)\n    i = 0\n    while i < len(homework) and now <= end:\n        now += homework[i]\n        i += 1\n    return [i, to_clock(now)]",
+   "bugLine": 17,
+   "solution": "def to_minutes(clock):\n    hour = int(clock[0]) * 10 + int(clock[1])\n    minute = int(clock[3]) * 10 + int(clock[4])\n    return hour * 60 + minute\n\n\ndef to_clock(minutes):\n    hour = minutes // 60\n    minute = minutes % 60\n    return str(hour // 10) + str(hour % 10) + \":\" + str(minute // 10) + str(minute % 10)\n\n\ndef solution(arrive, leave, homework):\n    now = to_minutes(arrive)\n    end = to_minutes(leave)\n    i = 0\n    while i < len(homework) and now + homework[i] <= end:\n        now += homework[i]\n        i += 1\n    return [i, to_clock(now)]",
+   "tests": [
+    {
+     "args": [
+      "00:00",
+      "00:01",
+      [
+       1
+      ]
+     ],
+     "expected": [
+      1,
+      "00:01"
+     ]
+    },
+    {
+     "args": [
+      "00:00",
+      "00:00",
+      [
+       1
+      ]
+     ],
+     "expected": [
+      0,
+      "00:00"
+     ]
+    },
+    {
+     "args": [
+      "23:59",
+      "23:59",
+      [
+       1,
+       1
+      ]
+     ],
+     "expected": [
+      0,
+      "23:59"
+     ]
+    },
+    {
+     "args": [
+      "00:00",
+      "23:59",
+      [
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180,
+       180
+      ]
+     ],
+     "expected": [
+      7,
+      "21:00"
+     ]
+    },
+    {
+     "args": [
+      "00:00",
+      "23:59",
+      [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     ],
+     "expected": [
+      14,
+      "23:20"
+     ]
+    },
+    {
+     "args": [
+      "13:00",
+      "15:00",
+      [
+       30,
+       30,
+       30,
+       30
+      ]
+     ],
+     "expected": [
+      4,
+      "15:00"
+     ]
+    },
+    {
+     "args": [
+      "13:00",
+      "14:59",
+      [
+       30,
+       30,
+       30,
+       30
+      ]
+     ],
+     "expected": [
+      3,
+      "14:30"
+     ]
+    },
+    {
+     "args": [
+      "08:55",
+      "09:10",
+      [
+       5,
+       5,
+       5
+      ]
+     ],
+     "expected": [
+      3,
+      "09:10"
+     ]
+    },
+    {
+     "args": [
+      "17:30",
+      "20:00",
+      [
+       60,
+       100,
+       10
+      ]
+     ],
+     "expected": [
+      1,
+      "18:30"
+     ]
+    },
+    {
+     "args": [
+      "10:00",
+      "12:00",
+      [
+       121,
+       1
+      ]
+     ],
+     "expected": [
+      0,
+      "10:00"
+     ]
+    },
+    {
+     "args": [
+      "21:40",
+      "23:00",
+      [
+       20,
+       20,
+       20,
+       20,
+       20
+      ]
+     ],
+     "expected": [
+      4,
+      "23:00"
+     ]
+    },
+    {
+     "args": [
+      "06:07",
+      "07:00",
+      [
+       8,
+       9,
+       10,
+       11,
+       12,
+       13
+      ]
+     ],
+     "expected": [
+      5,
+      "06:57"
+     ]
+    },
+    {
+     "args": [
+      "12:34",
+      "18:00",
+      [
+       1
+      ]
+     ],
+     "expected": [
+      1,
+      "12:35"
+     ]
+    },
+    {
+     "args": [
+      "15:00",
+      "16:00",
+      [
+       59,
+       2,
+       1
+      ]
+     ],
+     "expected": [
+      1,
+      "15:59"
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(arrive, leave, homework):\n    def ok(s):\n        return isinstance(s, str) and len(s) == 5 and s[2] == \":\" and s[:2].isdigit() and s[3:].isdigit() and int(s[:2]) <= 23 and int(s[3:]) <= 59\n    if not (ok(arrive) and ok(leave)):\n        return False\n    a = int(arrive[:2]) * 60 + int(arrive[3:])\n    b = int(leave[:2]) * 60 + int(leave[3:])\n    return a <= b and isinstance(homework, list) and 1 <= len(homework) <= 15 and all(isinstance(x, int) and not isinstance(x, bool) and 1 <= x <= 180 for x in homework)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "while 문은 조건이 참인 동안 반복해요. `while A and B:`는 언제 반복을 멈출까요?",
+     "options": [
+      "A와 B 중 하나라도 거짓이 되면",
+      "A와 B가 모두 거짓이 되어야만",
+      "A와 B 중 하나라도 참이 되면"
+     ],
+     "answer": 0,
+     "explain": "and는 둘 다 참일 때만 참이에요. 그래서 while A and B:는 둘 중 하나라도 거짓이 되는 순간 멈춰요. for 문의 break 조건과 달리, while 조건에는 '계속해도 되는 조건'을 적어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "보조 함수 따라가기",
+     "prompt": "to_minutes는 시각 문자열을 분으로, to_clock은 분을 시각 문자열로 바꿔요. 줄마다 함수 안의 hour, minute와 return 값을 채워 보세요. (// 는 나눈 몫, % 는 나머지예요.)",
+     "columns": [
+      "함수 호출",
+      "hour",
+      "minute",
+      "return 값"
+     ],
+     "rows": [
+      [
+       "to_minutes(\"16:10\")",
+       {
+        "a": "16"
+       },
+       {
+        "a": "10"
+       },
+       {
+        "a": "970"
+       }
+      ],
+      [
+       "to_minutes(\"09:05\")",
+       {
+        "a": "9"
+       },
+       {
+        "a": "5"
+       },
+       {
+        "a": "545"
+       }
+      ],
+      [
+       "to_clock(1040)",
+       {
+        "a": "17"
+       },
+       {
+        "a": "20"
+       },
+       {
+        "a": "17:20",
+        "alts": [
+         "'17:20'"
+        ]
+       }
+      ],
+      [
+       "to_clock(545)",
+       {
+        "a": "9"
+       },
+       {
+        "a": "5"
+       },
+       {
+        "a": "09:05",
+        "alts": [
+         "'09:05'"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    def to_minutes(clock):\n        hour = int(clock[0]) * 10 + int(clock[1])\n        minute = int(clock[3]) * 10 + int(clock[4])\n        return hour * 60 + minute\n\n\n    def to_clock(minutes):\n        hour = minutes // 60\n        minute = minutes % 60\n        return str(hour // 10) + str(hour % 10) + \":\" + str(minute // 10) + str(minute % 10)\n\n    out = []\n    for s in [\"16:10\", \"09:05\"]:\n        out += [int(s[0]) * 10 + int(s[1]), int(s[3]) * 10 + int(s[4]), to_minutes(s)]\n    for m in [1040, 545]:\n        out += [m // 60, m % 60, to_clock(m)]\n    return out",
+     "explain": "clock[0]과 clock[1]은 시의 십의 자리와 일의 자리 글자라서, int로 숫자로 바꾼 뒤 십의 자리에 10을 곱해 더해요. to_clock은 // 60으로 시, % 60으로 분을 구하고, 9를 \"09\"처럼 두 자리로 쓰려고 십의 자리와 일의 자리를 따로 문자열로 만들어 이어 붙여요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "집을 나서는 시각이 21:00이에요. 지금 20:10이고, 다음 숙제는 50분이 걸려요. 어떻게 할까요?",
+     "options": [
+      "한다(21:00에 딱 맞게 끝난다)",
+      "하지 않고 멈춘다(21:00이 되면 늦는다)",
+      "건너뛰고 다음 숙제를 한다"
+     ],
+     "answer": 0,
+     "explain": "20:10에서 50분이 지나면 21:00이에요. 집을 나서는 시각에 딱 맞게 끝나는 것은 괜찮으니 이 숙제는 해요. 끝나는 시각이 나서는 시각을 '넘을' 때만 멈춰요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 arrive = \"16:10\", leave = \"18:00\", homework = [40, 30, 50, 10]을 따라가 보세요. now와 end는 분 단위예요(now는 970에서 시작, end = 1080). while 조건을 검사할 때마다 한 줄씩 채우고, 조건이 거짓인 줄은 반복하지 않아요('-').",
+     "columns": [
+      "검사 때 i",
+      "검사 때 now",
+      "now <= end",
+      "반복 뒤 now"
+     ],
+     "rows": [
+      [
+       "0",
+       "970",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1010"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "1010"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1040"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "1040"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1090"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "1090"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       "-"
+      ]
+     ],
+     "check": "def answers():\n    homework = [40, 30, 50, 10]\n    now, end = 970, 1080\n    i = 0\n    out = []\n    while True:\n        if i > 0:\n            out.append(now)\n        go = i < len(homework) and now <= end\n        out.append(go)\n        if not go:\n            break\n        now += homework[i]\n        i += 1\n        out.append(now)\n    return out",
+     "code": "start",
+     "explain": "틀린 조건은 '지금 시각이 아직 나서는 시각 전인지'만 봐요. 그래서 1040분(17:20)에 50분짜리 숙제를 시작해 1090분(18:10)에 끝내 버리고, [2, \"17:20\"]이 아니라 [3, \"18:10\"]을 return 해요. 반복이 끝났을 때 i는 끝낸 숙제의 수예요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "규칙대로 예시 2 따라가기",
+     "prompt": "이번에는 문제의 규칙대로 arrive = \"19:45\"(1185분), leave = \"21:00\"(end = 1260)을 따라가 보세요. homework = [25, 50, 5]예요. 끝나는 시각이 end를 넘는 줄에서 멈춰요('-').",
+     "columns": [
+      "i",
+      "homework[i]",
+      "이 숙제를 끝내는 시각(분)",
+      "end를 넘는가",
+      "반복 뒤 now"
+     ],
+     "rows": [
+      [
+       "0",
+       "25",
+       {
+        "a": "1210"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1210"
+       }
+      ],
+      [
+       "1",
+       "50",
+       {
+        "a": "1260"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1260"
+       }
+      ],
+      [
+       "2",
+       "5",
+       {
+        "a": "1265"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "-"
+      ]
+     ],
+     "check": "def answers():\n    homework = [25, 50, 5]\n    now, end = 1185, 1260\n    out = []\n    for h in homework:\n        over = now + h > end\n        out += [now + h, over]\n        if over:\n            break\n        now += h\n        out.append(now)\n    return out",
+     "explain": "두 번째 숙제는 1260분(21:00)에 끝나 end와 같으니 괜찮아요. 세 번째 숙제는 1265분(21:05)에 끝나 늦으므로 멈추고, [2, \"21:00\"]을 return 해요. 그러니 while 조건에는 '이 숙제를 끝내는 시각이 end 이하'가 들어가야 해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "`while i < len(homework) and now <= end:` 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "while i < len(homework) and now + homework[i] <= end:",
+      "while i < len(homework) and now + homework[i] < end:",
+      "while i < len(homework) and now < end:",
+      "while i <= len(homework) and now + homework[i] <= end:"
+     ],
+     "answer": 0,
+     "explain": "다음 숙제를 끝내는 시각(now + homework[i])이 end 이하일 때만 계속해요. < 를 쓰면 딱 맞게 끝나는 예시 2의 두 번째 숙제를 못 하고, i <= len(homework)로 쓰면 숙제를 다 끝낸 뒤 없는 칸 homework[i]를 읽어 오류가 나요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "조건의 두 부분 순서를 바꿔 `while now + homework[i] <= end and i < len(homework):`로 쓰면, arrive = \"13:00\", leave = \"15:00\", homework = [30, 30]일 때 어떻게 될까요?",
+     "options": [
+      "숙제 2개를 끝낸 뒤 없는 칸 homework[2]를 읽으려다 오류가 난다",
+      "[2, \"14:00\"]을 return 한다",
+      "[1, \"13:30\"]을 return 한다"
+     ],
+     "answer": 0,
+     "explain": "and는 왼쪽부터 검사하고, 왼쪽이 거짓이면 오른쪽은 보지 않아요. i < len(homework)를 먼저 써야 i가 2가 되었을 때 homework[2]를 읽지 않고 멈춰요. 인덱스(자리 번호)는 0부터라서 길이가 2인 리스트에는 homework[2]가 없어요."
+    }
+   ],
+   "explain": "while 조건에는 '계속해도 되는 조건'을 써요. 다음 숙제를 끝내는 시각(now + homework[i])이 end 이하일 때만 계속해야 하고, 지금 시각(now)만 보면 늦게 끝나는 숙제를 하나 더 하게 돼요. i < len(homework)를 and 앞에 두어야 숙제를 다 했을 때 없는 칸을 읽지 않아요."
+  },
+  {
+   "id": "pyb-t05-adv4",
+   "version": 1,
+   "title": "배터리를 남겨 두는 하루",
+   "statement": "휴대폰으로 오늘 할 일을 정해진 순서대로 하려 합니다. 할 일마다 배터리 양(%)이 바뀌며, 충전하는 일은 양수, 배터리를 쓰는 일은 음수, 배터리에 변화가 없는 일은 0으로 나타냅니다.\n\n- 배터리는 100%를 넘을 수 없습니다. 충전해서 100%를 넘게 되면 100%가 됩니다.\n- 위급할 때를 위해 배터리를 `reserve`% 이상 남겨 두려 합니다. 어떤 일을 하면 배터리가 `reserve`%보다 적어지게 될 때는 그 일을 하지 않고 거기서 멈춥니다. 그 뒤의 일도 하지 않습니다. 배터리가 딱 `reserve`%가 되는 것은 괜찮습니다.\n- 예를 들어 배터리가 80%, `reserve`가 20%이고 할 일이 차례대로 [-30, -20, 15, -40, -10]이라면, 배터리는 50%, 30%, 45%가 됩니다. 네 번째 일을 하면 5%가 되어 20%보다 적어지므로 멈춥니다. 따라서 한 일은 3개이고 남은 배터리는 45%입니다.\n\napply_change 함수는 배터리에 변화량을 더하고, 100%를 넘으면 100%로 맞춘 값을 return 합니다.\n\n처음 배터리 `battery`, 남겨 둘 배터리 `reserve`, 할 일마다 바뀌는 배터리 양을 순서대로 담은 리스트 `tasks`가 매개변수로 주어질 때, [한 일의 수, 남은 배터리]를 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "battery는 처음 배터리 양(%)이며, 0 이상 100 이하인 정수입니다.",
+    "reserve는 남겨 둘 배터리 양(%)이며, 0 이상 battery 이하인 정수입니다.",
+    "tasks의 길이는 1 이상 20 이하입니다.",
+    "tasks의 원소는 -100 이상 100 이하인 정수입니다. 양수는 충전, 음수는 사용, 0은 변화 없음입니다."
+   ],
+   "returns": [
+    "[한 일의 수, 남은 배터리(%)]를 return 합니다. 첫 번째 일부터 할 수 없으면 [0, battery]를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "battery",
+    "reserve",
+    "tasks"
+   ],
+   "examples": [
+    {
+     "args": [
+      80,
+      20,
+      [
+       -30,
+       -20,
+       15,
+       -40,
+       -10
+      ]
+     ],
+     "explain": "배터리는 50%, 30%, 45%가 됩니다. 네 번째 일을 하면 5%가 되어 20%보다 적어지므로 멈춥니다.",
+     "expected": [
+      3,
+      45
+     ]
+    },
+    {
+     "args": [
+      90,
+      10,
+      [
+       20,
+       -60,
+       -30,
+       5
+      ]
+     ],
+     "explain": "90%에서 20% 충전하면 110%가 아니라 100%가 됩니다. 그 뒤 40%, 10%(reserve와 같아 괜찮음), 15%가 되어 네 가지 일을 모두 합니다.",
+     "expected": [
+      4,
+      15
+     ]
+    },
+    {
+     "args": [
+      35,
+      30,
+      [
+       -10,
+       0,
+       50
+      ]
+     ],
+     "explain": "첫 번째 일을 하면 25%가 되어 30%보다 적어지므로 하나도 하지 못합니다. 뒤의 일도 하지 않습니다.",
+     "expected": [
+      0,
+      35
+     ]
+    }
+   ],
+   "code": "def apply_change(battery, change):\n    battery += change\n    if battery > 100:\n        battery = 100\n    return battery\n\n\ndef solution(battery, reserve, tasks):\n    done = 0\n    for t in tasks:\n        if battery - t < reserve:\n            break\n        battery = apply_change(battery, t)\n        done += 1\n    return [done, battery]",
+   "bugLine": 11,
+   "solution": "def apply_change(battery, change):\n    battery += change\n    if battery > 100:\n        battery = 100\n    return battery\n\n\ndef solution(battery, reserve, tasks):\n    done = 0\n    for t in tasks:\n        if battery + t < reserve:\n            break\n        battery = apply_change(battery, t)\n        done += 1\n    return [done, battery]",
+   "tests": [
+    {
+     "args": [
+      0,
+      0,
+      [
+       0
+      ]
+     ],
+     "expected": [
+      1,
+      0
+     ]
+    },
+    {
+     "args": [
+      0,
+      0,
+      [
+       -1
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      0,
+      0,
+      [
+       100,
+       -100
+      ]
+     ],
+     "expected": [
+      2,
+      0
+     ]
+    },
+    {
+     "args": [
+      100,
+      100,
+      [
+       0,
+       0,
+       -1,
+       5
+      ]
+     ],
+     "expected": [
+      2,
+      100
+     ]
+    },
+    {
+     "args": [
+      100,
+      0,
+      [
+       -100,
+       100,
+       -100
+      ]
+     ],
+     "expected": [
+      3,
+      0
+     ]
+    },
+    {
+     "args": [
+      50,
+      50,
+      [
+       10,
+       -10,
+       -1
+      ]
+     ],
+     "expected": [
+      2,
+      50
+     ]
+    },
+    {
+     "args": [
+      99,
+      0,
+      [
+       5,
+       -50,
+       30,
+       -60,
+       -21
+      ]
+     ],
+     "expected": [
+      4,
+      20
+     ]
+    },
+    {
+     "args": [
+      70,
+      25,
+      [
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15,
+       -15
+      ]
+     ],
+     "expected": [
+      3,
+      25
+     ]
+    },
+    {
+     "args": [
+      60,
+      10,
+      [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     ],
+     "expected": [
+      20,
+      100
+     ]
+    },
+    {
+     "args": [
+      40,
+      20,
+      [
+       -20,
+       0,
+       0,
+       30,
+       -21,
+       -9,
+       -1
+      ]
+     ],
+     "expected": [
+      6,
+      20
+     ]
+    },
+    {
+     "args": [
+      20,
+      5,
+      [
+       -16,
+       3
+      ]
+     ],
+     "expected": [
+      0,
+      20
+     ]
+    },
+    {
+     "args": [
+      85,
+      30,
+      [
+       30,
+       -70,
+       -1,
+       100
+      ]
+     ],
+     "expected": [
+      2,
+      30
+     ]
+    },
+    {
+     "args": [
+      10,
+      10,
+      [
+       -1,
+       50
+      ]
+     ],
+     "expected": [
+      0,
+      10
+     ]
+    },
+    {
+     "args": [
+      1,
+      0,
+      [
+       -1,
+       1,
+       -1,
+       1
+      ]
+     ],
+     "expected": [
+      4,
+      1
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(battery, reserve, tasks):\n    return isinstance(battery, int) and 0 <= battery <= 100 and isinstance(reserve, int) and 0 <= reserve <= battery and isinstance(tasks, list) and 1 <= len(tasks) <= 20 and all(isinstance(x, int) and not isinstance(x, bool) and -100 <= x <= 100 for x in tasks)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "tasks의 원소 -30은 무엇을 뜻할까요?",
+     "options": [
+      "배터리를 30% 쓰는 일(배터리가 30 줄어든다)",
+      "배터리를 30% 충전하는 일",
+      "배터리가 30%보다 적을 때만 하는 일"
+     ],
+     "answer": 0,
+     "explain": "음수는 0보다 작은 수예요. 쓰는 일이 음수로 적혀 있어서, 그냥 더하기만 해도 배터리가 줄어들어요. 예를 들어 80 + (-30) = 50이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "`apply_change(90, 20)`은 무엇을 return 할까요?",
+     "a": "100",
+     "check": "def answers():\n    def apply_change(battery, change):\n        battery += change\n        if battery > 100:\n            battery = 100\n        return battery\n\n    return [apply_change(90, 20)]",
+     "explain": "90 + 20 = 110이지만 배터리는 100%를 넘을 수 없어서, if battery > 100: 아래에서 100으로 맞춰요. 이렇게 넘지 못하게 정해 둔 가장 큰 값을 상한이라고 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "reserve가 10%이고 지금 배터리가 40%예요. 다음 일이 -30이면 어떻게 할까요?",
+     "options": [
+      "한다(딱 10%가 되어 괜찮다)",
+      "하지 않고 멈춘다",
+      "건너뛰고 다음 일을 한다"
+     ],
+     "answer": 0,
+     "explain": "40 + (-30) = 10%로 reserve와 같아요. reserve보다 '적어질' 때만 멈추고, 딱 reserve가 되는 것은 괜찮아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "배터리가 reserve 이상인 상태에서 충전하는 일(양수)이나 변화가 없는 일(0)을 만나면, 그 일 때문에 멈추게 될까요?",
+     "options": [
+      "멈추지 않는다(배터리가 줄지 않으므로)",
+      "충전해서 100%를 넘게 되면 멈춘다",
+      "0인 일을 만나면 멈춘다"
+     ],
+     "answer": 0,
+     "explain": "충전하거나 변화가 없는 일은 배터리를 줄이지 않으니 reserve보다 적어질 수 없어요. 100%를 넘는 충전도 100%로 맞출 뿐 멈추지 않아요. 그러니 멈추는 일은 언제나 배터리를 쓰는 일(음수)이에요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "틀린 코드로 예시 1 따라가기",
+     "prompt": "처음 코드 그대로 battery = 80, reserve = 20, tasks = [-30, -20, 15, -40, -10]을 따라가 보세요. if 검사에는 표의 바로 윗줄에 적은 '반복 뒤 battery'를 써요(첫 줄은 처음 값 80). break로 멈춘 줄은 값이 그대로예요.",
+     "columns": [
+      "t",
+      "battery - t",
+      "battery - t < reserve",
+      "반복 뒤 battery",
+      "반복 뒤 done"
+     ],
+     "rows": [
+      [
+       "-30",
+       {
+        "a": "110"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "50"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "-20",
+       {
+        "a": "70"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "30"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "15",
+       {
+        "a": "15"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "30"
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def apply_change(battery, change):\n        battery += change\n        if battery > 100:\n            battery = 100\n        return battery\n\n    battery, reserve = 80, 20\n    done = 0\n    out = []\n    for t in [-30, -20, 15, -40, -10]:\n        stop = battery - t < reserve\n        out += [battery - t, stop]\n        if not stop:\n            battery = apply_change(battery, t)\n            done += 1\n        out += [battery, done]\n        if stop:\n            break\n    return out",
+     "code": "start",
+     "explain": "t가 음수이면 battery - t는 오히려 커져요(80 - (-30) = 110). 그래서 틀린 코드는 쓰는 일에서는 멈추지 못하고, 엉뚱하게 충전하는 일(15)에서 멈춰 [3, 45] 대신 [2, 30]을 return 해요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "규칙대로 예시 2 따라가기",
+     "prompt": "이번에는 문제의 규칙대로 battery = 90, reserve = 10, tasks = [20, -60, -30, 5]를 따라가 보세요. '그 일을 한 뒤 배터리'는 100%를 넘으면 100으로 적어요.",
+     "columns": [
+      "t",
+      "그 일을 한 뒤 배터리",
+      "reserve보다 적어지는가",
+      "반복 뒤 done"
+     ],
+     "rows": [
+      [
+       "20",
+       {
+        "a": "100"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "-60",
+       {
+        "a": "40"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "-30",
+       {
+        "a": "10"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "15"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def apply_change(battery, change):\n        battery += change\n        if battery > 100:\n            battery = 100\n        return battery\n\n    battery, reserve = 90, 10\n    done = 0\n    out = []\n    for t in [20, -60, -30, 5]:\n        after = apply_change(battery, t)\n        low = after < reserve\n        if not low:\n            battery = after\n            done += 1\n        out += [after, low, done]\n        if low:\n            break\n    return out",
+     "explain": "충전은 100%에서 잘리고, 쓰는 일은 그냥 더하면(90 → 100 → 40 → 10) 돼요. -30을 한 뒤 10%는 reserve와 같아 괜찮으니 네 가지 일을 모두 하고 [4, 15]를 return 해요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "`if battery - t < reserve:` 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "if battery + t < reserve:",
+      "if battery + t <= reserve:",
+      "if battery < reserve:",
+      "if t < reserve:"
+     ],
+     "answer": 0,
+     "explain": "그 일을 한 뒤의 배터리는 battery + t예요(쓰는 일은 t가 음수). <= 를 쓰면 딱 reserve가 되는 경우(예시 2의 세 번째 일)에도 멈추고, battery < reserve는 이미 모자라진 뒤에야 멈춰요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "고친 코드에 battery = 85, reserve = 30, tasks = [30, -70, -1, 100]을 넣으면 무엇을 return 할까요? 리스트 모양으로 써 주세요.",
+     "a": "[2, 30]",
+     "check": "def answers():\n    def apply_change(battery, change):\n        battery += change\n        if battery > 100:\n            battery = 100\n        return battery\n\n\n    def solution(battery, reserve, tasks):\n        done = 0\n        for t in tasks:\n            if battery + t < reserve:\n                break\n            battery = apply_change(battery, t)\n            done += 1\n        return [done, battery]\n    return [solution(85, 30, [30, -70, -1, 100])]",
+     "code": "start",
+     "explain": "30% 충전하면 115%가 아니라 100%예요. 그다음 -70을 하면 30%로 딱 reserve라 괜찮고, -1을 하면 29%가 되어 멈춰요. 100%로 맞추지 않으면 답이 달라져요."
+    }
+   ],
+   "explain": "쓰는 일이 음수로 적혀 있으니, 그 일을 한 뒤의 배터리는 battery + t예요. battery - t로 쓰면 쓰는 일에서는 값이 오히려 커져 멈추지 못하고, 충전하는 일에서 엉뚱하게 멈춰요. 딱 reserve가 되는 것은 괜찮으니 < 를 쓰고, 충전은 apply_change가 100%로 맞춰요."
+  },
+  {
+   "id": "pyb-t05-adv5",
+   "version": 1,
+   "title": "시험 기간 단원 공부 계획",
+   "statement": "시험 기간 `days`일 동안 하루에 `cap`분씩 공부하려 합니다. 공부할 단원은 목록 `units`에 적힌 순서대로 공부하며, 단원마다 공부하는 데 걸리는 시간(분)이 정해져 있습니다. 한 단원은 나누지 않고 하루 안에 끝까지 공부해야 합니다.\n\n- 1일째부터 시작합니다. 그날 남은 시간 안에 다음 단원을 끝낼 수 있으면 그날 공부합니다. 그날 공부한 시간이 딱 `cap`분이 되는 것은 괜찮습니다.\n- 그날 남은 시간 안에 끝낼 수 없으면, 그날 공부는 마치고 다음 날 그 단원부터 공부합니다.\n- 다음 날이 시험 기간(`days`일)을 넘거나, 하루 `cap`분을 다 써도 끝낼 수 없는 단원을 만나면 공부 계획을 거기서 끝냅니다. 뒤의 단원은 공부하지 않습니다.\n- 예를 들어 `days`가 2, `cap`이 100이고 `units`가 [60, 40, 30, 50, 30, 10]이라면, 1일째에 60 + 40 = 100분, 2일째에 30 + 50 = 80분을 공부합니다. 다음 30분 단원은 2일째에 끝낼 수 없고 3일째는 시험 기간을 넘으므로 끝냅니다. 따라서 공부한 단원은 4개이고, 마지막 단원을 공부한 날은 2일째입니다.\n\nfits 함수는 그날 이미 공부한 시간 `used`에 단원의 공부 시간 `need`를 더해도 `cap`분을 넘지 않으면 True를, 넘으면 False를 return 하는 함수입니다.\n\n시험 기간 `days`, 하루 공부 시간 `cap`, 단원별 공부 시간을 순서대로 담은 리스트 `units`가 매개변수로 주어질 때, [공부한 단원의 수, 마지막 단원을 공부한 날]을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바르게 동작하지 않습니다. 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "days는 시험 기간(일)이며, 1 이상 10 이하인 자연수입니다.",
+    "cap은 하루 공부 시간(분)이며, 1 이상 300 이하인 자연수입니다.",
+    "units의 길이는 1 이상 20 이하입니다.",
+    "units의 원소는 각 단원의 공부 시간(분)이며, 1 이상 300 이하인 자연수입니다."
+   ],
+   "returns": [
+    "[공부한 단원의 수, 마지막 단원을 공부한 날(며칠째)]을 return 합니다. 단원을 하나도 공부하지 못했으면 [0, 0]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "days",
+    "cap",
+    "units"
+   ],
+   "examples": [
+    {
+     "args": [
+      3,
+      120,
+      [
+       50,
+       40,
+       60,
+       30,
+       70,
+       20
+      ]
+     ],
+     "explain": "1일째 50 + 40 = 90분, 2일째 60 + 30 = 90분, 3일째 70 + 20 = 90분을 공부해 모든 단원을 3일째에 끝냅니다.",
+     "expected": [
+      6,
+      3
+     ]
+    },
+    {
+     "args": [
+      2,
+      100,
+      [
+       60,
+       40,
+       30,
+       50,
+       30,
+       10
+      ]
+     ],
+     "explain": "1일째 60 + 40 = 100분(딱 맞음), 2일째 30 + 50 = 80분을 공부합니다. 다음 30분 단원은 2일째에 끝낼 수 없고 3일째는 시험 기간을 넘으므로 끝냅니다.",
+     "expected": [
+      4,
+      2
+     ]
+    },
+    {
+     "args": [
+      5,
+      90,
+      [
+       40,
+       100,
+       20
+      ]
+     ],
+     "explain": "1일째에 40분 단원을 공부합니다. 100분 단원은 하루 90분을 다 써도 끝낼 수 없으므로 계획을 끝냅니다. 마지막 단원을 공부한 날은 1일째입니다.",
+     "expected": [
+      1,
+      1
+     ]
+    }
+   ],
+   "code": "def fits(used, need, cap):\n    return used <= cap\n\n\ndef solution(days, cap, units):\n    day = 1\n    used = 0\n    count = 0\n    last_day = 0\n    for u in units:\n        if not fits(used, u, cap):\n            day += 1\n            used = 0\n        if day > days or not fits(used, u, cap):\n            break\n        used += u\n        count += 1\n        last_day = day\n    return [count, last_day]",
+   "bugLine": 2,
+   "solution": "def fits(used, need, cap):\n    return used + need <= cap\n\n\ndef solution(days, cap, units):\n    day = 1\n    used = 0\n    count = 0\n    last_day = 0\n    for u in units:\n        if not fits(used, u, cap):\n            day += 1\n            used = 0\n        if day > days or not fits(used, u, cap):\n            break\n        used += u\n        count += 1\n        last_day = day\n    return [count, last_day]",
+   "tests": [
+    {
+     "args": [
+      1,
+      1,
+      [
+       1
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      1,
+      1,
+      [
+       2
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      1,
+      100,
+      [
+       50,
+       50,
+       1
+      ]
+     ],
+     "expected": [
+      2,
+      1
+     ]
+    },
+    {
+     "args": [
+      2,
+      100,
+      [
+       50,
+       50,
+       1
+      ]
+     ],
+     "expected": [
+      3,
+      2
+     ]
+    },
+    {
+     "args": [
+      10,
+      300,
+      [
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300
+      ]
+     ],
+     "expected": [
+      10,
+      10
+     ]
+    },
+    {
+     "args": [
+      10,
+      300,
+      [
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300,
+       300
+      ]
+     ],
+     "expected": [
+      10,
+      10
+     ]
+    },
+    {
+     "args": [
+      3,
+      60,
+      [
+       30,
+       40,
+       50,
+       60,
+       10
+      ]
+     ],
+     "expected": [
+      3,
+      3
+     ]
+    },
+    {
+     "args": [
+      5,
+      60,
+      [
+       20,
+       61,
+       10
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      5,
+      60,
+      [
+       61,
+       10
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      4,
+      100,
+      [
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     ],
+     "expected": [
+      4,
+      4
+     ]
+    },
+    {
+     "args": [
+      2,
+      50,
+      [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     ],
+     "expected": [
+      10,
+      2
+     ]
+    },
+    {
+     "args": [
+      3,
+      90,
+      [
+       45,
+       46,
+       44,
+       1,
+       90,
+       2
+      ]
+     ],
+     "expected": [
+      4,
+      3
+     ]
+    },
+    {
+     "args": [
+      6,
+      120,
+      [
+       70,
+       60,
+       50,
+       80,
+       40,
+       30,
+       121,
+       5
+      ]
+     ],
+     "expected": [
+      6,
+      4
+     ]
+    },
+    {
+     "args": [
+      2,
+      10,
+      [
+       5,
+       6,
+       5,
+       4,
+       1
+      ]
+     ],
+     "expected": [
+      2,
+      2
+     ]
+    },
+    {
+     "args": [
+      1,
+      300,
+      [
+       100,
+       100,
+       99,
+       2
+      ]
+     ],
+     "expected": [
+      3,
+      1
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(days, cap, units):\n    return isinstance(days, int) and 1 <= days <= 10 and isinstance(cap, int) and 1 <= cap <= 300 and isinstance(units, list) and 1 <= len(units) <= 20 and all(isinstance(x, int) and 1 <= x <= 300 for x in units)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "cap = 120인데 1일째에 이미 90분을 공부했어요. 다음 단원이 60분이면 어떻게 할까요? (시험 기간은 아직 남아 있어요.)",
+     "options": [
+      "1일째 공부는 마치고, 2일째에 그 단원부터 공부한다",
+      "1일째에 30분만 공부하고, 남은 30분은 2일째에 공부한다",
+      "그 단원은 건너뛰고 다음 단원을 1일째에 공부한다",
+      "공부 계획을 끝낸다"
+     ],
+     "answer": 0,
+     "explain": "단원은 나누어 공부할 수 없고 순서도 바꿀 수 없어요. 그날 끝낼 수 없으면 다음 날로 넘어가서 그 단원부터 공부해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "다음 중 공부 계획을 끝내는 경우를 모두 고른 것은? (가) 오늘 남은 시간이 모자라고, 오늘이 시험 기간의 마지막 날이다. (나) 오늘 남은 시간이 모자라지만, 내일도 시험 기간이다. (다) 단원 하나가 cap분보다 길다.",
+     "options": [
+      "(가), (다)",
+      "(가), (나)",
+      "(나), (다)",
+      "(가), (나), (다)"
+     ],
+     "answer": 0,
+     "explain": "(나)는 다음 날로 넘어가면 되니 끝내지 않아요. (가)는 다음 날이 시험 기간을 넘고, (다)는 하루를 통째로 써도 끝낼 수 없으니 계획을 끝내요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "단원 하나를 처리하는 순서로 알맞은 것은?",
+     "options": [
+      "오늘 끝낼 수 없으면 다음 날로 넘긴다 → 시험 기간을 넘었거나 하루로도 안 되면 끝낸다 → 공부하고 단원 수와 날을 적는다",
+      "시험 기간을 넘었거나 하루로도 안 되면 끝낸다 → 오늘 끝낼 수 없으면 다음 날로 넘긴다 → 공부하고 단원 수와 날을 적는다",
+      "공부하고 단원 수와 날을 적는다 → 오늘 시간을 넘었으면 다음 날로 넘긴다 → 시험 기간을 넘었으면 끝낸다"
+     ],
+     "answer": 0,
+     "explain": "날을 넘긴 '뒤에' 시험 기간을 넘었는지 봐야 해요. 끝낼지를 먼저 보고 나중에 날을 넘기면, 시험 기간이 지난 날에도 공부하게 돼요. 공부부터 하고 나중에 검사하면 넘친 뒤에야 알아채요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "틀린 코드로 예시 3 따라가기",
+     "prompt": "처음 코드 그대로 days = 5, cap = 90, units = [40, 100, 20]을 따라가 보세요. 처음 코드의 fits는 `return used <= cap`이에요. '첫 번째 fits'는 `if not fits(used, u, cap):` 줄에서 fits가 돌려주는 값이고, '멈춤'은 break 했는지예요.",
+     "columns": [
+      "u",
+      "첫 번째 fits",
+      "검사 뒤 day",
+      "멈춤",
+      "반복 뒤 used",
+      "반복 뒤 count"
+     ],
+     "rows": [
+      [
+       "40",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "40"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "100",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "140"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "20",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "20"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def fits(used, need, cap):\n        return used <= cap\n\n    days, cap = 5, 90\n    day, used, count = 1, 0, 0\n    out = []\n    for u in [40, 100, 20]:\n        f = fits(used, u, cap)\n        if not f:\n            day += 1\n            used = 0\n        stop = day > days or not fits(used, u, cap)\n        out += [f, day, stop]\n        if stop:\n            break\n        used += u\n        count += 1\n        out += [used, count]\n    return out",
+     "code": "start",
+     "explain": "틀린 fits는 need를 보지 않고 '이미 공부한 시간이 cap 이하인지'만 봐요. 그래서 1일째에 100분 단원까지 공부해 140분이 되고, 하루로는 끝낼 수 없는 단원인데도 멈추지 않아 [1, 1] 대신 [3, 2]를 return 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "fits가 돌려줘야 할 값",
+     "prompt": "fits(used, need, cap)는 '그날 이미 공부한 시간 used에 need를 더해도 cap을 넘지 않는가'를 True/False로 알려 줘야 해요. 설명대로라면 돌려줘야 할 값과, 처음 코드의 fits(`return used <= cap`)가 돌려주는 값을 채워 보세요.",
+     "columns": [
+      "used",
+      "need",
+      "cap",
+      "설명대로라면",
+      "처음 코드의 fits"
+     ],
+     "rows": [
+      [
+       "90",
+       "60",
+       "120",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "60",
+       "60",
+       "120",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "0",
+       "130",
+       "120",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "130",
+       "10",
+       "120",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for used, need, cap in [(90, 60, 120), (60, 60, 120), (0, 130, 120), (130, 10, 120)]:\n        out += [used + need <= cap, used <= cap]\n    return out",
+     "code": "start",
+     "explain": "처음 코드의 fits는 need를 빼먹어서, 넘치게 될 단원(90 + 60)이나 cap보다 긴 단원(0 + 130)에도 True를 돌려줘요. 그날 남은 시간에 끝낼 수 있는지는 '이미 공부한 시간 + 이번 단원 시간'으로 판단해야 해요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "규칙대로 예시 2 따라가기",
+     "prompt": "이번에는 문제의 규칙대로 days = 2, cap = 100, units = [60, 40, 30, 50, 30, 10]을 따라가 보세요. 그날 끝낼 수 없으면 day가 1 늘고 used는 0이 돼요. day가 days를 넘는 줄에서 멈춰요.",
+     "columns": [
+      "u",
+      "그날 남은 시간에 끝낼 수 있는가",
+      "공부할 날(day)",
+      "반복 뒤 used"
+     ],
+     "rows": [
+      [
+       "60",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "60"
+       }
+      ],
+      [
+       "40",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "100"
+       }
+      ],
+      [
+       "30",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "30"
+       }
+      ],
+      [
+       "50",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "80"
+       }
+      ],
+      [
+       "30",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "3"
+       },
+       "멈춤"
+      ]
+     ],
+     "check": "def answers():\n    days, cap = 2, 100\n    day, used = 1, 0\n    out = []\n    for u in [60, 40, 30, 50, 30, 10]:\n        ok = used + u <= cap\n        if not ok:\n            day += 1\n            used = 0\n        out += [ok, day]\n        if day > days or u > cap:\n            break\n        used += u\n        out.append(used)\n    return out",
+     "explain": "1일째는 60 + 40 = 100분으로 딱 맞게 채워요. 30분 단원부터 2일째로 넘어가 30 + 50 = 80분을 공부하고, 다음 30분 단원은 110분이 되어 3일째로 넘어가야 하는데 시험 기간이 2일이라 멈춰요. 그래서 [4, 2]를 return 해요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "fits 함수의 `return used <= cap`을 어떻게 고쳐야 할까요?",
+     "options": [
+      "return used + need <= cap",
+      "return used + need < cap",
+      "return need <= cap",
+      "return used < cap"
+     ],
+     "answer": 0,
+     "explain": "이미 공부한 시간에 이번 단원 시간을 더해(used + need) cap 이하인지 봐야 해요. < 를 쓰면 딱 cap분이 되는 경우(예시 2의 1일째)를 못 채우고, need <= cap은 그날 이미 공부한 시간을 빼먹어요."
+    },
+    {
+     "id": "s8",
+     "kind": "mcq",
+     "q": "fits 함수는 처음 코드(`return used <= cap`) 그대로 두고, solution의 `if not fits(used, u, cap):` 줄만 `if not fits(used + u, u, cap):`로 바꾸면 어떻게 될까요?",
+     "options": [
+      "날 넘기기는 맞지만, cap보다 긴 단원을 만나도 끝내지 않고 공부해 버린다",
+      "모든 경우에 바르게 동작한다",
+      "다음 날로 넘어가지 않는다",
+      "오류가 나서 멈춘다"
+     ],
+     "answer": 0,
+     "code": "start",
+     "explain": "fits는 두 군데에서 써요. 두 번째 검사 fits(used, u, cap)는 날을 넘긴 뒤(used = 0) '하루를 통째로 써도 되는지'를 보는데, 처음 코드의 fits는 0 <= cap이라 늘 True예요. 그래서 함수 안의 한 줄을 고쳐야 두 검사가 함께 바르게 돼요."
+    },
+    {
+     "id": "s9",
+     "kind": "short",
+     "q": "고친 코드에 days = 5, cap = 60, units = [20, 61, 10]을 넣으면 무엇을 return 할까요? 리스트 모양으로 써 주세요.",
+     "a": "[1, 1]",
+     "check": "def answers():\n    def fits(used, need, cap):\n        return used + need <= cap\n\n\n    def solution(days, cap, units):\n        day = 1\n        used = 0\n        count = 0\n        last_day = 0\n        for u in units:\n            if not fits(used, u, cap):\n                day += 1\n                used = 0\n            if day > days or not fits(used, u, cap):\n                break\n            used += u\n            count += 1\n            last_day = day\n        return [count, last_day]\n    return [solution(5, 60, [20, 61, 10])]",
+     "code": "start",
+     "explain": "61분 단원은 하루 60분을 다 써도 끝낼 수 없어 계획을 끝내요. 이때 day는 2가 되었지만 2일째에 공부한 단원이 없으니, 마지막 단원을 공부한 날은 1일째예요. 그래서 day가 아니라 last_day를 return 해요."
+    }
+   ],
+   "explain": "fits는 '이미 공부한 시간 + 이번 단원 시간'(used + need)이 cap 이하인지 봐야 해요. 처음 코드의 fits는 need를 빼먹어 하루를 넘치게 채우고, cap보다 긴 단원도 걸러 내지 못해요. fits를 두 군데에서 쓰므로 부르는 줄이 아니라 함수 안의 한 줄을 고쳐야 두 검사가 함께 바르게 돼요."
+  }
+ ]
+}

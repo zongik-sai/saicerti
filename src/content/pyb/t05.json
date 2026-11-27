@@ -345,6 +345,7 @@
       ]
      ],
      "check": "def answers():\n    capacity = 1000\n    water = 0\n    out = []\n    for i, cup in enumerate([300, 450, 400, 100]):\n        if i > 0:\n            out.append(water)\n        stop = water > capacity\n        out.append(stop)\n        if not stop:\n            water += cup\n        out.append(water)\n        if stop:\n            break\n    return out",
+     "code": "start",
      "explain": "water처럼 값을 계속 더해 쌓는 것을 누적이라고 하고, break는 반복문을 그 자리에서 끝내는 명령이에요. 틀린 코드는 붓기 전에 \"지금까지의 water\"만 검사해서, 400mL를 부어 1150mL로 넘친 다음에야 멈춰요. 그래서 750이 아니라 1150을 return 해요."
     },
     {
@@ -358,6 +359,7 @@
       "if cup > capacity:"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "이번 컵을 부었을 때의 양(water + cup)을 먼저 계산해서 용량을 넘는지 확인해야 해요. >= 를 쓰면 용량과 딱 맞는 경우(예시 2)에도 멈춰 버려요."
     }
    ],
@@ -687,6 +689,7 @@
       ]
      ],
      "check": "def answers():\n    remain = 60\n    count = 0\n    out = []\n    for d in [15, 20, 30, 5]:\n        stop = remain < 0\n        if not stop:\n            remain -= d\n            count += 1\n        out += [stop, remain, count]\n        if stop:\n            break\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 시간을 빼기 전에 \"남은 시간이 이미 음수인지\"만 봐요. 그래서 30분짜리 학생까지 상담해 -5분이 된 뒤에야 멈추고, 2가 아니라 3을 return 해요."
     },
     {
@@ -700,6 +703,7 @@
       "if d < remain:"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "이번 학생을 상담하기 전에 \"남은 시간이 상담 시간보다 적은지\"를 먼저 확인해요. remain <= d로 쓰면 시간이 딱 맞는 학생(예시 2의 세 번째 학생)도 상담하지 못해요."
     },
     {
@@ -708,6 +712,7 @@
      "q": "고친 코드에 minutes = 10, durations = [15, 5, 5]를 넣으면 무엇을 return 할까요?",
      "a": "0",
      "check": "def answers():\n    def solution(minutes, durations):\n        remain = minutes\n        count = 0\n        for d in durations:\n            if remain < d:\n                break\n            remain -= d\n            count += 1\n        return count\n    return [solution(10, [15, 5, 5])]",
+     "code": "start",
      "explain": "첫 학생(15분)부터 끝낼 수 없어서 바로 멈춰요. 뒤에 5분짜리 학생들이 있어도 순서대로만 상담하니 0명이에요."
     }
    ],
@@ -1179,6 +1184,7 @@
       ]
      ],
      "check": "def answers():\n    limit = 20\n    weight_sum = 0\n    value_sum = 0\n    out = []\n    for t in [[5, 300], [8, 500], [9, 700], [2, 100]]:\n        stop = weight_sum > limit\n        if not stop:\n            weight_sum += t[0]\n            value_sum += t[1]\n        out += [stop, weight_sum, value_sum]\n        if stop:\n            break\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 보물을 담기 전에 \"이미 담은 무게\"만 검사해요. 그래서 무게 9인 보물을 담아 22가 된 뒤에야 멈추고, 800이 아니라 1500을 return 해요."
     },
     {
@@ -1192,6 +1198,7 @@
       "if t[0] > limit:"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "이번 보물을 담았을 때의 무게(weight_sum + t[0])가 limit를 넘는지 먼저 확인해야 해요. t[1]은 가치라서 무게 검사에 쓰면 안 되고, >= 를 쓰면 무게가 딱 맞는 보물(예시 2)도 못 담아요."
     },
     {
@@ -1200,6 +1207,7 @@
      "q": "고친 코드에 limit = 30, treasures = [[10, 100], [25, 900], [5, 50]]을 넣으면 무엇을 return 할까요?",
      "a": "100",
      "check": "def answers():\n    def solution(limit, treasures):\n        weight_sum = 0\n        value_sum = 0\n        for t in treasures:\n            if weight_sum + t[0] > limit:\n                break\n            weight_sum += t[0]\n            value_sum += t[1]\n        return value_sum\n    return [solution(30, [[10, 100], [25, 900], [5, 50]])]",
+     "code": "start",
      "explain": "두 번째 보물을 담으면 무게가 35가 되어 탐험을 끝내요. 세 번째 보물(무게 5)은 담을 수 있어 보여도 이미 끝났으니 가치 합은 100이에요."
     }
    ],
@@ -1523,6 +1531,7 @@
       ]
      ],
      "check": "def answers():\n    limit = 1800\n    total = 0\n    count = 0\n    out = []\n    for w in [600, 750, 450, 200]:\n        stop = total >= limit\n        if not stop:\n            total += w\n            count += 1\n        out += [stop, total, count]\n        if stop:\n            break\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 꽂기 전에 \"지금까지의 합\"만 검사해요. 그래서 450W 제품을 꽂아 1800W가 된 뒤에야 멈추고, 2가 아니라 3을 return 해요."
     },
     {
@@ -1536,6 +1545,7 @@
       "if w >= limit:"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "꽂은 뒤의 합(total + w)이 limit 이상인지 먼저 확인해요. > 를 쓰면 합이 딱 limit가 되는 경우(예시 1의 세 번째 제품)를 놓쳐요."
     },
     {
@@ -1544,6 +1554,7 @@
      "q": "고친 코드에 limit = 1000, watts = [1000, 1]을 넣으면 무엇을 return 할까요?",
      "a": "0",
      "check": "def answers():\n    def solution(limit, watts):\n        total = 0\n        count = 0\n        for w in watts:\n            if total + w >= limit:\n                break\n            total += w\n            count += 1\n        return count\n    return [solution(1000, [1000, 1])]",
+     "code": "start",
      "explain": "첫 제품만 꽂아도 합이 1000W로 기준 이상이라 바로 멈춰요. 뒤에 1W 제품이 있어도 순서대로만 꽂으니 0개예요."
     }
    ],
@@ -1986,6 +1997,7 @@
       ]
      ],
      "check": "def answers():\n    max_count, limit = 4, 10\n    count = 0\n    total = 0\n    out = []\n    for i, p in enumerate([3, 4, 5, 1, 1]):\n        if i > 0:\n            out.append([count, total])\n        stop = count == max_count or total > limit\n        out.append(stop)\n        if not stop:\n            total += p\n            count += 1\n        out.append([count, total])\n        if stop:\n            break\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 싣기 전에 \"이미 실은 무게\"만 보기 때문에, 5kg 택배를 실어 12kg이 된 뒤에야 멈춰요. 그래서 [2, 7]이 아니라 [3, 12]를 return 해요."
     },
     {
@@ -1999,6 +2011,7 @@
       "if count == max_count or total + p >= limit:"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "개수 조건은 그대로 두고, 무게 조건만 \"이번 택배를 실었을 때(total + p)\"로 바꿔요. and로 쓰면 두 조건이 동시에 맞을 때만 멈추고, >= 를 쓰면 무게가 딱 맞는 경우(예시 3)도 못 실어요."
     },
     {
@@ -2007,6 +2020,7 @@
      "q": "고친 코드에 max_count = 3, limit = 30, parcels = [10, 25, 5, 5]를 넣으면 무엇을 return 할까요? 리스트 모양으로 써 주세요.",
      "a": "[1, 10]",
      "check": "def answers():\n    def solution(max_count, limit, parcels):\n        count = 0\n        total = 0\n        for p in parcels:\n            if count == max_count or total + p > limit:\n                break\n            total += p\n            count += 1\n        return [count, total]\n    return [solution(3, 30, [10, 25, 5, 5])]",
+     "code": "start",
      "explain": "25kg 택배를 실으면 35kg이 되어 멈춰요. 뒤의 5kg 택배들은 실을 수 있어 보여도 순서대로만 싣기 때문에 [1, 10]이에요."
     }
    ],

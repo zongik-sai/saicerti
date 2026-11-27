@@ -277,6 +277,7 @@
       "beads[0] 자기 자신"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "N - i = 7 - 0 = 7이라서 beads[7]을 읽어요. 그 자리는 구슬이 아니라 문자열 끝 표시 '\\0'이라 'r'과 다르니 바로 false를 return 해요. 그래서 처음 코드는 구슬이 2개 이상이면 늘 false가 돼요."
     },
     {
@@ -290,6 +291,7 @@
       "if (beads[i + 1] != beads[N - i]) {"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "i번째 구슬의 짝은 뒤에서 i번째 구슬이고, 마지막 구슬의 인덱스가 N - 1이므로 짝은 N - 1 - i예요. N - 1만 쓰면 늘 마지막 구슬과만 비교하고, N + 1 - i는 문자열 범위를 벗어나요."
     }
    ],
@@ -670,6 +672,7 @@
       ]
      ],
      "check": "def answers():\n    heights = [4, 4, 7, 4]\n    n = len(heights)\n    out = []\n    for i in range(n // 2):\n        out += [heights[i], heights[n - 1], int(heights[i] != heights[n - 1]), heights[n - 1 - i]]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 i가 바뀌어도 늘 마지막 돌 heights[3]과만 비교해요. 그래서 실제로 높이가 다른 짝 (4, 7)을 놓치고 true를 return 해요(정답은 false)."
     },
     {
@@ -683,6 +686,7 @@
       "if (heights[i] != heights[heights_len - 2 - i]) {"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "뒤쪽 인덱스도 i만큼 앞으로 와야 해요. heights_len - i는 i = 0일 때 배열 밖(heights[heights_len])을 읽고, heights[heights_len - 1] - i는 인덱스가 아니라 높이 값에서 i를 빼는 식이에요. 대괄호 [ ] 안에서 계산해야 인덱스가 바뀌어요."
     },
     {
@@ -691,6 +695,7 @@
      "q": "돌이 하나뿐이면(heights_len = 1) 고친 코드에서 for 반복 안의 비교를 몇 번 할까요?",
      "a": "0",
      "check": "def answers():\n    heights_len = 1\n    return [len(range(heights_len // 2))]",
+     "code": "start",
      "explain": "1 / 2 = 0이라 반복을 한 번도 하지 않고 바로 true를 return 해요. 돌이 하나뿐인 징검다리는 늘 대칭이에요."
     }
    ],
@@ -923,6 +928,7 @@
       ]
      ],
      "check": "def answers():\n    word = 'stressed'\n    note = 'desserts' + chr(0)\n    n = 8\n    out = []\n    for i in range(2):\n        j = n - 1 + i\n        out += [\"'\" + word[i] + \"'\", j]\n        if note[j] != chr(0):\n            out.append(\"'\" + note[j] + \"'\")\n        out.append(int(word[i] != note[j]))\n    return out",
+     "code": "start",
      "explain": "i = 1에서 벌써 note의 끝(널 문자)에 닿아 false를 return 해요. 뒤에서부터 앞으로 오려면 인덱스가 i만큼 줄어야 하는데, 틀린 코드는 i를 더하고 있어요."
     },
     {
@@ -936,6 +942,7 @@
       "if (word[i] != note[len + 1 - i]) {"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "note의 뒤에서 i번째 글자는 note[len - 1 - i]예요. note[len - i]는 i = 0일 때 널 문자를 읽고, note[i]는 거꾸로가 아니라 같은 자리끼리 비교해요."
     },
     {
@@ -944,6 +951,7 @@
      "q": "고친 코드에서 len = 8, i = 3일 때 word[3]은 note의 몇 번 인덱스 글자와 비교할까요?",
      "a": "4",
      "check": "def answers():\n    len_ = 8\n    i = 3\n    return [len_ - 1 - i]",
+     "code": "start",
      "explain": "8 - 1 - 3 = 4예요. 앞에서 3번 인덱스(네 번째 글자)의 짝은 뒤에서 네 번째 글자인 4번 인덱스예요. 두 인덱스를 더하면 늘 len - 1 = 7이에요."
     }
    ],
@@ -1173,6 +1181,7 @@
       ]
      ],
      "check": "def answers():\n    N = 6\n    signal = '-.-.--'\n    left, right = 0, N - 2\n    out = []\n    while left < right:\n        diff = signal[left] != signal[right]\n        out += [right, \"'\" + signal[left] + \"'\", \"'\" + signal[right] + \"'\", int(diff)]\n        if diff:\n            break\n        left += 1\n        right -= 1\n    return out",
+     "code": "start",
      "explain": "두 번 모두 같아서 넘어간 뒤 left = 2, right = 2가 되면 left < right가 거짓이라 반복이 끝나고 true를 return 해요(정답은 false). 마지막 글자 signal[5]는 한 번도 비교하지 않았어요."
     },
     {
@@ -1186,6 +1195,7 @@
       "7번째 줄: if (signal[left] != signal[right + 1]) {"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "right는 처음에 마지막 글자(인덱스 N - 1)를 가리켜야 해요. N으로 두면 널 문자를 읽고, right + 1로 고치면 짝은 맞아 보여도 반복이 한 번 모자라 길이가 짝수일 때 가운데 짝을 비교하지 못해요(예: N = 2, \".-\")."
     },
     {
@@ -1194,6 +1204,7 @@
      "q": "고친 코드에 예시 1(N = 7, \"--...--\")을 넣으면 if 문의 비교를 모두 몇 번 할까요?",
      "a": "3",
      "check": "def answers():\n    N = 7\n    signal = '--...--'\n    left, right = 0, N - 1\n    count = 0\n    while left < right:\n        count += 1\n        if signal[left] != signal[right]:\n            break\n        left += 1\n        right -= 1\n    return [count]",
+     "code": "start",
      "explain": "(0, 6), (1, 5), (2, 4)를 비교한 뒤 left = 3, right = 3이 되어 멈춰요. 가운데 글자는 짝이 없으니 비교하지 않아요."
     }
    ],
@@ -1431,6 +1442,7 @@
       ]
      ],
      "check": "def answers():\n    N = 7\n    s = 'racecar'\n    count = 0\n    out = []\n    for i in range(N // 2):\n        j = N // 2 + i\n        if s[i] != s[j]:\n            count += 1\n        out += [j, \"'\" + s[j] + \"'\", count]\n    return out",
+     "code": "start",
      "explain": "N / 2는 7 / 2 = 3이에요(정수 나눗셈은 소수점 아래를 버려요). 틀린 코드는 앞쪽 절반과 뒤쪽 절반을 같은 방향으로 짝지어서, 이미 회문인 \"racecar\"에서도 3을 return 해요. 마주 보는 짝은 (0, 6), (1, 5), (2, 4)처럼 한쪽 인덱스가 늘면 다른 쪽은 줄어야 해요."
     },
     {
@@ -1444,6 +1456,7 @@
       "if (s[i] != s[N / 2 + 1 + i]) {"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "i번째 글자와 마주 보는 글자는 뒤에서 i번째, 곧 s[N - 1 - i]예요. s[N - i]는 i = 0일 때 널 문자 '\\0'(문자열 끝 표시)과 비교해서 늘 하나를 더 세요."
     },
     {
@@ -1452,6 +1465,7 @@
      "q": "고친 코드에 N = 4, s = \"abab\"를 넣으면 무엇을 return 할까요?",
      "a": "2",
      "check": "def answers():\n    def solution(N, s):\n        count = 0\n        for i in range(N // 2):\n            if s[i] != s[N - 1 - i]:\n                count += 1\n        return count\n    return [solution(4, 'abab')]",
+     "code": "start",
      "explain": "(a, b), (b, a) 두 짝이 모두 달라서 2예요. 틀린 코드는 (a, a), (b, b)로 잘못 짝지어 0을 return 해요."
     }
    ],

@@ -19,10 +19,16 @@ export interface InputCell {
 }
 export type TableCell = string | InputCell;
 
+/** code: 'start'면 그 단계 질문 위에 처음 코드(한 줄 수정이면 틀린 코드)를 줄 번호와 함께 펼쳐 보인다(선생님 요청 2026-11-27) */
+interface StepBase {
+  id: string;
+  explain: string;
+  code?: 'start';
+}
 export type Step =
-  | { id: string; kind: 'mcq'; q: string; options: string[]; answer: number; explain: string }
-  | { id: string; kind: 'table'; title?: string; prompt: string; columns: string[]; rows: TableCell[][]; check?: string; explain: string }
-  | { id: string; kind: 'short'; q: string; a: string; alts?: string[]; check?: string; explain: string };
+  | (StepBase & { kind: 'mcq'; q: string; options: string[]; answer: number })
+  | (StepBase & { kind: 'table'; title?: string; prompt: string; columns: string[]; rows: TableCell[][]; check?: string })
+  | (StepBase & { kind: 'short'; q: string; a: string; alts?: string[]; check?: string });
 
 /** 문제 속 그림(시험지의 이미지를 화면에서 다시 그림). 설명 글에서 한 줄짜리 `{{fig:ID}}`로 넣는다 */
 export type Figure =

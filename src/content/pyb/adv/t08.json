@@ -205,6 +205,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    k = 4\n    for n in [3, 4, 5, 8]:\n        floor_no = (n - 1) // k + 1\n        room_no = (n - 1) // k + 1\n        out += [floor_no, room_no, floor_no * 100 + room_no]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 호실을 구하는 줄에도 몫(`//`)을 써서 room_no가 늘 floor_no와 같아요. 그래서 103, 104, 201, 204 대신 101, 101, 202, 202가 나와요."
     },
     {
@@ -218,6 +219,7 @@
       "4번째 줄을 `if n >= k * floors:`로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "호실은 그 층 안에서 몇 번째인지이므로 n - 1을 k로 나눈 나머지에 1을 더해요. `n % k`는 4번처럼 k의 배수인 번호에서 0호실이 되고, `>=`로 바꾸면 마지막 방(8번)의 학생까지 대기자가 돼요."
     },
     {
@@ -227,6 +229,7 @@
      "a": "[310, 0]",
      "alts": [],
      "check": "def solution(k, floors, orders):\n    answer = []\n    for n in orders:\n        if n > k * floors:\n            answer.append(0)\n        else:\n            floor_no = (n - 1) // k + 1\n            room_no = (n - 1) % k + 1\n            answer.append(floor_no * 100 + room_no)\n    return answer\n\ndef answers():\n    return [solution(10, 3, [30, 31])]",
+     "code": "start",
      "explain": "방은 30개이고, 30번은 3층의 마지막 방인 10호실(310)이에요. 31번은 방이 모두 찬 뒤라 대기자(0)예요."
     }
    ],
@@ -732,6 +735,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    for over in [5, 10, 23, 30]:\n        count = over // 10\n        cond = over // 10 > 0\n        if cond:\n            count += 1\n        out += [cond, count]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 넘은 시간이 10분 이상이기만 하면 1을 더해요. 남은 시간이 있을 때만 1을 더해야 하므로 23분은 우연히 맞지만 5분·10분·30분은 틀려요."
     },
     {
@@ -745,6 +749,7 @@
       "2번째 줄을 `s = start % 100 * 60 + start // 100`으로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "10분이 안 되는 시간이 남았는지는 나머지로 알 수 있어요. `over % 10 > 0`일 때만 1을 더해야 해요. `over / 10 > 0`은 1분만 넘어도 참이라 10분·30분처럼 딱 나누어떨어질 때 1을 더 더해요."
     },
     {
@@ -756,6 +761,7 @@
       "4,800"
      ],
      "check": "def solution(start, end):\n    s = start // 100 * 60 + start % 100\n    e = end // 100 * 60 + end % 100\n    used = e - s\n    if used <= 60:\n        return 1000\n    over = used - 60\n    count = over // 10\n    if over % 10 > 0:\n        count += 1\n    fee = 1000 + count * 200\n    if fee > 5000:\n        fee = 5000\n    return fee\n\ndef answers():\n    return [solution(1000, 1410)]",
+     "code": "start",
      "explain": "250분을 탔으니 넘은 시간은 190분, 곧 10분 19번이에요. 1,000 + 19 × 200 = 4,800원은 5,000원보다 적어서 그대로 받아요. 틀린 코드는 1을 더 더해 5,000원이 돼요."
     }
    ],
@@ -1003,6 +1009,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    x = 472\n    total = 0\n    pos = 0\n    while x > 0:\n        d = x % 10\n        w = 3 if pos % 2 == 0 else 1\n        total += d * w\n        out += [d, w, total]\n        x //= 10\n        pos += 1\n    return out",
+     "code": "start",
      "explain": "pos가 0, 2, 4, …(짝수)인 자리에 3을, 1, 3, 5, …(홀수)인 자리에 1을 곱해요. 그래서 S는 6 + 7 + 12 = 25예요."
     },
     {
@@ -1058,6 +1065,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    x = 472\n    total = 0\n    pos = 0\n    while x > 0:\n        d = x % 10\n        cond = pos // 2 == 0\n        if cond:\n            total += d * 3\n        else:\n            total += d\n        out += [cond, total]\n        x //= 10\n        pos += 1\n    return out",
+     "code": "start",
      "explain": "`pos // 2 == 0`은 pos가 0과 1일 때만 참이에요. 그래서 틀린 코드는 앞의 두 자리에 3을, 그다음부터는 1을 곱해 S가 31이 되고, 확인 숫자를 9로 잘못 구해 4725를 틀린 번호로 봐요."
     },
     {
@@ -1071,6 +1079,7 @@
       "21번째 줄을 `if check_digit(c % 10) == c // 10:`으로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "3과 1을 번갈아 곱하려면 pos가 짝수인지 봐야 하고, 짝수는 2로 나눈 나머지가 0인 수예요. `x %= 10`은 x가 0이 되지 않아 반복이 끝나지 않을 수 있고, 21번째 줄처럼 바꾸면 앞번호와 확인 숫자가 뒤바뀌어요."
     },
     {
@@ -1487,6 +1496,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    for d in [2, 3, 5, 6, 11]:\n        wd = (3 + d - 1) // 7\n        out += [wd, 1 <= wd <= 5 and d not in [9]]\n    return out",
+     "code": "start",
      "explain": "틀린 weekday_of는 7로 나눈 몫, 곧 줄 번호를 돌려줘요. 그래서 1주차의 날은 모두 0(일요일처럼), 2주차의 날은 모두 1(월요일처럼)이 되어, 평일인 2일·3일은 빼고 주말인 5일·11일을 인정해 [2, 3]이 나와요."
     },
     {
@@ -1500,6 +1510,7 @@
       "5번째 줄을 `return (first + d) % 7`로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "요일은 칸 번호를 7로 나눈 나머지예요. `(first + d) % 7`은 하루씩 밀려 1일(수)을 목요일로 보고, 11번째 줄처럼 바꾸면 주말도 인정해요. 주차를 구하는 2번째 줄의 몫은 이미 맞아요."
     },
     {
@@ -1509,6 +1520,7 @@
      "a": "3",
      "alts": [],
      "check": "def answers():\n    counts = [0, 2, 0, 2, 1, 0, 0]\n    best = 0\n    for w in range(1, 7):\n        if counts[w] >= counts[best]:\n            best = w\n    return [best]",
+     "code": "start",
      "explain": "`>=`는 같을 때도 best를 바꾸므로, 1주차와 동점인 3주차로 바뀌어요. 문제는 동점이면 앞 주차를 원하므로 `>`를 써서 1주차를 남겨야 해요."
     },
     {
@@ -1518,6 +1530,7 @@
      "a": "[0, 0]",
      "alts": [],
      "check": "def week_of(first, d):\n    return (first + d - 1) // 7 + 1\n\ndef weekday_of(first, d):\n    return (first + d - 1) % 7\n\ndef solution(first, dates, holidays):\n    counts = [0] * 7\n    for d in dates:\n        wd = weekday_of(first, d)\n        if 1 <= wd <= 5 and d not in holidays:\n            counts[week_of(first, d)] += 1\n    best = 0\n    for w in range(1, 7):\n        if counts[w] > counts[best]:\n            best = w\n    return [best, counts[best]]\n\ndef answers():\n    return [solution(1, [1, 7, 8], [1, 8])]",
+     "code": "start",
      "explain": "1일과 8일은 월요일이지만 공휴일이고, 7일은 일요일이에요. 인정 활동이 없어 counts가 모두 0이므로 best는 0으로 남아 [0, 0]이에요."
     }
    ],
@@ -2075,6 +2088,7 @@
       ]
      ],
      "check": "def to_clock(total):\n    total %= 1440\n    return [total // 60, total % 60]\n\ndef count_bars(h, m):\n    bars = [6, 2, 5, 5, 4, 5, 6, 3, 7, 6]\n    return bars[h // 10] + bars[h % 10] + bars[m // 10] + bars[m % 10]\n\ndef two_digits(x):\n    return str(x // 10) + str(x % 10)\n\ndef solution(start, minutes):\n    now = start[0] * 60 + start[1]\n    best = -1\n    best_time = \"\"\n    for k in range(minutes + 1):\n        t = to_clock(now + k)\n        c = count_bars(t[0], t[1])\n        if c > best:\n            best = c\n            best_time = two_digits(t[0]) + \":\" + two_digits(t[1])\n    return [best, best_time]\n\ndef answers():\n    bars = [6, 2, 5, 5, 4, 5, 6, 3, 7, 6]\n    out = []\n    for h, m in [(23, 58), (23, 59), (0, 0), (0, 1)]:\n        wrong = bars[h // 10] + bars[h % 10] + bars[m % 10] + bars[m % 10]\n        out += [m // 10, count_bars(h, m), wrong]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 분의 십의 자리 대신 일의 자리 숫자의 막대를 두 번 더해요. 그래서 23:58을 24개로 잘못 세고, 00:00과 동점이 되어 먼저 나타난 23:58을 답으로 골라요."
     },
     {
@@ -2088,6 +2102,7 @@
       "19번째 줄을 `if c >= best:`로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "두 자리 수의 십의 자리 숫자는 10으로 나눈 몫, 일의 자리 숫자는 나머지예요. 시에는 `h // 10`, `h % 10`을 바르게 썼지만 분에는 나머지를 두 번 썼어요. `total //= 1440`은 하루가 지나기 전의 시각을 모두 0으로 만들어요."
     },
     {
@@ -2097,6 +2112,7 @@
      "a": "00:06",
      "alts": [],
      "check": "def to_clock(total):\n    total %= 1440\n    return [total // 60, total % 60]\n\ndef count_bars(h, m):\n    bars = [6, 2, 5, 5, 4, 5, 6, 3, 7, 6]\n    return bars[h // 10] + bars[h % 10] + bars[m // 10] + bars[m % 10]\n\ndef two_digits(x):\n    return str(x // 10) + str(x % 10)\n\ndef solution(start, minutes):\n    now = start[0] * 60 + start[1]\n    best = -1\n    best_time = \"\"\n    for k in range(minutes + 1):\n        t = to_clock(now + k)\n        c = count_bars(t[0], t[1])\n        if c >= best:\n            best = c\n            best_time = two_digits(t[0]) + \":\" + two_digits(t[1])\n    return [best, best_time]\n\ndef answers():\n    return [solution([0, 0], 7)[1]]",
+     "code": "start",
      "explain": "`>=`는 같은 값이 나와도 best_time을 바꿔서, 나중에 나타난 00:06이 남아요. 가장 먼저 나타난 시각을 남기려면 더 클 때만 바꾸는 `>`를 써야 해요."
     },
     {
@@ -2106,6 +2122,7 @@
      "a": "[23, \"09:59\"]",
      "alts": [],
      "check": "def to_clock(total):\n    total %= 1440\n    return [total // 60, total % 60]\n\ndef count_bars(h, m):\n    bars = [6, 2, 5, 5, 4, 5, 6, 3, 7, 6]\n    return bars[h // 10] + bars[h % 10] + bars[m // 10] + bars[m % 10]\n\ndef two_digits(x):\n    return str(x // 10) + str(x % 10)\n\ndef solution(start, minutes):\n    now = start[0] * 60 + start[1]\n    best = -1\n    best_time = \"\"\n    for k in range(minutes + 1):\n        t = to_clock(now + k)\n        c = count_bars(t[0], t[1])\n        if c > best:\n            best = c\n            best_time = two_digits(t[0]) + \":\" + two_digits(t[1])\n    return [best, best_time]\n\ndef answers():\n    return [solution([9, 59], 0)]",
+     "code": "start",
      "explain": "minutes가 0이면 `range(1)`이라 처음 시각 하나만 봐요. best가 -1에서 시작하므로 첫 시각의 막대 수 6 + 6 + 5 + 6 = 23이 늘 기록돼요."
     },
     {
@@ -2182,6 +2199,7 @@
       ]
      ],
      "check": "def to_clock(total):\n    total %= 1440\n    return [total // 60, total % 60]\n\ndef count_bars(h, m):\n    bars = [6, 2, 5, 5, 4, 5, 6, 3, 7, 6]\n    return bars[h // 10] + bars[h % 10] + bars[m // 10] + bars[m % 10]\n\ndef two_digits(x):\n    return str(x // 10) + str(x % 10)\n\ndef solution(start, minutes):\n    now = start[0] * 60 + start[1]\n    best = -1\n    best_time = \"\"\n    for k in range(minutes + 1):\n        t = to_clock(now + k)\n        c = count_bars(t[0], t[1])\n        if c > best:\n            best = c\n            best_time = two_digits(t[0]) + \":\" + two_digits(t[1])\n    return [best, best_time]\n\ndef answers():\n    out = []\n    best = -1\n    best_time = \"\"\n    for k in range(5):\n        t = to_clock(7 * 60 + 58 + k)\n        c = count_bars(t[0], t[1])\n        if c > best:\n            best = c\n            best_time = two_digits(t[0]) + \":\" + two_digits(t[1])\n        out += [c, best, best_time]\n    return out",
+     "code": "start",
      "explain": "07:58(21개)이 처음 best가 되고, 08:00(25개)에서 더 커져 바뀌어요. 그 뒤 08:01(21개), 08:02(24개)는 25보다 작아서 그대로라 [25, \"08:00\"]을 돌려줘요."
     }
    ],

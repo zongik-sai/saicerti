@@ -315,6 +315,7 @@
       ]
      ],
      "check": "def make_big(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef make_small(value):\n    digits = list(str(value))\n    digits.sort()\n    i = 0\n    while digits[i] == '0':\n        i += 1\n    digits[0], digits[i] = digits[i], digits[0]\n    return int(\"\".join(digits))\n\ndef solution(num):\n    answer = 0\n    answer = make_big(num) - make_small(num)\n    return answer\n\ndef answers():\n    out = []\n    digits = list(str(40719))\n    digits.sort()\n    out.append(digits[:])\n    i = 0\n    while digits[i] == '0':\n        i += 1\n    out.append(i)\n    digits[0], digits[i] = digits[i], digits[0]\n    out.append(digits[:])\n    out += [make_small(40719), make_big(40719), solution(40719)]\n    return out",
+     "code": "start",
      "explain": "정렬하면 0이 맨 앞(0 자리)에 있고, 0이 아닌 첫 숫자 '1'은 1 자리에 있어요. 두 글자를 맞바꾸면 10479가 되고, 뒤쪽 0, 4, 7, 9는 여전히 작은 것부터 놓여 있어서 이것이 가장 작은 코드예요. 97410 − 10479 = 86931이에요."
     },
     {
@@ -1226,6 +1227,7 @@
       ]
      ],
      "check": "def answers():\n    return [sorted([520, 52, 7]), sorted([-520, -52, -7]), sorted([(2, 9), (1, 5), (2, 4)]), [205, 520, 25, 52, 7][:3]]",
+     "code": "start",
      "explain": "sorted는 작은 것부터 놓으므로 520은 맨 뒤예요. 그런데 -를 붙이면 -520이 가장 작아져 맨 앞에 와요. 튜플은 첫째 값이 같은 (2, 4)와 (2, 9)를 둘째 값으로 다시 비교해요."
     },
     {
@@ -1256,7 +1258,7 @@
    "id": "pya-t04-adv4",
    "version": 1,
    "title": "음수도 있는 점수 바꾸기",
-   "statement": "게임에서 받은 점수를 담은 리스트 `scores`가 있습니다. 점수는 음수일 수도 있습니다. **숫자 바꾸기 아이템**을 쓰면 점수의 부호(-)는 그대로 두고 숫자의 순서만 바꾸어, 만들 수 있는 가장 큰 점수로 바꿉니다. 숫자를 늘어놓았을 때 맨 앞에 0이 오면, 앞쪽의 0은 지운 수로 봅니다.\n\n- 양수 52는 52 그대로이고, 18은 81이 됩니다.\n- 음수는 숫자 부분이 작을수록 큰 수이므로, -51은 -15가 되고 -305는 -035, 즉 -35가 됩니다.\n- 0은 0 그대로입니다.\n\n아이템을 쓴 뒤 점수가 오른 정도(바뀐 점수 − 원래 점수)를 **오름폭**이라 합니다. 오름폭이 가장 큰 점수를 모두 찾아, 원래 점수를 작은 것부터 리스트에 담아 return 하려 합니다. 어떤 점수도 오르지 않으면(모든 오름폭이 0이면) 빈 리스트를 return 합니다.\n\n예를 들어 `scores`가 `[18, -81, 5, -7, 36]`이면 오름폭은 차례로 63, 63, 0, 0, 27이므로 `[-81, 18]`을 return 합니다.\n\n점수를 담은 리스트 `scores`가 solution 함수의 매개변수로 주어질 때, 오름폭이 가장 큰 원래 점수들을 작은 것부터 담은 리스트를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "statement": "게임에서 받은 점수를 담은 리스트 `scores`가 있습니다. 점수는 음수일 수도 있습니다. **숫자 바꾸기 아이템**을 쓰면 점수의 부호(-)는 그대로 두고 숫자의 순서만 바꾸어, 만들 수 있는 가장 큰 점수로 바꿉니다. 숫자를 늘어놓았을 때 맨 앞에 0이 오면, 앞쪽의 0은 지운 수로 봅니다.\n\n- 양수 52는 52 그대로이고, 18은 81이 됩니다.\n- 음수는 숫자 부분이 작을수록 큰 수이므로, -51은 -15가 되고 -305는 -035, 즉 -35가 됩니다.\n- 0은 0 그대로입니다.\n\n아이템을 쓴 뒤 점수가 오른 정도(바뀐 점수 − 원래 점수)를 **오름폭**이라 합니다. 오름폭이 가장 큰 점수를 모두 찾아, 원래 점수를 작은 것부터 리스트에 담아 return 하려 합니다. 어떤 점수도 오르지 않으면(모든 오름폭이 0이면) 빈 리스트를 return 합니다.\n\n예를 들어 `scores`가 `[36, 18, -81, 5, -7]`이면 오름폭은 차례로 27, 63, 63, 0, 0이므로 `[-81, 18]`을 return 합니다.\n\n점수를 담은 리스트 `scores`가 solution 함수의 매개변수로 주어질 때, 오름폭이 가장 큰 원래 점수들을 작은 것부터 담은 리스트를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
    "params": [
     "scores의 길이는 1 이상 20 이하입니다.",
     "scores의 원소는 -9999 이상 9999 이하인 정수입니다.",
@@ -1274,14 +1276,14 @@
     {
      "args": [
       [
+       36,
        18,
        -81,
        5,
-       -7,
-       36
+       -7
       ]
      ],
-     "explain": "바뀐 점수는 81, -18, 5, -7, 63이고 오름폭은 63, 63, 0, 0, 27입니다. 가장 큰 오름폭 63인 점수 18과 -81을 작은 것부터 담아 [-81, 18]을 return 합니다.",
+     "explain": "바뀐 점수는 63, 81, -18, 5, -7이고 오름폭은 27, 63, 63, 0, 0입니다. 가장 큰 오름폭 63인 점수 18과 -81을 작은 것부터 담아 [-81, 18]을 return 합니다.",
      "expected": [
       -81,
       18
@@ -1319,7 +1321,8 @@
      "answer": "-arrange(str(-value), False)",
      "alts": [
       "-arrange(str(abs(value)), False)",
-      "-arrange(str(value)[1:], False)"
+      "-arrange(str(value)[1:], False)",
+      "arrange(str(value), False)"
      ]
     },
     {
@@ -1356,14 +1359,6 @@
     {
      "args": [
       [
-       9999
-      ]
-     ],
-     "expected": []
-    },
-    {
-     "args": [
-      [
        -9999
       ]
      ],
@@ -1378,14 +1373,6 @@
      "expected": [
       -1000
      ]
-    },
-    {
-     "args": [
-      [
-       10
-      ]
-     ],
-     "expected": []
     },
     {
      "args": [
@@ -1485,7 +1472,6 @@
     {
      "args": [
       [
-       -9081,
        1089,
        0,
        -7,
@@ -1501,6 +1487,7 @@
        2468,
        -8642,
        777,
+       -9081,
        -700,
        12,
        -21,
@@ -1522,6 +1509,30 @@
      ],
      "expected": [
       -90
+     ]
+    },
+    {
+     "args": [
+      [
+       12,
+       1234,
+       98
+      ]
+     ],
+     "expected": [
+      1234
+     ]
+    },
+    {
+     "args": [
+      [
+       -10,
+       -100,
+       21
+      ]
+     ],
+     "expected": [
+      -100
      ]
     }
    ],
@@ -1566,13 +1577,22 @@
      "id": "s4",
      "kind": "table",
      "title": "예시 1의 오름폭",
-     "prompt": "scores = [18, -81, 5, -7, 36]일 때, 점수마다 best(s)와 오름폭 gain = (바뀐 점수 − 원래 점수)를 채워 보세요.",
+     "prompt": "scores = [36, 18, -81, 5, -7]일 때, 점수마다 best(s)와 오름폭 gain = (바뀐 점수 − 원래 점수)를 채워 보세요.",
      "columns": [
       "s",
       "best(s)",
       "오름폭 gain"
      ],
      "rows": [
+      [
+       "36",
+       {
+        "a": "63"
+       },
+       {
+        "a": "27"
+       }
+      ],
       [
        "18",
        {
@@ -1608,18 +1628,9 @@
        {
         "a": "0"
        }
-      ],
-      [
-       "36",
-       {
-        "a": "63"
-       },
-       {
-        "a": "27"
-       }
       ]
      ],
-     "check": "def arrange(text, desc):\n    digits = list(text)\n    digits.sort(reverse=desc)\n    return int(\"\".join(digits))\n\ndef best(value):\n    if value < 0:\n        return -arrange(str(-value), False)\n    return arrange(str(value), True)\n\ndef solution(scores):\n    answer = []\n    top = 0\n    for s in scores:\n        gain = best(s) - s\n        if gain > top:\n            top = gain\n            answer = [s]\n        elif gain == top and top > 0:\n            answer.append(s)\n    answer.sort()\n    return answer\n\ndef answers():\n    out = []\n    for s in [18, -81, 5, -7, 36]:\n        out += [best(s), best(s) - s]\n    return out",
+     "check": "def arrange(text, desc):\n    digits = list(text)\n    digits.sort(reverse=desc)\n    return int(\"\".join(digits))\n\ndef best(value):\n    if value < 0:\n        return -arrange(str(-value), False)\n    return arrange(str(value), True)\n\ndef solution(scores):\n    answer = []\n    top = 0\n    for s in scores:\n        gain = best(s) - s\n        if gain > top:\n            top = gain\n            answer = [s]\n        elif gain == top and top > 0:\n            answer.append(s)\n    answer.sort()\n    return answer\n\ndef answers():\n    out = []\n    for s in [36, 18, -81, 5, -7]:\n        out += [best(s), best(s) - s]\n    return out",
      "explain": "-81은 -18이 되어 -18 − (-81) = 63만큼 올라요. 18도 81이 되어 63만큼 올라서 동점이에요. 한 자리 수는 바꿀 것이 없어 오름폭이 0이에요."
     },
     {
@@ -1634,6 +1645,16 @@
       "처리 뒤 answer"
      ],
      "rows": [
+      [
+       "36",
+       "27",
+       {
+        "a": "27"
+       },
+       {
+        "a": "[36]"
+       }
+      ],
       [
        "18",
        "63",
@@ -1673,20 +1694,10 @@
        {
         "a": "[18, -81]"
        }
-      ],
-      [
-       "36",
-       "27",
-       {
-        "a": "63"
-       },
-       {
-        "a": "[18, -81]"
-       }
       ]
      ],
-     "check": "def arrange(text, desc):\n    digits = list(text)\n    digits.sort(reverse=desc)\n    return int(\"\".join(digits))\n\ndef best(value):\n    if value < 0:\n        return -arrange(str(-value), False)\n    return arrange(str(value), True)\n\ndef solution(scores):\n    answer = []\n    top = 0\n    for s in scores:\n        gain = best(s) - s\n        if gain > top:\n            top = gain\n            answer = [s]\n        elif gain == top and top > 0:\n            answer.append(s)\n    answer.sort()\n    return answer\n\ndef answers():\n    out = []\n    answer = []\n    top = 0\n    for s in [18, -81, 5, -7, 36]:\n        gain = best(s) - s\n        if gain > top:\n            top = gain\n            answer = [s]\n        elif gain == top and top > 0:\n            answer.append(s)\n        out += [top, answer[:]]\n    return out",
-     "explain": "반복이 끝난 answer는 나온 순서대로 [18, -81]이에요. 문제는 작은 것부터 담으라고 했으니 마지막에 answer.sort()로 정렬해 [-81, 18]을 돌려줘요."
+     "check": "def arrange(text, desc):\n    digits = list(text)\n    digits.sort(reverse=desc)\n    return int(\"\".join(digits))\n\ndef best(value):\n    if value < 0:\n        return -arrange(str(-value), False)\n    return arrange(str(value), True)\n\ndef solution(scores):\n    answer = []\n    top = 0\n    for s in scores:\n        gain = best(s) - s\n        if gain > top:\n            top = gain\n            answer = [s]\n        elif gain == top and top > 0:\n            answer.append(s)\n    answer.sort()\n    return answer\n\ndef answers():\n    out = []\n    answer = []\n    top = 0\n    for s in [36, 18, -81, 5, -7]:\n        gain = best(s) - s\n        if gain > top:\n            top = gain\n            answer = [s]\n        elif gain == top and top > 0:\n            answer.append(s)\n        out += [top, answer[:]]\n    return out",
+     "explain": "36을 처리한 뒤 answer는 [36]이지만, 18에서 더 큰 오름폭 63이 나오면 [18]로 새로 만들어요. 반복이 끝난 answer는 나온 순서대로 [18, -81]이고, 작은 것부터 담으라고 했으니 마지막에 answer.sort()로 정렬해 [-81, 18]을 돌려줘요."
     },
     {
      "id": "s6",

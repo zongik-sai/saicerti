@@ -678,6 +678,7 @@
       ]
      ],
      "check": "def answers():\n    t = [3, 5, 8, 8, 10, 12, 15, 7, 9]\n    out = []\n    for i in range(1, 9):\n        out += [int(t[i] > t[i]), int(t[i] > t[i - 1])]\n    return out",
+     "code": "start",
      "explain": "같은 칸끼리 비교하면 두 값이 언제나 같아서 `>`는 항상 거짓(0)이에요. 그래서 틀린 코드는 매번 else로 가서 curr = 1이 되고, 예시 1에서 4가 아니라 1을 return 해요."
     },
     {
@@ -691,6 +692,7 @@
       "8번째 줄: `if (curr >= maxLen) maxLen = curr;`"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "오늘(`temps[i]`)이 전날(`temps[i - 1]`)보다 높을 때만 이어 가야 해요. `>=`는 같은 기온도 이어 붙여서 예시 1에서 7을 돌려줘요. `temps[i + 1]`은 마지막 반복에서 배열 밖의 칸을 읽게 되고, 8번째 줄은 원래 맞는 줄이에요."
     },
     {
@@ -796,6 +798,7 @@
       ]
      ],
      "check": "def answers():\n    t = [3, 5, 8, 8, 10, 12, 15, 7, 9]\n    out = []\n    maxLen = curr = 1\n    for i in range(1, len(t)):\n        if t[i] > t[i - 1]:\n            curr += 1\n        else:\n            curr = 1\n        if curr > maxLen:\n            maxLen = curr\n        out += [curr, maxLen]\n    return out",
+     "code": "start",
      "explain": "i = 3(8 → 8)과 i = 7(15 → 7)에서 curr가 1로 돌아가요. maxLen은 curr가 더 커질 때만 바뀌어 마지막에 4가 돼요."
     }
    ],
@@ -1083,6 +1086,7 @@
       ]
      ],
      "check": "def answers():\n    w = 'beefydog'\n    out = []\n    curr = 1\n    for i in range(1, len(w)):\n        c = w[i - 1] >= w[i]\n        curr = curr + 1 if c else 1\n        out += [int(c), curr]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 앞 글자가 지금 글자와 같거나 알파벳 순서가 더 뒤일 때 이어 가요. 그래서 알파벳 순서가 거꾸로 가는 곳(y → d, o → g)을 이어 세고, 순서대로 가는 곳(b → e)은 끊고 있어요."
     },
     {
@@ -1092,6 +1096,7 @@
      "a": "2",
      "alts": [],
      "check": "def answers():\n    w = 'beefydog'\n    best = curr = 1\n    for i in range(1, len(w)):\n        curr = curr + 1 if w[i - 1] >= w[i] else 1\n        best = max(best, curr)\n    return [best]",
+     "code": "start",
      "explain": "curr가 가장 컸을 때가 2라서 2를 돌려줘요. 정답 5와 다르므로 6번째 줄의 비교가 잘못되었음을 알 수 있어요."
     },
     {
@@ -1105,6 +1110,7 @@
       "`if (word[i] <= word[i]) curr++;`"
      ],
      "answer": 2,
+     "code": "start",
      "explain": "앞 글자가 지금 글자와 같거나 알파벳 순서가 앞이면(`word[i - 1] <= word[i]`) 이어 가요. `<`는 \"beefy\"의 ee처럼 같은 글자에서 구간을 끊어 3을 돌려주고, `word[i] <= word[i]`는 언제나 참이라 문자열 전체 길이를 돌려줘요."
     }
    ],
@@ -1439,6 +1445,7 @@
       ]
      ],
      "check": "def answers():\n    s = str(1776453100)\n    out = []\n    run = 1\n    for i in range(1, len(s)):\n        c = s[i - 1] > s[i]\n        run = run + 1 if c else 1\n        if i >= 2:\n            out += [int(c), run]\n    return out",
+     "code": "start",
      "explain": "틀린 코드의 `>`는 같은 자릿수(7 → 7, 0 → 0)에서 구간을 끊어요. 그래서 7764가 7과 764로, 53100이 5310과 0으로 갈라져 가장 긴 길이가 5가 아니라 4가 돼요."
     },
     {
@@ -1452,6 +1459,7 @@
       "7번째 줄: `for (int i = 0; digits[i] != '\\0'; i++) {`"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "앞 자릿수가 지금 자릿수보다 크거나 '같을' 때 이어 가야 하므로 `>=`를 써요. `<`는 거꾸로 오르막을 세고, `digits[i] > digits[i]`는 언제나 거짓이에요. i를 0부터 시작하면 `digits[-1]`을 읽어 배열 범위를 벗어나요."
     },
     {
@@ -1461,6 +1469,7 @@
      "a": "10",
      "alts": [],
      "check": "def answers():\n    s = str(2000000000)\n    best = run = 1\n    for i in range(1, len(s)):\n        run = run + 1 if s[i - 1] >= s[i] else 1\n        best = max(best, run)\n    return [best]",
+     "code": "start",
      "explain": "2 다음에 0이 아홉 개 이어지고 2 ≥ 0, 0 ≥ 0이 모두 참이라 열 자리 전체가 한 구간이에요. 같은 자릿수를 이어 주지 않으면 2가 나와요."
     }
    ],
@@ -1732,6 +1741,7 @@
       ]
      ],
      "check": "def answers():\n    w = 'SSRRRCS'\n    out = []\n    run = 1\n    for i in range(1, len(w)):\n        c = w[i] == w[0]\n        run = run + 1 if c else 1\n        out += [int(c), run]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 매번 첫째 날 `days[0]`('S')과 비교해서, RRR처럼 'S'가 아닌 날씨는 이어지지 않아요. 그래서 예시 1에서 3이 아니라 2를 돌려줘요."
     },
     {
@@ -1745,6 +1755,7 @@
       "7번째 줄: `for (int i = 0; i < len; i++) {`"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "지금 날 `days[i]`와 바로 앞날 `days[i - 1]`을 비교해야 해요. `days[i] == days[i]`는 언제나 참이라 전체 날 수를 돌려주고, 7번째 줄을 바꿔도 8번째 줄이 여전히 첫째 날과 비교하므로 고쳐지지 않아요."
     },
     {
@@ -1754,6 +1765,7 @@
      "a": "3",
      "alts": [],
      "check": "def answers():\n    w = 'NNSNNN'\n    best = run = 1\n    for i in range(1, len(w)):\n        run = run + 1 if w[i] == w[i - 1] else 1\n        best = max(best, run)\n    return [best]",
+     "code": "start",
      "explain": "\"NN\", \"S\", \"NNN\"으로 나뉘어 마지막 NNN이 가장 길어요. 틀린 코드는 S 다음의 N이 바로 앞날(S)과 다른데도 첫째 날 'N'과 같다는 이유로 S부터 이어서 세어 4를 돌려줘요."
     }
    ],
@@ -2336,6 +2348,7 @@
       ]
      ],
      "check": "def answers():\n    r = [88, 85, 86, 70, 72, 71, 73, 75, 60]\n    out = []\n    for i in range(1, len(r)):\n        out += [r[i] - r[i - 1], int(r[i] - r[i - 1] <= 3)]\n    return out",
+     "code": "start",
      "explain": "-16이나 -15처럼 크게 떨어진 경우에도 뺄셈 결과가 음수라서 3 이하가 되어 버려요. 그래서 틀린 코드는 크게 떨어지는 곳에서 구간을 끊지 못해요."
     },
     {
@@ -2345,6 +2358,7 @@
      "a": "9",
      "alts": [],
      "check": "def answers():\n    r = [88, 85, 86, 70, 72, 71, 73, 75, 60]\n    best = run = 1\n    for i in range(1, len(r)):\n        run = run + 1 if r[i] - r[i - 1] <= 3 else 1\n        best = max(best, run)\n    return [best]",
+     "code": "start",
      "explain": "조건이 매번 참이라 run이 9까지 늘어나, 측정값 9개 전체를 한 구간으로 셌어요. 정답 5와 달라요."
     },
     {
@@ -2358,6 +2372,7 @@
       "`if (rates[i] - rates[i - 1] < d) run++;`"
      ],
      "answer": 2,
+     "code": "start",
      "explain": "차이는 절댓값이므로 `abs()`로 감싸야 오를 때와 내릴 때 모두 바르게 비교해요. 뺄셈 순서만 바꾸면 이번에는 크게 오른 경우를 놓치고, `<`는 차이가 정확히 d인 경우(예: 88 → 85)에서 구간을 끊어 버려요."
     },
     {
@@ -2367,6 +2382,7 @@
      "a": "4",
      "alts": [],
      "check": "def answers():\n    r = [60, 63, 63, 66, 70]\n    best = run = 1\n    for i in range(1, len(r)):\n        run = run + 1 if abs(r[i] - r[i - 1]) <= 3 else 1\n        best = max(best, run)\n    return [best]",
+     "code": "start",
      "explain": "차이가 3, 0, 3, 4라서 {60, 63, 63, 66}과 {70}으로 나뉘어요. 차이가 d와 같은 3일 때도 이어진다는 점에 주의해요."
     }
    ],

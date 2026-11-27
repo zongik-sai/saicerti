@@ -123,6 +123,8 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
                 onReveal={() => markStep(problem.steps[stepIdx].id, true)}
                 isLast={stepIdx === problem.steps.length - 1}
                 onNext={goNext}
+                startCode={problem.code}
+                kind={type.kind}
               />
               <div className="step-nav">
                 <button className="btn small ghost" onClick={() => setStepIdx(stepIdx - 1)} disabled={stepIdx === 0}>

@@ -72,7 +72,15 @@ def lines(code):
     return [l.rstrip() for l in code.rstrip('\n').split('\n')]
 
 
-def check_steps(where, p, adv=False):
+# 코드를 보고 푸는 단계: 질문 위에 처음 코드가 보이도록 "code": "start"가 있어야 한다(선생님 요청 2026-11-27)
+NEEDS_CODE = {
+    'fix': re.compile(r'틀린 코드|처음 코드|지금 코드|\d+\s*번(째)?\s*줄|어느 줄|어떤 줄|틀린 줄|틀린 return|틀린 func|틀린 함수'),
+    'blank': re.compile(r'빈칸\s*\d|처음 코드'),
+    'write': re.compile(r'처음 코드'),
+}
+
+
+def check_steps(where, p, adv=False, kind=None):
     steps = p.get('steps')
     lo, hi = (6, 9) if adv else (3, 6)
     if not isinstance(steps, list) or not (lo <= len(steps) <= hi):
@@ -87,6 +95,11 @@ def check_steps(where, p, adv=False):
             continue
         if MARK.search(json.dumps({k_: v_ for k_, v_ in s.items() if k_ != 'check'}, ensure_ascii=False)):
             err(w, '중간 점검에 빈칸 번호(⟦1⟧ 등)를 쓰지 말 것 — 질문만 읽고 풀리게 코드 조각을 직접 적는다')
+        if 'code' in s and s['code'] != 'start':
+            err(w, 'code는 "start"만 쓸 수 있음(질문 위에 처음 코드를 보여 줌)')
+        shown_text = ' '.join(str(s.get(k_, '')) for k_ in ('title', 'q', 'prompt')) + ' ' + ' '.join(map(str, s.get('options', [])))
+        if kind in NEEDS_CODE and NEEDS_CODE[kind].search(shown_text) and s.get('code') != 'start':
+            err(w, f'코드를 보고 푸는 단계("{NEEDS_CODE[kind].search(shown_text).group(0)}")에는 "code": "start"를 넣어 질문 위에 처음 코드를 보여 줄 것')
         sid = s.get('id')
         if not isinstance(sid, str) or not re.match(r'^s\d+$', sid) or sid in ids:
             err(w, f'id 오류 {sid!r}')
@@ -337,7 +350,7 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False, a
             err(where, '처음 코드에 funcName 함수 정의 없음')
     if mock and p.get('steps') == []:
         return  # 모의고사: 중간 점검 없이 실전처럼
-    check_steps(where, p, adv)
+    check_steps(where, p, adv, kind)
 
 
 def check_file(path, seen):

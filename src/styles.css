@@ -486,3 +486,11 @@ table.data.acc-table .acc-date, table.data.acc-table .acc-email { white-space: n
   .type-card { grid-template-columns: minmax(0, 1fr); }
   .type-no { line-height: 1; }
 }
+/* 중간 점검에서 보는 코드(틀린 코드·빈칸 코드), 줄 번호 */
+.step-code { margin: 0.2rem 0 0.7rem; border: 1px solid var(--line); border-radius: 8px; background: var(--code-bg); }
+.step-code > summary { cursor: pointer; padding: 0.4rem 0.7rem; font-size: 0.86rem; font-weight: 600; color: var(--soft); list-style-position: inside; }
+.step-code[open] > summary { border-bottom: 1px solid var(--line); }
+.step-code .sol-code { margin: 0; border: 0; border-radius: 0 0 8px 8px; max-height: 26rem; overflow: auto; }
+.sol-code.numbered .ln-row { display: block; white-space: pre; }
+.sol-code.numbered .ln { display: inline-block; min-width: 2ch; margin-right: 0.9rem; color: var(--faint); text-align: right; user-select: none; white-space: pre; }
+.blank-mark { display: inline-block; min-width: 2.2em; padding: 0 0.3em; border: 1.5px dashed var(--accent); border-radius: 4px; color: var(--accent); font-weight: 700; text-align: center; line-height: 1.25; }

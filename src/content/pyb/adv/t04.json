@@ -534,6 +534,7 @@
       ]
      ],
      "check": "def answers():\n    def func_a(s):\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        return hour * 60 + minute\n    def func_b(start, end):\n        diff = func_a(end) - func_a(start)\n        if diff < 0:\n            diff += 1440\n        return diff\n    out = []\n    for s in ['22:00', '06:30', '21:15', '07:00']:\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        out += [hour, minute, func_a(s)]\n    return out",
+     "code": "start",
      "explain": "'22:00'은 22 × 60 = 1320분, '06:30'은 6 × 60 + 30 = 390분이에요. 시는 s[0]·s[1], 분은 s[3]·s[4]의 두 글자를 int()로 숫자로 바꿔 만들어요."
     },
     {
@@ -542,6 +543,7 @@
      "q": "근무 ['22:00', '06:30']에서 func_a('06:30') - func_a('22:00')를 계산하면 얼마일까요?",
      "a": "-930",
      "check": "def answers():\n    def func_a(s):\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        return hour * 60 + minute\n    def func_b(start, end):\n        diff = func_a(end) - func_a(start)\n        if diff < 0:\n            diff += 1440\n        return diff\n    return [func_a('06:30') - func_a('22:00')]",
+     "code": "start",
      "explain": "390 - 1320 = -930처럼 0보다 작은 값이 나와요. 이것은 다음 날 마쳤다는 뜻이라, 여기에 하루만큼의 분 수를 더해야 실제 근무 시간이 돼요."
     },
     {
@@ -618,6 +620,7 @@
       ]
      ],
      "check": "def answers():\n    def func_a(s):\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        return hour * 60 + minute\n    def func_b(start, end):\n        diff = func_a(end) - func_a(start)\n        if diff < 0:\n            diff += 1440\n        return diff\n    out = []\n    for i, (st, en) in enumerate([['22:00', '06:30'], ['18:00', '23:30'], ['21:15', '07:00']]):\n        diff = func_a(en) - func_a(st)\n        if i == 1:\n            out += [func_a(st), func_a(en)]\n        out += [diff, diff < 0, func_b(st, en)]\n    return out",
+     "code": "start",
      "explain": "하루는 24 × 60 = 1440분이에요. -930 + 1440 = 510, -855 + 1440 = 585처럼 diff가 음수인 근무에만 하루의 분 수를 더하고, 2번처럼 diff가 양수인 근무는 그대로 둬요. 가장 긴 585분인 3번 근무가 답이에요."
     },
     {
@@ -625,7 +628,11 @@
      "kind": "short",
      "q": "solution에서 근무 s = ['22:00', '06:30']의 두 시각을 거꾸로 넣어 func_b(s[1], s[0])처럼 부르면 근무 시간은 몇 분으로 계산될까요?",
      "a": "930",
+     "alts": [
+      "930분"
+     ],
      "check": "def answers():\n    def func_a(s):\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        return hour * 60 + minute\n    def func_b(start, end):\n        diff = func_a(end) - func_a(start)\n        if diff < 0:\n            diff += 1440\n        return diff\n    s = ['22:00', '06:30']\n    return [func_b(s[1], s[0])]",
+     "code": "start",
      "explain": "func_b(start, end)는 첫 번째 값을 시작한 시각, 두 번째 값을 마친 시각으로 써요. 거꾸로 넣으면 1320 - 390 = 930분이 되어 틀려요. 시작한 시각이 담긴 쪽을 첫 번째 값으로 넣어야 해요."
     },
     {
@@ -639,6 +646,7 @@
       "3"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "540이 처음 나오는 곳은 0번 인덱스(1번 근무)예요. 그 자리에서 바로 return 하므로 뒤의 같은 값은 보지 않고, 번호는 i + 1 = 1이에요. 자정을 넘긴 2번 근무도 하루의 분 수를 더한 뒤에는 다른 근무와 똑같이 비교해요."
     }
    ],
@@ -2495,6 +2503,9 @@
      "kind": "short",
      "q": "limit = '00:50:00'일 때 to_sec(limit)의 값은?",
      "a": "3000",
+     "alts": [
+      "3000초"
+     ],
      "check": "def answers():\n    def to_sec(s):\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        second = int(s[6]) * 10 + int(s[7])\n        return hour * 3600 + minute * 60 + second\n    def finished(s):\n        return s != '--:--:--'\n    def solve(walkers, limit, init=86400):\n        max_rec = to_sec(limit)\n        count = 0\n        best_num = -1\n        best_rec = init\n        best_start = 0\n        for i in range(len(walkers)):\n            start = to_sec(walkers[i][0])\n            if finished(walkers[i][1]):\n                rec = to_sec(walkers[i][1]) - start\n                if rec <= max_rec:\n                    count += 1\n                    if rec < best_rec or (rec == best_rec and start < best_start):\n                        best_num = i + 1\n                        best_rec = rec\n                        best_start = start\n        return [count, best_num]\n    return [to_sec('00:50:00')]",
      "explain": "제한 시간도 'HH:MM:SS' 형식이라 시각을 바꾸는 to_sec를 그대로 쓸 수 있어요. 0 × 3600 + 50 × 60 + 0 = 3000초예요."
     },
@@ -3173,7 +3184,7 @@
       "145분"
      ],
      "check": "def answers():\n    def to_min(s, k):  # s[k]부터 시작하는 'HH:MM'을 분 단위로 바꾸기\n        hour = int(s[k]) * 10 + int(s[k + 1])\n        minute = int(s[k + 3]) * 10 + int(s[k + 4])\n        return hour * 60 + minute\n\n    def use_time(r):  # 'HH:MM~HH:MM' 기록의 이용 시간(분) 구하기\n        t = to_min(r, 6) - to_min(r, 0)\n        if t < 0:\n            t += 1440\n        return t\n\n    def fee(t):  # 이용 시간 t분의 요금 구하기\n        if t <= 30:\n            return 1000\n        over = t - 30\n        count = over // 10\n        if over % 10 != 0:\n            count += 1\n        return 1000 + count * 200\n\n    def solve(rides):\n        totals = []\n        for person in rides:\n            total = 0\n            for r in person:\n                total += fee(use_time(r))\n            totals.append(total)\n        best = max(totals)\n        for i in range(len(totals)):\n            if totals[i] == best:\n                return [i + 1, best]\n    return [use_time('22:40~01:05')]",
-     "explain": "반납한 시각이 더 이르니 다음 날 반납한 거예요. 22시 40분부터 자정까지 80분, 자정부터 1시 5분까지 65분이라 145분이에요. 분 단위 값으로 빼면 65 - 1360 = -1295이고, 하루 1440분을 더해도 145분이에요."
+     "explain": "반납한 시각이 더 이르니 다음 날 반납한 거예요. 22시 40분부터 자정까지 80분, 자정부터 1시 5분까지 65분이라 145분이에요. 분 단위 값으로 빼면 65 - 1360 = -1295이고, 여기에 하루의 분 수 1440을 더하면 똑같이 145분이 나와요."
     },
     {
      "id": "s3",
@@ -3192,10 +3203,10 @@
      "id": "s4",
      "kind": "table",
      "title": "기록 문자열 읽기",
-     "prompt": "r = '23:50~00:35'예요(r[5]는 '~'). to_min(r, k)가 k에서 시작해 읽는 hour, minute과 분 단위 값을 채워 보세요.",
+     "prompt": "r = '23:50~00:35'예요(r[5]는 '~'). to_min(r, k)는 r[k]에서 시작하는 'HH:MM' 5글자를 읽어요. k마다 시(hour)의 일의 자리 글자가 있는 인덱스와 hour, minute, 분 단위 값을 채워 보세요.",
      "columns": [
       "k",
-      "읽는 글자",
+      "시의 일의 자리 인덱스",
       "hour",
       "minute",
       "to_min(r, k)"
@@ -3203,7 +3214,9 @@
      "rows": [
       [
        "0",
-       "r[0]·r[1], r[3]·r[4]",
+       {
+        "a": "1"
+       },
        {
         "a": "23"
        },
@@ -3216,7 +3229,9 @@
       ],
       [
        "6",
-       "r[6]·r[7], r[9]·r[10]",
+       {
+        "a": "7"
+       },
        {
         "a": "0"
        },
@@ -3228,7 +3243,7 @@
        }
       ]
      ],
-     "check": "def answers():\n    def to_min(s, k):  # s[k]부터 시작하는 'HH:MM'을 분 단위로 바꾸기\n        hour = int(s[k]) * 10 + int(s[k + 1])\n        minute = int(s[k + 3]) * 10 + int(s[k + 4])\n        return hour * 60 + minute\n\n    def use_time(r):  # 'HH:MM~HH:MM' 기록의 이용 시간(분) 구하기\n        t = to_min(r, 6) - to_min(r, 0)\n        if t < 0:\n            t += 1440\n        return t\n\n    def fee(t):  # 이용 시간 t분의 요금 구하기\n        if t <= 30:\n            return 1000\n        over = t - 30\n        count = over // 10\n        if over % 10 != 0:\n            count += 1\n        return 1000 + count * 200\n\n    def solve(rides):\n        totals = []\n        for person in rides:\n            total = 0\n            for r in person:\n                total += fee(use_time(r))\n            totals.append(total)\n        best = max(totals)\n        for i in range(len(totals)):\n            if totals[i] == best:\n                return [i + 1, best]\n    r = '23:50~00:35'\n    out = []\n    for k in [0, 6]:\n        out += [int(r[k]) * 10 + int(r[k + 1]), int(r[k + 3]) * 10 + int(r[k + 4]), to_min(r, k)]\n    return out",
+     "check": "def answers():\n    def to_min(s, k):  # s[k]부터 시작하는 'HH:MM'을 분 단위로 바꾸기\n        hour = int(s[k]) * 10 + int(s[k + 1])\n        minute = int(s[k + 3]) * 10 + int(s[k + 4])\n        return hour * 60 + minute\n\n    def use_time(r):  # 'HH:MM~HH:MM' 기록의 이용 시간(분) 구하기\n        t = to_min(r, 6) - to_min(r, 0)\n        if t < 0:\n            t += 1440\n        return t\n\n    def fee(t):  # 이용 시간 t분의 요금 구하기\n        if t <= 30:\n            return 1000\n        over = t - 30\n        count = over // 10\n        if over % 10 != 0:\n            count += 1\n        return 1000 + count * 200\n\n    def solve(rides):\n        totals = []\n        for person in rides:\n            total = 0\n            for r in person:\n                total += fee(use_time(r))\n            totals.append(total)\n        best = max(totals)\n        for i in range(len(totals)):\n            if totals[i] == best:\n                return [i + 1, best]\n    r = '23:50~00:35'\n    out = []\n    for k in [0, 6]:\n        out += [k + 1, int(r[k]) * 10 + int(r[k + 1]), int(r[k + 3]) * 10 + int(r[k + 4]), to_min(r, k)]\n    return out",
      "explain": "빌린 시각은 인덱스 0부터, 반납한 시각은 '~' 다음인 인덱스 6부터 시작해요. 시의 두 글자는 s[k]와 그 바로 뒤 글자, 분의 두 글자는 s[k + 3]과 s[k + 4]예요. 35 - 1430 = -1395이고 1440을 더하면 45분이에요."
     },
     {

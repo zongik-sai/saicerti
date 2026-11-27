@@ -666,6 +666,7 @@
       ]
      ],
      "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a) - max(a) - min(a))\n    return ret\n\ndef func_b(arr, cut):\n    ret = [0, 0]\n    for x in arr:\n        if x >= cut:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    if ret < 0:\n        ret = -ret\n    return ret\n\ndef solution(scores, cut):\n    finals = func_a(scores)\n    groups = func_b(finals, cut)\n    answer = func_c(groups)\n    return answer\n\ndef answers():\n    out = []\n    ret = [0, 0]\n    for x in func_a([[8, 9, 7, 9, 6], [5, 6, 4, 7, 5], [10, 9, 9, 8, 10], [6, 7, 7, 5, 8]]):\n        ok = x >= 20\n        if ok:\n            ret[0] += x\n        else:\n            ret[1] += x\n        out += [ok, list(ret)]\n    return out",
+     "code": "start",
      "explain": "결선 진출이면 ret[0]에, 탈락이면 ret[1]에 x를 더해요. 20은 cut과 같아서 결선 진출 쪽에 더해져요. 마지막 ret는 [72, 16]이고, 3단계에서 차이 56을 구해요."
     },
     {
@@ -679,6 +680,7 @@
       "3단계 결과인 answer"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "func_b는 선수마다의 최종 점수를 보고 두 묶음으로 나눠요. 그래서 arr 자리에는 1단계 결과 finals를, cut 자리에는 기준 점수 cut을 머리에 적힌 순서대로 넘겨요. scores는 최종 점수를 구하기 전의 2차원 리스트라서 넘기면 안 돼요."
     }
    ],
@@ -1924,6 +1926,7 @@
       "k가 없어도 되지만 그냥 받는다"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "반 점수를 구하는 func_a(records, k)는 기록 리스트와 k를 모두 받아야 해요. func_b는 반마다 func_a를 부르므로 받은 k를 그대로 넘겨줘요. 그래서 solution도 func_b를 부를 때 kicks와 k를 함께 넘기고, func_b의 반복은 k와 상관없이 모든 반을 돌아요."
     },
     {
@@ -2766,6 +2769,7 @@
       ]
      ],
      "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for i in range(len(arr)):\n        if arr[i] > 0:\n            ret.append(i + 1)\n    return ret\n\ndef func_c(totals, nums):\n    if len(nums) == 0:\n        return -1\n    best = nums[0]\n    for n in nums:\n        if totals[n - 1] > totals[best - 1]:\n            best = n\n    return best\n\ndef solution(profits):\n    totals = func_a(profits)\n    nums = func_b(totals)\n    best = func_c(totals, nums)\n    return [len(nums), best]\n\ndef answers():\n    arr = func_a([[4, -3, 2, 0, 4], [-5, 1, -2, 3, -3], [6, -1, 2, -1, 3], [1, -4, 3, 2, -2], [-2, 8, 0, -1, 4]])\n    out = []\n    ret = []\n    for i in range(len(arr)):\n        ok = arr[i] > 0\n        if ok:\n            ret.append(i + 1)\n        out += [ok, list(ret)]\n    return out",
+     "code": "start",
      "explain": "흑자일 때만 그 동아리의 번호를 ret에 넣어요. 인덱스 3은 합이 0이라 넣지 않아요. 마지막 ret는 [1, 3, 5]이고, 이 리스트의 길이 3이 흑자 동아리 수예요."
     },
     {

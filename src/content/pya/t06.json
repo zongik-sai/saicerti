@@ -315,6 +315,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    low = 0\n    high = 0\n    for s in [7, 9, 4, 8, 6]:\n        if s < low:\n            low = s\n        if s > high:\n            high = s\n        out += [low, high]\n    return out",
+     "code": "start",
      "explain": "high는 9로 잘 바뀌지만, low는 처음 값 0보다 작은 점수가 없어서 `s < low`가 한 번도 참이 되지 않아요. 그래서 실제 가장 낮은 점수 4를 찾지 못하고 0으로 남아요."
     },
     {
@@ -323,6 +324,7 @@
      "q": "틀린 코드는 예시 1에서 얼마를 return 할까요? (올바른 답은 21이에요.)",
      "a": "25",
      "check": "def answers():\n    def solution(scores, limit):\n        total = 0\n        low = 0\n        high = 0\n        for s in scores:\n            total += s\n            if s < low:\n                low = s\n            if s > high:\n                high = s\n        if high - low >= limit:\n            answer = total - high - low\n        else:\n            answer = total\n        return answer\n    return [solution([7, 9, 4, 8, 6], 4)]",
+     "code": "start",
      "explain": "low가 0이라 차이를 9 - 0 = 9로 보고, 34에서 9와 0을 빼서 25가 나와요. 가장 낮은 점수 4를 빼지 못한 거예요."
     },
     {
@@ -336,6 +338,7 @@
       "low = total"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "초깃값(반복 전에 변수에 처음 넣는 값)을 첫 번째 점수 scores[0]으로 두면 실제 점수에서 출발하므로, 더 낮은 점수를 만날 때마다 알맞게 바뀌어요. 1이나 -1, total(아직 0)은 실제 가장 낮은 점수보다 작을 수 있어서 바뀌지 않는 경우가 생겨요."
     }
    ],
@@ -759,6 +762,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    left = 0\n    right = 0\n    for h in [62, 35, 90, 48]:\n        c = h < left\n        if h < left:\n            left = h\n        if h > right:\n            right = h\n        out += [c, left, right]\n    return out",
+     "code": "start",
      "explain": "집 위치는 0 이상이라 0보다 작은 값이 없어요. 그래서 `h < left`는 늘 False이고 left는 끝까지 0이에요. 학교는 50인데 left가 0이니, 틀린 코드는 가장 왼쪽 집까지 50이라고 잘못 계산해요."
     },
     {
@@ -772,6 +776,7 @@
       "15번째 줄 if school - left > right - school:"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "right는 0에서 시작해도 위치가 모두 0 이상이라 가장 오른쪽 집으로 알맞게 바뀌어요. 하지만 left는 0보다 작은 집이 없어서 바뀌지 않아요. 가장 작은 값을 찾는 변수의 초깃값(반복 전에 처음 넣어 두는 값)이 문제예요."
     },
     {
@@ -785,6 +790,7 @@
       "left = len(houses)"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "houses[0]은 리스트의 첫 번째 원소예요(인덱스, 즉 위치 번호는 0부터 세요). 실제 집 위치에서 출발하면 더 작은 위치를 만날 때 알맞게 바뀌어요. 1이나 len(houses)는 실제 가장 왼쪽 집보다 작을 수 있어요."
     }
    ],
@@ -1171,6 +1177,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    high = 0\n    for t in [-20, -16, -23, -12, -19]:\n        c = t > high\n        if t > high:\n            high = t\n        out += [c, high]\n    return out",
+     "code": "start",
      "explain": "온도가 모두 음수라 0보다 큰 값이 없어요. 그래서 `t > high`는 늘 False이고 high는 끝까지 0이에요. 틀린 코드는 가장 높은 온도를 0도로 보고 0 - (-15) = 15를 더해 15를 return 해요."
     },
     {
@@ -1184,6 +1191,7 @@
       "high = 1"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "초깃값(반복 전에 처음 넣어 두는 값)을 바로 위 줄의 low처럼 첫 번째 온도 temps[0]으로 두면, 실제 온도 중 하나에서 출발하므로 더 높은 온도를 만날 때 알맞게 바뀌어요. -1은 모든 온도가 -1보다 낮을 때, 10이나 1은 실제 가장 높은 온도보다 클 때 틀려요."
     },
     {
@@ -1197,6 +1205,7 @@
       "[-1, -1]"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "0보다 높은 온도가 하나라도 있으면 high가 그 값으로 바뀌어서 우연히 맞아요. 그래서 0도보다 높은 온도가 있는 예시 2는 맞고, 온도가 모두 0도보다 낮은 예시 1·3에서는 틀려요."
     }
    ],
@@ -1625,6 +1634,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    left = 100\n    right = 0\n    for p in [450, 180, 720]:\n        c = p < left\n        if p < left:\n            left = p\n        if p > right:\n            right = p\n        out += [c, left, right]\n    return out",
+     "code": "start",
      "explain": "모든 지점이 left의 초깃값(반복 전에 처음 넣어 둔 값) 100보다 커서 `p < left`가 한 번도 참이 되지 않아요. left는 실제 가장 왼쪽 지점 180이 아니라 100으로 남아요."
     },
     {
@@ -1633,6 +1643,7 @@
      "q": "틀린 코드는 예시 1에서 얼마를 return 할까요? (올바른 답은 1080이에요.)",
      "a": "1240",
      "check": "def answers():\n    def solution(base, points):\n        answer = 0\n        left = 100\n        right = 0\n        for p in points:\n            if p < left:\n                left = p\n            if p > right:\n                right = p\n        if base <= left:\n            answer = (right - base) * 2\n        elif base >= right:\n            answer = (base - left) * 2\n        else:\n            answer = (right - left) * 2\n        return answer\n    return [solution(300, [450, 180, 720])]",
+     "code": "start",
      "explain": "left가 100으로 남아서 (720 - 100) × 2 = 1240이 나와요. 지점이 100보다 작은 곳에 하나라도 있는 예시 3에서는 우연히 맞아요."
     },
     {
@@ -1646,6 +1657,7 @@
       "left = 0"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "\"충분히 큰 수\"로 시작하려면 나올 수 있는 가장 큰 위치(1,000) 이상이어야 해요. 100이나 500은 모자라고 1이나 0은 너무 작아요. 첫 번째 원소 points[0]으로 시작하면 범위를 따질 필요 없이 언제나 맞아요."
     }
    ],
@@ -2341,6 +2353,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    houses = [10, 60, 25, 85, 50]\n    done = [1, 0, 0, 0, 1]\n    left = 0\n    right = 0\n    for i in range(len(houses)):\n        if done[i] == 0:\n            if houses[i] < left:\n                left = houses[i]\n            if houses[i] > right:\n                right = houses[i]\n        out += [left, right]\n    return out",
+     "code": "start",
      "explain": "배달을 마친 집(done[i]가 1)은 건너뛰어요. right는 85로 잘 바뀌지만 left는 0보다 작은 집이 없어 끝까지 0이에요. 그래서 틀린 코드는 남은 집이 0부터 85까지 있다고 보고 125를 return 해요."
     },
     {
@@ -2354,6 +2367,7 @@
       "0"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "houses[0] = 10은 이미 배달을 마친 집인데, 남은 집(25, 60, 85)보다 작아서 left가 10에서 바뀌지 않아요. 남은 집만 따지는 문제에서는 첫 원소가 비교 대상이 아닐 수 있어서 초깃값(반복 전에 처음 넣어 두는 값)으로 쓸 수 없어요."
     },
     {
@@ -2367,6 +2381,7 @@
       "left = len(houses)"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "집 위치는 100 이하이므로, 어떤 집보다도 큰 101로 시작하면 처음 만나는 남은 집에서 반드시 바뀌어요. 1이나 len(houses)는 실제 가장 왼쪽의 남은 집보다 작을 수 있어 바뀌지 않는 경우가 생겨요."
     }
    ],

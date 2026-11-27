@@ -1,0 +1,4274 @@
+{
+ "course": "pya",
+ "type": 7,
+ "typeTitle": "조건문 고치기",
+ "kind": "fix",
+ "skills": [
+  "그래프 탐색(DFS)",
+  "재귀 함수",
+  "방문 표시 리스트",
+  "참/거짓 조건",
+  "보조 함수 나누기",
+  "2차원 격자 탐색",
+  "정렬 기준(key·lambda)",
+  "동점·예외 규칙"
+ ],
+ "intro": "기본 문제보다 길고 보조 함수가 많은 코드에서 뒤집힌 조건 한 줄을 찾아 고쳐요. 두 조건을 함께 따지는 판단, 격자(2차원 리스트) 위의 탐색, 정렬·동점 규칙, 연쇄로 이어지는 게임 시뮬레이션까지 다루고, 버그가 동점이나 멈춤 조건처럼 덜 눈에 띄는 곳에 숨어 있어요.",
+ "problems": [
+  {
+   "id": "pya-t07-adv1",
+   "version": 1,
+   "title": "켜지는 트리 전구",
+   "statement": "크리스마스트리에 0번부터 n-1번까지 번호가 붙은 전구 n개가 달려 있습니다. `wires`의 원소 `[a, b]`는 a번과 b번 전구가 전선으로 이어져 있다는 뜻입니다. 전선으로 직접 이어지거나 다른 전구를 거쳐 이어진 전구들은 한 줄이 되며, wires에 한 번도 나오지 않는 전구는 혼자서 한 줄입니다.\n\n`plugs`에는 콘센트에 꽂힌 전구의 번호가, `broken`에는 고장 난 전구의 번호가 들어 있습니다. 한 줄의 전구는 그 줄에 콘센트에 꽂힌 전구가 하나 이상 있고 고장 난 전구가 하나도 없을 때만 모두 켜지고, 그렇지 않으면 모두 꺼집니다. 켜지는 전구의 수를 return 하려 합니다.\n\nsolution 함수와 func_a, func_b, func_c 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "n은 전구의 수이며 1 이상 20 이하인 정수입니다.",
+    "wires의 길이는 0 이상 30 이하이고, 원소 [a, b]는 0 ≤ a < b ≤ n-1 인 정수 2개입니다. 같은 원소가 두 번 들어 있지 않습니다.",
+    "plugs와 broken의 길이는 각각 0 이상 n 이하이고, 원소는 0 이상 n-1 이하인 서로 다른 정수입니다.",
+    "한 전구가 plugs와 broken에 모두 들어 있을 수도 있습니다."
+   ],
+   "returns": [
+    "켜지는 전구의 수를 return 합니다. 켜지는 전구가 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "n",
+    "wires",
+    "plugs",
+    "broken"
+   ],
+   "examples": [
+    {
+     "args": [
+      8,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        5,
+        6
+       ]
+      ],
+      [
+       0,
+       3,
+       7
+      ],
+      [
+       4
+      ]
+     ],
+     "expected": 4,
+     "explain": "0·1·2번 줄은 0번이 콘센트에 꽂혀 있고 고장 난 전구가 없어 3개가 켜집니다. 3·4번 줄은 4번이 고장 나서, 5·6번 줄은 꽂힌 전구가 없어서 꺼집니다. 7번은 혼자서 한 줄이고 꽂혀 있어 켜지므로 3 + 1 = 4를 return 합니다."
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        0,
+        2
+       ]
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       3
+      ]
+     ],
+     "expected": 3,
+     "explain": "0·2번 줄(2번이 꽂힘)과 혼자인 1번 줄(꽂힘)이 켜지고, 혼자인 3번은 고장 나서 꺼지므로 2 + 1 = 3을 return 합니다."
+    },
+    {
+     "args": [
+      3,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ]
+      ],
+      [],
+      []
+     ],
+     "expected": 0,
+     "explain": "세 전구가 한 줄이지만 콘센트에 꽂힌 전구가 없어 모두 꺼지므로 0을 return 합니다."
+    }
+   ],
+   "code": "def func_a(n, wires):\n    graph = [[] for _ in range(n)]\n    for a, b in wires:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, line):\n    visited[now] = True\n    line.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, line)\n\ndef func_c(line, plugged, is_broken):\n    has_power = False\n    for bulb in line:\n        if is_broken[bulb]:\n            return False\n        if not plugged[bulb]:\n            has_power = True\n    return has_power\n\ndef solution(n, wires, plugs, broken):\n    plugged = [False] * n\n    for p in plugs:\n        plugged[p] = True\n    is_broken = [False] * n\n    for k in broken:\n        is_broken[k] = True\n    graph = func_a(n, wires)\n    visited = [False] * n\n    answer = 0\n    for i in range(n):\n        if not visited[i]:\n            line = []\n            func_b(i, graph, visited, line)\n            if func_c(line, plugged, is_broken):\n                answer += len(line)\n    return answer",
+   "bugLine": 20,
+   "solution": "def func_a(n, wires):\n    graph = [[] for _ in range(n)]\n    for a, b in wires:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, line):\n    visited[now] = True\n    line.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, line)\n\ndef func_c(line, plugged, is_broken):\n    has_power = False\n    for bulb in line:\n        if is_broken[bulb]:\n            return False\n        if plugged[bulb]:\n            has_power = True\n    return has_power\n\ndef solution(n, wires, plugs, broken):\n    plugged = [False] * n\n    for p in plugs:\n        plugged[p] = True\n    is_broken = [False] * n\n    for k in broken:\n        is_broken[k] = True\n    graph = func_a(n, wires)\n    visited = [False] * n\n    answer = 0\n    for i in range(n):\n        if not visited[i]:\n            line = []\n            func_b(i, graph, visited, line)\n            if func_c(line, plugged, is_broken):\n                answer += len(line)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      1,
+      [],
+      [
+       0
+      ],
+      []
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      1,
+      [],
+      [
+       0
+      ],
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      1,
+      [],
+      [],
+      []
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       1
+      ],
+      []
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      2,
+      [],
+      [
+       0,
+       1
+      ],
+      [
+       1
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ]
+      ],
+      [
+       2
+      ],
+      [
+       4
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        4,
+        5
+       ]
+      ],
+      [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5
+      ],
+      []
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      20,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ],
+       [
+        14,
+        15
+       ],
+       [
+        15,
+        16
+       ],
+       [
+        16,
+        17
+       ],
+       [
+        17,
+        18
+       ],
+       [
+        18,
+        19
+       ]
+      ],
+      [
+       19
+      ],
+      []
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      20,
+      [],
+      [
+       0,
+       2,
+       4,
+       6,
+       8,
+       10,
+       12,
+       14,
+       16,
+       18
+      ],
+      [
+       4,
+       10
+      ]
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        0,
+        4
+       ],
+       [
+        1,
+        3
+       ]
+      ],
+      [
+       3
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      10,
+      [],
+      [
+       5,
+       0,
+       7
+      ],
+      [
+       8
+      ]
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        10
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        2,
+        9
+       ],
+       [
+        0,
+        7
+       ],
+       [
+        3,
+        6
+       ],
+       [
+        5,
+        11
+       ],
+       [
+        6,
+        9
+       ],
+       [
+        9,
+        11
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        4,
+        10
+       ]
+      ],
+      [],
+      [
+       11,
+       4,
+       3
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        1,
+        13
+       ],
+       [
+        0,
+        14
+       ],
+       [
+        1,
+        8
+       ],
+       [
+        6,
+        8
+       ],
+       [
+        2,
+        12
+       ],
+       [
+        3,
+        9
+       ],
+       [
+        7,
+        10
+       ],
+       [
+        4,
+        8
+       ],
+       [
+        1,
+        7
+       ],
+       [
+        5,
+        11
+       ],
+       [
+        5,
+        14
+       ],
+       [
+        2,
+        11
+       ]
+      ],
+      [
+       11,
+       8,
+       3,
+       13
+      ],
+      [
+       7,
+       6
+      ]
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        2,
+        5
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        3,
+        4
+       ]
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       4
+      ]
+     ],
+     "expected": 0
+    }
+   ],
+   "inputCheck": "def valid(n, wires, plugs, broken):\n    if not (isinstance(n, int) and 1 <= n <= 20):\n        return False\n    if not (isinstance(wires, list) and 0 <= len(wires) <= 30):\n        return False\n    seen = set()\n    for e in wires:\n        if not (isinstance(e, list) and len(e) == 2 and all(isinstance(v, int) for v in e)):\n            return False\n        a, b = e\n        if not (0 <= a < b <= n - 1) or (a, b) in seen:\n            return False\n        seen.add((a, b))\n    for arr in (plugs, broken):\n        if not (isinstance(arr, list) and 0 <= len(arr) <= n) or len(set(arr)) != len(arr):\n            return False\n        if not all(isinstance(v, int) and 0 <= v <= n - 1 for v in arr):\n            return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "전구 4개가 `wires = [[0, 1], [2, 3]]`로 이어져 있고 `plugs = [1]`, `broken = []`이에요. 켜지는 전구는 무엇일까요?",
+     "options": [
+      "0번과 1번",
+      "1번만",
+      "0·1·2·3번 모두",
+      "하나도 켜지지 않는다"
+     ],
+     "answer": 0,
+     "explain": "전선으로 이어진 전구 묶음이 한 '줄'이에요. 0·1번 줄은 1번 하나만 꽂혀 있어도 줄 전체가 켜지고, 2·3번 줄은 꽂힌 전구가 없어서 꺼져요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "`n = 2, wires = [[0, 1]], plugs = [0], broken = [0]`이면 켜지는 전구는 몇 개일까요?",
+     "a": "0",
+     "check": "def func_a(n, wires):\n    graph = [[] for _ in range(n)]\n    for a, b in wires:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, line):\n    visited[now] = True\n    line.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, line)\n\ndef func_c(line, plugged, is_broken):\n    has_power = False\n    for bulb in line:\n        if is_broken[bulb]:\n            return False\n        if plugged[bulb]:\n            has_power = True\n    return has_power\n\ndef solution(n, wires, plugs, broken):\n    plugged = [False] * n\n    for p in plugs:\n        plugged[p] = True\n    is_broken = [False] * n\n    for k in broken:\n        is_broken[k] = True\n    graph = func_a(n, wires)\n    visited = [False] * n\n    answer = 0\n    for i in range(n):\n        if not visited[i]:\n            line = []\n            func_b(i, graph, visited, line)\n            if func_c(line, plugged, is_broken):\n                answer += len(line)\n    return answer\n\ndef answers():\n    return [solution(2, [[0, 1]], [0], [0])]",
+     "explain": "0번은 콘센트에 꽂혀 있지만 고장 났어요. 고장 난 전구가 하나라도 있으면 꽂힌 전구가 있어도 그 줄 전체가 꺼져요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "func_c(line, plugged, is_broken)는 한 줄이 켜지는지를 True/False로 알려 주는 함수예요. 이 함수가 True를 return 해야 하는 경우는 언제일까요?",
+     "options": [
+      "줄에 고장 난 전구가 없고, 꽂힌 전구가 하나 이상 있을 때",
+      "줄에 고장 난 전구가 없고, 꽂히지 않은 전구가 하나 이상 있을 때",
+      "줄의 전구가 모두 콘센트에 꽂혀 있을 때",
+      "줄에 꽂힌 전구나 고장 난 전구가 하나라도 있을 때"
+     ],
+     "answer": 0,
+     "explain": "'고장 난 전구가 하나도 없음'은 하나라도 찾으면 바로 return False 하는 방식으로, '꽂힌 전구가 하나 이상'은 has_power를 False로 두었다가 찾으면 True로 바꾸는 방식으로 확인해요. 두 확인을 모두 통과해야 켜져요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "예시 1 따라가기 (solution의 반복)",
+     "prompt": "예시 1(n = 8, wires = [[0, 1], [1, 2], [3, 4], [5, 6]], plugs = [0, 3, 7], broken = [4])에서 solution의 for 반복이 새 줄을 찾는 i마다, func_b가 모은 줄과 그 줄의 상태를 채워 보세요. 줄은 작은 번호부터 써요. 첫 줄은 예시예요.",
+     "columns": [
+      "i",
+      "줄(작은 번호부터)",
+      "꽂힌 전구가 있나요",
+      "고장 난 전구가 있나요",
+      "켜지나요"
+     ],
+     "rows": [
+      [
+       "0",
+       "[0, 1, 2]",
+       "True",
+       "False",
+       "True"
+      ],
+      [
+       "3",
+       {
+        "a": "[3, 4]",
+        "alts": [
+         "3, 4"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "[5, 6]",
+        "alts": [
+         "5, 6"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "7",
+       {
+        "a": "[7]",
+        "alts": [
+         "7"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def func_a(n, wires):\n    graph = [[] for _ in range(n)]\n    for a, b in wires:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, line):\n    visited[now] = True\n    line.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, line)\n\ndef func_c(line, plugged, is_broken):\n    has_power = False\n    for bulb in line:\n        if is_broken[bulb]:\n            return False\n        if plugged[bulb]:\n            has_power = True\n    return has_power\n\ndef solution(n, wires, plugs, broken):\n    plugged = [False] * n\n    for p in plugs:\n        plugged[p] = True\n    is_broken = [False] * n\n    for k in broken:\n        is_broken[k] = True\n    graph = func_a(n, wires)\n    visited = [False] * n\n    answer = 0\n    for i in range(n):\n        if not visited[i]:\n            line = []\n            func_b(i, graph, visited, line)\n            if func_c(line, plugged, is_broken):\n                answer += len(line)\n    return answer\n\ndef answers():\n    n, wires, plugs, broken = 8, [[0, 1], [1, 2], [3, 4], [5, 6]], [0, 3, 7], [4]\n    graph = func_a(n, wires)\n    visited = [False] * n\n    out = []\n    for i in range(n):\n        if not visited[i]:\n            line = []\n            func_b(i, graph, visited, line)\n            out += [sorted(line), any(b in plugs for b in line), any(b in broken for b in line)]\n            out.append(out[-2] and not out[-1])\n    return out[4:]",
+     "explain": "켜지는 줄은 [0, 1, 2]와 [7]이라 정답은 3 + 1 = 4예요. [3, 4]는 고장 난 4번 때문에, [5, 6]은 꽂힌 전구가 없어서 꺼져요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "code": "start",
+     "title": "지금 코드의 func_c 따라가기",
+     "prompt": "지금 코드의 func_c에는 `if not plugged[bulb]:` 다음 줄에 `has_power = True`가 있어요. 예시 1(plugs = [0, 3, 7])의 줄 [5, 6]과 줄 [7]을 확인할 때, 전구마다 조건의 결과와 그 전구를 확인한 뒤의 has_power를 채워 보세요. 두 줄 모두 고장 난 전구가 없어서 끝까지 확인해요.",
+     "columns": [
+      "줄",
+      "bulb",
+      "not plugged[bulb]",
+      "그 뒤 has_power"
+     ],
+     "rows": [
+      [
+       "[5, 6]",
+       "5",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "[5, 6]",
+       "6",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "[7]",
+       "7",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    plugged = [False] * 8\n    for p in [0, 3, 7]:\n        plugged[p] = True\n    out = []\n    for line in [[5, 6], [7]]:\n        has_power = False\n        for bulb in line:\n            if not plugged[bulb]:\n                has_power = True\n            out += [not plugged[bulb], has_power]\n    return out",
+     "explain": "지금 코드는 꽂히지 '않은' 전구를 찾으면 has_power를 True로 바꿔요. 그래서 꽂힌 전구가 없는 [5, 6] 줄은 켜지고, 꽂힌 전구 하나뿐인 [7] 줄은 꺼져서 결과가 4가 아닌 5가 돼요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "code": "start",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 `if not plugged[bulb]:` → `if plugged[bulb]:`",
+      "func_c의 `if is_broken[bulb]:` → `if not is_broken[bulb]:`",
+      "func_c의 `return has_power` → `return not has_power`",
+      "solution의 `if func_c(line, plugged, is_broken):` → `if not func_c(line, plugged, is_broken):`"
+     ],
+     "answer": 0,
+     "explain": "꽂힌 전구를 찾았을 때 has_power를 True로 바꿔야 하니 not을 빼요. ②는 정상 전구를 만나자마자 꺼 버리고, ③은 모든 전구가 꽂혀 있어야 켜지게 되며, ④는 꺼져야 할 줄의 전구를 세게 돼요."
+    }
+   ],
+   "explain": "func_b로 한 줄의 전구를 모으고, func_c는 '고장 난 전구가 하나도 없는지'와 '꽂힌 전구가 하나 이상 있는지'를 함께 확인해요. 앞의 것은 찾자마자 return False, 뒤의 것은 False로 시작해 찾으면 True로 바꾸는 방식이에요. 두 확인 중 어느 쪽에 not이 붙어야 하는지 문제 문장과 하나씩 맞춰 보세요."
+  },
+  {
+   "id": "pya-t07-adv2",
+   "version": 1,
+   "title": "계단식 논에 물 대기",
+   "statement": "산비탈의 계단식 논을 격자로 나타낸 2차원 리스트 `land`가 있습니다. `land[i][j]`는 i행 j열 칸의 높이이며, 값이 0인 칸은 바위입니다. `r`행 `c`열 칸에 물을 부으면, 물은 상하좌우로 맞닿은 칸 중 높이가 지금 칸보다 높지 않은(같거나 낮은) 칸으로 흘러가고, 흘러간 칸에서도 같은 방법으로 계속 흘러갑니다. 물은 바위 칸으로 들어가지 못하고 격자 밖으로도 나가지 않습니다.\n\n물이 닿는 칸(처음 물을 부은 칸 포함)의 수를 return 하려 합니다.\n\nsolution 함수와 in_field, can_flow, pour 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "land는 행의 수와 열의 수가 각각 1 이상 8 이하인 2차원 리스트이며, 모든 행의 길이가 같습니다.",
+    "land의 원소는 0 이상 9 이하인 정수이고, 0은 바위를 뜻합니다.",
+    "r, c는 물을 붓는 칸의 행 번호와 열 번호(0부터)이며 격자 안에 있습니다. 그 칸은 바위가 아닙니다."
+   ],
+   "returns": [
+    "물이 닿는 칸(처음 물을 부은 칸 포함)의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "land",
+    "r",
+    "c"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        5,
+        4,
+        3,
+        0
+       ],
+       [
+        6,
+        4,
+        0,
+        2
+       ],
+       [
+        7,
+        5,
+        1,
+        1
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 4,
+     "explain": "물은 높이 5인 0행 0열에서 높이 4인 0행 1열로, 거기서 같은 높이 4인 1행 1열과 높이 3인 0행 2열로 흐릅니다. 1행 0열(6)과 2행 1열(5)은 더 높아서, 0행 3열과 1행 2열은 바위라서 흐르지 않으므로 4를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        3,
+        2,
+        4,
+        1
+       ]
+      ],
+      0,
+      1
+     ],
+     "expected": 3,
+     "explain": "0행 1열(3)에서 왼쪽의 같은 높이 3과 오른쪽의 높이 2로 흐릅니다. 높이 2인 칸 오른쪽은 높이 4라서 더 흐르지 못하므로 3을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        9,
+        1
+       ],
+       [
+        2,
+        0,
+        2
+       ],
+       [
+        3,
+        2,
+        2
+       ]
+      ],
+      2,
+      0
+     ],
+     "expected": 7,
+     "explain": "높이 3인 2행 0열에서 시작해 높이 2인 칸들을 따라 1행 0열·0행 0열과 2행 1열·2행 2열·1행 2열로 흐르고, 1행 2열(2)에서 0행 2열(1)까지 흐릅니다. 높이 9인 칸과 바위만 젖지 않으므로 7을 return 합니다."
+    }
+   ],
+   "code": "def in_field(r, c, land):\n    return 0 <= r < len(land) and 0 <= c < len(land[0])\n\ndef can_flow(r, c, nr, nc, land, wet):\n    if not in_field(nr, nc, land):\n        return False\n    if land[nr][nc] == 0:\n        return False\n    if wet[nr][nc]:\n        return False\n    if land[nr][nc] <= land[r][c]:\n        return False\n    return True\n\ndef pour(r, c, land, wet):\n    wet[r][c] = True\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        nr, nc = r + dr, c + dc\n        if can_flow(r, c, nr, nc, land, wet):\n            pour(nr, nc, land, wet)\n\ndef solution(land, r, c):\n    wet = [[False] * len(land[0]) for _ in range(len(land))]\n    pour(r, c, land, wet)\n    answer = 0\n    for row in wet:\n        for w in row:\n            if w:\n                answer += 1\n    return answer",
+   "bugLine": 11,
+   "solution": "def in_field(r, c, land):\n    return 0 <= r < len(land) and 0 <= c < len(land[0])\n\ndef can_flow(r, c, nr, nc, land, wet):\n    if not in_field(nr, nc, land):\n        return False\n    if land[nr][nc] == 0:\n        return False\n    if wet[nr][nc]:\n        return False\n    if land[nr][nc] > land[r][c]:\n        return False\n    return True\n\ndef pour(r, c, land, wet):\n    wet[r][c] = True\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        nr, nc = r + dr, c + dc\n        if can_flow(r, c, nr, nc, land, wet):\n            pour(nr, nc, land, wet)\n\ndef solution(land, r, c):\n    wet = [[False] * len(land[0]) for _ in range(len(land))]\n    pour(r, c, land, wet)\n    answer = 0\n    for row in wet:\n        for w in row:\n            if w:\n                answer += 1\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        1
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9
+       ]
+      ],
+      1,
+      1
+     ],
+     "expected": 6
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+       ]
+      ],
+      0,
+      7
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        5
+       ],
+       [
+        0
+       ],
+       [
+        5
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        0
+       ],
+       [
+        0,
+        3
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        0,
+        1
+       ],
+       [
+        1,
+        1,
+        1
+       ]
+      ],
+      2,
+      2
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        5,
+        6
+       ],
+       [
+        3,
+        0,
+        7
+       ],
+       [
+        2,
+        1,
+        8
+       ]
+      ],
+      2,
+      2
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ]
+      ],
+      7,
+      7
+     ],
+     "expected": 64
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        8,
+        7,
+        5
+       ],
+       [
+        0,
+        7,
+        6,
+        5
+       ],
+       [
+        8,
+        6,
+        5,
+        0
+       ],
+       [
+        6,
+        0,
+        3,
+        3
+       ],
+       [
+        4,
+        4,
+        2,
+        1
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 13
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        8,
+        7,
+        6
+       ],
+       [
+        7,
+        8,
+        0,
+        6
+       ],
+       [
+        0,
+        5,
+        5,
+        5
+       ],
+       [
+        6,
+        4,
+        4,
+        0
+       ],
+       [
+        5,
+        4,
+        0,
+        0
+       ],
+       [
+        4,
+        0,
+        3,
+        2
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 13
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        8,
+        8,
+        5,
+        0
+       ],
+       [
+        7,
+        6,
+        5,
+        6,
+        3
+       ],
+       [
+        8,
+        7,
+        6,
+        5,
+        0
+       ],
+       [
+        7,
+        5,
+        4,
+        4,
+        2
+       ],
+       [
+        5,
+        3,
+        0,
+        2,
+        0
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        9,
+        9,
+        0,
+        7,
+        7,
+        6,
+        5
+       ],
+       [
+        9,
+        0,
+        8,
+        7,
+        7,
+        5,
+        5,
+        5
+       ],
+       [
+        9,
+        8,
+        0,
+        6,
+        0,
+        5,
+        4,
+        4
+       ],
+       [
+        8,
+        8,
+        7,
+        7,
+        5,
+        4,
+        4,
+        4
+       ],
+       [
+        6,
+        8,
+        6,
+        5,
+        6,
+        4,
+        4,
+        3
+       ],
+       [
+        7,
+        7,
+        5,
+        0,
+        3,
+        5,
+        2,
+        2
+       ],
+       [
+        5,
+        4,
+        4,
+        0,
+        0,
+        2,
+        4,
+        2
+       ],
+       [
+        5,
+        0,
+        3,
+        3,
+        4,
+        3,
+        3,
+        1
+       ]
+      ],
+      0,
+      0
+     ],
+     "expected": 48
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        8,
+        8,
+        5
+       ],
+       [
+        8,
+        7,
+        0,
+        4
+       ],
+       [
+        7,
+        5,
+        4,
+        2
+       ],
+       [
+        6,
+        4,
+        0,
+        2
+       ]
+      ],
+      0,
+      2
+     ],
+     "expected": 10
+    }
+   ],
+   "inputCheck": "def valid(land, r, c):\n    if not (isinstance(land, list) and 1 <= len(land) <= 8):\n        return False\n    w = len(land[0]) if isinstance(land[0], list) else -1\n    if not (1 <= w <= 8):\n        return False\n    for row in land:\n        if not (isinstance(row, list) and len(row) == w):\n            return False\n        if not all(isinstance(v, int) and 0 <= v <= 9 for v in row):\n            return False\n    if not (isinstance(r, int) and isinstance(c, int) and 0 <= r < len(land) and 0 <= c < w):\n        return False\n    return land[r][c] != 0",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`land = [[5, 4], [6, 4]]`에서 0행 0열(높이 5)에 물을 부었어요. 이 칸에서 '한 번에' 흘러갈 수 있는 칸은 어디일까요?",
+     "options": [
+      "0행 1열(높이 4)만",
+      "1행 0열(높이 6)만",
+      "0행 1열과 1행 1열",
+      "다른 세 칸 모두"
+     ],
+     "answer": 0,
+     "explain": "물은 상하좌우로 맞닿은 칸으로만 흘러요. 1행 1열은 대각선이라 한 번에 갈 수 없고(0행 1열을 거쳐서는 가요), 1행 0열은 높이 6으로 더 높아서 흐르지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "바위 칸의 값은 0이라 어떤 칸보다도 낮아요. can_flow에 `if land[nr][nc] == 0: return False`가 없다면 어떻게 될까요?",
+     "options": [
+      "물이 바위 칸으로 흘러 들어가, 바위 칸까지 물이 닿은 칸으로 세어진다",
+      "아무 차이도 없다. 바위는 높이가 0이라 어차피 물이 가지 않는다",
+      "물이 격자 밖으로 흘러 나간다",
+      "처음 칸에서 물이 전혀 흐르지 않는다"
+     ],
+     "answer": 0,
+     "explain": "'같거나 낮은 칸으로 흐른다'만 따지면 높이 0인 바위가 가장 흐르기 쉬운 칸이 돼요. 그래서 바위는 높이 비교와 따로 막아야 해요. 이 줄은 문제의 규칙대로 쓰여 있어요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "can_flow는 물이 흘러갈 수 '없는' 경우를 하나씩 찾아 return False 하고, 모두 아니면 return True 해요. 다음 중 흘러갈 수 없는 경우가 '아닌' 것은?",
+     "options": [
+      "옆 칸의 높이가 지금 칸의 높이와 같을 때",
+      "옆 칸이 격자 밖일 때",
+      "옆 칸이 바위일 때",
+      "옆 칸에 이미 물이 닿았을 때",
+      "옆 칸이 지금 칸보다 높을 때"
+     ],
+     "answer": 0,
+     "explain": "문제에서 물은 '높지 않은(같거나 낮은)' 칸으로 흐른다고 했어요. 그러니 높이가 같은 칸으로는 흘러가요. 흘러가지 못하는 높이 조건은 '옆 칸이 더 높을 때' 하나뿐이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "code": "start",
+     "title": "높이 조건: 바라는 결과와 지금 코드",
+     "prompt": "옆 칸이 격자 안에 있고, 바위가 아니며, 아직 물이 닿지 않았다고 해요. 높이만 보고 can_flow가 돌려줘야 할 '바라는 결과'와, 지금 코드의 `if land[nr][nc] <= land[r][c]: return False`로 정해지는 '지금 코드 결과'를 True/False로 채워 보세요.",
+     "columns": [
+      "land[r][c] (지금 칸)",
+      "land[nr][nc] (옆 칸)",
+      "바라는 결과",
+      "지금 코드 결과"
+     ],
+     "rows": [
+      [
+       "5",
+       "4",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "4",
+       "4",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "4",
+       "5",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "3",
+       "1",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    def bad(h, nh):\n        if nh <= h:\n            return False\n        return True\n    out = []\n    for h, nh in [(5, 4), (4, 4), (4, 5), (3, 1)]:\n        out += [not (nh > h), bad(h, nh)]\n    return out",
+     "explain": "바라는 결과는 '옆 칸이 높지 않으면' True예요. 지금 코드는 옆 칸이 같거나 낮을 때 False를 돌려줘서, 물이 더 높은 칸으로만 흐르는 정반대 결과가 나와요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "code": "start",
+     "q": "지금(고치기 전) 코드로 예시 1을 실행하면 return 값은 얼마일까요?",
+     "a": "3",
+     "check": "def in_field(r, c, land):\n    return 0 <= r < len(land) and 0 <= c < len(land[0])\n\ndef can_flow(r, c, nr, nc, land, wet):\n    if not in_field(nr, nc, land):\n        return False\n    if land[nr][nc] == 0:\n        return False\n    if wet[nr][nc]:\n        return False\n    if land[nr][nc] <= land[r][c]:\n        return False\n    return True\n\ndef pour(r, c, land, wet):\n    wet[r][c] = True\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        nr, nc = r + dr, c + dc\n        if can_flow(r, c, nr, nc, land, wet):\n            pour(nr, nc, land, wet)\n\ndef solution(land, r, c):\n    wet = [[False] * len(land[0]) for _ in range(len(land))]\n    pour(r, c, land, wet)\n    answer = 0\n    for row in wet:\n        for w in row:\n            if w:\n                answer += 1\n    return answer\n\ndef answers():\n    return [solution([[5, 4, 3, 0], [6, 4, 0, 2], [7, 5, 1, 1]], 0, 0)]",
+     "explain": "지금 코드에서는 물이 더 높은 칸으로만 흘러요. 0행 0열(5) → 1행 0열(6) → 2행 0열(7)로 올라가고 2행 1열(5)은 낮아서 멈추니 3칸이 젖어요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "code": "start",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "can_flow의 `if land[nr][nc] <= land[r][c]:` → `if land[nr][nc] > land[r][c]:`",
+      "can_flow의 `if land[nr][nc] <= land[r][c]:` → `if land[nr][nc] >= land[r][c]:`",
+      "can_flow의 `if land[nr][nc] == 0:` → `if land[nr][nc] != 0:`",
+      "pour의 `if can_flow(r, c, nr, nc, land, wet):` → `if not can_flow(r, c, nr, nc, land, wet):`"
+     ],
+     "answer": 0,
+     "explain": "흘러갈 수 없는 경우는 '옆 칸이 더 높을 때'이니 `>`로 바꿔요. ②는 높이가 같은 칸으로 흐르는 것까지 막아서 예시 2가 3이 아닌 2가 되고, ③은 바위가 아닌 칸을 모두 막으며, ④는 격자 밖처럼 흘러가면 안 되는 칸으로 물을 보내다가 오류가 나요."
+    },
+    {
+     "id": "s7",
+     "kind": "table",
+     "title": "예시 1 따라가기 (바르게 고친 코드)",
+     "prompt": "예시 1(land = [[5, 4, 3, 0], [6, 4, 0, 2], [7, 5, 1, 1]], r = 0, c = 0)을 바르게 고친 코드로 실행할 때, pour가 불리는 차례대로 칸의 행·열과 높이를 채워 보세요. pour는 위(-1, 0) → 아래(1, 0) → 왼쪽(0, -1) → 오른쪽(0, 1) 순서로 옆 칸을 살피고, 재귀(함수가 자기 자신을 다시 부르는 것)에서는 안쪽 호출이 끝나야 바깥 반복이 이어져요.",
+     "columns": [
+      "차례",
+      "행 r",
+      "열 c",
+      "높이"
+     ],
+     "rows": [
+      [
+       "1",
+       "0",
+       "0",
+       "5"
+      ],
+      [
+       "2",
+       {
+        "a": "0"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "0"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def in_field(r, c, land):\n    return 0 <= r < len(land) and 0 <= c < len(land[0])\n\ndef can_flow(r, c, nr, nc, land, wet):\n    if not in_field(nr, nc, land):\n        return False\n    if land[nr][nc] == 0:\n        return False\n    if wet[nr][nc]:\n        return False\n    if land[nr][nc] > land[r][c]:\n        return False\n    return True\n\ndef pour(r, c, land, wet):\n    wet[r][c] = True\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        nr, nc = r + dr, c + dc\n        if can_flow(r, c, nr, nc, land, wet):\n            pour(nr, nc, land, wet)\n\ndef solution(land, r, c):\n    wet = [[False] * len(land[0]) for _ in range(len(land))]\n    pour(r, c, land, wet)\n    answer = 0\n    for row in wet:\n        for w in row:\n            if w:\n                answer += 1\n    return answer\n\ndef answers():\n    land, r, c = [[5, 4, 3, 0], [6, 4, 0, 2], [7, 5, 1, 1]], 0, 0\n    wet = [[False] * 4 for _ in range(3)]\n    order = []\n    def go(r, c):\n        wet[r][c] = True\n        order.append([r, c, land[r][c]])\n        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n            nr, nc = r + dr, c + dc\n            if can_flow(r, c, nr, nc, land, wet):\n                go(nr, nc)\n    go(r, c)\n    out = []\n    for x in order[1:]:\n        out += x\n    return out",
+     "explain": "0행 1열(4)에 닿은 뒤, 위는 격자 밖이고 아래의 1행 1열은 같은 높이 4라서 먼저 들어가요. 1행 1열에서는 더 갈 곳이 없어 돌아오고, 0행 1열의 오른쪽인 0행 2열(3)로 이어져요. 모두 4칸이에요."
+    }
+   ],
+   "explain": "pour는 칸에 물 표시를 하고 상하좌우를 살펴 can_flow가 True인 칸으로 재귀 호출해요. can_flow처럼 '안 되는 경우마다 return False'로 쓴 함수에서는 if 조건이 '막아야 하는 경우'를 정확히 나타내야 해요. '높지 않은 칸으로 흐른다'를 막는 조건으로 바꾸면 '더 높은 칸이면 막는다(>)'가 돼요."
+  },
+  {
+   "id": "pya-t07-adv3",
+   "version": 1,
+   "title": "놀이공원 구역 안내도",
+   "statement": "놀이공원에 0번부터 n-1번까지 번호가 붙은 놀이기구 n개가 있습니다. `paths`의 원소 `[a, b]`는 a번과 b번 놀이기구 사이에 양쪽으로 다닐 수 있는 길이 있다는 뜻입니다. `status`는 길이가 n인 문자열이며, `status[i]`가 'O'이면 i번 놀이기구는 운행 중, 'X'이면 점검 중입니다. 점검 중인 놀이기구에는 들어갈 수 없고, 그곳을 지나 다른 놀이기구로 갈 수도 없습니다.\n\n운행 중인 놀이기구만 거쳐서 서로 오갈 수 있는 운행 중인 놀이기구들을 하나의 구역이라고 합니다. 구역마다 놀이기구 번호를 작은 번호부터 담은 리스트를 만들고, 이 리스트들을 놀이기구가 많은 구역부터, 놀이기구 수가 같으면 가장 작은 번호가 더 작은 구역부터 차례로 담아 return 하려 합니다.\n\nsolution 함수와 func_a, func_b, func_c 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "n은 놀이기구의 수이며 1 이상 15 이하인 정수입니다.",
+    "paths의 길이는 0 이상 25 이하이고, 원소 [a, b]는 0 ≤ a < b ≤ n-1 인 정수 2개입니다. 같은 원소가 두 번 들어 있지 않습니다.",
+    "status는 'O'와 'X'로만 이루어진 길이 n인 문자열입니다."
+   ],
+   "returns": [
+    "구역 리스트들을 정해진 순서로 담은 2차원 리스트를 return 합니다. 운행 중인 놀이기구가 없으면 빈 리스트를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "n",
+    "paths",
+    "status"
+   ],
+   "examples": [
+    {
+     "args": [
+      9,
+      [
+       [
+        0,
+        4
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        5,
+        7
+       ],
+       [
+        4,
+        6
+       ],
+       [
+        6,
+        8
+       ],
+       [
+        3,
+        6
+       ]
+      ],
+      "OOOOOOXOO"
+     ],
+     "expected": [
+      [
+       1,
+       2,
+       3
+      ],
+      [
+       0,
+       4
+      ],
+      [
+       5,
+       7
+      ],
+      [
+       8
+      ]
+     ],
+     "explain": "6번이 점검 중이라 6번을 지나는 길은 쓸 수 없습니다. 구역은 [0, 4], [1, 2, 3], [5, 7], [8]이고, 놀이기구가 많은 [1, 2, 3]이 먼저, 2개인 두 구역은 가장 작은 번호가 0인 [0, 4]가 [5, 7]보다 먼저 옵니다."
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      "OOOO"
+     ],
+     "expected": [
+      [
+       0,
+       1,
+       2,
+       3
+      ]
+     ],
+     "explain": "모두 운행 중이고 0-1-2-3이 이어져 있으므로 [[0, 1, 2, 3]]을 return 합니다."
+    },
+    {
+     "args": [
+      3,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ]
+      ],
+      "XXX"
+     ],
+     "expected": [],
+     "explain": "운행 중인 놀이기구가 없으므로 빈 리스트를 return 합니다."
+    }
+   ],
+   "code": "def func_a(n, paths):\n    graph = [[] for _ in range(n)]\n    for a, b in paths:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(num, status):\n    if status[num] == 'X':\n        return False\n    return True\n\ndef func_c(now, graph, status, visited, zone):\n    visited[now] = True\n    zone.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt] and not func_b(nxt, status):\n            func_c(nxt, graph, status, visited, zone)\n\ndef solution(n, paths, status):\n    graph = func_a(n, paths)\n    visited = [False] * n\n    zones = []\n    for i in range(n):\n        if not visited[i] and func_b(i, status):\n            zone = []\n            func_c(i, graph, status, visited, zone)\n            zones.append(sorted(zone))\n    zones.sort(key=lambda z: (-len(z), z[0]))\n    return zones",
+   "bugLine": 17,
+   "solution": "def func_a(n, paths):\n    graph = [[] for _ in range(n)]\n    for a, b in paths:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(num, status):\n    if status[num] == 'X':\n        return False\n    return True\n\ndef func_c(now, graph, status, visited, zone):\n    visited[now] = True\n    zone.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt] and func_b(nxt, status):\n            func_c(nxt, graph, status, visited, zone)\n\ndef solution(n, paths, status):\n    graph = func_a(n, paths)\n    visited = [False] * n\n    zones = []\n    for i in range(n):\n        if not visited[i] and func_b(i, status):\n            zone = []\n            func_c(i, graph, status, visited, zone)\n            zones.append(sorted(zone))\n    zones.sort(key=lambda z: (-len(z), z[0]))\n    return zones",
+   "tests": [
+    {
+     "args": [
+      1,
+      [],
+      "O"
+     ],
+     "expected": [
+      [
+       0
+      ]
+     ]
+    },
+    {
+     "args": [
+      1,
+      [],
+      "X"
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      "OX"
+     ],
+     "expected": [
+      [
+       0
+      ]
+     ]
+    },
+    {
+     "args": [
+      2,
+      [],
+      "OO"
+     ],
+     "expected": [
+      [
+       0
+      ],
+      [
+       1
+      ]
+     ]
+    },
+    {
+     "args": [
+      3,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ]
+      ],
+      "OXO"
+     ],
+     "expected": [
+      [
+       0
+      ],
+      [
+       2
+      ]
+     ]
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        4
+       ]
+      ],
+      "XOOOO"
+     ],
+     "expected": [
+      [
+       1
+      ],
+      [
+       2
+      ],
+      [
+       3
+      ],
+      [
+       4
+      ]
+     ]
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        5
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      "OOOOOO"
+     ],
+     "expected": [
+      [
+       0,
+       5
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       2,
+       3
+      ]
+     ]
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ]
+      ],
+      "OOOOOOOOOOOOOOO"
+     ],
+     "expected": [
+      [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14
+      ]
+     ]
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ]
+      ],
+      "OXOOXOOOXOOOOXO"
+     ],
+     "expected": [
+      [
+       9,
+       10,
+       11,
+       12
+      ],
+      [
+       5,
+       6,
+       7
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       0
+      ],
+      [
+       14
+      ]
+     ]
+    },
+    {
+     "args": [
+      11,
+      [
+       [
+        7,
+        8
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        3,
+        8
+       ],
+       [
+        1,
+        6
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        10
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        0,
+        7
+       ],
+       [
+        0,
+        6
+       ],
+       [
+        3,
+        5
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        4,
+        7
+       ],
+       [
+        8,
+        10
+       ]
+      ],
+      "XOOOOOOOOOO"
+     ],
+     "expected": [
+      [
+       1,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10
+      ],
+      [
+       2
+      ]
+     ]
+    },
+    {
+     "args": [
+      11,
+      [
+       [
+        3,
+        10
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        6,
+        8
+       ],
+       [
+        4,
+        6
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        0,
+        6
+       ],
+       [
+        2,
+        5
+       ],
+       [
+        1,
+        9
+       ],
+       [
+        4,
+        8
+       ],
+       [
+        1,
+        10
+       ],
+       [
+        4,
+        10
+       ],
+       [
+        0,
+        7
+       ]
+      ],
+      "OOOOXOOOXXO"
+     ],
+     "expected": [
+      [
+       0,
+       2,
+       5,
+       6,
+       7
+      ],
+      [
+       1,
+       3,
+       10
+      ]
+     ]
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        1,
+        2
+       ],
+       [
+        4,
+        9
+       ],
+       [
+        5,
+        10
+       ],
+       [
+        9,
+        13
+       ],
+       [
+        0,
+        14
+       ],
+       [
+        4,
+        11
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        9,
+        14
+       ],
+       [
+        3,
+        7
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        1,
+        6
+       ]
+      ],
+      "XOOOXOXOOOXXOOO"
+     ],
+     "expected": [
+      [
+       9,
+       13,
+       14
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       3,
+       7
+      ],
+      [
+       5
+      ],
+      [
+       8
+      ],
+      [
+       12
+      ]
+     ]
+    },
+    {
+     "args": [
+      12,
+      [
+       [
+        1,
+        6
+       ],
+       [
+        2,
+        11
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        8,
+        11
+       ],
+       [
+        5,
+        9
+       ],
+       [
+        5,
+        7
+       ],
+       [
+        1,
+        11
+       ],
+       [
+        2,
+        10
+       ],
+       [
+        4,
+        11
+       ],
+       [
+        5,
+        11
+       ],
+       [
+        2,
+        5
+       ],
+       [
+        5,
+        8
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      "XXXOOOOOXOOO"
+     ],
+     "expected": [
+      [
+       4,
+       5,
+       7,
+       9,
+       10,
+       11
+      ],
+      [
+       3
+      ],
+      [
+       6
+      ]
+     ]
+    },
+    {
+     "args": [
+      7,
+      [
+       [
+        1,
+        3
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        2,
+        4
+       ],
+       [
+        4,
+        6
+       ],
+       [
+        2,
+        6
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        0,
+        6
+       ]
+      ],
+      "XXOXOOO"
+     ],
+     "expected": [
+      [
+       2,
+       4,
+       6
+      ],
+      [
+       5
+      ]
+     ]
+    }
+   ],
+   "inputCheck": "def valid(n, paths, status):\n    if not (isinstance(n, int) and 1 <= n <= 15):\n        return False\n    if not (isinstance(paths, list) and 0 <= len(paths) <= 25):\n        return False\n    seen = set()\n    for e in paths:\n        if not (isinstance(e, list) and len(e) == 2 and all(isinstance(v, int) for v in e)):\n            return False\n        a, b = e\n        if not (0 <= a < b <= n - 1) or (a, b) in seen:\n            return False\n        seen.add((a, b))\n    return isinstance(status, str) and len(status) == n and all(ch in 'OX' for ch in status)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`n = 3, paths = [[0, 1], [1, 2]], status = 'OXO'`일 때 0번과 2번 놀이기구는 같은 구역일까요?",
+     "options": [
+      "다른 구역이다. 0번에서 2번으로 가려면 점검 중인 1번을 지나야 한다.",
+      "같은 구역이다. 길로 이어져 있다.",
+      "1번까지 셋이 한 구역이다.",
+      "0번과 2번 모두 어느 구역에도 들지 않는다."
+     ],
+     "answer": 0,
+     "explain": "점검 중인 놀이기구에는 들어갈 수도, 지나갈 수도 없어요. 그래서 0번과 2번은 각각 혼자인 구역 [0], [2]가 되고, 점검 중인 1번은 어느 구역에도 들지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "구역이 `[3]`, `[0, 6]`, `[1, 2, 5]`, `[4, 7]`이라면 return 하는 순서로 알맞은 것은?",
+     "options": [
+      "[[1, 2, 5], [0, 6], [4, 7], [3]]",
+      "[[0, 6], [1, 2, 5], [3], [4, 7]]",
+      "[[1, 2, 5], [4, 7], [0, 6], [3]]",
+      "[[3], [0, 6], [4, 7], [1, 2, 5]]"
+     ],
+     "answer": 0,
+     "explain": "놀이기구가 많은 구역부터 놓으니 3개인 [1, 2, 5]가 맨 앞이에요. 2개인 [0, 6]과 [4, 7]은 가장 작은 번호(0과 4)를 비교해 [0, 6]이 먼저고, 1개인 [3]이 마지막이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "정렬 기준 계산하기",
+     "prompt": "solution의 마지막 정렬은 `zones.sort(key=lambda z: (-len(z), z[0]))`예요. lambda는 이름 없는 짧은 함수로, 구역 z마다 (-len(z), z[0]) 짝(튜플)을 만들어 그 짝이 작은 구역부터 앞에 놓아요. 짝은 앞의 값부터 비교하고, 앞의 값이 같을 때만 뒤의 값을 비교해요. 구역마다 두 값을 채워 보세요.",
+     "columns": [
+      "구역 z",
+      "-len(z)",
+      "z[0]"
+     ],
+     "rows": [
+      [
+       "[3]",
+       {
+        "a": "-1"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "[0, 6]",
+       {
+        "a": "-2"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "[1, 2, 5]",
+       {
+        "a": "-3"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "[4, 7]",
+       {
+        "a": "-2"
+       },
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for z in [[3], [0, 6], [1, 2, 5], [4, 7]]:\n        out += [-len(z), z[0]]\n    return out",
+     "explain": "-len(z)는 구역이 클수록 작은 수가 되어 앞에 와요. -2로 같은 [0, 6]과 [4, 7]은 z[0]이 작은 [0, 6]이 앞이에요. 구역을 sorted(zone)으로 정렬해 두었기 때문에 z[0]이 가장 작은 번호예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "code": "start",
+     "q": "func_b(num, status)는 `if status[num] == 'X': return False` 다음에 `return True`가 있는 함수예요. 이 함수가 알려 주는 것과 쓰이는 곳을 바르게 말한 것은?",
+     "options": [
+      "num번에 들어갈 수 있으면(운행 중이면) True. solution에서 새 구역을 시작할 때와 func_c에서 다음 놀이기구로 갈 때 쓰인다.",
+      "num번이 점검 중이면 True. solution에서만 쓰인다.",
+      "num번을 이미 방문했으면 True. func_c에서만 쓰인다.",
+      "num번이 운행 중이면 True. 정렬할 때만 쓰인다."
+     ],
+     "answer": 0,
+     "explain": "'X'(점검 중)일 때만 False이니, 운행 중이면 True예요. 이 함수는 두 곳에서 쓰여요. 그래서 func_b 자체를 바꾸면 두 곳의 동작이 함께 바뀐다는 점을 기억해 두세요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "code": "start",
+     "title": "지금 코드의 func_c 조건 따라가기",
+     "prompt": "작은 입력 `n = 3, paths = [[0, 1], [1, 2]], status = 'OOX'`로 지금 코드를 실행해요. func_c가 옆 놀이기구 nxt를 살필 때마다 func_b(nxt, status), 지금 조건 `not visited[nxt] and not func_b(nxt, status)`, 문제에 맞는 조건 `not visited[nxt] and func_b(nxt, status)`의 결과를 채워 보세요. 차례는 func_c(0) → func_c(1)이에요.",
+     "columns": [
+      "now",
+      "nxt",
+      "visited[nxt]",
+      "func_b(nxt, status)",
+      "지금 조건",
+      "맞는 조건"
+     ],
+     "rows": [
+      [
+       "0",
+       "1",
+       "False",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "1",
+       "0",
+       "True",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "1",
+       "2",
+       "False",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    status = 'OOX'\n    def ok(num):\n        return status[num] != 'X'\n    rows = [(0, 1, False), (1, 0, True), (1, 2, False)]\n    out = []\n    for now, nxt, vis in rows:\n        out += [ok(nxt), (not vis) and (not ok(nxt)), (not vis) and ok(nxt)]\n    return out",
+     "explain": "지금 조건은 운행 중인 1번으로는 가지 않고, 점검 중인 2번으로 들어가요. 그래서 0번은 혼자 [0]이 되고, i = 1에서 시작한 구역에 점검 중인 2번이 끼어들어요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "code": "start",
+     "q": "그렇다면 지금 코드는 `n = 3, paths = [[0, 1], [1, 2]], status = 'OOX'`에 대해 무엇을 return 할까요? (리스트 그대로 써 보세요)",
+     "a": "[[1, 2], [0]]",
+     "alts": [
+      "[[1,2],[0]]"
+     ],
+     "check": "def func_a(n, paths):\n    graph = [[] for _ in range(n)]\n    for a, b in paths:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(num, status):\n    if status[num] == 'X':\n        return False\n    return True\n\ndef func_c(now, graph, status, visited, zone):\n    visited[now] = True\n    zone.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt] and not func_b(nxt, status):\n            func_c(nxt, graph, status, visited, zone)\n\ndef solution(n, paths, status):\n    graph = func_a(n, paths)\n    visited = [False] * n\n    zones = []\n    for i in range(n):\n        if not visited[i] and func_b(i, status):\n            zone = []\n            func_c(i, graph, status, visited, zone)\n            zones.append(sorted(zone))\n    zones.sort(key=lambda z: (-len(z), z[0]))\n    return zones\n\ndef answers():\n    return [solution(3, [[0, 1], [1, 2]], 'OOX')]",
+     "explain": "구역 [0]과 [1, 2]가 만들어지고, 놀이기구가 많은 [1, 2]가 앞에 와요. 올바른 답은 [[0, 1]]인데, 점검 중인 2번이 구역에 들어가고 0번과 1번은 갈라졌어요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "code": "start",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_c의 `if not visited[nxt] and not func_b(nxt, status):` → `if not visited[nxt] and func_b(nxt, status):`",
+      "func_b의 `if status[num] == 'X':` → `if status[num] == 'O':`",
+      "solution의 `if not visited[i] and func_b(i, status):` → `if not visited[i] and not func_b(i, status):`",
+      "solution의 `zones.sort(key=lambda z: (-len(z), z[0]))` → `zones.sort(key=lambda z: (len(z), z[0]))`"
+     ],
+     "answer": 0,
+     "explain": "func_c는 운행 중인(func_b가 True인) 옆 놀이기구로만 이어 가야 하니 func_b 앞의 not을 빼요. ②처럼 func_b를 뒤집으면 func_c는 맞게 되지만 solution이 점검 중인 놀이기구에서 구역을 시작하게 되고, ③은 점검 중인 곳에서만 시작하며, ④는 작은 구역부터 놓게 돼요."
+    }
+   ],
+   "explain": "func_b는 '들어갈 수 있는가'를 알려 주는 함수로, 구역을 시작할 때와 옆으로 이어 갈 때 두 번 쓰여요. 두 곳 모두 func_b가 True인 놀이기구만 다뤄야 하는데 func_c 쪽에 not이 붙어 있었어요. 마지막 정렬 `key=lambda z: (-len(z), z[0])`은 큰 구역부터, 같으면 작은 번호부터 놓는 기준이에요."
+  },
+  {
+   "id": "pya-t07-adv4",
+   "version": 1,
+   "title": "보석 동굴 탐험대",
+   "statement": "한 산에 0번부터 n-1번까지 번호가 붙은 동굴 n개가 있고, `tunnels`의 원소 `[a, b]`는 a번과 b번 동굴이 굴로 이어져 있다는 뜻입니다. 굴로 직접 이어지거나 다른 동굴을 거쳐 이어진 동굴들을 하나의 무리라고 하며, tunnels에 한 번도 나오지 않는 동굴은 혼자서 한 무리입니다. `gems[i]`는 i번 동굴을 탐험하면 얻는 점수이고, 함정이 있는 동굴은 점수가 음수입니다.\n\n탐험대는 무리 하나를 골라 그 무리의 동굴을 모두 탐험합니다. 점수 합계가 가장 큰 무리를 고르되, 합계가 같으면 동굴 수가 더 적은 무리를, 동굴 수도 같으면 가장 작은 번호가 더 작은 무리를 고릅니다. 단, 가장 큰 합계가 0 이하이면 탐험하지 않습니다. 고른 무리의 동굴 번호를 작은 번호부터 담은 리스트를 return 하려 합니다.\n\nsolution 함수와 func_a, func_b, func_c, func_d 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "n은 동굴의 수이며 1 이상 15 이하인 정수입니다.",
+    "tunnels의 길이는 0 이상 25 이하이고, 원소 [a, b]는 0 ≤ a < b ≤ n-1 인 정수 2개입니다. 같은 원소가 두 번 들어 있지 않습니다.",
+    "gems는 길이가 n인 리스트이며, 원소는 -10 이상 10 이하인 정수입니다."
+   ],
+   "returns": [
+    "고른 무리의 동굴 번호를 작은 번호부터 담은 리스트를 return 합니다. 탐험하지 않으면 빈 리스트를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "n",
+    "tunnels",
+    "gems"
+   ],
+   "examples": [
+    {
+     "args": [
+      8,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        6,
+        7
+       ]
+      ],
+      [
+       5,
+       -1,
+       3,
+       2,
+       5,
+       -2,
+       1,
+       3
+      ]
+     ],
+     "expected": [
+      3,
+      4
+     ],
+     "explain": "무리는 [0, 1, 2](합계 7), [3, 4](합계 7), [5](합계 -2), [6, 7](합계 4)입니다. 합계 7인 두 무리 중 동굴 수가 더 적은 [3, 4]를 return 합니다."
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      [
+       3,
+       -3,
+       -1,
+       0
+      ]
+     ],
+     "expected": [],
+     "explain": "무리 [0, 1]의 합계는 0, [2, 3]의 합계는 -1입니다. 가장 큰 합계가 0 이하라 탐험하지 않으므로 빈 리스트를 return 합니다."
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        1,
+        4
+       ],
+       [
+        0,
+        3
+       ]
+      ],
+      [
+       4,
+       1,
+       -5,
+       2,
+       5
+      ]
+     ],
+     "expected": [
+      0,
+      3
+     ],
+     "explain": "무리 [0, 3]과 [1, 4]는 합계가 6으로 같고 동굴 수도 2개로 같으므로, 가장 작은 번호가 더 작은 [0, 3]을 return 합니다. [2]는 합계가 -5입니다."
+    }
+   ],
+   "code": "def func_a(n, tunnels):\n    graph = [[] for _ in range(n)]\n    for a, b in tunnels:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, gems):\n    total = 0\n    for cave in group:\n        total += gems[cave]\n    return total\n\ndef func_d(total, size, best_total, best_size):\n    if total > best_total:\n        return True\n    if total != best_total and size < best_size:\n        return True\n    return False\n\ndef solution(n, tunnels, gems):\n    graph = func_a(n, tunnels)\n    visited = [False] * n\n    best = []\n    best_total = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            total = func_c(group, gems)\n            if func_d(total, len(group), best_total, len(best)):\n                best = group\n                best_total = total\n    return sorted(best)",
+   "bugLine": 24,
+   "solution": "def func_a(n, tunnels):\n    graph = [[] for _ in range(n)]\n    for a, b in tunnels:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, gems):\n    total = 0\n    for cave in group:\n        total += gems[cave]\n    return total\n\ndef func_d(total, size, best_total, best_size):\n    if total > best_total:\n        return True\n    if total == best_total and size < best_size:\n        return True\n    return False\n\ndef solution(n, tunnels, gems):\n    graph = func_a(n, tunnels)\n    visited = [False] * n\n    best = []\n    best_total = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            total = func_c(group, gems)\n            if func_d(total, len(group), best_total, len(best)):\n                best = group\n                best_total = total\n    return sorted(best)",
+   "tests": [
+    {
+     "args": [
+      1,
+      [],
+      [
+       5
+      ]
+     ],
+     "expected": [
+      0
+     ]
+    },
+    {
+     "args": [
+      1,
+      [],
+      [
+       0
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      1,
+      [],
+      [
+       -3
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      2,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       4,
+       -4
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      2,
+      [],
+      [
+       3,
+       3
+      ]
+     ],
+     "expected": [
+      0
+     ]
+    },
+    {
+     "args": [
+      3,
+      [
+       [
+        0,
+        1
+       ]
+      ],
+      [
+       2,
+       1,
+       3
+      ]
+     ],
+     "expected": [
+      2
+     ]
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ]
+      ],
+      [
+       1,
+       1,
+       1,
+       3
+      ]
+     ],
+     "expected": [
+      3
+     ]
+    },
+    {
+     "args": [
+      5,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        2,
+        3
+       ]
+      ],
+      [
+       -2,
+       6,
+       2,
+       2,
+       4
+      ]
+     ],
+     "expected": [
+      4
+     ]
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        3,
+        4
+       ]
+      ],
+      [
+       2,
+       2,
+       2,
+       3,
+       3,
+       6
+      ]
+     ],
+     "expected": [
+      5
+     ]
+    },
+    {
+     "args": [
+      15,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        5,
+        6
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        7,
+        8
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        9,
+        10
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        11,
+        12
+       ],
+       [
+        12,
+        13
+       ],
+       [
+        13,
+        14
+       ]
+      ],
+      [
+       10,
+       -10,
+       10,
+       -10,
+       10,
+       -10,
+       10,
+       -10,
+       10,
+       -10,
+       10,
+       -10,
+       10,
+       -10,
+       10
+      ]
+     ],
+     "expected": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+     ]
+    },
+    {
+     "args": [
+      15,
+      [],
+      [
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1,
+       -1
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      6,
+      [
+       [
+        0,
+        1
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        4,
+        5
+       ]
+      ],
+      [
+       5,
+       1,
+       3,
+       3,
+       6,
+       0
+      ]
+     ],
+     "expected": [
+      0,
+      1
+     ]
+    },
+    {
+     "args": [
+      13,
+      [
+       [
+        6,
+        9
+       ],
+       [
+        1,
+        7
+       ],
+       [
+        5,
+        11
+       ],
+       [
+        10,
+        11
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        2,
+        10
+       ],
+       [
+        8,
+        11
+       ],
+       [
+        0,
+        7
+       ],
+       [
+        5,
+        10
+       ],
+       [
+        6,
+        12
+       ]
+      ],
+      [
+       -8,
+       3,
+       -4,
+       -7,
+       -9,
+       2,
+       1,
+       4,
+       -8,
+       -5,
+       -6,
+       6,
+       3
+      ]
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      13,
+      [
+       [
+        9,
+        11
+       ],
+       [
+        9,
+        12
+       ],
+       [
+        4,
+        11
+       ],
+       [
+        2,
+        9
+       ],
+       [
+        6,
+        7
+       ],
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       2,
+       9,
+       3,
+       9,
+       4,
+       -3,
+       6,
+       7,
+       -1,
+       -5,
+       1,
+       5,
+       -4
+      ]
+     ],
+     "expected": [
+      6,
+      7
+     ]
+    },
+    {
+     "args": [
+      10,
+      [
+       [
+        4,
+        7
+       ],
+       [
+        4,
+        5
+       ],
+       [
+        2,
+        4
+       ],
+       [
+        2,
+        9
+       ],
+       [
+        3,
+        7
+       ],
+       [
+        1,
+        5
+       ]
+      ],
+      [
+       8,
+       10,
+       -2,
+       -3,
+       -5,
+       3,
+       -9,
+       -10,
+       3,
+       7
+      ]
+     ],
+     "expected": [
+      0
+     ]
+    }
+   ],
+   "inputCheck": "def valid(n, tunnels, gems):\n    if not (isinstance(n, int) and 1 <= n <= 15):\n        return False\n    if not (isinstance(tunnels, list) and 0 <= len(tunnels) <= 25):\n        return False\n    seen = set()\n    for e in tunnels:\n        if not (isinstance(e, list) and len(e) == 2 and all(isinstance(v, int) for v in e)):\n            return False\n        a, b = e\n        if not (0 <= a < b <= n - 1) or (a, b) in seen:\n            return False\n        seen.add((a, b))\n    return isinstance(gems, list) and len(gems) == n and all(isinstance(g, int) and -10 <= g <= 10 for g in gems)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`n = 3, tunnels = [[0, 1]], gems = [4, -6, 3]`이에요. 무리는 [0, 1](합계 -2)과 [2](합계 3)예요. 탐험대는 어떤 동굴을 탐험할까요?",
+     "options": [
+      "[2] — 합계 3이 가장 큰 무리예요.",
+      "[0] — 점수가 4로 가장 큰 동굴만 골라요.",
+      "[0, 1] — 동굴이 더 많은 무리예요.",
+      "[] — 함정이 있는 동굴이 있어서 탐험하지 않아요."
+     ],
+     "answer": 0,
+     "explain": "탐험대는 동굴 하나가 아니라 '무리' 하나를 통째로 골라요. 함정(음수)이 있으면 그 무리의 합계가 줄어들 뿐이에요. 합계가 가장 큰 무리는 [2]예요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "무리 [0, 4, 5](합계 6), [1, 2](합계 6), [3, 7](합계 6), [6](합계 2)가 있으면 무엇을 고를까요?",
+     "options": [
+      "[1, 2]",
+      "[0, 4, 5]",
+      "[3, 7]",
+      "[6]"
+     ],
+     "answer": 0,
+     "explain": "합계가 6으로 같은 세 무리 중 동굴 수가 적은 [1, 2]와 [3, 7]이 남고, 둘 다 2개라서 가장 작은 번호가 1로 더 작은 [1, 2]를 골라요. 동점 규칙은 '합계 → 동굴 수 → 가장 작은 번호' 순서예요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "`n = 3, tunnels = [[0, 1]], gems = [2, -2, -1]`이면 return 값은 무엇일까요? (리스트 그대로 써 보세요)",
+     "a": "[]",
+     "check": "def func_a(n, tunnels):\n    graph = [[] for _ in range(n)]\n    for a, b in tunnels:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, gems):\n    total = 0\n    for cave in group:\n        total += gems[cave]\n    return total\n\ndef func_d(total, size, best_total, best_size):\n    if total > best_total:\n        return True\n    if total == best_total and size < best_size:\n        return True\n    return False\n\ndef solution(n, tunnels, gems):\n    graph = func_a(n, tunnels)\n    visited = [False] * n\n    best = []\n    best_total = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            total = func_c(group, gems)\n            if func_d(total, len(group), best_total, len(best)):\n                best = group\n                best_total = total\n    return sorted(best)\n\ndef answers():\n    return [solution(3, [[0, 1]], [2, -2, -1])]",
+     "explain": "무리 [0, 1]의 합계는 0, [2]의 합계는 -1이에요. 가장 큰 합계가 0이라 '0 이하'에 해당하므로 탐험하지 않고 빈 리스트를 돌려줘요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "code": "start",
+     "q": "solution은 `best = []`, `best_total = 0`으로 시작하고, func_d가 True일 때만 best를 바꿔요. 이렇게 시작하면 어떤 점이 좋을까요?",
+     "options": [
+      "합계가 0 이하인 무리는 뽑히지 않아서, 그런 무리만 있으면 저절로 빈 리스트가 된다",
+      "합계가 음수인 무리도 가장 큰 무리로 뽑을 수 있다",
+      "첫 번째로 찾은 무리가 언제나 뽑힌다",
+      "동굴 수를 비교할 필요가 없어진다"
+     ],
+     "answer": 0,
+     "explain": "처음 best_total이 0이니 합계가 0보다 커야 `total > best_total`이 참이 돼요. 합계가 0인 무리는 동점 줄로 가지만 len(best)가 0이라 `size < best_size`가 거짓이에요. 그래서 '0 이하면 탐험하지 않음'이 따로 if 없이 지켜져요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "예시 1 따라가기 (무리 찾기)",
+     "prompt": "예시 1(n = 8, tunnels = [[0, 1], [1, 2], [3, 4], [6, 7]], gems = [5, -1, 3, 2, 5, -2, 1, 3])에서 solution의 for 반복이 새 무리를 찾는 i마다, 무리(작은 번호부터)와 func_c가 계산한 합계, 동굴 수를 채워 보세요. 첫 줄은 예시예요.",
+     "columns": [
+      "i",
+      "group(작은 번호부터)",
+      "total",
+      "동굴 수"
+     ],
+     "rows": [
+      [
+       "0",
+       "[0, 1, 2]",
+       "7",
+       "3"
+      ],
+      [
+       "3",
+       {
+        "a": "[3, 4]",
+        "alts": [
+         "3, 4"
+        ]
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "[5]",
+        "alts": [
+         "5"
+        ]
+       },
+       {
+        "a": "-2"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "[6, 7]",
+        "alts": [
+         "6, 7"
+        ]
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def func_a(n, tunnels):\n    graph = [[] for _ in range(n)]\n    for a, b in tunnels:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, gems):\n    total = 0\n    for cave in group:\n        total += gems[cave]\n    return total\n\ndef func_d(total, size, best_total, best_size):\n    if total > best_total:\n        return True\n    if total == best_total and size < best_size:\n        return True\n    return False\n\ndef solution(n, tunnels, gems):\n    graph = func_a(n, tunnels)\n    visited = [False] * n\n    best = []\n    best_total = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            total = func_c(group, gems)\n            if func_d(total, len(group), best_total, len(best)):\n                best = group\n                best_total = total\n    return sorted(best)\n\ndef answers():\n    n, tunnels, gems = 8, [[0, 1], [1, 2], [3, 4], [6, 7]], [5, -1, 3, 2, 5, -2, 1, 3]\n    graph = func_a(n, tunnels)\n    visited = [False] * n\n    out = []\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            out += [sorted(group), func_c(group, gems), len(group)]\n    return out[3:]",
+     "explain": "5번 동굴은 tunnels에 없어서 혼자 한 무리이고, 함정이라 합계가 -2예요. 합계 7인 무리가 둘이라 동점 규칙이 필요해요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "code": "start",
+     "title": "func_d 결과: 바르게 고른다면 vs 지금 코드",
+     "prompt": "바르게 고르는 코드로 예시 1을 처리할 때, func_d를 부르는 순간의 best_total·best_size(지금까지 고른 무리의 합계와 동굴 수)와 바른 결과를 채워 보세요. 마지막 칸에는 같은 값을 지금 코드의 func_d(동점 줄이 `if total != best_total and size < best_size:`)에 넣었을 때의 결과를 써요.",
+     "columns": [
+      "total",
+      "size",
+      "best_total",
+      "best_size",
+      "바른 결과",
+      "지금 코드 결과"
+     ],
+     "rows": [
+      [
+       "7",
+       "3",
+       "0",
+       "0",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "7",
+       "2",
+       {
+        "a": "7"
+       },
+       {
+        "a": "3"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "-2",
+       "1",
+       {
+        "a": "7"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "4",
+       "2",
+       {
+        "a": "7"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def func_a(n, tunnels):\n    graph = [[] for _ in range(n)]\n    for a, b in tunnels:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, gems):\n    total = 0\n    for cave in group:\n        total += gems[cave]\n    return total\n\ndef func_d(total, size, best_total, best_size):\n    if total > best_total:\n        return True\n    if total == best_total and size < best_size:\n        return True\n    return False\n\ndef solution(n, tunnels, gems):\n    graph = func_a(n, tunnels)\n    visited = [False] * n\n    best = []\n    best_total = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            total = func_c(group, gems)\n            if func_d(total, len(group), best_total, len(best)):\n                best = group\n                best_total = total\n    return sorted(best)\n\ndef answers():\n    def bad(total, size, best_total, best_size):\n        if total > best_total:\n            return True\n        if total != best_total and size < best_size:\n            return True\n        return False\n    out = []\n    best_total, best_size = 0, 0\n    for total, size in [(7, 3), (7, 2), (-2, 1), (4, 2)]:\n        out += [best_total, best_size, func_d(total, size, best_total, best_size), bad(total, size, best_total, best_size)]\n        if func_d(total, size, best_total, best_size):\n            best_total, best_size = total, size\n    return out[2:]",
+     "explain": "바르게 고르면 [0, 1, 2]를 골랐다가 동점이고 동굴이 적은 [3, 4]로 바꿔요. 지금 코드는 동점인 [3, 4]를 놓치고, 오히려 합계가 다르면서 동굴이 적은 [5](합계 -2)를 True로 골라 버려요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "code": "start",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "func_d의 `if total != best_total and size < best_size:` → `if total == best_total and size < best_size:`",
+      "func_d의 `if total != best_total and size < best_size:` → `if total != best_total and size > best_size:`",
+      "func_d의 `if total > best_total:` → `if total >= best_total:`",
+      "solution의 `if func_d(total, len(group), best_total, len(best)):` → `if not func_d(total, len(group), best_total, len(best)):`"
+     ],
+     "answer": 0,
+     "explain": "동굴 수를 비교하는 것은 합계가 '같을' 때뿐이니 `==`로 고쳐요. ②는 합계가 다른 무리를 여전히 동굴 수로 고르고, ③은 동점이면 동굴 수와 관계없이 나중 무리로 바꾸며, ④는 더 나쁜 무리를 고르게 돼요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "고친 코드에서 `n = 4, tunnels = [[0, 1]], gems = [3, 2, 5, -1]`이면 return 값은 무엇일까요? (리스트 그대로 써 보세요)",
+     "a": "[2]",
+     "check": "def func_a(n, tunnels):\n    graph = [[] for _ in range(n)]\n    for a, b in tunnels:\n        graph[a].append(b)\n        graph[b].append(a)\n    return graph\n\ndef func_b(now, graph, visited, group):\n    visited[now] = True\n    group.append(now)\n    for nxt in graph[now]:\n        if not visited[nxt]:\n            func_b(nxt, graph, visited, group)\n\ndef func_c(group, gems):\n    total = 0\n    for cave in group:\n        total += gems[cave]\n    return total\n\ndef func_d(total, size, best_total, best_size):\n    if total > best_total:\n        return True\n    if total == best_total and size < best_size:\n        return True\n    return False\n\ndef solution(n, tunnels, gems):\n    graph = func_a(n, tunnels)\n    visited = [False] * n\n    best = []\n    best_total = 0\n    for i in range(n):\n        if not visited[i]:\n            group = []\n            func_b(i, graph, visited, group)\n            total = func_c(group, gems)\n            if func_d(total, len(group), best_total, len(best)):\n                best = group\n                best_total = total\n    return sorted(best)\n\ndef answers():\n    return [solution(4, [[0, 1]], [3, 2, 5, -1])]",
+     "explain": "무리 [0, 1]과 [2]는 합계가 5로 같아요. 동굴 수가 1개로 더 적은 [2]를 골라요. 먼저 찾은 무리라고 해서 이기는 것이 아니에요."
+    }
+   ],
+   "explain": "func_b로 무리를 모으고 func_c로 합계를 구한 뒤, func_d가 '지금 무리가 지금까지 고른 무리보다 나은가'를 판단해요. 동굴 수 비교는 합계가 같을 때만 해야 하는데 `!=`로 뒤집혀 있었어요. 무리를 작은 번호부터 찾으므로, 완전히 같은 조건이면 먼저 찾은 무리를 지키도록 `<`(같으면 바꾸지 않음)를 써요."
+  },
+  {
+   "id": "pya-t07-adv5",
+   "version": 1,
+   "title": "지뢰 찾기 연쇄 열기",
+   "statement": "지뢰 찾기 게임판이 문자열 리스트 `board`로 주어집니다. `board[i][j]`가 '*'이면 i행 j열 칸에 지뢰가 있고, '.'이면 빈칸입니다. 처음에는 모든 칸이 닫혀 있고, 플레이어는 `clicks`에 담긴 순서대로 칸을 누릅니다. clicks의 원소 `[r, c]`는 r행 c열 칸을 누른다는 뜻입니다.\n\n- 지뢰 칸을 누르면 그 칸이 열리며 게임이 끝나고, 그 뒤의 클릭은 무시합니다.\n- 이미 열린 칸을 누르면 아무 일도 일어나지 않습니다.\n- 닫힌 빈칸을 누르면 그 칸이 열립니다. 열린 칸을 둘러싼 8칸(상하좌우와 대각선 중 게임판 안의 칸)에 지뢰가 하나도 없으면, 둘러싼 칸 중 닫힌 칸이 모두 저절로 열리고, 저절로 열린 칸에도 같은 규칙이 이어서 적용됩니다.\n\n클릭을 모두 처리한(또는 게임이 끝난) 뒤의 화면을 return 하려 합니다. 화면은 board와 같은 모양의 문자열 리스트이며, 닫힌 칸은 '#', 열린 지뢰 칸은 '*', 열린 빈칸은 그 칸을 둘러싼 8칸에 있는 지뢰의 수('0'~'8')로 나타냅니다.\n\nsolution 함수와 in_board, count_mines, open_cell, make_screen 중 잘못된 한 줄을 찾아, 코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "board의 길이(행의 수)는 1 이상 8 이하이고, 문자열의 길이(열의 수)는 모두 같으며 1 이상 8 이하입니다.",
+    "board의 문자열은 '*'와 '.'로만 이루어져 있습니다.",
+    "clicks의 길이는 1 이상 10 이하이고, 원소 [r, c]는 0 ≤ r < 행의 수, 0 ≤ c < 열의 수인 정수 2개입니다."
+   ],
+   "returns": [
+    "클릭을 모두 처리한(또는 지뢰를 눌러 게임이 끝난) 뒤의 화면을 문자열 리스트로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "board",
+    "clicks"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       ".....",
+       "..*..",
+       ".....",
+       "....*"
+      ],
+      [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        4
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "01#10",
+      "01#10",
+      "01121",
+      "0001#"
+     ],
+     "explain": "0행 0열을 누르면 둘러싼 지뢰가 없는 칸('0')을 따라 왼쪽과 아래쪽 12칸이 열리고, 0행 4열을 누르면 오른쪽 위 5칸이 더 열립니다. 이미 열린 0행 0열을 다시 누르면 아무 일도 없습니다. 지뢰 2칸과 0행 2열은 닫힌 채로 남아 '#'으로 나타납니다."
+    },
+    {
+     "args": [
+      [
+       "..*",
+       "...",
+       "*.."
+      ],
+      [
+       [
+        0,
+        0
+       ],
+       [
+        2,
+        0
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      "01#",
+      "12#",
+      "*##"
+     ],
+     "explain": "0행 0열을 누르면 그 칸과 둘러싼 0행 1열·1행 0열·1행 1열이 열립니다. 다음에 지뢰인 2행 0열을 누르면 그 칸이 '*'로 열리며 게임이 끝나므로, 마지막 클릭은 무시됩니다."
+    },
+    {
+     "args": [
+      [
+       "*..",
+       "..."
+      ],
+      [
+       [
+        1,
+        1
+       ],
+       [
+        0,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      "#10",
+      "#10"
+     ],
+     "explain": "1행 1열은 둘러싼 칸에 지뢰(0행 0열)가 있어 그 칸만 열립니다. 0행 2열은 둘러싼 지뢰가 없어 0행 1열과 1행 2열이 저절로 열리고, 1행 2열도 둘러싼 지뢰가 없지만 더 열 칸이 없습니다. 1행 0열과 지뢰는 닫혀 있습니다."
+    }
+   ],
+   "code": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) == 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)",
+   "bugLine": 16,
+   "solution": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) != 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)",
+   "tests": [
+    {
+     "args": [
+      [
+       "."
+      ],
+      [
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "0"
+     ]
+    },
+    {
+     "args": [
+      [
+       "*"
+      ],
+      [
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "*"
+     ]
+    },
+    {
+     "args": [
+      [
+       "...",
+       "...",
+       "..."
+      ],
+      [
+       [
+        2,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      "000",
+      "000",
+      "000"
+     ]
+    },
+    {
+     "args": [
+      [
+       ".*"
+      ],
+      [
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "1#"
+     ]
+    },
+    {
+     "args": [
+      [
+       ".*"
+      ],
+      [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "1#"
+     ]
+    },
+    {
+     "args": [
+      [
+       "*.*",
+       "...",
+       "*.*"
+      ],
+      [
+       [
+        1,
+        1
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        2,
+        1
+       ],
+       [
+        1,
+        0
+       ],
+       [
+        1,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      "#2#",
+      "242",
+      "#2#"
+     ]
+    },
+    {
+     "args": [
+      [
+       "........",
+       "........",
+       "........",
+       "........",
+       "........",
+       "........",
+       "........",
+       "........"
+      ],
+      [
+       [
+        3,
+        4
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000"
+     ]
+    },
+    {
+     "args": [
+      [
+       "........",
+       "........",
+       "........",
+       "........",
+       "........",
+       "........",
+       "........",
+       "*......."
+      ],
+      [
+       [
+        0,
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "11000000",
+      "#1000000"
+     ]
+    },
+    {
+     "args": [
+      [
+       "..*",
+       "...",
+       "..."
+      ],
+      [
+       [
+        2,
+        0
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      "01*",
+      "011",
+      "000"
+     ]
+    },
+    {
+     "args": [
+      [
+       "..*",
+       "...",
+       "..."
+      ],
+      [
+       [
+        0,
+        2
+       ],
+       [
+        2,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "##*",
+      "###",
+      "###"
+     ]
+    },
+    {
+     "args": [
+      [
+       "********",
+       "*......*",
+       "********"
+      ],
+      [
+       [
+        1,
+        3
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      "########",
+      "#7#6####",
+      "########"
+     ]
+    },
+    {
+     "args": [
+      [
+       "....",
+       "....",
+       "....",
+       "....",
+       "*...",
+       "....",
+       "....",
+       "*..."
+      ],
+      [
+       [
+        7,
+        0
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        3,
+        3
+       ],
+       [
+        4,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      "####",
+      "####",
+      "####",
+      "####",
+      "####",
+      "####",
+      "####",
+      "*###"
+     ]
+    },
+    {
+     "args": [
+      [
+       ".*..",
+       "..*.",
+       "*...",
+       ".*.*",
+       "....",
+       "....",
+       "...."
+      ],
+      [
+       [
+        2,
+        2
+       ],
+       [
+        5,
+        1
+       ],
+       [
+        1,
+        0
+       ],
+       [
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      "####",
+      "23##",
+      "##3#",
+      "####",
+      "1121",
+      "0000",
+      "0000"
+     ]
+    },
+    {
+     "args": [
+      [
+       "....",
+       "....",
+       "..*.",
+       "...."
+      ],
+      [
+       [
+        0,
+        3
+       ],
+       [
+        2,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      "0000",
+      "0111",
+      "01##",
+      "01##"
+     ]
+    },
+    {
+     "args": [
+      [
+       "........",
+       "*..*..**",
+       "*.......",
+       "*....*..",
+       "........",
+       ".*......",
+       "........",
+       "........"
+      ],
+      [
+       [
+        7,
+        3
+       ],
+       [
+        2,
+        1
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "expected": [
+      "###1##2#",
+      "########",
+      "#3112#32",
+      "#2001#10",
+      "#2101110",
+      "##100000",
+      "11100000",
+      "00000000"
+     ]
+    }
+   ],
+   "inputCheck": "def valid(board, clicks):\n    if not (isinstance(board, list) and 1 <= len(board) <= 8):\n        return False\n    w = len(board[0]) if isinstance(board[0], str) else -1\n    if not (1 <= w <= 8):\n        return False\n    if not all(isinstance(row, str) and len(row) == w and all(ch in '*.' for ch in row) for row in board):\n        return False\n    if not (isinstance(clicks, list) and 1 <= len(clicks) <= 10):\n        return False\n    for e in clicks:\n        if not (isinstance(e, list) and len(e) == 2 and all(isinstance(v, int) for v in e)):\n            return False\n        if not (0 <= e[0] < len(board) and 0 <= e[1] < w):\n            return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "닫힌 빈칸을 눌렀는데, 그 칸을 둘러싼 8칸 중 2칸에 지뢰가 있어요. 어떻게 될까요?",
+     "options": [
+      "누른 칸 하나만 열리고 화면에 '2'가 나타난다",
+      "누른 칸과 둘러싼 8칸이 모두 열린다",
+      "누른 칸과 지뢰가 아닌 둘러싼 칸이 모두 열린다",
+      "게임이 끝난다"
+     ],
+     "answer": 0,
+     "explain": "둘러싼 칸이 저절로 열리는 것은 둘러싼 지뢰가 '하나도 없을' 때뿐이에요. 지뢰가 근처에 있으면 그 칸만 열리고, 화면에는 둘러싼 지뢰 수가 숫자로 나타나요. 게임이 끝나는 것은 지뢰 칸 자체를 눌렀을 때예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "count_mines 계산하기",
+     "prompt": "board = [\"*..\", \"...\", \"..*\"](0행 0열과 2행 2열이 지뢰)에서 count_mines(r, c, board)의 값을 채워 보세요. DIRS의 8방향(상하좌우와 대각선) 중 게임판 안에 있는 칸만 세요.",
+     "columns": [
+      "칸 (r, c)",
+      "count_mines"
+     ],
+     "rows": [
+      [
+       "(0, 1)",
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "(1, 1)",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "(0, 2)",
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "(2, 0)",
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "(1, 0)",
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) != 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)\n\ndef answers():\n    board = [\"*..\", \"...\", \"..*\"]\n    return [count_mines(r, c, board) for r, c in [(0, 1), (1, 1), (0, 2), (2, 0), (1, 0)]]",
+     "explain": "가운데 (1, 1)은 대각선의 두 지뢰가 모두 닿아 2예요. 모서리 (0, 2)는 게임판 안의 이웃이 3칸뿐이고 그중 지뢰가 없어 0이에요. in_board로 게임판 밖 칸을 먼저 걸러서 오류 없이 셀 수 있어요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "open_cell(r, c, …)이 그 칸을 연 뒤, 둘러싼 칸마다 open_cell을 다시 불러야(연쇄로 열어야) 하는 때는 언제일까요?",
+     "options": [
+      "count_mines(r, c, board)가 0일 때",
+      "count_mines(r, c, board)가 0이 아닐 때",
+      "둘러싼 칸 중 빈칸이 하나라도 있을 때",
+      "언제나"
+     ],
+     "answer": 0,
+     "explain": "둘러싼 지뢰가 0개일 때만 이웃을 열어도 안전해요. 숫자가 있는 칸(지뢰가 근처에 있는 칸)에서는 멈춰야 지뢰가 저절로 열리지 않아요. 그래서 open_cell에는 '멈춰야 할 때 바로 return'하는 문장이 있어요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "code": "start",
+     "title": "지금 코드로 따라가기",
+     "prompt": "지금 코드의 open_cell에는 `if count_mines(r, c, board) == 0:` 다음 줄에 `return`이 있어요. 같은 board = [\"...\", \"..*\"]에서 지금 코드로 0행 1열(둘러싼 지뢰 1개)을 누를 때, open_cell이 불리는 차례대로 칸과 이웃을 이어서 여는지를 채우고, 마지막 줄에는 열린 칸의 수를 써 보세요.",
+     "columns": [
+      "차례",
+      "행 r",
+      "열 c",
+      "이웃을 여나요"
+     ],
+     "rows": [
+      [
+       "1",
+       "0",
+       "1",
+       "True"
+      ],
+      [
+       "2",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "0"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "1"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "1"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "열린 칸 수",
+       "-",
+       "-",
+       {
+        "a": "6"
+       }
+      ]
+     ],
+     "check": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) == 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)\n\ndef answers():\n    board = [\"...\", \"..*\"]\n    opened = [[False] * 3 for _ in range(2)]\n    log = []\n    def go(r, c):\n        opened[r][c] = True\n        k = count_mines(r, c, board)\n        log.append([r, c, k, k != 0])\n        if k == 0:\n            return\n        for dr, dc in DIRS:\n            nr, nc = r + dr, c + dc\n            if in_board(nr, nc, board) and not opened[nr][nc]:\n                go(nr, nc)\n    go(0, 1)\n    out = []\n    for x in log[1:]:\n        out += x[:2] + [x[3]]\n    out.append(sum(row.count(True) for row in opened))\n    return out",
+     "explain": "지금 코드는 지뢰가 0개인 칸에서 멈추고, 숫자가 있는 칸에서 이웃을 열어요. 그래서 지뢰인 1행 2열까지 열려 6칸이 모두 열려요. 바르게라면 0행 1열 하나만 열려요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "code": "start",
+     "q": "어느 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "open_cell의 `if count_mines(r, c, board) == 0:` → `if count_mines(r, c, board) != 0:`",
+      "count_mines의 `if in_board(nr, nc, board) and board[nr][nc] == '*':` → `if in_board(nr, nc, board) and board[nr][nc] != '*':`",
+      "open_cell의 `if in_board(nr, nc, board) and not opened[nr][nc]:` → `if in_board(nr, nc, board) and opened[nr][nc]:`",
+      "make_screen의 `if not opened[r][c]:` → `if opened[r][c]:`"
+     ],
+     "answer": 0,
+     "explain": "`return`은 함수를 그 자리에서 끝내요. 멈춰야 하는 때는 둘러싼 지뢰가 있을 때(0이 아닐 때)이니 `!= 0`으로 고쳐요. ②는 지뢰가 아닌 칸을 세게 되고, ③은 이미 열린 칸만 다시 열려고 하며, ④는 화면에서 열린 칸과 닫힌 칸을 거꾸로 그려요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "바르게 연쇄로 열기 따라가기",
+     "prompt": "board = [\"...\", \"..*\"](1행 2열이 지뢰)에서 바르게 고친 코드로 0행 0열을 누를 때, open_cell이 불리는 차례대로 칸, 둘러싼 지뢰 수, 이웃을 이어서 여는지를 채워 보세요. DIRS 순서는 (-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)이고, 재귀에서는 안쪽 호출이 끝나야 바깥 반복이 이어져요.",
+     "columns": [
+      "차례",
+      "행 r",
+      "열 c",
+      "count_mines",
+      "이웃을 여나요"
+     ],
+     "rows": [
+      [
+       "1",
+       "0",
+       "0",
+       "0",
+       "True"
+      ],
+      [
+       "2",
+       {
+        "a": "0"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "1"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) != 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)\n\ndef answers():\n    board = [\"...\", \"..*\"]\n    opened = [[False] * 3 for _ in range(2)]\n    log = []\n    def go(r, c):\n        opened[r][c] = True\n        k = count_mines(r, c, board)\n        log.append([r, c, k, k == 0])\n        if k != 0:\n            return\n        for dr, dc in DIRS:\n            nr, nc = r + dr, c + dc\n            if in_board(nr, nc, board) and not opened[nr][nc]:\n                go(nr, nc)\n    go(0, 0)\n    out = []\n    for x in log[1:]:\n        out += x\n    return out",
+     "explain": "0행 0열에서 먼저 (0, 1) 방향의 0행 1열을 열고(지뢰 1개라 멈춤), 다음 (1, 0) 방향의 1행 0열을 열어요. 1행 0열은 지뢰가 0개라 1행 1열을 열고, 1행 1열은 지뢰 1개라 멈춰요. 0행 2열과 지뢰 칸은 닫혀 있어요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "code": "start",
+     "q": "지금(고치기 전) 코드로 예시 3(`board = [\"*..\", \"...\"]`, `clicks = [[1, 1], [0, 2]]`)을 실행하면 return 값은 무엇일까요? (리스트 그대로 써 보세요)",
+     "a": "['*10', '110']",
+     "alts": [
+      "[\"*10\", \"110\"]",
+      "*10, 110"
+     ],
+     "check": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) == 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)\n\ndef answers():\n    return [solution([\"*..\", \"...\"], [[1, 1], [0, 2]])]",
+     "explain": "1행 1열은 둘러싼 지뢰가 1개인데, 지금 코드는 이런 칸에서 이웃을 모두 열어요. 그 이웃에 지뢰 칸 0행 0열도 있어서 지뢰까지 '*'로 열리고 6칸이 모두 열려요. 바른 답은 ['#10', '#10']이에요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "고친 코드에서 `board = [\"..\", \".*\"]`, `clicks = [[0, 0], [1, 1], [1, 0]]`이면 return 값은 무엇일까요? (리스트 그대로 써 보세요)",
+     "a": "['1#', '#*']",
+     "alts": [
+      "[\"1#\", \"#*\"]",
+      "1#, #*"
+     ],
+     "check": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) != 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)\n\ndef answers():\n    return [solution([\"..\", \".*\"], [[0, 0], [1, 1], [1, 0]])]",
+     "explain": "0행 0열은 대각선에 지뢰가 있어 그 칸만 '1'로 열려요. 다음 클릭이 지뢰 칸이라 그 칸이 '*'로 열리며 게임이 끝나고, 마지막 클릭 [1, 0]은 무시되어 1행 0열은 '#'으로 남아요."
+    },
+    {
+     "id": "s9",
+     "kind": "table",
+     "title": "전체 정리: 예시 1의 클릭마다",
+     "prompt": "예시 1(board = [\".....\", \"..*..\", \".....\", \"....*\"], clicks = [[0, 0], [0, 4], [0, 0]])을 바르게 고친 코드로 실행할 때, 클릭마다 그 칸이 이미 열려 있었는지와 클릭을 처리한 뒤 열린 칸의 수를 채워 보세요. 세 클릭 모두 지뢰 칸이 아니에요.",
+     "columns": [
+      "클릭 [r, c]",
+      "이미 열려 있었나요",
+      "처리 뒤 열린 칸 수"
+     ],
+     "rows": [
+      [
+       "[0, 0]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "[0, 4]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "17"
+       }
+      ],
+      [
+       "[0, 0]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "17"
+       }
+      ]
+     ],
+     "check": "DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]\n\ndef in_board(r, c, board):\n    return 0 <= r < len(board) and 0 <= c < len(board[0])\n\ndef count_mines(r, c, board):\n    cnt = 0\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and board[nr][nc] == '*':\n            cnt += 1\n    return cnt\n\ndef open_cell(r, c, board, opened):\n    opened[r][c] = True\n    if count_mines(r, c, board) != 0:\n        return\n    for dr, dc in DIRS:\n        nr, nc = r + dr, c + dc\n        if in_board(nr, nc, board) and not opened[nr][nc]:\n            open_cell(nr, nc, board, opened)\n\ndef make_screen(board, opened):\n    screen = []\n    for r in range(len(board)):\n        line = ''\n        for c in range(len(board[0])):\n            if not opened[r][c]:\n                line += '#'\n            elif board[r][c] == '*':\n                line += '*'\n            else:\n                line += str(count_mines(r, c, board))\n        screen.append(line)\n    return screen\n\ndef solution(board, clicks):\n    opened = [[False] * len(board[0]) for _ in range(len(board))]\n    for r, c in clicks:\n        if board[r][c] == '*':\n            opened[r][c] = True\n            break\n        if not opened[r][c]:\n            open_cell(r, c, board, opened)\n    return make_screen(board, opened)\n\ndef answers():\n    board = [\".....\", \"..*..\", \".....\", \"....*\"]\n    opened = [[False] * 5 for _ in range(4)]\n    out = []\n    for r, c in [[0, 0], [0, 4], [0, 0]]:\n        was = opened[r][c]\n        if not was:\n            open_cell(r, c, board, opened)\n        out += [was, sum(row.count(True) for row in opened)]\n    return out",
+     "explain": "첫 클릭은 '0'인 칸을 따라 왼쪽과 아래쪽 12칸을 열고, 두 번째 클릭은 오른쪽 위 5칸을 더 열어요. 세 번째는 이미 열린 칸이라 아무 일도 없어요. 0행 2열은 둘레의 빈칸이 모두 숫자 칸이라 저절로 열리지 않아요."
+    }
+   ],
+   "explain": "count_mines는 8방향의 지뢰를 세고, open_cell은 칸을 연 뒤 둘러싼 지뢰가 없을 때만 이웃으로 재귀 호출하며, make_screen은 열린 상태에 따라 화면을 그려요. '조건이 참이면 return'하는 줄은 조건이 '멈춰야 하는 경우'를 나타내야 하는데, 0일 때 멈추도록 뒤집혀 있었어요. 지뢰가 0개인 칸에서만 퍼지기 때문에 바른 코드에서는 지뢰가 저절로 열리는 일이 없어요."
+  }
+ ]
+}

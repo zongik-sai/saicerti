@@ -690,6 +690,7 @@
       ]
      ],
      "check": "def answers():\n    wrong = [0] * 6\n    right = [0] * 6\n    out = []\n    for k in [2, 4, 2, 5, 4, 4]:\n        wrong[k] = 1\n        right[k] = 1 - right[k]\n        out += [wrong[k], right[k]]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 몇 번을 누르든 1을 넣기만 해서, 한 번 켜진 전등이 다시 꺼지지 않아요. 그래서 2번 전등이 켜진 채로 남아 답이 3이 돼요."
     },
     {
@@ -703,6 +704,7 @@
       "4번째 줄을 `int lamp[51] = {1};`로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "1 - lamp[k]는 lamp[k]가 0이면 1, 1이면 0이 되어 상태를 뒤집어요. += 1은 누른 횟수를 세는 식이라 세 번 눌린 4번 전등이 3이 되어 == 1 검사에 걸리지 않아요. 꺼진 전등을 세면 답이 달라지고, {1}로 바꾸면 첫 칸 lamp[0]만 1이 될 뿐이에요."
     },
     {
@@ -712,6 +714,7 @@
      "a": "2",
      "alts": [],
      "check": "def answers():\n    lamp = [0] * 4\n    for k in [1, 1, 1, 3]:\n        lamp[k] = 1 - lamp[k]\n    return [sum(lamp[1:])]",
+     "code": "start",
      "explain": "1번 전등은 세 번(홀수 번) 눌려 켜지고, 3번 전등은 한 번 눌려 켜져요. 2번 전등은 누르지 않아 꺼진 채라서 답은 2예요."
     }
    ],
@@ -1279,6 +1282,7 @@
       ]
      ],
      "check": "def answers():\n    right = [0] * 8\n    wrong = [0] * 8\n    out = []\n    for s, e in [(1, 5), (3, 6), (2, 4)]:\n        for i in range(s, e + 1):\n            right[i] = (right[i] + 1) % 2\n            wrong[i] = (wrong[i] + 1) // 2\n        out += [sum(right[1:]), wrong[1:].count(1)]\n    return out",
+     "code": "start",
      "explain": "규칙대로라면 켜진 조명이 5개 → 3개 → 4개로 바뀌지만, 틀린 코드는 처음부터 끝까지 모든 조명이 0이라서 0을 return 해요."
     },
     {
@@ -1292,6 +1296,7 @@
       "12번째 줄을 `if (light[i] == 0) count++;`로 바꾼다"
      ],
      "answer": 2,
+     "code": "start",
      "explain": "% 2는 0을 1로, 1을 0으로 뒤집어요. + 1만 하면 바뀐 횟수가 쌓여서 세 번 바뀐 3번·4번 조명이 3이 되고, 구간 끝을 < 로 바꾸면 끝 번호 조명이 빠져요. 꺼진 조명을 세면 엉뚱한 값이 나와요."
     }
    ],
@@ -2077,6 +2082,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    for x in [0, 1]:\n        out += [-x, 1 - x]\n    return out",
+     "code": "start",
      "explain": "-face[i]는 부호만 바꿔서 0은 계속 0이고, 1은 -1이 돼요. 1 - face[i]는 0을 1로, 1을 0으로 정확히 뒤집어요."
     },
     {
@@ -2113,6 +2119,7 @@
       ]
      ],
      "check": "def answers():\n    right = [0, 1, 0, 0, 1, 1, 0]\n    wrong = list(right)\n    out = []\n    for k in [2, 3]:\n        for i in range(k, 7, k):\n            right[i] = 1 - right[i]\n            wrong[i] = -wrong[i]\n        out += [right[1:].count(1), wrong[1:].count(1)]\n    return out",
+     "code": "start",
      "explain": "틀린 코드에서는 뒷면(0) 카드가 절대 앞면이 되지 않고, 앞면(1) 카드는 -1이 되어 세어지지 않아요. 그래서 답이 4가 아니라 2가 나와요."
     },
     {
@@ -2126,6 +2133,7 @@
       "10번째 줄을 `face[i] = 1 - face[i];`로 바꾼다"
      ],
      "answer": 3,
+     "code": "start",
      "explain": "1 - face[i]가 0과 1을 뒤집는 식이에요. face[i] - 1은 0을 -1로 만들고, != 0으로 세면 뒷면에서 앞면이 된 카드를 놓쳐요. i++로 바꾸면 배수가 아닌 카드까지 뒤집혀요."
     }
    ],
@@ -2553,6 +2561,7 @@
       "6번째 줄을 `for (int j = presses[p]; j <= n; j++) {`로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "켜져 있으면(== 1) 0, 아니면 1이 되어야 상태가 뒤집혀요. (light[j] == 0) ? 0 : 1도 원래 값을 그대로 돌려주는 식이에요. 꺼진 층을 찾거나 반복 구간을 바꾸면 문제의 규칙과 달라져요."
     },
     {
@@ -2562,6 +2571,7 @@
      "a": "3",
      "alts": [],
      "check": "def answers():\n    light = [0] * 6\n    for k in [1, 2, 3]:\n        for j in range(1, k + 1):\n            light[j] = 0 if light[j] == 1 else 1\n    last = 0\n    for i in range(1, 6):\n        if light[i] == 1:\n            last = i\n    return [last]",
+     "code": "start",
      "explain": "버튼 1 뒤 1층만 켜짐, 버튼 2 뒤 2층만 켜짐(1층은 꺼짐), 버튼 3 뒤 1층과 3층이 켜짐이에요. 가장 높은 켜진 층은 3층이에요."
     }
    ],
@@ -3212,6 +3222,7 @@
       ]
      ],
      "check": "def answers():\n    n, r, c = 3, 0, 0\n    t = [[0] * n for _ in range(n)]\n    out = []\n    for i in range(n):\n        for j in range(n):\n            if i == r or j == c:\n                read = t[j][i]\n                t[i][j] = 1 - t[j][i]\n                out += [read, t[i][j]]\n    return out",
+     "code": "start",
      "explain": "(1, 0)을 바꿀 때 자기 칸이 아니라 바로 전에 1이 된 (0, 1) 칸을 읽어서 0이 돼요. (2, 0)도 마찬가지예요. 그래서 0열의 (1, 0), (2, 0) 타일이 검은색이 되지 않아요."
     },
     {
@@ -3225,6 +3236,7 @@
       "4번째 줄을 `int tile[10][10] = {1};`로 바꾼다"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "칸 (i, j)의 색을 뒤집으려면 자기 자신 tile[i][j]를 읽어 1에서 빼야 해요. &&(그리고)로 바꾸면 고른 칸 하나만 바뀌고, 셀 때 [j][i]로 읽어도 이미 잘못 바뀐 판은 그대로예요."
     },
     {
@@ -3234,6 +3246,7 @@
      "a": "2",
      "alts": [],
      "check": "def answers():\n    n = 2\n    t = [[0] * n for _ in range(n)]\n    for r, c in [[0, 0], [1, 1]]:\n        for i in range(n):\n            for j in range(n):\n                if i == r or j == c:\n                    t[i][j] = 1 - t[i][j]\n    return [sum(map(sum, t))]",
+     "code": "start",
      "explain": "(0, 0)을 고르면 (0, 0), (0, 1), (1, 0)이 검은색이 돼요. (1, 1)을 고르면 (1, 0), (1, 1), (0, 1)이 바뀌어 (0, 0)과 (1, 1)만 검은색으로 남아요."
     }
    ],
