@@ -8,7 +8,7 @@
 - 채점은 브라우저 안의 Pyodide(`public/pyworker.js` + `src/grader/harness.py`)로만 한다. 학생 코드를 서버로 보내거나 저장하지 않는다. 검수 도구와 브라우저는 같은 harness.py를 쓴다.
 - C 채점은 같은 워커에서 C 인터프리터(`src/grader/cinterp.py`, pycparser 3.12 wheel 동봉)로 한다(명세: docs/CINTERP_SPEC.md). C 문제를 바꾸면 검수 도구가 gcc(`tools/cref.py`)와 결과를 대조한다. 인터프리터를 고치면 `python3 tools/test_cinterp.py`도 통과시킨다. C 문제 만들기: docs/AGENT_BRIEF_C.md(시험지 그림은 `figures` 데이터로 다시 그린다).
 - 모의고사는 중간 점검 없이 풀고, 제출 결과는 시험을 끝낸 뒤 공개한다(시간 제한 없음, 걸린 시간 표시, 자동 제출 없음).
-- 문제마다 흐름: 문제 읽기 → 중간 점검(표 채우기·객관식·단답) → 코드 풀이(빈칸 채우기 / 한 줄 수정(정확히 한 줄만 바뀌어야 채점) / 함수 작성) → 예시 실행·전체 채점. 한 문제 안에서는 중간 점검 단계와 코드 풀이를 자유롭게 오간다(잠그지 않음, 선생님 요청 2026-11-26). 중간 점검 질문에는 빈칸 번호(⟦1⟧)를 쓰지 않고 질문만으로 풀리게 쓴다.
+- 문제마다 흐름: 문제 읽기 → 중간 점검(표 채우기·객관식·단답) → 코드 풀이(빈칸 채우기 / 한 줄 수정(정확히 한 줄만 바뀌어야 채점) / 함수 작성) → 예시 실행·전체 채점. 한 문제 안에서는 중간 점검 단계와 코드 풀이를 자유롭게 오간다(잠그지 않음, 선생님 요청 2026-11-26). 중간 점검 질문에는 빈칸 번호(⟦1⟧)를 쓰지 않고 질문만으로 풀리게 쓴다. 코드를 봐야 풀리는 중간 점검 단계는 `"code": "start"`로 질문 위에 처음 코드(틀린 코드)를 줄 번호와 함께 보여 주고, 한 줄 수정에서 고친 코드는 '어떻게 고칠까요?' 단계보다 먼저 알려 주지 않는다(선생님 요청 2026-11-27).
 - 배움 숲(saiedu)과 같은 사이트(zongik-sai.github.io)·같은 Supabase 프로젝트를 쓴다: localStorage 접두사 `saicerti:v1:`, 로그인 저장 키 `saicerti-auth`를 바꾸지 않는다(서로의 기록·로그인을 건드리지 않게).
 - 서버 표는 saiedu의 `course_progress`(과목 pyb·pya·cb)와 `save_course_progress`·`course_class_overview`·`am_i_teacher`를 쓴다. 교사 관리는 saiedu와 같은 `am_i_admin`·`account_list`·`set_teacher`·`set_admin`·`revoke_listed_email`·`role_audit_list`(권한 확인은 서버). 과목 목록 SQL은 saiedu 저장소 `supabase/migrations/20261026000000_courses.sql`이 기준이다.
 - 클라이언트에 service_role/secret 키를 넣지 않는다. Google 로그인은 진짜 OAuth(루트 callback + HashRouter).
