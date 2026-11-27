@@ -791,13 +791,13 @@
    "id": "cb-t04-adv2",
    "version": 1,
    "title": "비닐하우스의 난방기와 냉방기",
-   "statement": "비닐하우스 안에 N칸의 모판이 일렬로 놓여 있고, 왼쪽부터 1번, 2번, …, N번입니다. 몇몇 칸에는 온도를 올리는 난방기나 온도를 내리는 냉방기가 있습니다. 2차원 배열 `devices`의 `devices[d]`는 d번째 기계의 {칸 번호, 세기, 종류}이며, 종류가 1이면 난방기, 2이면 냉방기입니다(d는 0부터 셉니다).\n\n기계가 있는 칸에서는 온도가 세기만큼 바뀌고(난방기는 오르고, 냉방기는 내려감), 양옆 칸으로 한 칸 멀어질 때마다 바뀌는 양이 1씩 줄어듭니다. 바뀌는 양이 0이 되면 더 퍼지지 않으며, 1번 칸보다 왼쪽이나 N번 칸보다 오른쪽은 비닐하우스 밖이므로 무시합니다. 한 칸에 여러 기계의 영향이 닿으면, 오른 양은 더하고 내린 양은 빼서 그 칸의 온도 변화를 구합니다.\n\n예를 들어 칸이 8개이고 `devices`가 `{{2, 3, 1}, {6, 4, 2}, {7, 1, 1}}`이면 아래 그림과 같습니다.\n\n{{fig:f1}}\n\n- 0번 기계(2번 칸 난방기, 세기 3): 1번~4번 칸이 차례로 2, 3, 2, 1만큼 오름\n- 1번 기계(6번 칸 냉방기, 세기 4): 3번~8번 칸이 차례로 1, 2, 3, 4, 3, 2만큼 내려감 (9번 칸은 밖이라 무시)\n- 2번 기계(7번 칸 난방기, 세기 1): 7번 칸이 1만큼 오름\n\n칸마다 온도 변화는 1번 칸부터 차례로 2, 3, 1, -1, -3, -4, -2, -2입니다. 온도 변화가 `-limit` 이상 `limit` 이하인 칸을 '알맞은 칸'이라고 할 때, `limit`가 2이면 알맞은 칸은 1번, 3번, 4번, 7번, 8번 칸으로 모두 5칸입니다.\n\n칸의 수 `N`, 기계 정보 `devices`, 기준값 `limit`가 주어질 때, 알맞은 칸의 수를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "statement": "비닐하우스 안에 N칸의 모판이 일렬로 놓여 있고, 왼쪽부터 1번, 2번, …, N번입니다. 몇몇 칸에는 온도를 올리는 난방기나 온도를 내리는 냉방기가 있습니다. 2차원 배열 `devices`의 `devices[d]`는 d번째 기계의 {칸 번호, 세기, 종류}이며, 종류가 1이면 난방기, 2이면 냉방기입니다(d는 0부터 셉니다).\n\n기계가 있는 칸에서는 온도가 세기만큼 바뀌고(난방기는 오르고, 냉방기는 내려감), 양옆 칸으로 한 칸 멀어질 때마다 바뀌는 양이 1씩 줄어듭니다. 바뀌는 양이 0이 되면 더 퍼지지 않으며, 1번 칸보다 왼쪽이나 N번 칸보다 오른쪽은 비닐하우스 밖이므로 무시합니다. 한 칸에 여러 기계의 영향이 닿으면, 오른 양은 더하고 내린 양은 빼서 그 칸의 온도 변화를 구합니다.\n\n예를 들어 칸이 8개이고 `devices`가 `{{2, 3, 1}, {6, 4, 2}, {7, 1, 1}}`이면 아래 그림과 같습니다.\n\n{{fig:f1}}\n\n- 0번 기계(2번 칸 난방기, 세기 3): 1번~4번 칸이 차례로 2, 3, 2, 1만큼 오름\n- 1번 기계(6번 칸 냉방기, 세기 4): 3번~8번 칸이 차례로 1, 2, 3, 4, 3, 2만큼 내려감 (9번 칸은 밖이라 무시)\n- 2번 기계(7번 칸 난방기, 세기 1): 7번 칸이 1만큼 오름\n\n칸마다 온도 변화는 1번 칸부터 차례로 2, 3, 1, -1, -3, -4, -2, -2입니다. 모판의 식물은 온도 변화가 `low` 이상 `high` 이하일 때 잘 자라며, 이런 칸을 '알맞은 칸'이라고 합니다. `low`가 -2, `high`가 1이면 알맞은 칸은 3번, 4번, 7번, 8번 칸으로 모두 4칸입니다(1번·2번 칸은 너무 많이 오르고, 5번·6번 칸은 너무 많이 내려감).\n\n칸의 수 `N`, 기계 정보 `devices`, 알맞은 온도 변화의 범위 `low`, `high`가 주어질 때, 알맞은 칸의 수를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
    "figures": [
     {
      "id": "f1",
      "kind": "cells",
-     "caption": "칸 위 숫자는 칸 번호, 칸 안 숫자는 그 칸의 온도 변화(오르면 양수, 내려가면 음수)입니다. 칸 아래 '난'은 난방기, '냉'은 냉방기(괄호 안은 세기)이고, 화살표는 기계마다 영향이 닿는 범위입니다. 진하게 표시된 칸은 limit가 2일 때 알맞은 칸입니다.",
-     "alt": "칸 1번부터 8번까지 8칸. 칸 안의 온도 변화는 차례로 2, 3, 1, -1, -3, -4, -2, -2입니다. 2번 칸에 세기 3인 난방기가 있고 1번~4번 칸에 영향을 줍니다. 6번 칸에 세기 4인 냉방기가 있고 3번~8번 칸에 영향을 줍니다. 7번 칸에 세기 1인 난방기가 있고 7번 칸에만 영향을 줍니다. limit가 2일 때 알맞은 칸인 1번, 3번, 4번, 7번, 8번 칸이 강조되어 있습니다.",
+     "caption": "칸 위 숫자는 칸 번호, 칸 안 숫자는 그 칸의 온도 변화(오르면 양수, 내려가면 음수)입니다. 칸 아래 '난'은 난방기, '냉'은 냉방기(괄호 안은 세기)이고, 화살표는 기계마다 영향이 닿는 범위입니다. 진하게 표시된 칸은 low가 -2, high가 1일 때 알맞은 칸입니다.",
+     "alt": "칸 1번부터 8번까지 8칸. 칸 안의 온도 변화는 차례로 2, 3, 1, -1, -3, -4, -2, -2입니다. 2번 칸에 세기 3인 난방기가 있고 1번~4번 칸에 영향을 줍니다. 6번 칸에 세기 4인 냉방기가 있고 3번~8번 칸에 영향을 줍니다. 7번 칸에 세기 1인 난방기가 있고 7번 칸에만 영향을 줍니다. low가 -2, high가 1일 때 알맞은 칸인 3번, 4번, 7번, 8번 칸이 강조되어 있습니다.",
      "index": "auto1",
      "values": [
       2,
@@ -810,7 +810,6 @@
       -2
      ],
      "highlight": [
-      0,
       2,
       3,
       6,
@@ -857,16 +856,17 @@
     "`devices`는 세로 길이(행의 수)가 1 이상 50 이하, 가로 길이가 3인 정수 2차원 배열입니다.",
     "`devices[d][0]`은 기계가 있는 칸 번호로 1 이상 N 이하, `devices[d][1]`은 세기로 1 이상 20 이하, `devices[d][2]`는 종류로 1(난방기) 또는 2(냉방기)입니다. 한 칸에 기계가 여러 대 있을 수도 있습니다.",
     "`devices_len`은 `devices`의 세로 길이(행의 수)입니다.",
-    "`limit`는 0 이상 100 이하인 정수입니다."
+    "`low`와 `high`는 -100 이상 100 이하인 정수이며, `low`는 `high` 이하입니다."
    ],
    "returns": [
-    "온도 변화가 -limit 이상 limit 이하인 칸의 수를 return 합니다."
+    "온도 변화가 low 이상 high 이하인 칸의 수를 return 합니다."
    ],
    "funcName": "solution",
    "argNames": [
     "N",
     "devices",
-    "limit"
+    "low",
+    "high"
    ],
    "examples": [
     {
@@ -889,10 +889,11 @@
         1
        ]
       ],
-      2
+      -2,
+      1
      ],
-     "expected": 5,
-     "explain": "위의 설명과 같습니다. 온도 변화가 -2 이상 2 이하인 칸은 1번, 3번, 4번, 7번, 8번 칸이므로 5를 return 합니다."
+     "expected": 4,
+     "explain": "위의 설명과 같습니다. 온도 변화가 -2 이상 1 이하인 칸은 3번, 4번, 7번, 8번 칸이므로 4를 return 합니다."
     },
     {
      "args": [
@@ -909,10 +910,11 @@
         2
        ]
       ],
+      0,
       0
      ],
      "expected": 5,
-     "explain": "3번 칸의 난방기와 냉방기는 세기가 같아, 2번~4번 칸에서 오른 양과 내린 양이 똑같이 상쇄됩니다. 모든 칸의 온도 변화가 0이므로 limit가 0이어도 5칸 모두 알맞은 칸이라 5를 return 합니다."
+     "explain": "3번 칸의 난방기와 냉방기는 세기가 같아, 2번~4번 칸에서 오른 양과 내린 양이 똑같이 상쇄됩니다. 모든 칸의 온도 변화가 0이므로 5칸 모두 알맞은 칸이라 5를 return 합니다."
     },
     {
      "args": [
@@ -924,13 +926,14 @@
         2
        ]
       ],
-      3
+      -3,
+      5
      ],
      "expected": 2,
-     "explain": "1번 칸의 냉방기 때문에 온도 변화는 1번 칸부터 차례로 -5, -4, -3, -2입니다. -3 이상 3 이하인 칸은 3번과 4번 칸이므로 2를 return 합니다."
+     "explain": "1번 칸의 냉방기 때문에 온도 변화는 1번 칸부터 차례로 -5, -4, -3, -2입니다. -3 이상 5 이하인 칸은 3번과 4번 칸이므로 2를 return 합니다."
     }
    ],
-   "code": "#include <stdio.h>\n\nint solution(int N, int devices[][3], int devices_len, int limit) {\n    int change[101] = {0};\n    for (int d = 0; d < devices_len; d++) {\n        int pos = devices[d][0];\n        int power = devices[d][1];\n        int sign = 1;\n        if (⟦1⟧) {\n            sign = -1;\n        }\n        for (int i = pos, s = power; ⟦2⟧; i--, s--) {\n            change[i] += ⟦3⟧;\n        }\n        for (int i = ⟦4⟧, s = power - 1; i <= N && s > 0; i++, s--) {\n            change[i] += sign * s;\n        }\n    }\n    int count = 0;\n    for (int i = 1; i <= N; i++) {\n        if (⟦5⟧) {\n            count++;\n        }\n    }\n    return count;\n}",
+   "code": "#include <stdio.h>\n\nint solution(int N, int devices[][3], int devices_len, int low, int high) {\n    int change[101] = {0};\n    for (int d = 0; d < devices_len; d++) {\n        int pos = devices[d][0];\n        int power = devices[d][1];\n        int sign = 1;\n        if (⟦1⟧) {\n            sign = -1;\n        }\n        for (int i = pos, s = power; ⟦2⟧; i--, s--) {\n            change[i] += ⟦3⟧;\n        }\n        for (int i = ⟦4⟧, s = power - 1; i <= N && s > 0; i++, s--) {\n            change[i] += sign * s;\n        }\n    }\n    int count = 0;\n    for (int i = 1; i <= N; i++) {\n        if (⟦5⟧) {\n            count++;\n        }\n    }\n    return count;\n}",
    "blanks": [
     {
      "answer": "devices[d][2] == 2",
@@ -960,14 +963,14 @@
      ]
     },
     {
-     "answer": "change[i] >= -limit && change[i] <= limit",
+     "answer": "change[i] >= low && change[i] <= high",
      "alts": [
-      "-limit <= change[i] && change[i] <= limit",
-      "change[i] <= limit && change[i] >= -limit"
+      "low <= change[i] && change[i] <= high",
+      "change[i] <= high && change[i] >= low"
      ]
     }
    ],
-   "solution": "#include <stdio.h>\n\nint solution(int N, int devices[][3], int devices_len, int limit) {\n    int change[101] = {0};\n    for (int d = 0; d < devices_len; d++) {\n        int pos = devices[d][0];\n        int power = devices[d][1];\n        int sign = 1;\n        if (devices[d][2] == 2) {\n            sign = -1;\n        }\n        for (int i = pos, s = power; i >= 1 && s > 0; i--, s--) {\n            change[i] += sign * s;\n        }\n        for (int i = pos + 1, s = power - 1; i <= N && s > 0; i++, s--) {\n            change[i] += sign * s;\n        }\n    }\n    int count = 0;\n    for (int i = 1; i <= N; i++) {\n        if (change[i] >= -limit && change[i] <= limit) {\n            count++;\n        }\n    }\n    return count;\n}",
+   "solution": "#include <stdio.h>\n\nint solution(int N, int devices[][3], int devices_len, int low, int high) {\n    int change[101] = {0};\n    for (int d = 0; d < devices_len; d++) {\n        int pos = devices[d][0];\n        int power = devices[d][1];\n        int sign = 1;\n        if (devices[d][2] == 2) {\n            sign = -1;\n        }\n        for (int i = pos, s = power; i >= 1 && s > 0; i--, s--) {\n            change[i] += sign * s;\n        }\n        for (int i = pos + 1, s = power - 1; i <= N && s > 0; i++, s--) {\n            change[i] += sign * s;\n        }\n    }\n    int count = 0;\n    for (int i = 1; i <= N; i++) {\n        if (change[i] >= low && change[i] <= high) {\n            count++;\n        }\n    }\n    return count;\n}",
    "tests": [
     {
      "args": [
@@ -979,6 +982,7 @@
         1
        ]
       ],
+      0,
       0
      ],
      "expected": 0
@@ -998,6 +1002,7 @@
         2
        ]
       ],
+      0,
       0
      ],
      "expected": 1
@@ -1012,7 +1017,8 @@
         2
        ]
       ],
-      19
+      -19,
+      100
      ],
      "expected": 0
     },
@@ -1026,7 +1032,8 @@
         2
        ]
       ],
-      20
+      -20,
+      -20
      ],
      "expected": 1
     },
@@ -1040,6 +1047,7 @@
         2
        ]
       ],
+      0,
       0
      ],
      "expected": 61
@@ -1059,6 +1067,7 @@
         2
        ]
       ],
+      -100,
       100
      ],
      "expected": 100
@@ -1078,9 +1087,10 @@
         2
        ]
       ],
+      0,
       1
      ],
-     "expected": 6
+     "expected": 3
     },
     {
      "args": [
@@ -1102,9 +1112,10 @@
         2
        ]
       ],
-      2
+      1,
+      3
      ],
-     "expected": 7
+     "expected": 6
     },
     {
      "args": [
@@ -1121,9 +1132,10 @@
         1
        ]
       ],
-      1
+      -1,
+      4
      ],
-     "expected": 2
+     "expected": 4
     },
     {
      "args": [
@@ -1140,28 +1152,40 @@
         2
        ]
       ],
-      0
+      -1,
+      -1
      ],
-     "expected": 3
+     "expected": 2
     },
     {
      "args": [
-      3,
+      5,
       [
        [
-        2,
-        20,
+        3,
+        3,
         1
-       ],
+       ]
+      ],
+      1,
+      100
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      5,
+      [
        [
-        2,
-        20,
+        3,
+        3,
         2
        ]
       ],
-      0
+      1,
+      100
      ],
-     "expected": 3
+     "expected": 0
     },
     {
      "args": [
@@ -1418,9 +1442,10 @@
         1
        ]
       ],
-      10
+      -10,
+      5
      ],
-     "expected": 44
+     "expected": 37
     },
     {
      "args": [
@@ -1457,6 +1482,7 @@
         2
        ]
       ],
+      -1,
       3
      ],
      "expected": 0
@@ -1526,9 +1552,10 @@
         2
        ]
       ],
-      5
+      0,
+      10
      ],
-     "expected": 16
+     "expected": 7
     }
    ],
    "compare": "exact",
@@ -1537,20 +1564,20 @@
      "devices_len": "len(devices)"
     }
    },
-   "inputCheck": "def valid(N, devices, limit):\n    return (isinstance(N, int) and 1 <= N <= 100 and isinstance(devices, list) and 1 <= len(devices) <= 50\n            and all(isinstance(r, list) and len(r) == 3 and all(isinstance(x, int) for x in r)\n                    and 1 <= r[0] <= N and 1 <= r[1] <= 20 and r[2] in (1, 2) for r in devices)\n            and isinstance(limit, int) and 0 <= limit <= 100)",
+   "inputCheck": "def valid(N, devices, low, high):\n    return (isinstance(N, int) and 1 <= N <= 100 and isinstance(devices, list) and 1 <= len(devices) <= 50\n            and all(isinstance(r, list) and len(r) == 3 and all(isinstance(x, int) for x in r)\n                    and 1 <= r[0] <= N and 1 <= r[1] <= 20 and r[2] in (1, 2) for r in devices)\n            and isinstance(low, int) and isinstance(high, int) and -100 <= low <= high <= 100)",
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "limit가 2일 때, 온도 변화가 다음과 같은 칸 중 알맞은 칸이 아닌 것은?",
+     "q": "low가 -2, high가 1일 때, 온도 변화가 다음과 같은 칸 중 알맞은 칸이 아닌 것은?",
      "options": [
-      "-3",
+      "2",
+      "1",
       "-2",
-      "0",
-      "2"
+      "0"
      ],
      "answer": 0,
-     "explain": "-limit 이상 limit 이하는 -2 이상 2 이하예요. 끝값 -2와 2도 들어가고, -3은 -2보다 작아서 알맞은 칸이 아니에요. 온도가 너무 많이 오른 칸뿐 아니라 너무 많이 내려간 칸도 빼야 해요."
+     "explain": "low 이상 high 이하는 -2 이상 1 이하예요. 끝값 -2와 1도 들어가고, 2는 1보다 커서 알맞은 칸이 아니에요. 너무 많이 오른 칸과 너무 많이 내려간 칸을 모두 빼야 하고, 오르는 쪽과 내려가는 쪽의 기준은 서로 다를 수 있어요."
     },
     {
      "id": "s2",
@@ -1561,7 +1588,7 @@
       "2,2",
       "{2, 2}"
      ],
-     "check": "def sim2(N, devices):\n    change = [0] * (N + 1)\n    for p, w, t in devices:\n        sign = -1 if t == 2 else 1\n        i, s = p, w\n        while i >= 1 and s > 0:\n            change[i] += sign * s\n            i -= 1\n            s -= 1\n        i, s = p + 1, w - 1\n        while i <= N and s > 0:\n            change[i] += sign * s\n            i += 1\n            s -= 1\n    return change\n\n\ndef sol2(N, devices, limit):\n    c = sim2(N, devices)\n    return sum(1 for i in range(1, N + 1) if c[i] >= -limit and c[i] <= limit)\n\n\ndef answers():\n    c = sim2(5, [[3, 3, 1], [3, 1, 2]])\n    return [str(c[3]) + \", \" + str(c[4])]",
+     "check": "def sim2(N, devices):\n    change = [0] * (N + 1)\n    for p, w, t in devices:\n        sign = -1 if t == 2 else 1\n        i, s = p, w\n        while i >= 1 and s > 0:\n            change[i] += sign * s\n            i -= 1\n            s -= 1\n        i, s = p + 1, w - 1\n        while i <= N and s > 0:\n            change[i] += sign * s\n            i += 1\n            s -= 1\n    return change\n\n\ndef sol2(N, devices, low, high):\n    c = sim2(N, devices)\n    return sum(1 for i in range(1, N + 1) if c[i] >= low and c[i] <= high)\n\n\ndef answers():\n    c = sim2(5, [[3, 3, 1], [3, 1, 2]])\n    return [str(c[3]) + \", \" + str(c[4])]",
      "explain": "3번 칸은 난방기로 3 오르고 냉방기로 1 내려가 3 - 1 = 2예요. 4번 칸은 난방기 영향이 3 - 1 = 2만큼 닿지만, 냉방기는 세기가 1이라 3번 칸에서 멈춰 4번 칸까지 오지 않아요. 그래서 둘 다 2예요."
     },
     {
@@ -1633,7 +1660,7 @@
      "id": "s5",
      "kind": "table",
      "title": "예시 1의 칸별 온도 변화",
-     "prompt": "limit = 2예요. 3번~7번 칸에 대해 6번 칸 냉방기가 주는 변화(내려가면 음수), 모든 기계의 합 change[i], 알맞은 칸인지(맞으면 1, 아니면 0)를 채워 보세요. 두 난방기가 주는 변화는 합쳐서 적혀 있어요.",
+     "prompt": "low = -2, high = 1이에요. 3번~7번 칸에 대해 6번 칸 냉방기가 주는 변화(내려가면 음수), 모든 기계의 합 change[i], 알맞은 칸인지(맞으면 1, 아니면 0)를 채워 보세요. 두 난방기가 주는 변화는 합쳐서 적혀 있어요.",
      "columns": [
       "칸 i",
       "난방기 두 대",
@@ -1728,22 +1755,22 @@
        }
       ]
      ],
-     "check": "def sim2(N, devices):\n    change = [0] * (N + 1)\n    for p, w, t in devices:\n        sign = -1 if t == 2 else 1\n        i, s = p, w\n        while i >= 1 and s > 0:\n            change[i] += sign * s\n            i -= 1\n            s -= 1\n        i, s = p + 1, w - 1\n        while i <= N and s > 0:\n            change[i] += sign * s\n            i += 1\n            s -= 1\n    return change\n\n\ndef sol2(N, devices, limit):\n    c = sim2(N, devices)\n    return sum(1 for i in range(1, N + 1) if c[i] >= -limit and c[i] <= limit)\n\n\ndef answers():\n    cool = sim2(8, [[6, 4, 2]])\n    allc = sim2(8, [[2, 3, 1], [6, 4, 2], [7, 1, 1]])\n    out = []\n    for i in range(3, 8):\n        out += [cool[i], allc[i], int(-2 <= allc[i] <= 2)]\n    return out",
-     "explain": "냉방기 영향은 음수로 더해져서 4번 칸은 1 + (-2) = -1, 7번 칸은 1 + (-3) = -2가 돼요. -2는 -limit와 같아 알맞은 칸이지만 -3, -4는 아니에요."
+     "check": "def sim2(N, devices):\n    change = [0] * (N + 1)\n    for p, w, t in devices:\n        sign = -1 if t == 2 else 1\n        i, s = p, w\n        while i >= 1 and s > 0:\n            change[i] += sign * s\n            i -= 1\n            s -= 1\n        i, s = p + 1, w - 1\n        while i <= N and s > 0:\n            change[i] += sign * s\n            i += 1\n            s -= 1\n    return change\n\n\ndef sol2(N, devices, low, high):\n    c = sim2(N, devices)\n    return sum(1 for i in range(1, N + 1) if c[i] >= low and c[i] <= high)\n\n\ndef answers():\n    cool = sim2(8, [[6, 4, 2]])\n    allc = sim2(8, [[2, 3, 1], [6, 4, 2], [7, 1, 1]])\n    out = []\n    for i in range(3, 8):\n        out += [cool[i], allc[i], int(-2 <= allc[i] <= 1)]\n    return out",
+     "explain": "냉방기 영향은 음수로 더해져서 4번 칸은 1 + (-2) = -1, 7번 칸은 1 + (-3) = -2가 돼요. -2는 low와 같아 알맞은 칸이지만 -3, -4는 low보다 작아 아니에요."
     },
     {
      "id": "s6",
      "kind": "short",
      "code": "start",
-     "q": "마지막 for 문의 if 조건에 change[i] <= limit 하나만 쓰면, 예시 1(limit = 2)에서 return 값은 얼마일까요?",
-     "a": "7",
-     "check": "def sim2(N, devices):\n    change = [0] * (N + 1)\n    for p, w, t in devices:\n        sign = -1 if t == 2 else 1\n        i, s = p, w\n        while i >= 1 and s > 0:\n            change[i] += sign * s\n            i -= 1\n            s -= 1\n        i, s = p + 1, w - 1\n        while i <= N and s > 0:\n            change[i] += sign * s\n            i += 1\n            s -= 1\n    return change\n\n\ndef sol2(N, devices, limit):\n    c = sim2(N, devices)\n    return sum(1 for i in range(1, N + 1) if c[i] >= -limit and c[i] <= limit)\n\n\ndef answers():\n    c = sim2(8, [[2, 3, 1], [6, 4, 2], [7, 1, 1]])\n    return [sum(1 for i in range(1, 9) if c[i] <= 2)]",
-     "explain": "change[i] <= 2만 확인하면 3만큼 오른 2번 칸만 빠지고, 많이 내려간 5번(-3)·6번(-4) 칸까지 세어 7이 돼요. 너무 많이 내려간 칸을 빼려면 change[i] >= -limit도 함께 참이어야 해요."
+     "q": "마지막 for 문의 if 조건에 change[i] <= high 하나만 쓰면, 예시 1(low = -2, high = 1)에서 return 값은 얼마일까요?",
+     "a": "6",
+     "check": "def sim2(N, devices):\n    change = [0] * (N + 1)\n    for p, w, t in devices:\n        sign = -1 if t == 2 else 1\n        i, s = p, w\n        while i >= 1 and s > 0:\n            change[i] += sign * s\n            i -= 1\n            s -= 1\n        i, s = p + 1, w - 1\n        while i <= N and s > 0:\n            change[i] += sign * s\n            i += 1\n            s -= 1\n    return change\n\n\ndef sol2(N, devices, low, high):\n    c = sim2(N, devices)\n    return sum(1 for i in range(1, N + 1) if c[i] >= low and c[i] <= high)\n\n\ndef answers():\n    c = sim2(8, [[2, 3, 1], [6, 4, 2], [7, 1, 1]])\n    return [sum(1 for i in range(1, 9) if c[i] <= 1)]",
+     "explain": "change[i] <= 1만 확인하면 많이 오른 1번(2)·2번(3) 칸만 빠지고, 많이 내려간 5번(-3)·6번(-4) 칸까지 세어 6이 돼요. 너무 많이 내려간 칸을 빼려면 change[i] >= low도 함께 참이어야 해요."
     },
     {
      "id": "s7",
      "kind": "mcq",
-     "q": "C에서는 비교를 이어 쓰면 수학과 다르게 계산돼요. x = -5일 때 -2 <= x <= 2의 값은 무엇일까요?",
+     "q": "C에서는 비교를 이어 쓰면 수학과 다르게 계산돼요. x = -5일 때 -2 <= x <= 1의 값은 무엇일까요?",
      "options": [
       "1(참)",
       "0(거짓)",
@@ -1751,10 +1778,10 @@
       "컴파일 오류"
      ],
      "answer": 0,
-     "explain": "C는 왼쪽부터 (-2 <= x)를 먼저 계산해 0(거짓)을 얻고, 이어서 0 <= 2를 계산해 1(참)이 돼요. 그래서 범위 검사는 두 비교를 &&로 이어 'x >= -2 이고 x <= 2'처럼 따로 써야 해요."
+     "explain": "C는 왼쪽부터 (-2 <= x)를 먼저 계산해 0(거짓)을 얻고, 이어서 0 <= 1을 계산해 1(참)이 돼요. 그래서 범위 검사는 두 비교를 &&로 이어 'x >= -2 이고 x <= 1'처럼 따로 써야 해요."
     }
    ],
-   "explain": "종류가 2(냉방기)이면 sign을 -1로 바꾸고, 닿는 칸마다 sign * s를 더하면 난방기와 냉방기를 같은 for 문으로 처리할 수 있어요. 칸 번호가 1번부터라 왼쪽 끝 조건은 i >= 1이고, 오른쪽은 pos + 1에서 시작해요. 알맞은 칸은 change[i] >= -limit && change[i] <= limit처럼 두 비교를 &&로 묶어 세요(-limit <= change[i] <= limit라고 쓰면 C에서는 잘못 계산돼요)."
+   "explain": "종류가 2(냉방기)이면 sign을 -1로 바꾸고, 닿는 칸마다 sign * s를 더하면 난방기와 냉방기를 같은 for 문으로 처리할 수 있어요. 칸 번호가 1번부터라 왼쪽 끝 조건은 i >= 1이고, 오른쪽은 pos + 1에서 시작해요. 알맞은 칸은 change[i] >= low && change[i] <= high처럼 두 비교를 &&로 묶어 세요(low <= change[i] <= high라고 쓰면 C에서는 잘못 계산돼요)."
   },
   {
    "id": "cb-t04-adv3",
@@ -2602,7 +2629,7 @@
       "6번"
      ],
      "check": "def answers():\n    start, L = 4, 3\n    return [list(range(start, start + L))[-1]]",
-     "explain": "4번, 5번, 6번 칸을 더하니 마지막은 6번 = start + L - 1이에요. 그래서 i는 start부터 시작해 start + L보다 작은 동안 반복해요. 이 마지막 칸이 N - 1을 넘지 않아야 하니 start는 N - L까지만 가요."
+     "explain": "4번, 5번, 6번 칸을 더하니 마지막은 6번, 곧 start + L - 1번이에요. mat_noise의 반복 조건은 i가 이 마지막 칸 번호를 넘지 않는 동안 참이 되게 써요. 이 마지막 칸이 N - 1번을 넘으면 안 되니, solution에서 start가 어디까지 갈 수 있는지도 같은 방법으로 정해요."
     },
     {
      "id": "s7",
@@ -5499,7 +5526,7 @@
       "base의 모든 칸을 0으로 만든다"
      ],
      "answer": 0,
-     "explain": "temp는 '기존 바람만 있는 상태'에서 출발해야 해요. 0으로 만들면 기존 냉풍기 바람이 빠지고, 그대로 쓰면 앞 후보에서 더한 새 바람이 쌓여 뒤쪽 칸일수록 시원한 칸이 많게 세어져요. 그래서 후보마다 반복문으로 temp[i]에 base[i]를 다시 넣어요."
+     "explain": "temp는 '기존 바람만 있는 상태'에서 출발해야 해요. 0으로 만들면 기존 냉풍기 바람이 빠지고, 그대로 쓰면 앞 후보에서 더한 새 바람이 쌓여 뒤쪽 칸일수록 시원한 칸이 많게 세어져요. 그래서 후보마다 반복문으로 temp의 모든 칸을 base와 같게 다시 맞춘 뒤 새 바람을 더해요."
     },
     {
      "id": "s7",

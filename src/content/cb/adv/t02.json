@@ -1,0 +1,5161 @@
+{
+ "course": "cb",
+ "type": 2,
+ "typeTitle": "행·열·대각선 합 비교",
+ "kind": "blank",
+ "lang": "c",
+ "skills": [
+  "2차원 배열(int**)",
+  "이중 for 반복",
+  "행·열 합(arr[i][j]·arr[j][i])",
+  "대각선 인덱스",
+  "최댓값의 위치와 동점 규칙",
+  "직사각형 배열의 행·열 길이",
+  "&& 복합 조건",
+  "겹치는 칸 한 번만 세기",
+  "보조 함수",
+  "배열 return(malloc)",
+  "건너뛰기(continue)와 결과 없음(-1)",
+  "대각선 번호(i - j, i + j)"
+ ],
+ "intro": "기본 문제보다 지켜야 할 규칙이 많아져요. 합이 같을 때 번호가 작은 줄 고르기, 행과 열의 길이가 다른 판, 겹치는 칸을 한 번만 세기, 아직 하지 않은 경기(-1)와 결과가 없을 때의 처리까지 다루고, 마지막에는 가로·세로·두 방향 대각선의 합을 모두 모아 가장 좋은 칸을 찾아요.",
+ "problems": [
+  {
+   "id": "cb-t02-adv1",
+   "version": 1,
+   "title": "열람실에서 가장 붐비는 줄",
+   "statement": "도서관 열람실에 좌석이 N x N 모양으로 놓여 있습니다. 하루 동안 각 좌석을 이용한 횟수가 2차원 배열 `seats`에 담겨 있으며, `seats[i][j]`는 i행 j열 좌석의 이용 횟수입니다(행과 열 번호는 0부터 셉니다).\n\n가로줄(행) N개 가운데 이용 횟수의 합이 가장 큰 행의 번호와, 세로줄(열) N개 가운데 이용 횟수의 합이 가장 큰 열의 번호를 구하려 합니다. 합이 가장 큰 행이 여러 개이면 그 가운데 번호가 가장 작은 행을 고릅니다. 열도 마찬가지로, 합이 가장 큰 열이 여러 개이면 번호가 가장 작은 열을 고릅니다.\n\n예를 들어 `seats`가 `{{3, 8, 12, 5}, {10, 7, 15, 9}, {6, 2, 11, 4}, {9, 12, 14, 6}}`인 4 x 4 열람실이면 줄마다 합은 아래 그림과 같습니다.\n\n{{fig:f1}}\n\n행의 합 가운데 가장 큰 41은 1행과 3행에서 나오므로 번호가 작은 1행을 고릅니다. 열의 합 가운데 가장 큰 값은 2열의 합 52입니다. 따라서 `{1, 2}`를 return 합니다.\n\n열람실 좌석의 이용 횟수가 주어질 때, [합이 가장 큰 행의 번호, 합이 가장 큰 열의 번호]를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "`seats`는 N행 N열 정수 2차원 배열이며, N은 3 이상 6 이하입니다.",
+    "`seats`의 원소는 0 이상 30 이하인 정수입니다.",
+    "`seats_row_len`과 `seats_col_len`에는 `seats`의 행 수와 열 수(둘 다 N)가 들어옵니다."
+   ],
+   "returns": [
+    "[합이 가장 큰 행의 번호, 합이 가장 큰 열의 번호]를 길이 2인 배열로 return 합니다. 합이 같은 줄이 여러 개이면 번호가 작은 줄을 고릅니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "seats"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        3,
+        8,
+        12,
+        5
+       ],
+       [
+        10,
+        7,
+        15,
+        9
+       ],
+       [
+        6,
+        2,
+        11,
+        4
+       ],
+       [
+        9,
+        12,
+        14,
+        6
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2
+     ],
+     "explain": "행의 합은 28, 41, 23, 41이고 가장 큰 41이 1행과 3행에 있어 1행을 고릅니다. 열의 합은 28, 29, 52, 24로 2열이 가장 큽니다."
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        1,
+        0,
+        6,
+        2
+       ],
+       [
+        7,
+        3,
+        4,
+        2,
+        1
+       ],
+       [
+        0,
+        9,
+        2,
+        8,
+        3
+       ],
+       [
+        6,
+        0,
+        5,
+        7,
+        4
+       ],
+       [
+        9,
+        6,
+        3,
+        4,
+        8
+       ]
+      ]
+     ],
+     "expected": [
+      4,
+      0
+     ],
+     "explain": "행의 합은 14, 17, 22, 22, 30으로 4행이 가장 큽니다. 열의 합은 27, 19, 14, 27, 18이고 가장 큰 27이 0열과 3열에 있어 0열을 고릅니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint* solution(int** seats, int seats_row_len, int seats_col_len) {\n    int n = seats_row_len;\n    int* answer = (int*)malloc(sizeof(int) * 2);\n    int maxRow = -1, maxCol = -1;\n\n    for (int i = 0; i < n; i++) {\n        int row = 0, col = 0;\n        for (int j = 0; j < n; j++) {\n            row += ⟦1⟧;\n            col += ⟦2⟧;\n        }\n        if (⟦3⟧) {\n            maxRow = row;\n            answer[0] = i;\n        }\n        if (⟦4⟧) {\n            maxCol = col;\n            answer[1] = i;\n        }\n    }\n\n    return answer;\n}",
+   "blanks": [
+    {
+     "answer": "seats[i][j]"
+    },
+    {
+     "answer": "seats[j][i]"
+    },
+    {
+     "answer": "row > maxRow",
+     "alts": [
+      "maxRow < row"
+     ]
+    },
+    {
+     "answer": "col > maxCol",
+     "alts": [
+      "maxCol < col"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n#include <stdlib.h>\n\nint* solution(int** seats, int seats_row_len, int seats_col_len) {\n    int n = seats_row_len;\n    int* answer = (int*)malloc(sizeof(int) * 2);\n    int maxRow = -1, maxCol = -1;\n\n    for (int i = 0; i < n; i++) {\n        int row = 0, col = 0;\n        for (int j = 0; j < n; j++) {\n            row += seats[i][j];\n            col += seats[j][i];\n        }\n        if (row > maxRow) {\n            maxRow = row;\n            answer[0] = i;\n        }\n        if (col > maxCol) {\n            maxCol = col;\n            answer[1] = i;\n        }\n    }\n\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+       ],
+       [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+       ],
+       [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+       ],
+       [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+       ],
+       [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+       ],
+       [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        30
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        1,
+        1,
+        2,
+        1
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        2,
+        1,
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        30,
+        0,
+        0
+       ],
+       [
+        0,
+        30,
+        0
+       ],
+       [
+        0,
+        0,
+        30
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        7,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        7,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        7,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        14,
+        9,
+        9,
+        9,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      4,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        3,
+        3,
+        3,
+        3,
+        20
+       ],
+       [
+        3,
+        3,
+        3,
+        3,
+        3,
+        20
+       ],
+       [
+        10,
+        10,
+        10,
+        10,
+        10,
+        20
+       ],
+       [
+        3,
+        3,
+        3,
+        3,
+        3,
+        20
+       ],
+       [
+        3,
+        3,
+        3,
+        3,
+        3,
+        20
+       ],
+       [
+        10,
+        10,
+        10,
+        10,
+        10,
+        20
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        4,
+        4,
+        4,
+        4
+       ],
+       [
+        4,
+        4,
+        4,
+        4,
+        4
+       ],
+       [
+        4,
+        4,
+        30,
+        4,
+        4
+       ],
+       [
+        4,
+        4,
+        4,
+        4,
+        4
+       ],
+       [
+        4,
+        4,
+        4,
+        4,
+        4
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        5
+       ],
+       [
+        0,
+        5,
+        0
+       ],
+       [
+        5,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3
+       ],
+       [
+        3,
+        2,
+        1
+       ],
+       [
+        2,
+        3,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        26,
+        12,
+        27,
+        20
+       ],
+       [
+        17,
+        8,
+        7,
+        28
+       ],
+       [
+        20,
+        1,
+        14,
+        15
+       ],
+       [
+        18,
+        2,
+        10,
+        8
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        15,
+        2,
+        29,
+        28
+       ],
+       [
+        5,
+        5,
+        26,
+        1,
+        23
+       ],
+       [
+        3,
+        21,
+        22,
+        17,
+        9
+       ],
+       [
+        1,
+        17,
+        26,
+        21,
+        14
+       ],
+       [
+        3,
+        6,
+        19,
+        29,
+        20
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        14,
+        20,
+        30,
+        26,
+        30,
+        8
+       ],
+       [
+        16,
+        10,
+        21,
+        11,
+        25,
+        12
+       ],
+       [
+        22,
+        3,
+        7,
+        7,
+        14,
+        14
+       ],
+       [
+        15,
+        3,
+        20,
+        17,
+        7,
+        14
+       ],
+       [
+        15,
+        9,
+        28,
+        4,
+        8,
+        0
+       ],
+       [
+        0,
+        17,
+        24,
+        28,
+        7,
+        6
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        3
+       ],
+       [
+        3,
+        4,
+        5
+       ],
+       [
+        2,
+        5,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        1,
+        1
+       ],
+       [
+        0,
+        2,
+        0,
+        1
+       ],
+       [
+        1,
+        3,
+        3,
+        0
+       ],
+       [
+        1,
+        2,
+        3,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      1
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(seats):\n    if not isinstance(seats, list) or not (3 <= len(seats) <= 6):\n        return False\n    n = len(seats)\n    for row in seats:\n        if not isinstance(row, list) or len(row) != n:\n            return False\n        for v in row:\n            if not isinstance(v, int) or isinstance(v, bool) or not (0 <= v <= 30):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1에서 solution이 `{1, 2}`를 return 하는 것은 무슨 뜻일까요?",
+     "options": [
+      "가로줄 가운데 1행이, 세로줄 가운데 2열이 이용 횟수의 합이 가장 크다",
+      "1행 2열 좌석 하나의 이용 횟수가 가장 많다",
+      "가장 큰 행의 합이 1이고, 가장 큰 열의 합이 2이다",
+      "합이 가장 큰 줄이 1개, 두 번째로 큰 줄이 2개이다"
+     ],
+     "answer": 0,
+     "explain": "return 값은 칸이 2개인 배열이에요. 앞 칸 answer[0]에는 행 번호, 뒤 칸 answer[1]에는 열 번호를 담아요. C에서 배열을 return 하려면 `(int*)malloc(sizeof(int) * 2)`처럼 malloc으로 메모리를 빌려 int 2칸짜리 배열을 만들어요. 합 자체가 아니라 몇 번 줄인지를 돌려준다는 점에 주의해요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "어떤 4 x 4 열람실에서 행의 합이 0행부터 차례로 30, 45, 45, 12예요. 고르는 행 번호는 무엇일까요?",
+     "a": "1",
+     "alts": [
+      "1행"
+     ],
+     "check": "def answers():\n    sums = [30, 45, 45, 12]\n    best = -1\n    idx = -1\n    for i in range(4):\n        if sums[i] > best:\n            best = sums[i]\n            idx = i\n    return [idx]",
+     "explain": "가장 큰 합 45가 1행과 2행에 함께 있어요. 합이 같으면 번호가 작은 줄을 고르니 1행이에요."
+    },
+    {
+     "id": "s3",
+     "code": "start",
+     "kind": "mcq",
+     "q": "코드에서 maxRow와 answer[0]이 맡는 일로 알맞은 것은 무엇일까요?",
+     "options": [
+      "maxRow: 지금까지 본 행의 합 가운데 가장 큰 값 / answer[0]: 그 합이 나온 행의 번호",
+      "maxRow: 합이 가장 큰 행의 번호 / answer[0]: 그 행의 합",
+      "maxRow: 지금 보고 있는 행의 합 / answer[0]: 행의 수",
+      "maxRow: 모든 행의 합을 더한 값 / answer[0]: 가장 큰 칸의 값"
+     ],
+     "answer": 0,
+     "explain": "maxRow에는 지금까지 본 행의 합 가운데 가장 큰 값을, answer[0]에는 그 합이 나온 행 번호를 담아요. 더 큰 합을 찾을 때마다 두 값을 함께 바꿔야 해요. 열은 maxCol과 answer[1]로 똑같이 해요."
+    },
+    {
+     "id": "s4",
+     "code": "start",
+     "kind": "table",
+     "title": "예시 1 행 따라가기",
+     "prompt": "바깥 반복 i마다 i행의 합 row를 구한 뒤 `row > maxRow`를 비교해요. 비교 결과(참이면 1, 거짓이면 0)와, 비교가 끝난 뒤의 maxRow·answer[0]을 채워 보세요. 처음 maxRow는 -1이에요.",
+     "columns": [
+      "i",
+      "row",
+      "row > maxRow",
+      "maxRow",
+      "answer[0]"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "28"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "28"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "41"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "41"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "23"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "41"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "41"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "41"
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "def _unused(seats):\n    n = len(seats)\n    answer = [0, 0]\n    maxRow = maxCol = -1\n    for i in range(n):\n        row = col = 0\n        for j in range(n):\n            row += seats[i][j]\n            col += seats[j][i]\n        if row > maxRow:\n            maxRow = row\n            answer[0] = i\n        if col > maxCol:\n            maxCol = col\n            answer[1] = i\n    return answer\ndef answers():\n    m = [[3, 8, 12, 5], [10, 7, 15, 9], [6, 2, 11, 4], [9, 12, 14, 6]]\n    out = []\n    maxRow = -1\n    a0 = None\n    for i in range(len(m)):\n        row = 0\n        for j in range(len(m)):\n            row += m[i][j]\n        c = row > maxRow\n        if c:\n            maxRow = row\n            a0 = i\n        out += [row, int(c), maxRow, a0]\n    return out",
+     "explain": "1행에서 maxRow가 41이 된 뒤, 3행의 합도 41이지만 `41 > 41`은 거짓이라 answer[0]은 1 그대로예요. 처음 maxRow가 -1이라 0행은 합이 얼마든(0이어도) 한 번은 꼭 들어가요."
+    },
+    {
+     "id": "s5",
+     "code": "start",
+     "kind": "table",
+     "title": "예시 1 열 따라가기",
+     "prompt": "같은 반복에서 i열의 합 col도 구해요. i마다 col과, 비교가 끝난 뒤의 maxCol·answer[1]을 채워 보세요. 처음 maxCol은 -1이에요.",
+     "columns": [
+      "i",
+      "col (i열의 합)",
+      "maxCol",
+      "answer[1]"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "28"
+       },
+       {
+        "a": "28"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "29"
+       },
+       {
+        "a": "29"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "52"
+       },
+       {
+        "a": "52"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "24"
+       },
+       {
+        "a": "52"
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def answers():\n    m = [[3, 8, 12, 5], [10, 7, 15, 9], [6, 2, 11, 4], [9, 12, 14, 6]]\n    out = []\n    maxCol = -1\n    a1 = None\n    for i in range(len(m)):\n        col = 0\n        for j in range(len(m)):\n            col += m[j][i]\n        if col > maxCol:\n            maxCol = col\n            a1 = i\n        out += [col, maxCol, a1]\n    return out",
+     "explain": "i열의 합은 `seats[0][i]`부터 `seats[3][i]`까지 행 번호를 바꿔 가며 더해요. 2열의 합 52가 가장 커서 answer[1]은 2가 돼요."
+    },
+    {
+     "id": "s6",
+     "code": "start",
+     "kind": "mcq",
+     "q": "합이 같은 행이 나중에 또 나와도 먼저 찾은(번호가 작은) 행을 그대로 두려면, maxRow와 answer[0]을 바꾸는 조건을 어떻게 써야 할까요?",
+     "options": [
+      "row > maxRow",
+      "row >= maxRow",
+      "row == maxRow",
+      "row < maxRow"
+     ],
+     "answer": 0,
+     "explain": "`row > maxRow`는 더 클 때만 참이라, 합이 같은 줄이 나중에 나와도 먼저 찾은 줄이 남아요. `row >= maxRow`를 쓰면 예시 1에서 3행의 41로 바뀌어 `{3, 2}`가 나와요. 열을 비교하는 조건도 같은 까닭으로 `>`를 써요."
+    }
+   ],
+   "explain": "같은 바깥 반복 안에서 `seats[i][j]`로 i행을, 행과 열 번호를 바꾼 `seats[j][i]`로 i열을 함께 더해요. 가장 큰 합과 함께 그 줄의 번호도 기억해야 하고, `>`(초과)로 비교해야 합이 같은 줄이 나중에 나와도 번호가 작은 줄이 남아요. `>=`를 쓰면 나중에 나온 줄로 바뀌어 틀려요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "grid",
+     "alt": "4행 4열 격자(행·열 번호 0부터). 0행: 3, 8, 12, 5. 1행: 10, 7, 15, 9. 2행: 6, 2, 11, 4. 3행: 9, 12, 14, 6. 오른쪽 끝 열(행의 합): 0행 28, 1행 41, 2행 23, 3행 41. 맨 아래 줄(열의 합): 0열 28, 1열 29, 2열 52, 3열 24. 가장 큰 행의 합 41(1행과 3행)과 가장 큰 열의 합 52(2열)이 강조되어 있음.",
+     "caption": "오른쪽 끝 칸은 그 가로줄(행)의 합, 맨 아래 칸은 그 세로줄(열)의 합입니다. 강조한 칸이 행의 합과 열의 합 가운데 가장 큰 값입니다.",
+     "rows": [
+      [
+       3,
+       8,
+       12,
+       5,
+       28
+      ],
+      [
+       10,
+       7,
+       15,
+       9,
+       41
+      ],
+      [
+       6,
+       2,
+       11,
+       4,
+       23
+      ],
+      [
+       9,
+       12,
+       14,
+       6,
+       41
+      ],
+      [
+       28,
+       29,
+       52,
+       24,
+       ""
+      ]
+     ],
+     "rowLabels": [
+      "0행",
+      "1행",
+      "2행",
+      "3행",
+      "열의 합 ↓"
+     ],
+     "colLabels": [
+      "0열",
+      "1열",
+      "2열",
+      "3열",
+      "행의 합 →"
+     ],
+     "highlight": [
+      [
+       1,
+       4
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       4,
+       2
+      ]
+     ]
+    }
+   ],
+   "cspec": {
+    "derived": {
+     "seats_row_len": "len(seats)",
+     "seats_col_len": "len(seats[0])"
+    },
+    "ret": {
+     "len": "2"
+    }
+   }
+  },
+  {
+   "id": "cb-t02-adv2",
+   "version": 1,
+   "title": "태양광 패널 정상 줄 세기",
+   "statement": "태양광 발전소에 패널이 R행 C열로 놓여 있습니다. 하루 동안 각 패널이 만든 전기의 양(발전량)이 2차원 배열 `panel`에 담겨 있으며, `panel[i][j]`는 i행 j열 패널의 발전량입니다(행과 열 번호는 0부터 셉니다). 발전량이 0인 패널은 고장 난 패널입니다. 행의 수 R과 열의 수 C는 다를 수 있습니다.\n\n가로줄(행) R개와 세로줄(열) C개 가운데 다음 두 조건을 **모두** 만족하는 줄을 **정상 줄**이라고 합니다.\n- 그 줄에 있는 패널의 발전량 합이 `target` 이상입니다.\n- 그 줄에 고장 난 패널이 하나도 없습니다.\n\n예를 들어 `panel`이 `{{4, 6, 2, 3}, {7, 0, 8, 6}, {5, 5, 3, 9}}`(3행 4열)이고 `target`이 15이면 줄마다 합은 아래 그림과 같습니다.\n\n{{fig:f1}}\n\n0행(합 15)과 2행(합 22), 0열(합 16)과 3열(합 18)이 정상 줄입니다. 1행과 1열에는 고장 난 패널(1행 1열)이 있어 정상 줄이 아니고, 2열은 합 13이 15보다 작아 정상 줄이 아닙니다. 따라서 4를 return 합니다.\n\n패널의 발전량 `panel`과 기준값 `target`이 주어질 때, 정상 줄의 수를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "`panel`은 R행 C열 정수 2차원 배열이며, R과 C는 각각 2 이상 6 이하입니다(R과 C는 다를 수 있습니다).",
+    "`panel`의 원소는 0 이상 20 이하인 정수이며, 0은 고장 난 패널입니다.",
+    "`target`은 1 이상 100 이하인 정수입니다.",
+    "`panel_row_len`에는 행의 수 R, `panel_col_len`에는 열의 수 C가 들어옵니다."
+   ],
+   "returns": [
+    "정상 줄(가로줄과 세로줄을 모두 합해)의 수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "panel",
+    "target"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        4,
+        6,
+        2,
+        3
+       ],
+       [
+        7,
+        0,
+        8,
+        6
+       ],
+       [
+        5,
+        5,
+        3,
+        9
+       ]
+      ],
+      15
+     ],
+     "expected": 4,
+     "explain": "0행, 2행, 0열, 3열이 정상 줄입니다. 1행과 1열에는 고장 난 패널이 있고, 2열은 합이 13으로 15보다 작습니다."
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        9
+       ],
+       [
+        0,
+        5
+       ],
+       [
+        6,
+        6
+       ],
+       [
+        3,
+        1
+       ],
+       [
+        8,
+        4
+       ]
+      ],
+      12
+     ],
+     "expected": 3,
+     "explain": "5행 2열 판입니다. 행의 합은 11, 5, 12, 4, 12이고 1행에는 고장 난 패널이 있어 2행과 4행만 정상 줄입니다. 열의 합은 19, 25인데 0열에는 고장 난 패널이 있어 1열만 정상 줄입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint solution(int** panel, int panel_row_len, int panel_col_len, int target) {\n    int rows = panel_row_len, cols = panel_col_len;\n    int colSum[6] = {0}, colBroken[6] = {0};\n    int count = 0;\n\n    for (int i = 0; i < rows; i++) {\n        int sum = 0, broken = 0;\n        for (int j = 0; j < ⟦1⟧; j++) {\n            sum += panel[i][j];\n            colSum[⟦2⟧] += panel[i][j];\n            if (panel[i][j] == 0) {\n                broken++;\n                ⟦3⟧;\n            }\n        }\n        if (⟦4⟧) count++;\n    }\n\n    for (int j = 0; j < cols; j++) {\n        if (⟦5⟧) count++;\n    }\n\n    return count;\n}",
+   "blanks": [
+    {
+     "answer": "cols",
+     "alts": [
+      "panel_col_len"
+     ]
+    },
+    {
+     "answer": "j"
+    },
+    {
+     "answer": "colBroken[j]++",
+     "alts": [
+      "colBroken[j] += 1",
+      "colBroken[j] = colBroken[j] + 1",
+      "++colBroken[j]"
+     ]
+    },
+    {
+     "answer": "sum >= target && broken == 0",
+     "alts": [
+      "broken == 0 && sum >= target",
+      "sum >= target && !broken",
+      "sum >= target && broken < 1"
+     ]
+    },
+    {
+     "answer": "colSum[j] >= target && colBroken[j] == 0",
+     "alts": [
+      "colBroken[j] == 0 && colSum[j] >= target",
+      "colSum[j] >= target && !colBroken[j]"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n#include <stdlib.h>\n\nint solution(int** panel, int panel_row_len, int panel_col_len, int target) {\n    int rows = panel_row_len, cols = panel_col_len;\n    int colSum[6] = {0}, colBroken[6] = {0};\n    int count = 0;\n\n    for (int i = 0; i < rows; i++) {\n        int sum = 0, broken = 0;\n        for (int j = 0; j < cols; j++) {\n            sum += panel[i][j];\n            colSum[j] += panel[i][j];\n            if (panel[i][j] == 0) {\n                broken++;\n                colBroken[j]++;\n            }\n        }\n        if (sum >= target && broken == 0) count++;\n    }\n\n    for (int j = 0; j < cols; j++) {\n        if (colSum[j] >= target && colBroken[j] == 0) count++;\n    }\n\n    return count;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        20,
+        20
+       ],
+       [
+        20,
+        20
+       ]
+      ],
+      1
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ]
+      ],
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ]
+      ],
+      100
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      [
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        20,
+        20,
+        20,
+        20,
+        20,
+        0
+       ]
+      ],
+      100
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ]
+      ],
+      2
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1
+       ],
+       [
+        1,
+        1
+       ],
+       [
+        1,
+        1
+       ],
+       [
+        1,
+        1
+       ],
+       [
+        1,
+        1
+       ],
+       [
+        1,
+        1
+       ]
+      ],
+      6
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        5,
+        5
+       ],
+       [
+        5,
+        5,
+        5
+       ],
+       [
+        5,
+        5,
+        5
+       ]
+      ],
+      15
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        8,
+        0
+       ],
+       [
+        9,
+        6,
+        5
+       ]
+      ],
+      15
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        4
+       ],
+       [
+        4,
+        3
+       ],
+       [
+        5,
+        2
+       ],
+       [
+        1,
+        6
+       ],
+       [
+        2,
+        5
+       ]
+      ],
+      7
+     ],
+     "expected": 7
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        2,
+        0,
+        12,
+        17
+       ],
+       [
+        3,
+        3,
+        18,
+        19,
+        8
+       ],
+       [
+        19,
+        19,
+        2,
+        2,
+        5
+       ]
+      ],
+      30
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        19,
+        6
+       ],
+       [
+        19,
+        12,
+        0
+       ],
+       [
+        19,
+        0,
+        18
+       ],
+       [
+        11,
+        15,
+        8
+       ],
+       [
+        8,
+        0,
+        16
+       ]
+      ],
+      25
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       [
+        15,
+        3,
+        14,
+        11,
+        16,
+        3
+       ],
+       [
+        19,
+        11,
+        12,
+        19,
+        3,
+        9
+       ],
+       [
+        3,
+        0,
+        19,
+        15,
+        13,
+        12
+       ],
+       [
+        0,
+        6,
+        16,
+        0,
+        5,
+        13
+       ]
+      ],
+      40
+     ],
+     "expected": 3
+    },
+    {
+     "args": [
+      [
+       [
+        16,
+        15,
+        9,
+        14
+       ],
+       [
+        9,
+        12,
+        13,
+        5
+       ],
+       [
+        5,
+        8,
+        0,
+        6
+       ],
+       [
+        1,
+        18,
+        19,
+        5
+       ],
+       [
+        17,
+        2,
+        18,
+        13
+       ],
+       [
+        16,
+        2,
+        7,
+        4
+       ]
+      ],
+      45
+     ],
+     "expected": 5
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        3,
+        6
+       ],
+       [
+        2,
+        7,
+        5
+       ]
+      ],
+      100
+     ],
+     "expected": 0
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(panel, target):\n    if not isinstance(panel, list) or not (2 <= len(panel) <= 6):\n        return False\n    if not isinstance(panel[0], list) or not (2 <= len(panel[0]) <= 6):\n        return False\n    c = len(panel[0])\n    for row in panel:\n        if not isinstance(row, list) or len(row) != c:\n            return False\n        for v in row:\n            if not isinstance(v, int) or isinstance(v, bool) or not (0 <= v <= 20):\n                return False\n    return isinstance(target, int) and not isinstance(target, bool) and 1 <= target <= 100",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "target이 15일 때, 다음 가운데 정상 줄은 무엇일까요? (한 줄에 있는 패널의 발전량을 차례로 적었어요)",
+     "options": [
+      "{5, 5, 5}",
+      "{9, 0, 9}",
+      "{4, 5, 5}",
+      "{3, 3, 3, 3}"
+     ],
+     "answer": 0,
+     "explain": "'이상'은 같은 값도 포함하므로 합이 딱 15인 {5, 5, 5}도 정상 줄이에요. {9, 0, 9}는 합이 18로 충분하지만 고장 난 패널(0)이 있어 정상 줄이 아니에요. 두 조건을 모두 만족해야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "panel이 3행 4열이면, 세로줄(열) 하나에는 패널이 몇 개 있을까요?",
+     "a": "3",
+     "alts": [
+      "3개"
+     ],
+     "check": "def answers():\n    m = [[4, 6, 2, 3], [7, 0, 8, 6], [5, 5, 3, 9]]\n    return [len([m[i][0] for i in range(len(m))])]",
+     "explain": "j열에는 `panel[0][j]`, `panel[1][j]`, `panel[2][j]`처럼 행마다 한 개씩, 행의 수만큼 3개가 있어요. 거꾸로 가로줄 하나에는 열의 수만큼 4개가 있어요. 그래서 가로줄 하나를 훑는 반복은 열의 수 cols까지 돌아야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "기본 문제처럼 바깥 반복 i 안에서 `panel[i][j]`로 i행을, `panel[j][i]`로 i열을 함께 더하는 방법을 이 문제에 그대로 쓰면 안 되는 까닭은 무엇일까요?",
+     "options": [
+      "행의 수와 열의 수가 달라서, 3행 4열이면 `panel[3][0]`처럼 없는 칸을 읽거나 3열을 빠뜨리기 때문",
+      "C 언어에서는 한 반복 안에서 두 칸을 읽을 수 없기 때문",
+      "세로줄의 합은 언제나 가로줄의 합과 같기 때문",
+      "고장 난 패널은 세로줄에서 세지 않기 때문"
+     ],
+     "answer": 0,
+     "explain": "행 i와 열 i가 짝지어지는 것은 정사각형일 때뿐이에요. 그래서 이 코드는 판을 한 번 훑으면서 j열의 합은 배열 `colSum[j]`에, j열의 고장 수는 `colBroken[j]`에 모아 두고, 가로줄을 모두 본 뒤 세로줄을 검사해요. `int colSum[6] = {0};`은 6칸짜리 배열을 모두 0으로 채워 만든다는 뜻이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "code": "start",
+     "title": "예시 1 가로줄 따라가기",
+     "prompt": "첫 번째 반복(가로줄)에서 i마다 i행의 합 sum, 고장 난 패널 수 broken, 정상 줄인지(맞으면 1, 아니면 0), 그 뒤의 count를 채워 보세요(target = 15).",
+     "columns": [
+      "i",
+      "sum",
+      "broken",
+      "정상 줄?",
+      "count"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "15"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "21"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "22"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def answers():\n    m = [[4, 6, 2, 3], [7, 0, 8, 6], [5, 5, 3, 9]]\n    target = 15\n    out = []\n    count = 0\n    for i in range(len(m)):\n        s = sum(m[i])\n        b = sum(1 for v in m[i] if v == 0)\n        ok = s >= target and b == 0\n        count += ok\n        out += [s, b, int(ok), count]\n    return out",
+     "explain": "0행은 합이 딱 15이고 고장이 없어 정상 줄이에요. 1행은 합이 21로 크지만 고장 난 패널이 1개 있어 세지 않아요. 가로줄을 다 보면 count는 2예요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "code": "start",
+     "title": "예시 1 세로줄 검사",
+     "prompt": "가로줄을 모두 훑고 나면 colSum과 colBroken에 세로줄마다 합과 고장 난 패널 수가 모여 있어요. j마다 두 값을 채우고, 정상 줄이면 1, 아니면 0을 적어 보세요.",
+     "columns": [
+      "j",
+      "colSum[j]",
+      "colBroken[j]",
+      "정상 줄?"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "16"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "11"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "13"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "0",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "18"
+       },
+       {
+        "a": "0"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    m = [[4, 6, 2, 3], [7, 0, 8, 6], [5, 5, 3, 9]]\n    target = 15\n    R, C = len(m), len(m[0])\n    colSum = [0] * 6\n    colBroken = [0] * 6\n    for i in range(R):\n        for j in range(C):\n            colSum[j] += m[i][j]\n            if m[i][j] == 0:\n                colBroken[j] += 1\n    out = []\n    for j in range(C):\n        out += [colSum[j], colBroken[j], int(colSum[j] >= target and colBroken[j] == 0)]\n    return out",
+     "explain": "i행 j열 패널의 값은 열 번호 j에 맞춰 `colSum[j]`에 더해요. 고장 난 패널을 만나면 그 열의 `colBroken[j]`도 1 늘려야 1열이 정상 줄로 잘못 세어지지 않아요. 0열과 3열이 정상이라 count는 2 + 2 = 4가 돼요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "code": "start",
+     "q": "i행이 정상 줄인지 확인하는 조건으로 알맞은 것은 무엇일까요? (sum은 i행의 합, broken은 i행의 고장 난 패널 수)",
+     "options": [
+      "sum >= target && broken == 0",
+      "sum >= target || broken == 0",
+      "sum > target && broken == 0",
+      "sum >= target && broken > 0"
+     ],
+     "answer": 0,
+     "explain": "`&&`(그리고)는 두 조건이 모두 참일 때만 참이에요. `||`(또는)를 쓰면 고장 난 패널이 있어도 합만 크면 세어 버려요. 기준값과 같아도 되는 '이상'이니 `>=`예요. 세로줄도 colSum[j]와 colBroken[j]로 같은 조건을 써요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "code": "start",
+     "q": "정상 줄을 확인하는 조건(가로줄과 세로줄 모두)에서 `&&` 대신 `||`를 쓰면, 예시 1의 return 값은 얼마가 될까요?",
+     "a": "6",
+     "alts": [],
+     "check": "def answers():\n    m = [[4, 6, 2, 3], [7, 0, 8, 6], [5, 5, 3, 9]]\n    target = 15\n    R, C = len(m), len(m[0])\n    count = 0\n    for i in range(R):\n        s = sum(m[i])\n        b = sum(1 for v in m[i] if v == 0)\n        if s >= target or b == 0:\n            count += 1\n    for j in range(C):\n        s = sum(m[i][j] for i in range(R))\n        b = sum(1 for i in range(R) if m[i][j] == 0)\n        if s >= target or b == 0:\n            count += 1\n    return [count]",
+     "explain": "`||`이면 1행(합 21, 고장 있음)과 2열(합 13, 고장 없음)처럼 조건을 하나만 만족하는 줄까지 세어져 6이 돼요. 정답 4보다 2만큼 많아요."
+    }
+   ],
+   "explain": "가로줄 하나에는 열의 수(cols)만큼, 세로줄 하나에는 행의 수(rows)만큼 패널이 있어요. 행과 열의 수가 다를 수 있어 `panel[j][i]`를 쓰지 않고, 한 번 훑으면서 j열의 합과 고장 수를 `colSum[j]`·`colBroken[j]`에 모아 둔 뒤 세로줄을 따로 검사해요. 정상 줄은 '합이 target 이상' 그리고 '고장 0개'이므로 `&&`로 두 조건을 묶어요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "grid",
+     "alt": "3행 4열 격자(행·열 번호 0부터). 0행: 4, 6, 2, 3. 1행: 7, 0, 8, 6. 2행: 5, 5, 3, 9. 1행 1열 칸의 0은 고장 난 패널. 오른쪽 끝 열(행의 합): 0행 15, 1행 21, 2행 22. 맨 아래 줄(열의 합): 0열 16, 1열 11, 2열 13, 3열 18. 정상 줄의 합인 0행 15, 2행 22, 0열 16, 3열 18이 강조되어 있음.",
+     "caption": "오른쪽 끝 칸은 그 가로줄(행)의 합, 맨 아래 칸은 그 세로줄(열)의 합입니다(target = 15). 강조한 합이 정상 줄입니다. 0은 고장 난 패널입니다.",
+     "rows": [
+      [
+       4,
+       6,
+       2,
+       3,
+       15
+      ],
+      [
+       7,
+       0,
+       8,
+       6,
+       21
+      ],
+      [
+       5,
+       5,
+       3,
+       9,
+       22
+      ],
+      [
+       16,
+       11,
+       13,
+       18,
+       ""
+      ]
+     ],
+     "rowLabels": [
+      "0행",
+      "1행",
+      "2행",
+      "열의 합 ↓"
+     ],
+     "colLabels": [
+      "0열",
+      "1열",
+      "2열",
+      "3열",
+      "행의 합 →"
+     ],
+     "highlight": [
+      [
+       0,
+       4
+      ],
+      [
+       2,
+       4
+      ],
+      [
+       3,
+       0
+      ],
+      [
+       3,
+       3
+      ]
+     ]
+    }
+   ],
+   "cspec": {
+    "derived": {
+     "panel_row_len": "len(panel)",
+     "panel_col_len": "len(panel[0])"
+    }
+   }
+  },
+  {
+   "id": "cb-t02-adv3",
+   "version": 1,
+   "title": "타일 벽화의 테두리와 X자",
+   "statement": "정사각형 벽에 N x N 칸의 타일 벽화를 만들었습니다. 칸마다 붙인 유리 조각 수가 2차원 배열 `tile`에 담겨 있으며, `tile[i][j]`는 i행 j열 칸의 유리 조각 수입니다(행과 열 번호는 0부터 셉니다).\n\n벽화에는 두 가지 무늬가 있습니다.\n- 테두리 무늬: 맨 위 가로줄(0행), 맨 아래 가로줄(N - 1행), 맨 왼쪽 세로줄(0열), 맨 오른쪽 세로줄(N - 1열)에 있는 칸\n- X자 무늬: 메인 대각선(0행 0열에서 N - 1행 N - 1열까지)과 보조 대각선(0행 N - 1열에서 N - 1행 0열까지)에 있는 칸\n\n한 무늬 안에서 두 줄에 함께 속한 칸은 한 번만 셉니다. 테두리의 네 모서리 칸, 그리고 N이 홀수일 때 X자의 가운데 칸이 그런 칸입니다. 단, 네 모서리 칸처럼 두 무늬에 모두 속한 칸은 무늬마다 한 번씩 셉니다.\n\n예를 들어 `tile`이 `{{12, 5, 30, 8, 20}, {7, 25, 3, 14, 9}, {16, 2, 40, 6, 11}, {4, 18, 10, 22, 1}, {15, 9, 27, 3, 13}}`인 5 x 5 벽화이면 두 무늬는 아래 그림에서 강조한 칸과 같습니다.\n\n{{fig:f1}}\n{{fig:f2}}\n\n테두리 무늬 16칸의 유리 조각은 모두 190개, X자 무늬 9칸의 유리 조각은 모두 179개이므로 `{190, 179}`를 return 합니다.\n\n벽화가 주어질 때, [테두리 무늬의 유리 조각 수, X자 무늬의 유리 조각 수]를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "`tile`은 N행 N열 정수 2차원 배열이며, N은 3 이상 7 이하입니다.",
+    "`tile`의 원소는 0 이상 50 이하인 정수입니다.",
+    "`tile_row_len`과 `tile_col_len`에는 `tile`의 행 수와 열 수(둘 다 N)가 들어옵니다."
+   ],
+   "returns": [
+    "[테두리 무늬의 유리 조각 수, X자 무늬의 유리 조각 수]를 길이 2인 배열로 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "tile"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        12,
+        5,
+        30,
+        8,
+        20
+       ],
+       [
+        7,
+        25,
+        3,
+        14,
+        9
+       ],
+       [
+        16,
+        2,
+        40,
+        6,
+        11
+       ],
+       [
+        4,
+        18,
+        10,
+        22,
+        1
+       ],
+       [
+        15,
+        9,
+        27,
+        3,
+        13
+       ]
+      ]
+     ],
+     "expected": [
+      190,
+      179
+     ],
+     "explain": "N이 5(홀수)라 X자의 가운데 칸 2행 2열(40)을 한 번만 셉니다. 테두리 190, X자 179입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        6,
+        1,
+        2,
+        9
+       ],
+       [
+        3,
+        8,
+        5,
+        0
+       ],
+       [
+        4,
+        7,
+        10,
+        2
+       ],
+       [
+        11,
+        3,
+        1,
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      47,
+      61
+     ],
+     "explain": "N이 4(짝수)라 두 대각선이 겹치는 칸이 없습니다. 테두리 12칸의 합은 47, X자 8칸의 합은 61입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint border_sum(int** tile, int n) {\n    int s = 0;\n    for (int i = 0; i < n; i++) {\n        s += tile[0][i] + ⟦1⟧ + tile[i][0] + ⟦2⟧;\n    }\n    s -= tile[0][0] + tile[0][n - 1] + ⟦3⟧ + tile[n - 1][n - 1];\n    return s;\n}\n\nint x_sum(int** tile, int n) {\n    int s = 0;\n    for (int i = 0; i < n; i++) {\n        s += tile[i][i] + ⟦4⟧;\n    }\n    if (⟦5⟧) {\n        s -= tile[n / 2][n / 2];\n    }\n    return s;\n}\n\nint* solution(int** tile, int tile_row_len, int tile_col_len) {\n    int n = tile_row_len;\n    int* answer = (int*)malloc(sizeof(int) * 2);\n    answer[0] = border_sum(tile, n);\n    answer[1] = x_sum(tile, n);\n    return answer;\n}",
+   "blanks": [
+    {
+     "answer": "tile[n - 1][i]",
+     "alts": [
+      "tile[n-1][i]"
+     ]
+    },
+    {
+     "answer": "tile[i][n - 1]",
+     "alts": [
+      "tile[i][n-1]"
+     ]
+    },
+    {
+     "answer": "tile[n - 1][0]",
+     "alts": [
+      "tile[n-1][0]"
+     ]
+    },
+    {
+     "answer": "tile[i][n - 1 - i]",
+     "alts": [
+      "tile[i][n-1-i]",
+      "tile[i][n - i - 1]",
+      "tile[n - 1 - i][i]"
+     ]
+    },
+    {
+     "answer": "n % 2 == 1",
+     "alts": [
+      "n % 2 != 0",
+      "n % 2"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n#include <stdlib.h>\n\nint border_sum(int** tile, int n) {\n    int s = 0;\n    for (int i = 0; i < n; i++) {\n        s += tile[0][i] + tile[n - 1][i] + tile[i][0] + tile[i][n - 1];\n    }\n    s -= tile[0][0] + tile[0][n - 1] + tile[n - 1][0] + tile[n - 1][n - 1];\n    return s;\n}\n\nint x_sum(int** tile, int n) {\n    int s = 0;\n    for (int i = 0; i < n; i++) {\n        s += tile[i][i] + tile[i][n - 1 - i];\n    }\n    if (n % 2 == 1) {\n        s -= tile[n / 2][n / 2];\n    }\n    return s;\n}\n\nint* solution(int** tile, int tile_row_len, int tile_col_len) {\n    int n = tile_row_len;\n    int* answer = (int*)malloc(sizeof(int) * 2);\n    answer[0] = border_sum(tile, n);\n    answer[1] = x_sum(tile, n);\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ]
+      ]
+     ],
+     "expected": [
+      1200,
+      650
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      8,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      12,
+      8
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      40,
+      24
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        50,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      50
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        0,
+        0,
+        7
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        7,
+        0,
+        0,
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      28,
+      28
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        4,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        9,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      13
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3
+       ],
+       [
+        4,
+        5,
+        6
+       ],
+       [
+        7,
+        8,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      40,
+      25
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        36,
+        10,
+        40
+       ],
+       [
+        14,
+        17,
+        30
+       ],
+       [
+        41,
+        34,
+        33
+       ]
+      ]
+     ],
+     "expected": [
+      238,
+      167
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        11,
+        41,
+        39,
+        32
+       ],
+       [
+        20,
+        43,
+        33,
+        30
+       ],
+       [
+        28,
+        18,
+        43,
+        40
+       ],
+       [
+        4,
+        19,
+        26,
+        19
+       ]
+      ]
+     ],
+     "expected": [
+      309,
+      203
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        33,
+        31,
+        3,
+        47,
+        38
+       ],
+       [
+        47,
+        43,
+        27,
+        17,
+        20
+       ],
+       [
+        35,
+        48,
+        43,
+        15,
+        7
+       ],
+       [
+        3,
+        20,
+        18,
+        13,
+        4
+       ],
+       [
+        47,
+        23,
+        7,
+        41,
+        20
+       ]
+      ]
+     ],
+     "expected": [
+      406,
+      274
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        49,
+        15,
+        32,
+        17,
+        20,
+        0
+       ],
+       [
+        22,
+        33,
+        42,
+        19,
+        35,
+        25
+       ],
+       [
+        24,
+        11,
+        43,
+        7,
+        2,
+        23
+       ],
+       [
+        40,
+        47,
+        43,
+        35,
+        7,
+        4
+       ],
+       [
+        9,
+        5,
+        7,
+        20,
+        0,
+        3
+       ],
+       [
+        26,
+        17,
+        22,
+        12,
+        12,
+        43
+       ]
+      ]
+     ],
+     "expected": [
+      415,
+      319
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        41,
+        24,
+        29,
+        38,
+        30,
+        50,
+        22
+       ],
+       [
+        37,
+        34,
+        29,
+        50,
+        19,
+        31,
+        4
+       ],
+       [
+        0,
+        30,
+        24,
+        24,
+        48,
+        49,
+        23
+       ],
+       [
+        7,
+        42,
+        15,
+        0,
+        34,
+        40,
+        28
+       ],
+       [
+        46,
+        20,
+        44,
+        10,
+        31,
+        46,
+        39
+       ],
+       [
+        30,
+        2,
+        44,
+        5,
+        38,
+        46,
+        18
+       ],
+       [
+        29,
+        17,
+        27,
+        32,
+        26,
+        16,
+        30
+       ]
+      ]
+     ],
+     "expected": [
+      643,
+      382
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(tile):\n    if not isinstance(tile, list) or not (3 <= len(tile) <= 7):\n        return False\n    n = len(tile)\n    for row in tile:\n        if not isinstance(row, list) or len(row) != n:\n            return False\n        for v in row:\n            if not isinstance(v, int) or isinstance(v, bool) or not (0 <= v <= 50):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "5 x 5 벽화에서 테두리 무늬는 모두 몇 칸일까요?",
+     "options": [
+      "16칸",
+      "20칸",
+      "25칸",
+      "9칸"
+     ],
+     "answer": 0,
+     "explain": "가로줄 2개와 세로줄 2개가 5칸씩이라 20칸처럼 보이지만, 네 모서리 칸은 가로줄과 세로줄에 한 번씩, 두 번 들어 있어요. 모서리 4칸을 한 번씩 빼면 20 - 4 = 16칸이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "N에 따른 칸 수",
+     "prompt": "N마다 테두리 무늬와 X자 무늬의 칸 수를 채워 보세요. 한 무늬 안에서 겹치는 칸은 한 번만 세요.",
+     "columns": [
+      "N",
+      "테두리 무늬 칸 수",
+      "X자 무늬 칸 수"
+     ],
+     "rows": [
+      [
+       "3",
+       {
+        "a": "8"
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "12"
+       },
+       {
+        "a": "8"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "16"
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "20"
+       },
+       {
+        "a": "12"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for n in (3, 4, 5, 6):\n        b = [(i, j) for i in range(n) for j in range(n) if i in (0, n - 1) or j in (0, n - 1)]\n        x = [(i, j) for i in range(n) for j in range(n) if i == j or i + j == n - 1]\n        out += [len(b), len(x)]\n    return out",
+     "explain": "테두리는 4 x N칸에서 두 번 센 모서리 4칸을 빼서 4N - 4칸이에요. X자는 대각선 2개가 N칸씩인데, N이 홀수면 가운데 칸 하나가 겹쳐 2N - 1칸, N이 짝수면 두 대각선이 만나는 칸이 없어 2N칸이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "code": "start",
+     "q": "보조 함수(solution이 불러 쓰는 작은 함수) border_sum은 반복 한 번에 테두리의 네 줄에서 한 칸씩, 네 칸을 더해요. N = 5이고 i = 2일 때 더하는 네 칸으로 알맞은 것은 무엇일까요?",
+     "options": [
+      "tile[0][2], tile[4][2], tile[2][0], tile[2][4]",
+      "tile[0][2], tile[5][2], tile[2][0], tile[2][5]",
+      "tile[2][0], tile[2][1], tile[2][3], tile[2][4]",
+      "tile[0][2], tile[2][4], tile[4][2], tile[2][2]"
+     ],
+     "answer": 0,
+     "explain": "맨 위 줄 `tile[0][i]`와 맨 아래 줄은 행 번호가 그대로이고 열 번호 i가 바뀌어요. 맨 왼쪽·오른쪽 줄은 열 번호가 그대로이고 행 번호 i가 바뀌어요. 마지막 줄과 마지막 칸의 번호는 N이 아니라 N - 1(여기서는 4)이에요. 5를 쓰면 배열 범위를 벗어나요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "code": "start",
+     "title": "예시 1 테두리 따라가기",
+     "prompt": "border_sum의 반복에서 i마다 위·아래 두 칸의 합(`tile[0][i] + tile[4][i]`), 왼쪽·오른쪽 두 칸의 합(`tile[i][0] + tile[i][4]`), 더한 뒤의 s를 채워 보세요. 마지막 줄에는 네 모서리 칸을 한 번씩 뺀 뒤의 s를 적어요.",
+     "columns": [
+      "i",
+      "위 + 아래",
+      "왼쪽 + 오른쪽",
+      "s"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "27"
+       },
+       {
+        "a": "32"
+       },
+       {
+        "a": "59"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "14"
+       },
+       {
+        "a": "16"
+       },
+       {
+        "a": "89"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "57"
+       },
+       {
+        "a": "27"
+       },
+       {
+        "a": "173"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "11"
+       },
+       {
+        "a": "5"
+       },
+       {
+        "a": "189"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "33"
+       },
+       {
+        "a": "28"
+       },
+       {
+        "a": "250"
+       }
+      ],
+      [
+       "모서리 빼기",
+       "-",
+       "-",
+       {
+        "a": "190"
+       }
+      ]
+     ],
+     "check": "def answers():\n    m = [[12, 5, 30, 8, 20], [7, 25, 3, 14, 9], [16, 2, 40, 6, 11], [4, 18, 10, 22, 1], [15, 9, 27, 3, 13]]\n    n = len(m)\n    out = []\n    s = 0\n    for i in range(n):\n        tb = m[0][i] + m[n - 1][i]\n        lr = m[i][0] + m[i][n - 1]\n        s += tb + lr\n        out += [tb, lr, s]\n    s -= m[0][0] + m[0][n - 1] + m[n - 1][0] + m[n - 1][n - 1]\n    out.append(s)\n    return out",
+     "explain": "i = 0일 때 더한 `tile[0][0]`(왼쪽 위 모서리)은 i = 0의 왼쪽 칸으로 한 번 더 들어가요. 네 모서리가 이렇게 두 번씩 더해졌으니 반복이 끝난 뒤 한 번씩 빼면 190이 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "code": "start",
+     "title": "예시 1 X자 따라가기",
+     "prompt": "x_sum의 반복에서 i마다 보조 대각선 칸 `tile[i][4 - i]`의 값과, 더한 뒤의 s를 채워 보세요. 마지막 줄에는 가운데 칸을 뺀 뒤의 s를 적어요.",
+     "columns": [
+      "i",
+      "tile[i][i]",
+      "tile[i][4 - i]",
+      "s"
+     ],
+     "rows": [
+      [
+       "0",
+       "12",
+       {
+        "a": "20"
+       },
+       {
+        "a": "32"
+       }
+      ],
+      [
+       "1",
+       "25",
+       {
+        "a": "14"
+       },
+       {
+        "a": "71"
+       }
+      ],
+      [
+       "2",
+       "40",
+       {
+        "a": "40"
+       },
+       {
+        "a": "151"
+       }
+      ],
+      [
+       "3",
+       "22",
+       {
+        "a": "18"
+       },
+       {
+        "a": "191"
+       }
+      ],
+      [
+       "4",
+       "13",
+       {
+        "a": "15"
+       },
+       {
+        "a": "219"
+       }
+      ],
+      [
+       "가운데 빼기",
+       "-",
+       "-",
+       {
+        "a": "179"
+       }
+      ]
+     ],
+     "check": "def answers():\n    m = [[12, 5, 30, 8, 20], [7, 25, 3, 14, 9], [16, 2, 40, 6, 11], [4, 18, 10, 22, 1], [15, 9, 27, 3, 13]]\n    n = len(m)\n    out = []\n    s = 0\n    for i in range(n):\n        s += m[i][i] + m[i][n - 1 - i]\n        out += [m[i][n - 1 - i], s]\n    if n % 2 == 1:\n        s -= m[n // 2][n // 2]\n    out.append(s)\n    return out",
+     "explain": "보조 대각선은 행·열 번호의 합이 N - 1인 칸이라 i행에서는 `tile[i][n - 1 - i]`예요. i = 2일 때 `tile[2][2]`가 두 대각선에 모두 들어가 두 번 더해졌으니, 한 번 빼면 179가 돼요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "code": "start",
+     "q": "x_sum에서 가운데 칸 `tile[n / 2][n / 2]`를 빼야 하는 때를 나타내는 조건은 무엇일까요?",
+     "options": [
+      "n % 2 == 1",
+      "n % 2 == 0",
+      "n / 2 == 1",
+      "n > 2"
+     ],
+     "answer": 0,
+     "explain": "N이 홀수일 때만 두 대각선이 가운데 칸에서 만나요. `n % 2`는 n을 2로 나눈 나머지라서 홀수면 1이에요. C에서 `n / 2`는 정수 나눗셈(소수점 아래 버림)이라 n = 5이면 2가 되어 가운데 칸 `tile[2][2]`를 가리켜요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "code": "start",
+     "q": "가운데 칸을 빼는 조건을 빠뜨려 N이 짝수일 때도 `tile[n / 2][n / 2]`를 빼 버리면, 예시 2(4 x 4)의 X자 무늬 값은 얼마가 될까요? (올바른 값은 61이에요)",
+     "a": "51",
+     "alts": [],
+     "check": "def answers():\n    m = [[6, 1, 2, 9], [3, 8, 5, 0], [4, 7, 10, 2], [11, 3, 1, 5]]\n    n = len(m)\n    s = 0\n    for i in range(n):\n        s += m[i][i] + m[i][n - 1 - i]\n    s -= m[n // 2][n // 2]\n    return [s]",
+     "explain": "4 x 4에서는 두 대각선이 겹치는 칸이 없어요. 그런데 `tile[2][2]`는 메인 대각선에 있는 진짜 칸(값 10)이라, 빼 버리면 그만큼 모자란 51이 돼요."
+    }
+   ],
+   "explain": "테두리는 맨 위·맨 아래 줄 `tile[0][i]`·`tile[n - 1][i]`와 맨 왼쪽·오른쪽 줄 `tile[i][0]`·`tile[i][n - 1]`을 한 반복에서 더한 뒤, 두 번 더해진 네 모서리를 한 번씩 빼요. X자는 `tile[i][i]`와 `tile[i][n - 1 - i]`를 더하고, N이 홀수일 때만 두 번 더해진 가운데 칸을 빼요. 마지막 번호를 N으로 쓰거나 짝수일 때도 가운데를 빼는 실수가 흔해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "grid",
+     "alt": "5행 5열 격자(행·열 번호 0부터). 0행: 12, 5, 30, 8, 20. 1행: 7, 25, 3, 14, 9. 2행: 16, 2, 40, 6, 11. 3행: 4, 18, 10, 22, 1. 4행: 15, 9, 27, 3, 13. 테두리 무늬 16칸(강조): 0행 전체, 4행 전체, 0열과 4열의 1~3행 칸. 합 190.",
+     "caption": "테두리 무늬 16칸(강조): 합 190",
+     "rows": [
+      [
+       12,
+       5,
+       30,
+       8,
+       20
+      ],
+      [
+       7,
+       25,
+       3,
+       14,
+       9
+      ],
+      [
+       16,
+       2,
+       40,
+       6,
+       11
+      ],
+      [
+       4,
+       18,
+       10,
+       22,
+       1
+      ],
+      [
+       15,
+       9,
+       27,
+       3,
+       13
+      ]
+     ],
+     "rowLabels": [
+      "0행",
+      "1행",
+      "2행",
+      "3행",
+      "4행"
+     ],
+     "colLabels": [
+      "0열",
+      "1열",
+      "2열",
+      "3열",
+      "4열"
+     ],
+     "highlight": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       1
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       3
+      ],
+      [
+       0,
+       4
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       4
+      ],
+      [
+       3,
+       0
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       4,
+       0
+      ],
+      [
+       4,
+       1
+      ],
+      [
+       4,
+       2
+      ],
+      [
+       4,
+       3
+      ],
+      [
+       4,
+       4
+      ]
+     ]
+    },
+    {
+     "id": "f2",
+     "kind": "grid",
+     "alt": "같은 격자에서 X자 무늬 9칸(강조): 0행 0열(12), 0행 4열(20), 1행 1열(25), 1행 3열(14), 2행 2열(40), 3행 1열(18), 3행 3열(22), 4행 0열(15), 4행 4열(13). 가운데 2행 2열은 두 대각선이 만나는 칸. 합 179.",
+     "caption": "X자 무늬 9칸(강조): 합 179",
+     "rows": [
+      [
+       12,
+       5,
+       30,
+       8,
+       20
+      ],
+      [
+       7,
+       25,
+       3,
+       14,
+       9
+      ],
+      [
+       16,
+       2,
+       40,
+       6,
+       11
+      ],
+      [
+       4,
+       18,
+       10,
+       22,
+       1
+      ],
+      [
+       15,
+       9,
+       27,
+       3,
+       13
+      ]
+     ],
+     "rowLabels": [
+      "0행",
+      "1행",
+      "2행",
+      "3행",
+      "4행"
+     ],
+     "colLabels": [
+      "0열",
+      "1열",
+      "2열",
+      "3열",
+      "4열"
+     ],
+     "highlight": [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       4
+      ],
+      [
+       1,
+       1
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       2,
+       2
+      ],
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       3
+      ],
+      [
+       4,
+       0
+      ],
+      [
+       4,
+       4
+      ]
+     ]
+    }
+   ],
+   "cspec": {
+    "derived": {
+     "tile_row_len": "len(tile)",
+     "tile_col_len": "len(tile[0])"
+    },
+    "ret": {
+     "len": "2"
+    }
+   }
+  },
+  {
+   "id": "cb-t02-adv4",
+   "version": 1,
+   "title": "리그 득실차 1위 팀",
+   "statement": "N개 팀이 서로 한 번씩 경기하는 축구 리그가 진행 중입니다. 팀 번호는 0부터 N - 1까지이며, 경기 기록이 2차원 배열 `goals`에 담겨 있습니다. `goals[i][j]`는 i번 팀이 j번 팀과의 경기에서 넣은 골 수입니다.\n- 자기 팀과는 경기하지 않으므로 `goals[i][i]`는 0입니다.\n- 아직 하지 않은 경기는 `goals[i][j]`와 `goals[j][i]`가 모두 -1이며, 이 경기는 계산에 넣지 않습니다.\n\n팀마다 그 팀이 넣은 골의 합을 **득점**, 상대 팀들이 그 팀에게 넣은 골의 합을 **실점**, (득점 - 실점)을 **득실차**라고 합니다. 득실차가 가장 큰 팀이 1위입니다. 득실차가 같으면 득점이 더 많은 팀이, 득점까지 같으면 번호가 더 작은 팀이 1위입니다.\n\n예를 들어 `goals`가 `{{0, 2, 1, 3}, {1, 0, 4, 2}, {1, 0, 0, 2}, {0, 1, 3, 0}}`이면 팀마다 득점과 실점은 아래 그림과 같습니다.\n\n{{fig:f1}}\n\n득실차는 0번 팀부터 차례로 4, 4, -5, -3입니다. 득실차가 4로 가장 큰 0번 팀과 1번 팀 가운데 득점이 7골로 더 많은 1번 팀이 1위이므로 1을 return 합니다.\n\n치른 경기가 하나도 없으면 1위를 정할 수 없으므로 -1을 return 합니다.\n\n경기 기록이 주어질 때, 1위 팀의 번호를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "`goals`는 N행 N열 정수 2차원 배열이며, N은 3 이상 6 이하입니다.",
+    "`goals[i][i]`는 0입니다. i와 j가 다르면 `goals[i][j]`는 -1 이상 9 이하인 정수이고, `goals[i][j]`가 -1이면 `goals[j][i]`도 -1입니다(아직 하지 않은 경기).",
+    "`goals_row_len`과 `goals_col_len`에는 `goals`의 행 수와 열 수(둘 다 N)가 들어옵니다."
+   ],
+   "returns": [
+    "1위 팀의 번호를 return 합니다. 치른 경기가 하나도 없으면 -1을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "goals"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        0,
+        2,
+        1,
+        3
+       ],
+       [
+        1,
+        0,
+        4,
+        2
+       ],
+       [
+        1,
+        0,
+        0,
+        2
+       ],
+       [
+        0,
+        1,
+        3,
+        0
+       ]
+      ]
+     ],
+     "expected": 1,
+     "explain": "득실차가 4로 같은 0번 팀(득점 6)과 1번 팀(득점 7) 가운데 득점이 더 많은 1번 팀이 1위입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        2,
+        2,
+        -1,
+        -1
+       ],
+       [
+        3,
+        0,
+        4,
+        1,
+        3
+       ],
+       [
+        4,
+        3,
+        0,
+        5,
+        -1
+       ],
+       [
+        -1,
+        1,
+        1,
+        0,
+        1
+       ],
+       [
+        -1,
+        0,
+        -1,
+        2,
+        0
+       ]
+      ]
+     ],
+     "expected": 2,
+     "explain": "아직 하지 않은 경기(-1)를 빼고 계산하면 득실차는 0번 팀부터 -3, 5, 5, -5, -2, 득점은 4, 11, 12, 3, 2입니다. 득실차가 가장 큰 두 팀 가운데 득점이 더 많은 2번 팀이 1위입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        0,
+        -1
+       ],
+       [
+        -1,
+        -1,
+        0
+       ]
+      ]
+     ],
+     "expected": -1,
+     "explain": "치른 경기가 하나도 없으므로 -1입니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint solution(int** goals, int goals_row_len, int goals_col_len) {\n    int n = goals_row_len;\n    int best = -1, bestDiff = 0, bestFor = 0;\n    int played = 0;\n\n    for (int i = 0; i < n; i++) {\n        int gf = 0, ga = 0;\n        for (int j = 0; j < n; j++) {\n            if (i == j || ⟦1⟧) continue;\n            gf += ⟦2⟧;\n            ga += ⟦3⟧;\n            played++;\n        }\n        int diff = gf - ga;\n        if (best == -1 || ⟦4⟧ || (diff == bestDiff && ⟦5⟧)) {\n            best = i;\n            bestDiff = diff;\n            bestFor = gf;\n        }\n    }\n\n    if (⟦6⟧) return -1;\n    return best;\n}",
+   "blanks": [
+    {
+     "answer": "goals[i][j] == -1",
+     "alts": [
+      "goals[i][j] < 0",
+      "goals[j][i] == -1",
+      "goals[j][i] < 0",
+      "-1 == goals[i][j]"
+     ]
+    },
+    {
+     "answer": "goals[i][j]"
+    },
+    {
+     "answer": "goals[j][i]"
+    },
+    {
+     "answer": "diff > bestDiff",
+     "alts": [
+      "bestDiff < diff"
+     ]
+    },
+    {
+     "answer": "gf > bestFor",
+     "alts": [
+      "bestFor < gf"
+     ]
+    },
+    {
+     "answer": "played == 0",
+     "alts": [
+      "!played",
+      "played < 1",
+      "played <= 0"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n#include <stdlib.h>\n\nint solution(int** goals, int goals_row_len, int goals_col_len) {\n    int n = goals_row_len;\n    int best = -1, bestDiff = 0, bestFor = 0;\n    int played = 0;\n\n    for (int i = 0; i < n; i++) {\n        int gf = 0, ga = 0;\n        for (int j = 0; j < n; j++) {\n            if (i == j || goals[i][j] == -1) continue;\n            gf += goals[i][j];\n            ga += goals[j][i];\n            played++;\n        }\n        int diff = gf - ga;\n        if (best == -1 || diff > bestDiff || (diff == bestDiff && gf > bestFor)) {\n            best = i;\n            bestDiff = diff;\n            bestFor = gf;\n        }\n    }\n\n    if (played == 0) return -1;\n    return best;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        0,
+        -1,
+        -1,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        -1,
+        0,
+        -1,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        -1,
+        -1,
+        0,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        -1
+       ],
+       [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        0
+       ]
+      ]
+     ],
+     "expected": -1
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        0,
+        1
+       ],
+       [
+        -1,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        1,
+        1,
+        0
+       ],
+       [
+        1,
+        0,
+        0,
+        2
+       ],
+       [
+        1,
+        2,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        2,
+        0
+       ]
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        9,
+        9
+       ],
+       [
+        0,
+        0,
+        9
+       ],
+       [
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        9,
+        0,
+        0
+       ],
+       [
+        9,
+        9,
+        0
+       ]
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        -1,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        0,
+        2,
+        2
+       ],
+       [
+        -1,
+        1,
+        0,
+        3
+       ],
+       [
+        -1,
+        2,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        8,
+        9
+       ],
+       [
+        8,
+        0,
+        6
+       ],
+       [
+        9,
+        6,
+        0
+       ]
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        1,
+        5
+       ],
+       [
+        2,
+        0,
+        2
+       ],
+       [
+        5,
+        1,
+        0
+       ]
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        -1,
+        4
+       ],
+       [
+        -1,
+        0,
+        5
+       ],
+       [
+        2,
+        4,
+        0
+       ]
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        2,
+        1,
+        -1,
+        0,
+        -1
+       ],
+       [
+        3,
+        0,
+        -1,
+        2,
+        -1,
+        1
+       ],
+       [
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        -1
+       ],
+       [
+        -1,
+        1,
+        1,
+        0,
+        0,
+        2
+       ],
+       [
+        2,
+        -1,
+        -1,
+        3,
+        0,
+        2
+       ],
+       [
+        -1,
+        2,
+        -1,
+        2,
+        1,
+        0
+       ]
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        3,
+        -1
+       ],
+       [
+        1,
+        0,
+        0
+       ],
+       [
+        -1,
+        1,
+        0
+       ]
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        6,
+        1,
+        0,
+        -1
+       ],
+       [
+        6,
+        0,
+        8,
+        -1,
+        -1
+       ],
+       [
+        9,
+        7,
+        0,
+        -1,
+        6
+       ],
+       [
+        2,
+        -1,
+        -1,
+        0,
+        6
+       ],
+       [
+        -1,
+        -1,
+        7,
+        1,
+        0
+       ]
+      ]
+     ],
+     "expected": 3
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(goals):\n    if not isinstance(goals, list) or not (3 <= len(goals) <= 6):\n        return False\n    n = len(goals)\n    for row in goals:\n        if not isinstance(row, list) or len(row) != n:\n            return False\n        for v in row:\n            if not isinstance(v, int) or isinstance(v, bool) or not (-1 <= v <= 9):\n                return False\n    for i in range(n):\n        if goals[i][i] != 0:\n            return False\n        for j in range(n):\n            if i != j and (goals[i][j] == -1) != (goals[j][i] == -1):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1에서 `goals[1][2]`는 4, `goals[2][1]`은 0이에요. 이 두 값이 뜻하는 것은 무엇일까요?",
+     "options": [
+      "1번 팀과 2번 팀의 경기에서 1번 팀이 4골, 2번 팀이 0골을 넣었다",
+      "1번 팀과 2번 팀의 경기에서 2번 팀이 4골, 1번 팀이 0골을 넣었다",
+      "1번 팀의 득점이 모두 4골이고, 2번 팀의 득점이 모두 0골이다",
+      "1번 팀이 2번 팀과 4번 경기했다"
+     ],
+     "answer": 0,
+     "explain": "`goals[i][j]`는 i번 팀이 j번 팀에게 넣은 골이에요. 같은 경기를 j번 팀 쪽에서 보면 `goals[j][i]`예요. 그래서 i행을 모두 더하면 i번 팀의 득점, i열을 모두 더하면 i번 팀이 내준 골(실점)이 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "4개 팀의 (득실차, 득점)이 0번 팀부터 차례로 (2, 5), (4, 6), (4, 8), (4, 8)이에요. 1위 팀의 번호는 무엇일까요?",
+     "a": "2",
+     "alts": [
+      "2번"
+     ],
+     "check": "def stats(g, skip=True):\n    n = len(g)\n    out = []\n    for i in range(n):\n        gf = ga = 0\n        for j in range(n):\n            if i == j or (skip and g[i][j] == -1):\n                continue\n            gf += g[i][j]\n            ga += g[j][i]\n        out.append((gf, ga, gf - ga))\n    return out\n\ndef winner(st):\n    best = None\n    for i, (gf, ga, d) in enumerate(st):\n        if best is None or (d, gf) > (st[best][2], st[best][0]):\n            best = i\n    return best\n\ndef answers():\n    st = [(5, 3, 2), (6, 2, 4), (8, 4, 4), (8, 4, 4)]\n    return [winner(st)]",
+     "explain": "득실차 4가 1·2·3번 팀으로 같아요. 그 가운데 득점 8이 가장 많은 팀은 2번과 3번이고, 득점까지 같으니 번호가 작은 2번이 1위예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "i번 팀의 득점과 실점을 같은 반복(j = 0 ~ N - 1)에서 구할 때, j번째에 더하는 값으로 알맞은 것은 무엇일까요?",
+     "options": [
+      "득점에 `goals[i][j]`, 실점에 `goals[j][i]`",
+      "득점에 `goals[j][i]`, 실점에 `goals[i][j]`",
+      "득점에 `goals[i][j]`, 실점에 `goals[i][j]`를 뺀 값",
+      "득점에 `goals[i][i]`, 실점에 `goals[j][j]`"
+     ],
+     "answer": 0,
+     "explain": "득점은 i행을 따라 `goals[i][j]`를, 실점은 i열을 따라 `goals[j][i]`를 더해요. 기본 문제에서 행의 합과 열의 합을 한 반복에서 함께 구한 것과 같은 방법이에요. 자기 자신(j == i)과 -1인 경기는 `continue`(이번 반복의 나머지를 건너뛰고 다음 j로 넘어가기)로 건너뛰어요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "code": "start",
+     "title": "예시 1 팀별 성적",
+     "prompt": "i번 팀마다 득점 gf, 실점 ga, 득실차 diff를 채워 보세요.",
+     "columns": [
+      "팀 i",
+      "gf",
+      "ga",
+      "diff"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "6"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "7"
+       },
+       {
+        "a": "3"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "3"
+       },
+       {
+        "a": "8"
+       },
+       {
+        "a": "-5"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "4"
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "-3"
+       }
+      ]
+     ],
+     "check": "def stats(g, skip=True):\n    n = len(g)\n    out = []\n    for i in range(n):\n        gf = ga = 0\n        for j in range(n):\n            if i == j or (skip and g[i][j] == -1):\n                continue\n            gf += g[i][j]\n            ga += g[j][i]\n        out.append((gf, ga, gf - ga))\n    return out\n\ndef winner(st):\n    best = None\n    for i, (gf, ga, d) in enumerate(st):\n        if best is None or (d, gf) > (st[best][2], st[best][0]):\n            best = i\n    return best\n\ndef answers():\n    g = [[0, 2, 1, 3], [1, 0, 4, 2], [1, 0, 0, 2], [0, 1, 3, 0]]\n    out = []\n    for gf, ga, d in stats(g):\n        out += [gf, ga, d]\n    return out",
+     "explain": "한 팀이 넣은 골은 상대 팀이 내준 골이라, 모든 팀의 득실차를 더하면 0이 돼요(4 + 4 - 5 - 3 = 0). 득실차는 음수도 될 수 있어요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "code": "start",
+     "title": "예시 1 1위 후보 바꾸기",
+     "prompt": "반복이 i번 팀을 볼 때마다 1위 후보를 i번 팀으로 바꾸는지(바꾸면 1, 아니면 0)와, 그 뒤의 best를 채워 보세요. 0번 팀을 볼 때는 best가 -1이라 늘 바꿔요.",
+     "columns": [
+      "팀 i",
+      "diff",
+      "gf",
+      "바꾸나?",
+      "best"
+     ],
+     "rows": [
+      [
+       "0",
+       "4",
+       "6",
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "1",
+       "4",
+       "7",
+       {
+        "a": "1",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       "-5",
+       "3",
+       {
+        "a": "0",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "3",
+       "-3",
+       "4",
+       {
+        "a": "0",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "def stats(g, skip=True):\n    n = len(g)\n    out = []\n    for i in range(n):\n        gf = ga = 0\n        for j in range(n):\n            if i == j or (skip and g[i][j] == -1):\n                continue\n            gf += g[i][j]\n            ga += g[j][i]\n        out.append((gf, ga, gf - ga))\n    return out\n\ndef winner(st):\n    best = None\n    for i, (gf, ga, d) in enumerate(st):\n        if best is None or (d, gf) > (st[best][2], st[best][0]):\n            best = i\n    return best\n\ndef answers():\n    g = [[0, 2, 1, 3], [1, 0, 4, 2], [1, 0, 0, 2], [0, 1, 3, 0]]\n    st = stats(g)\n    out = []\n    best = -1\n    for i, (gf, ga, d) in enumerate(st):\n        ch = best == -1 or d > st[best][2] or (d == st[best][2] and gf > st[best][0])\n        if ch:\n            best = i\n        out += [int(ch), best]\n    return out",
+     "explain": "1번 팀은 득실차가 0번 팀과 같은 4지만 득점이 7로 6보다 많아서 바꿔요. 2번·3번 팀은 득실차가 더 작아 바꾸지 않아요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "code": "start",
+     "q": "i번 팀의 득실차 diff가 지금 1위 후보의 득실차 bestDiff와 같을 때, i번 팀으로 바꿔야 하는 조건은 무엇일까요? (gf는 i번 팀의 득점, bestFor는 1위 후보의 득점)",
+     "options": [
+      "gf > bestFor",
+      "gf >= bestFor",
+      "gf < bestFor",
+      "gf == bestFor"
+     ],
+     "answer": 0,
+     "explain": "득점이 더 많을 때만 바꿔야 해요. `>=`를 쓰면 득점까지 같은 팀이 나중에 나왔을 때 번호가 큰 팀으로 바뀌어 '번호가 작은 팀' 규칙을 어겨요. 득실차가 더 큰 경우(diff > bestDiff)는 득점과 관계없이 바꿔요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "code": "start",
+     "q": "-1(아직 하지 않은 경기)을 건너뛰지 않고 그대로 득점과 실점에 더하면, 예시 2의 return 값은 무엇이 될까요? (올바른 값은 2예요)",
+     "a": "1",
+     "alts": [
+      "1번"
+     ],
+     "check": "def stats(g, skip=True):\n    n = len(g)\n    out = []\n    for i in range(n):\n        gf = ga = 0\n        for j in range(n):\n            if i == j or (skip and g[i][j] == -1):\n                continue\n            gf += g[i][j]\n            ga += g[j][i]\n        out.append((gf, ga, gf - ga))\n    return out\n\ndef winner(st):\n    best = None\n    for i, (gf, ga, d) in enumerate(st):\n        if best is None or (d, gf) > (st[best][2], st[best][0]):\n            best = i\n    return best\n\ndef answers():\n    g = [[0, 2, 2, -1, -1], [3, 0, 4, 1, 3], [4, 3, 0, 5, -1], [-1, 1, 1, 0, 1], [-1, 0, -1, 2, 0]]\n    return [winner(stats(g, skip=False))]",
+     "explain": "-1을 더하면 득점과 실점이 똑같이 1씩 줄어 득실차는 그대로지만, 득점은 아직 하지 않은 경기 수만큼 줄어요. 그래서 득실차가 같은 팀끼리 득점을 비교할 때 순서가 바뀌어 1번 팀이 1위가 되어 버려요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "3개 팀 가운데 0번과 1번 팀만 2 : 2로 비기고 나머지 경기는 아직 하지 않아 `goals`가 `{{0, 2, -1}, {2, 0, -1}, {-1, -1, 0}}`이에요. return 값은 무엇일까요?",
+     "a": "0",
+     "alts": [
+      "0번"
+     ],
+     "check": "def stats(g, skip=True):\n    n = len(g)\n    out = []\n    for i in range(n):\n        gf = ga = 0\n        for j in range(n):\n            if i == j or (skip and g[i][j] == -1):\n                continue\n            gf += g[i][j]\n            ga += g[j][i]\n        out.append((gf, ga, gf - ga))\n    return out\n\ndef winner(st):\n    best = None\n    for i, (gf, ga, d) in enumerate(st):\n        if best is None or (d, gf) > (st[best][2], st[best][0]):\n            best = i\n    return best\n\ndef answers():\n    g = [[0, 2, -1], [2, 0, -1], [-1, -1, 0]]\n    return [winner(stats(g))]",
+     "explain": "세 팀의 득실차가 모두 0이에요. 득점은 0번과 1번이 2로 같아 번호가 작은 0번이 1위예요. 경기를 한 번이라도 했으니 -1이 아니에요."
+    }
+   ],
+   "explain": "i번 팀의 득점은 i행 `goals[i][j]`의 합, 실점은 i열 `goals[j][i]`의 합이라 한 반복에서 함께 구해요. 자기 자신과 -1(아직 하지 않은 경기)은 `continue`로 건너뛰어요. 1위는 득실차 → 득점 → 번호 순서로 정하므로, 득실차가 같을 때만 득점을 `>`로 비교해요. 치른 경기 수 played가 0이면 -1을 돌려줘요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "grid",
+     "alt": "4행 4열 격자. i행은 i번 팀이 넣은 골, j열은 상대가 j번 팀에게 넣은 골. 0행: 0, 2, 1, 3. 1행: 1, 0, 4, 2. 2행: 1, 0, 0, 2. 3행: 0, 1, 3, 0. 오른쪽 끝 열(득점 = 행의 합): 0번 팀 6, 1번 팀 7, 2번 팀 3, 3번 팀 4. 맨 아래 줄(실점 = 열의 합): 0번 팀 2, 1번 팀 3, 2번 팀 8, 3번 팀 7. 0번·1번 팀의 득점과 실점이 강조되어 있음.",
+     "caption": "i행은 i번 팀이 넣은 골, i열은 상대 팀이 i번 팀에게 넣은 골입니다. 오른쪽 끝 칸은 득점(행의 합), 맨 아래 칸은 실점(열의 합)입니다. 강조한 칸은 득실차가 4로 가장 큰 0번·1번 팀의 득점과 실점입니다.",
+     "rows": [
+      [
+       0,
+       2,
+       1,
+       3,
+       6
+      ],
+      [
+       1,
+       0,
+       4,
+       2,
+       7
+      ],
+      [
+       1,
+       0,
+       0,
+       2,
+       3
+      ],
+      [
+       0,
+       1,
+       3,
+       0,
+       4
+      ],
+      [
+       2,
+       3,
+       8,
+       7,
+       ""
+      ]
+     ],
+     "rowLabels": [
+      "0번 팀",
+      "1번 팀",
+      "2번 팀",
+      "3번 팀",
+      "실점 ↓"
+     ],
+     "colLabels": [
+      "상대 0번",
+      "상대 1번",
+      "상대 2번",
+      "상대 3번",
+      "득점 →"
+     ],
+     "highlight": [
+      [
+       0,
+       4
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       4,
+       0
+      ],
+      [
+       4,
+       1
+      ]
+     ]
+    }
+   ],
+   "cspec": {
+    "derived": {
+     "goals_row_len": "len(goals)",
+     "goals_col_len": "len(goals[0])"
+    }
+   }
+  },
+  {
+   "id": "cb-t02-adv5",
+   "version": 1,
+   "title": "레이저 포탑 자리 찾기",
+   "statement": "N x N 칸으로 나뉜 게임 지도의 칸마다 적이 있습니다. 칸마다 있는 적의 수가 2차원 배열 `enemy`에 담겨 있으며, `enemy[i][j]`는 i행 j열 칸에 있는 적의 수입니다(행과 열 번호는 0부터 셉니다).\n\n한 칸에 레이저 포탑을 세우면 그 칸에서 가로·세로·대각선의 8방향으로 레이저가 지도 끝까지 뻗어 나갑니다. 즉 포탑을 i행 j열에 세우면 다음 네 줄에 있는 칸의 적을 모두 물리칩니다. 포탑을 세운 칸의 적도 물리치며, 여러 줄에 함께 속한 칸의 적도 한 번만 셉니다.\n- i행 전체(가로줄)\n- j열 전체(세로줄)\n- i행 j열을 지나는 ↘ 방향 대각선(왼쪽 위에서 오른쪽 아래로)\n- i행 j열을 지나는 ↙ 방향 대각선(오른쪽 위에서 왼쪽 아래로)\n\n예를 들어 `enemy`가 `{{7, 6, 0, 5, 6}, {1, 1, 0, 1, 9}, {9, 9, 9, 1, 7}, {4, 4, 3, 9, 6}, {0, 2, 2, 5, 7}}`인 5 x 5 지도에서 포탑을 2행 3열에 세우면 아래 그림에서 강조한 15칸의 적 81명을 물리칩니다. 어느 칸에 세워도 이보다 많이 물리칠 수 없습니다.\n\n{{fig:f1}}\n\n따라서 `{2, 3, 81}`을 return 합니다.\n\n포탑 하나로 가장 많은 적을 물리칠 수 있는 칸을 찾아 [행 번호, 열 번호, 물리치는 적의 수]를 return 하려 합니다. 가장 많이 물리치는 칸이 여러 개이면 행 번호가 가장 작은 칸을, 행 번호도 같으면 열 번호가 가장 작은 칸을 고릅니다.\n\n지도가 주어질 때, [행 번호, 열 번호, 물리치는 적의 수]를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "`enemy`는 N행 N열 정수 2차원 배열이며, N은 3 이상 8 이하입니다.",
+    "`enemy`의 원소는 0 이상 9 이하인 정수입니다.",
+    "`enemy_row_len`과 `enemy_col_len`에는 `enemy`의 행 수와 열 수(둘 다 N)가 들어옵니다."
+   ],
+   "returns": [
+    "[행 번호, 열 번호, 물리치는 적의 수]를 길이 3인 배열로 return 합니다. 가장 많이 물리치는 칸이 여러 개이면 행 번호, 그다음 열 번호가 가장 작은 칸을 고릅니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "enemy"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        7,
+        6,
+        0,
+        5,
+        6
+       ],
+       [
+        1,
+        1,
+        0,
+        1,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        1,
+        7
+       ],
+       [
+        4,
+        4,
+        3,
+        9,
+        6
+       ],
+       [
+        0,
+        2,
+        2,
+        5,
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      3,
+      81
+     ],
+     "explain": "2행 3열에 세우면 적 81명을 물리치며 가장 많습니다."
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        9,
+        5,
+        8
+       ],
+       [
+        3,
+        5,
+        2,
+        4
+       ],
+       [
+        4,
+        5,
+        3,
+        3
+       ],
+       [
+        4,
+        5,
+        8,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2,
+      59
+     ],
+     "explain": "1행 2열과 2행 1열에 세울 때 모두 적 59명으로 가장 많으므로 행 번호가 작은 1행 2열을 고릅니다."
+    }
+   ],
+   "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint* solution(int** enemy, int enemy_row_len, int enemy_col_len) {\n    int n = enemy_row_len;\n    int row[8] = {0}, col[8] = {0};\n    int down[15] = {0}, up[15] = {0};\n    int* answer = (int*)malloc(sizeof(int) * 3);\n    answer[2] = -1;\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            row[i] += enemy[i][j];\n            col[⟦1⟧] += enemy[i][j];\n            down[⟦2⟧] += enemy[i][j];\n            up[⟦3⟧] += enemy[i][j];\n        }\n    }\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            int total = row[i] + col[j] + ⟦4⟧ + up[i + j];\n            total -= ⟦5⟧;\n            if (⟦6⟧) {\n                answer[0] = i;\n                answer[1] = j;\n                answer[2] = total;\n            }\n        }\n    }\n\n    return answer;\n}",
+   "blanks": [
+    {
+     "answer": "j"
+    },
+    {
+     "answer": "i - j + n - 1",
+     "alts": [
+      "i - j + (n - 1)",
+      "n - 1 + i - j",
+      "i + n - 1 - j",
+      "i-j+n-1"
+     ]
+    },
+    {
+     "answer": "i + j",
+     "alts": [
+      "j + i"
+     ]
+    },
+    {
+     "answer": "down[i - j + n - 1]",
+     "alts": [
+      "down[n - 1 + i - j]",
+      "down[i-j+n-1]"
+     ]
+    },
+    {
+     "answer": "3 * enemy[i][j]",
+     "alts": [
+      "enemy[i][j] * 3",
+      "enemy[i][j] + enemy[i][j] + enemy[i][j]"
+     ]
+    },
+    {
+     "answer": "total > answer[2]",
+     "alts": [
+      "answer[2] < total"
+     ]
+    }
+   ],
+   "solution": "#include <stdio.h>\n#include <stdlib.h>\n\nint* solution(int** enemy, int enemy_row_len, int enemy_col_len) {\n    int n = enemy_row_len;\n    int row[8] = {0}, col[8] = {0};\n    int down[15] = {0}, up[15] = {0};\n    int* answer = (int*)malloc(sizeof(int) * 3);\n    answer[2] = -1;\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            row[i] += enemy[i][j];\n            col[j] += enemy[i][j];\n            down[i - j + n - 1] += enemy[i][j];\n            up[i + j] += enemy[i][j];\n        }\n    }\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            int total = row[i] + col[j] + down[i - j + n - 1] + up[i + j];\n            total -= 3 * enemy[i][j];\n            if (total > answer[2]) {\n                answer[0] = i;\n                answer[1] = j;\n                answer[2] = total;\n            }\n        }\n    }\n\n    return answer;\n}",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      3,
+      252
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      9
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0,
+      9
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        9
+       ],
+       [
+        0,
+        0,
+        9,
+        0
+       ],
+       [
+        0,
+        9,
+        0,
+        0
+       ],
+       [
+        9,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      3,
+      36
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      5,
+      0,
+      54
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        0,
+        0,
+        5
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        5,
+        0,
+        0,
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0,
+      20
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        6
+       ],
+       [
+        9,
+        7,
+        3
+       ],
+       [
+        8,
+        5,
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      45
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        1,
+        5,
+        5
+       ],
+       [
+        4,
+        5,
+        6,
+        5
+       ],
+       [
+        8,
+        2,
+        4,
+        3
+       ],
+       [
+        4,
+        8,
+        2,
+        4
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      56
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        4,
+        1,
+        1,
+        3,
+        5
+       ],
+       [
+        8,
+        7,
+        3,
+        8,
+        5,
+        0
+       ],
+       [
+        4,
+        5,
+        1,
+        6,
+        1,
+        1
+       ],
+       [
+        8,
+        0,
+        4,
+        3,
+        8,
+        2
+       ],
+       [
+        8,
+        8,
+        1,
+        3,
+        3,
+        2
+       ],
+       [
+        2,
+        4,
+        5,
+        4,
+        9,
+        4
+       ]
+      ]
+     ],
+     "expected": [
+      5,
+      0,
+      89
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        0,
+        2,
+        7,
+        2,
+        0,
+        6
+       ],
+       [
+        8,
+        0,
+        9,
+        0,
+        4,
+        0,
+        3
+       ],
+       [
+        8,
+        5,
+        6,
+        8,
+        4,
+        1,
+        9
+       ],
+       [
+        7,
+        7,
+        0,
+        0,
+        5,
+        3,
+        5
+       ],
+       [
+        5,
+        1,
+        3,
+        4,
+        8,
+        2,
+        4
+       ],
+       [
+        0,
+        0,
+        3,
+        2,
+        1,
+        8,
+        5
+       ],
+       [
+        0,
+        7,
+        9,
+        4,
+        2,
+        5,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      2,
+      98
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        2,
+        6,
+        1,
+        1,
+        6,
+        3,
+        2
+       ],
+       [
+        7,
+        6,
+        8,
+        6,
+        5,
+        9,
+        1,
+        6
+       ],
+       [
+        6,
+        8,
+        1,
+        4,
+        5,
+        1,
+        5,
+        7
+       ],
+       [
+        3,
+        4,
+        0,
+        2,
+        0,
+        6,
+        7,
+        4
+       ],
+       [
+        2,
+        5,
+        8,
+        2,
+        4,
+        1,
+        4,
+        4
+       ],
+       [
+        6,
+        6,
+        7,
+        7,
+        6,
+        8,
+        0,
+        3
+       ],
+       [
+        0,
+        3,
+        6,
+        2,
+        1,
+        7,
+        1,
+        8
+       ],
+       [
+        6,
+        7,
+        5,
+        5,
+        8,
+        8,
+        0,
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      5,
+      3,
+      126
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        2,
+        0,
+        2,
+        0
+       ],
+       [
+        1,
+        2,
+        0,
+        1,
+        1
+       ],
+       [
+        1,
+        0,
+        1,
+        2,
+        2
+       ],
+       [
+        0,
+        2,
+        1,
+        2,
+        0
+       ],
+       [
+        1,
+        2,
+        0,
+        2,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      1,
+      20
+     ]
+    }
+   ],
+   "compare": "exact",
+   "inputCheck": "def valid(enemy):\n    if not isinstance(enemy, list) or not (3 <= len(enemy) <= 8):\n        return False\n    n = len(enemy)\n    for row in enemy:\n        if not isinstance(row, list) or len(row) != n:\n            return False\n        for v in row:\n            if not isinstance(v, int) or isinstance(v, bool) or not (0 <= v <= 9):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "5 x 5 지도에서 포탑을 1행 3열에 세울 때 레이저가 지나지 **않는** 칸은 무엇일까요?",
+     "options": [
+      "enemy[1][0]",
+      "enemy[4][3]",
+      "enemy[0][2]",
+      "enemy[3][1]",
+      "enemy[3][2]"
+     ],
+     "answer": 4,
+     "explain": "1행 전체, 3열 전체, ↘ 대각선(0행 2열, 1행 3열, 2행 4열), ↙ 대각선(0행 4열, 1행 3열, 2행 2열, 3행 1열, 4행 0열)이 레이저가 지나는 칸이에요. 3행 2열은 이 네 줄 어디에도 없어요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "4 x 4 지도에서 포탑을 1행 1열에 세우면 레이저가 지나는 칸(포탑 칸 포함)은 모두 몇 칸일까요? 겹치는 칸은 한 번만 세요.",
+     "a": "12",
+     "alts": [
+      "12칸"
+     ],
+     "check": "def answers():\n    n, r, c = 4, 1, 1\n    cells = [(i, j) for i in range(n) for j in range(n) if i == r or j == c or i - j == r - c or i + j == r + c]\n    return [len(cells)]",
+     "explain": "1행 4칸, 1열 4칸, ↘ 대각선 4칸(0행 0열 ~ 3행 3열), ↙ 대각선 3칸(0행 2열, 1행 1열, 2행 0열)을 더하면 15칸이에요. 그런데 포탑 칸 1행 1열이 네 줄에 모두 들어 있어 세 번 더 센 셈이라 15 - 3 = 12칸이에요. 서로 다른 두 줄은 포탑 칸에서만 만나요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "↘ 방향 대각선에 함께 있는 칸(예: 0행 1열, 1행 2열, 2행 3열)끼리 늘 같은 값은 무엇일까요?",
+     "options": [
+      "행 번호 - 열 번호 (i - j)",
+      "행 번호 + 열 번호 (i + j)",
+      "행 번호 (i)",
+      "행 번호 x 열 번호 (i * j)"
+     ],
+     "answer": 0,
+     "explain": "↘ 방향으로 한 칸 가면 행과 열 번호가 함께 1씩 늘어 i - j가 그대로예요(0 - 1 = 1 - 2 = 2 - 3 = -1). ↙ 방향으로 가면 행은 1 늘고 열은 1 줄어 i + j가 그대로예요. 그래서 대각선마다 번호를 붙여 그 줄의 합을 배열 한 칸에 모을 수 있어요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "code": "start",
+     "title": "↘ 대각선 번호 붙이기",
+     "prompt": "i - j는 음수가 될 수 있어 배열 번호로 바로 쓸 수 없어요. 그래서 n - 1을 더한 `i - j + n - 1`을 ↘ 대각선의 번호로 써요. n = 4일 때 빈칸에 i행 j열 칸의 번호를 채워 보세요.",
+     "columns": [
+      "i \\ j",
+      "0",
+      "1",
+      "2",
+      "3"
+     ],
+     "rows": [
+      [
+       "i = 0",
+       {
+        "a": "3"
+       },
+       "2",
+       "1",
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "i = 1",
+       {
+        "a": "4"
+       },
+       "3",
+       {
+        "a": "2"
+       },
+       "1"
+      ],
+      [
+       "i = 2",
+       "5",
+       {
+        "a": "4"
+       },
+       "3",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "i = 3",
+       {
+        "a": "6"
+       },
+       "5",
+       "4",
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    n = 4\n    pick = {(0, 0), (0, 3), (1, 0), (1, 2), (2, 1), (2, 3), (3, 0), (3, 3)}\n    out = []\n    for i in range(n):\n        for j in range(n):\n            if (i, j) in pick:\n                out.append(i - j + n - 1)\n    return out",
+     "explain": "가장 작은 번호는 0행 3열의 0, 가장 큰 번호는 3행 0열의 6이라 ↘ 대각선은 0 ~ 6번, 모두 2n - 1 = 7개예요. 같은 번호끼리 한 대각선이에요. ↙ 대각선 번호 i + j도 0 ~ 2n - 2라서, n이 8 이하이면 칸이 15개인 배열 `down[15]`·`up[15]`로 충분해요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "code": "start",
+     "q": "포탑을 i행 j열에 세울 때 `row[i] + col[j] + down[i - j + n - 1] + up[i + j]`에서 빼야 하는 값은 무엇일까요?",
+     "options": [
+      "3 * enemy[i][j]",
+      "enemy[i][j]",
+      "4 * enemy[i][j]",
+      "2 * enemy[i][j]"
+     ],
+     "answer": 0,
+     "explain": "포탑 칸은 네 줄 모두에 들어 있어서 네 번 더해졌어요. 한 번만 세야 하니 세 번을 빼요. 앞에서 본 것처럼 서로 다른 두 줄은 포탑 칸에서만 만나므로 다른 칸은 한 번씩만 더해져 있어요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "code": "start",
+     "title": "예시 1 칸별 total",
+     "prompt": "예시 1(n = 5)에서 몇몇 칸에 포탑을 세울 때의 total을 계산해 보세요. row[i]와 col[j]는 적어 두었어요. 대각선 합은 그림에서 같은 대각선의 칸을 더해 구해요.",
+     "columns": [
+      "칸",
+      "row[i]",
+      "col[j]",
+      "down[i - j + 4]",
+      "up[i + j]",
+      "total"
+     ],
+     "rows": [
+      [
+       "2행 3열",
+       "35",
+       "21",
+       {
+        "a": "13"
+       },
+       {
+        "a": "15"
+       },
+       {
+        "a": "81"
+       }
+      ],
+      [
+       "0행 0열",
+       "24",
+       "21",
+       {
+        "a": "33"
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "64"
+       }
+      ],
+      [
+       "2행 2열",
+       "35",
+       "14",
+       {
+        "a": "33"
+       },
+       {
+        "a": "20"
+       },
+       {
+        "a": "75"
+       }
+      ],
+      [
+       "4행 1열",
+       "16",
+       "22",
+       {
+        "a": "6"
+       },
+       {
+        "a": "15"
+       },
+       {
+        "a": "53"
+       }
+      ]
+     ],
+     "check": "def line_sums(m):\n    n = len(m)\n    row = [sum(m[i]) for i in range(n)]\n    col = [sum(m[i][j] for i in range(n)) for j in range(n)]\n    down = [0] * (2 * n - 1)\n    up = [0] * (2 * n - 1)\n    for i in range(n):\n        for j in range(n):\n            down[i - j + n - 1] += m[i][j]\n            up[i + j] += m[i][j]\n    return row, col, down, up\n\ndef by_formula(m, sub):\n    n = len(m)\n    row, col, down, up = line_sums(m)\n    best = [0, 0, -1]\n    for i in range(n):\n        for j in range(n):\n            t = row[i] + col[j] + down[i - j + n - 1] + up[i + j] - sub * m[i][j]\n            if t > best[2]:\n                best = [i, j, t]\n    return best\n\ndef fmt(a):\n    return '{' + ', '.join(str(x) for x in a) + '}'\n\ndef answers():\n    m = [[7, 6, 0, 5, 6], [1, 1, 0, 1, 9], [9, 9, 9, 1, 7], [4, 4, 3, 9, 6], [0, 2, 2, 5, 7]]\n    n = len(m)\n    row, col, down, up = line_sums(m)\n    out = []\n    for i, j in [(2, 3), (0, 0), (2, 2), (4, 1)]:\n        out += [down[i - j + n - 1], up[i + j], row[i] + col[j] + down[i - j + n - 1] + up[i + j] - 3 * m[i][j]]\n    return out",
+     "explain": "2행 3열의 total 81이 가장 커요. 네 줄의 합을 더한 뒤 포탑 칸의 적 수 `enemy[2][3]`(값 1)를 세 번 뺐어요. 이렇게 줄의 합을 미리 모아 두면 칸마다 네 줄을 다시 훑지 않아도 돼요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "code": "start",
+     "q": "겹친 포탑 칸을 세 번이 아니라 `enemy[i][j]` 한 번만 빼면, 예시 1의 return 값은 무엇이 될까요? `{행, 열, 수}` 꼴로 적어 보세요. (올바른 값은 `{2, 3, 81}`이에요)",
+     "a": "{2, 2, 93}",
+     "alts": [
+      "[2, 2, 93]"
+     ],
+     "check": "def line_sums(m):\n    n = len(m)\n    row = [sum(m[i]) for i in range(n)]\n    col = [sum(m[i][j] for i in range(n)) for j in range(n)]\n    down = [0] * (2 * n - 1)\n    up = [0] * (2 * n - 1)\n    for i in range(n):\n        for j in range(n):\n            down[i - j + n - 1] += m[i][j]\n            up[i + j] += m[i][j]\n    return row, col, down, up\n\ndef by_formula(m, sub):\n    n = len(m)\n    row, col, down, up = line_sums(m)\n    best = [0, 0, -1]\n    for i in range(n):\n        for j in range(n):\n            t = row[i] + col[j] + down[i - j + n - 1] + up[i + j] - sub * m[i][j]\n            if t > best[2]:\n                best = [i, j, t]\n    return best\n\ndef fmt(a):\n    return '{' + ', '.join(str(x) for x in a) + '}'\n\ndef answers():\n    m = [[7, 6, 0, 5, 6], [1, 1, 0, 1, 9], [9, 9, 9, 1, 7], [4, 4, 3, 9, 6], [0, 2, 2, 5, 7]]\n    return [fmt(by_formula(m, 1))]",
+     "explain": "한 번만 빼면 칸마다 자기 칸의 적이 두 번 더 세어져, 적이 많은 칸에 포탑을 세울수록 점수가 부풀어요. 그래서 2행 2열이 가장 큰 것처럼 보여 답이 틀려져요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "code": "start",
+     "q": "모든 칸의 적이 0인 4 x 4 지도라면 return 값은 무엇일까요? `{행, 열, 수}` 꼴로 적어 보세요.",
+     "a": "{0, 0, 0}",
+     "alts": [
+      "[0, 0, 0]"
+     ],
+     "check": "def line_sums(m):\n    n = len(m)\n    row = [sum(m[i]) for i in range(n)]\n    col = [sum(m[i][j] for i in range(n)) for j in range(n)]\n    down = [0] * (2 * n - 1)\n    up = [0] * (2 * n - 1)\n    for i in range(n):\n        for j in range(n):\n            down[i - j + n - 1] += m[i][j]\n            up[i + j] += m[i][j]\n    return row, col, down, up\n\ndef by_formula(m, sub):\n    n = len(m)\n    row, col, down, up = line_sums(m)\n    best = [0, 0, -1]\n    for i in range(n):\n        for j in range(n):\n            t = row[i] + col[j] + down[i - j + n - 1] + up[i + j] - sub * m[i][j]\n            if t > best[2]:\n                best = [i, j, t]\n    return best\n\ndef fmt(a):\n    return '{' + ', '.join(str(x) for x in a) + '}'\n\ndef answers():\n    return [fmt(by_formula([[0] * 4 for _ in range(4)], 3))]",
+     "explain": "모든 칸의 total이 0으로 같아요. answer[2]를 -1로 시작했으니 첫 칸 0행 0열에서 `0 > -1`이 참이 되어 답이 정해지고, 그 뒤로는 `0 > 0`이 거짓이라 바뀌지 않아요. 행과 열을 0부터 차례로 보며 `>`로 비교하니 동점이면 행·열 번호가 작은 칸이 남아요."
+    },
+    {
+     "id": "s9",
+     "kind": "mcq",
+     "code": "start",
+     "q": "solution 함수의 전체 흐름으로 알맞은 것은 무엇일까요?",
+     "options": [
+      "모든 칸을 한 번 훑으며 행·열·두 방향 대각선의 합을 배열에 모은다 → 모든 칸을 다시 훑으며 네 줄의 합에서 포탑 칸을 세 번 빼 total을 구한다 → total이 지금까지 가장 큰 값보다 클 때만 답을 바꾼다",
+      "모든 칸을 한 번 훑으며 행·열·두 방향 대각선의 합을 배열에 모은다 → 모든 칸을 다시 훑으며 네 줄의 합에서 포탑 칸을 세 번 빼 total을 구한다 → total이 지금까지 가장 큰 값 이상이면 답을 바꾼다",
+      "칸마다 네 줄의 합을 더해 total을 구하고 → 가장 큰 total이 나온 칸에 있는 적의 수 enemy[i][j]를 답의 세 번째 값으로 한다",
+      "행의 합이 가장 큰 행과 열의 합이 가장 큰 열을 따로 찾고 → 그 두 줄이 만나는 칸을 답으로 한다"
+     ],
+     "answer": 0,
+     "explain": "두 번 훑기가 핵심이에요. 첫 번째 훑기로 줄의 합을 모으고, 두 번째 훑기로 칸마다 total을 계산해 비교해요. `>=`로 바꾸면 예시 2처럼 동점인 칸이 있을 때 나중 칸으로 바뀌어 틀려요. 가장 좋은 행과 열이 만나는 칸이 꼭 가장 좋은 자리는 아니에요(대각선도 함께 보아야 해요)."
+    }
+   ],
+   "explain": "같은 ↘ 대각선의 칸은 i - j가, 같은 ↙ 대각선의 칸은 i + j가 같아요. i - j에 n - 1을 더해 0부터 시작하는 번호로 바꾸고, 한 번 훑으며 행·열·두 대각선의 합을 배열에 모아요. 두 번째 훑기에서 칸마다 네 줄의 합을 더하면 포탑 칸이 네 번 들어가니 세 번 빼요. `>`로 비교하고 행·열을 0부터 차례로 보면 동점일 때 행·열 번호가 작은 칸이 남아요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "grid",
+     "alt": "5행 5열 격자(행·열 번호 0부터). 0행: 7, 6, 0, 5, 6. 1행: 1, 1, 0, 1, 9. 2행: 9, 9, 9, 1, 7. 3행: 4, 4, 3, 9, 6. 4행: 0, 2, 2, 5, 7. 2행 3열에 포탑을 세웠을 때 레이저가 지나는 15칸(강조): 0행 1열(6), 0행 3열(5), 1행 2열(0), 1행 3열(1), 1행 4열(9), 2행 0열(9), 2행 1열(9), 2행 2열(9), 2행 3열(1), 2행 4열(7), 3행 2열(3), 3행 3열(9), 3행 4열(6), 4행 1열(2), 4행 3열(5). 합 81.",
+     "caption": "강조한 칸이 2행 3열에 세운 포탑의 레이저가 지나는 칸입니다(포탑 칸 포함, 15칸).",
+     "rows": [
+      [
+       7,
+       6,
+       0,
+       5,
+       6
+      ],
+      [
+       1,
+       1,
+       0,
+       1,
+       9
+      ],
+      [
+       9,
+       9,
+       9,
+       1,
+       7
+      ],
+      [
+       4,
+       4,
+       3,
+       9,
+       6
+      ],
+      [
+       0,
+       2,
+       2,
+       5,
+       7
+      ]
+     ],
+     "rowLabels": [
+      "0행",
+      "1행",
+      "2행",
+      "3행",
+      "4행"
+     ],
+     "colLabels": [
+      "0열",
+      "1열",
+      "2열",
+      "3열",
+      "4열"
+     ],
+     "highlight": [
+      [
+       0,
+       1
+      ],
+      [
+       0,
+       3
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       1
+      ],
+      [
+       2,
+       2
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       2,
+       4
+      ],
+      [
+       3,
+       2
+      ],
+      [
+       3,
+       3
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       4,
+       1
+      ],
+      [
+       4,
+       3
+      ]
+     ]
+    }
+   ],
+   "cspec": {
+    "derived": {
+     "enemy_row_len": "len(enemy)",
+     "enemy_col_len": "len(enemy[0])"
+    },
+    "ret": {
+     "len": "3"
+    }
+   }
+  }
+ ]
+}
