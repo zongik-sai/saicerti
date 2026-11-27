@@ -74,7 +74,8 @@ export function TeacherPage() {
             <thead>
               <tr>
                 <th>학생</th>
-                <th>해결</th>
+                <th title="기본 문제 해결 수">기본</th>
+                <th title="심화 문제(선택) 해결 수">심화</th>
                 {course.types.map((t) => (
                   <th key={t.type} title={t.typeTitle}>
                     유형 {t.type}
@@ -94,6 +95,8 @@ export function TeacherPage() {
               {rows.map((r) => {
                 const probs = r.state.probs;
                 const total = course.types.reduce((n, t) => n + t.problems.filter((p) => probs[p.id]?.solved).length, 0);
+                const advTotal = course.types.reduce((n, t) => n + (t.adv?.problems ?? []).filter((p) => probs[p.id]?.solved).length, 0);
+                const advAll = course.types.reduce((n, t) => n + (t.adv?.problems.length ?? 0), 0);
                 const tries = Object.values(probs).reduce((n, p) => n + p.tries, 0);
                 const saw = Object.values(probs).filter((p) => p.sawAnswerAt).length;
                 return (
@@ -105,12 +108,17 @@ export function TeacherPage() {
                     <td>
                       <strong>{total}</strong>/{course.types.length * 5}
                     </td>
+                    <td className="adv-cell">
+                      <strong>{advTotal}</strong>/{advAll}
+                    </td>
                     {course.types.map((t) => {
                       const s = t.problems.filter((p) => probs[p.id]?.solved).length;
                       const st = t.problems.filter((p) => probs[p.id]?.stepsDone).length;
+                      const a = (t.adv?.problems ?? []).filter((p) => probs[p.id]?.solved).length;
                       return (
-                        <td key={t.type} className={s === t.problems.length ? 'full' : s > 0 || st > 0 ? 'part' : ''} title={`해결 ${s}, 중간 점검 마침 ${st}`}>
+                        <td key={t.type} className={s === t.problems.length ? 'full' : s > 0 || st > 0 ? 'part' : ''} title={`기본 해결 ${s}, 중간 점검 마침 ${st}, 심화 해결 ${a}`}>
                           {s}/{t.problems.length}
+                          {a > 0 && <span className="adv-count"> +{a}</span>}
                         </td>
                       );
                     })}
@@ -134,7 +142,7 @@ export function TeacherPage() {
         </div>
       )}
       <p className="faint" style={{ marginTop: '0.75rem' }}>
-        유형 칸 = 유형별 해결 문제 수(5문제 중), 모의 칸 = 모의고사 해결 문항 수(시험을 끝낸 경우). 점수는 학생 브라우저가 기록한 자기 학습 기록이며 평가 근거가 아니에요. 학생 코드는 서버에 저장하지 않아요.
+        유형 칸 = 유형별 기본 문제 해결 수(5문제 중), 주황 +숫자 = 그 유형의 심화 문제(선택) 해결 수, 모의 칸 = 모의고사 해결 문항 수(시험을 끝낸 경우). 점수는 학생 브라우저가 기록한 자기 학습 기록이며 평가 근거가 아니에요. 학생 코드는 서버에 저장하지 않아요.
       </p>
     </div>
   );

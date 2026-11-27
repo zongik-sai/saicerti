@@ -21,11 +21,13 @@ interface Props {
   type: TypeFile;
   problem: Problem;
   index: number;
+  /** [심화] 문제 */
+  adv?: boolean;
   learnerKey: string;
   remote: boolean;
 }
 
-export function ProblemPage({ course, type, problem, index, learnerKey, remote }: Props) {
+export function ProblemPage({ course, type, problem, index, adv = false, learnerKey, remote }: Props) {
   const prog = useCourseProgress(learnerKey, course.id, remote);
   const raw = prog.state.probs[problem.id];
   const ps: ProbState | undefined = raw && raw.ver === problem.version ? raw : raw ? { ...raw, steps: [], stepsDone: false, revealed: [] } : undefined;
@@ -55,7 +57,10 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
       return { ...p, steps, stepsDone: p.stepsDone || all, revealed: revealed ? [...new Set([...(p.revealed ?? []), sid])] : p.revealed };
     });
 
-  const next = nextProblem(course, type, index);
+  const next = nextProblem(course, type, index, adv);
+  const tier = adv ? '심화' : '기본';
+  // 기본 5문제를 모두 풀면 과정 화면에서 [심화]를 열 수 있다고 알려 준다
+  const advHint = !adv && !!type.adv?.problems.length && type.problems.every((p) => prog.state.probs[p.id]?.solved) && !prog.state.advOpen?.includes(`t${String(type.type).padStart(2, '0')}`);
   // 한 문제 안에서는 중간 점검 단계와 코드 풀이를 자유롭게 오간다(선생님 요청 2026-11-26). 진도 표시(✓)는 맞힌 단계에만
   const goNext = () => {
     if (stepIdx >= problem.steps.length - 1) setTab('code');
@@ -65,14 +70,15 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
   return (
     <div className="page" ref={topRef}>
       <div className="crumb">
-        <Link to="/">홈</Link> › <Link to={meta.path}>{meta.name}</Link> › 유형 {type.type}. {type.typeTitle}
+        <Link to="/">홈</Link> › <Link to={meta.path}>{meta.name}</Link> › 유형 {type.type}. {type.typeTitle} › [{tier}] {index + 1}
       </div>
       <div className="solve">
         <section className="card statement" aria-label="문제">
           <div className="row" style={{ gap: '0.4rem' }}>
+            {adv && <span className="badge adv">[심화] 선택</span>}
             <span className={`badge ${type.kind}`}>{KIND_LABEL[type.kind]}</span>
             <span className="faint">
-              유형 {type.type} · 문제 {index + 1}/5
+              유형 {type.type} · {tier} {index + 1}/5
             </span>
             {ps?.solved && <span className="badge write">해결</span>}
           </div>
@@ -141,7 +147,19 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
                   </button>
                 </p>
               )}
-              <CodePanel key={problem.id} problem={problem} kind={type.kind} lang={type.lang ?? 'python'} learnerKey={learnerKey} ps={ps} update={update} nextPath={next ? `${meta.path}/${next}` : null} onNext={() => next && navigate(`${meta.path}/${next}`)} />
+              <CodePanel
+                key={problem.id}
+                problem={problem}
+                kind={type.kind}
+                lang={type.lang ?? 'python'}
+                learnerKey={learnerKey}
+                ps={ps}
+                update={update}
+                nextPath={next ? `${meta.path}/${next}` : null}
+                onNext={() => next && navigate(`${meta.path}/${next}`)}
+                homePath={meta.path}
+                advHint={advHint}
+              />
             </>
           )}
           {prog.syncError && <p className="notice warn" style={{ marginTop: '0.75rem' }}>{prog.syncError}</p>}
@@ -151,7 +169,12 @@ export function ProblemPage({ course, type, problem, index, learnerKey, remote }
   );
 }
 
-function nextProblem(course: Course, type: TypeFile, index: number): string | null {
+function nextProblem(course: Course, type: TypeFile, index: number, adv: boolean): string | null {
+  // 심화는 같은 유형의 다음 심화로(심화 5 다음은 과정 화면)
+  if (adv) {
+    const list = type.adv?.problems ?? [];
+    return index + 1 < list.length ? list[index + 1].id : null;
+  }
   if (index + 1 < type.problems.length) return type.problems[index + 1].id;
   const ti = course.types.findIndex((t) => t.type === type.type);
   const nt = course.types[ti + 1];
@@ -167,9 +190,11 @@ interface CodeProps {
   update: (fn: (p: ProbState) => ProbState) => void;
   nextPath: string | null;
   onNext: () => void;
+  homePath: string;
+  advHint: boolean;
 }
 
-function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNext }: CodeProps) {
+function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNext, homePath, advHint }: CodeProps) {
   const engine = useEngine(lang);
   const draft = useMemo(() => readDraft(learnerKey, problem.id, problem.version), [learnerKey, problem.id, problem.version]);
   const nBlanks = kind === 'blank' ? countBlanks(problem.code) : 0;
@@ -291,12 +316,21 @@ function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNe
             <button className="btn small" onClick={() => setShowAnswer((v) => !v)}>
               {showAnswer ? '모범 답안 접기' : '모범 답안 보기'}
             </button>
-            {nextPath && (
+            {nextPath ? (
               <button className="btn small primary" onClick={onNext}>
                 다음 문제 →
               </button>
+            ) : (
+              <Link to={homePath} className="btn small primary">
+                과정 화면으로
+              </Link>
             )}
           </div>
+          {advHint && (
+            <p className="notice adv-hint">
+              이 유형의 기본 5문제를 모두 풀었어요! <Link to={homePath}>과정 화면</Link>에서 <b>[심화] 열기</b>를 누르면 더 어려운 문제에 도전할 수 있어요(선택).
+            </p>
+          )}
           {showAnswer && <CodeView lang={lang} code={problem.solution} />}
         </div>
       )}

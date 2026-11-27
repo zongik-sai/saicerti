@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { HashRouter, Link, Navigate, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom';
-import { COURSES, courseMeta, findProblem, loadCourse, type CourseMeta } from '../content';
+import { allProblems, COURSES, courseMeta, findProblem, loadCourse, typeKey, type CourseMeta } from '../content';
 import type { Course } from '../content/types';
 import { useAuth } from '../features/auth/AuthContext';
 import { isDemoEnabled, isSupabaseConfigured, BASE_URL } from '../lib/config';
@@ -11,7 +11,7 @@ import { MockPage } from './MockPage';
 import { TeacherPage } from '../features/teacher/TeacherPage';
 import { AdminPage } from '../features/admin/AdminPage';
 import { useRoles } from '../features/admin/roles';
-import { tally } from '../features/progress/model';
+import { advGate, isAdvId, mockGate, tally } from '../features/progress/model';
 
 /** 로그인하지 않은 사람도 문제를 풀 수 있다(선생님 요청 2026-11-27). 기록은 이 브라우저에만(접두사 saicerti:v1:guest:), 서버·선생님 화면에는 가지 않는다 */
 const GUEST_KEY = 'guest';
@@ -157,7 +157,7 @@ function Home() {
       <section className="hero">
         <h1>자격증 코딩, 손으로 따라가고 코드로 확인해요</h1>
         <p className="muted" style={{ maxWidth: '44rem' }}>
-          COS Pro Python·C 시험 유형마다 비슷한 연습 문제 5개와 모의고사 3회. 먼저 표를 채우며 코드를 손으로 따라가 보고, 그다음 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
+          COS Pro Python·C 시험 유형마다 기본 연습 문제 5개와 도전용 심화 문제 5개, 그리고 모의고사 3회. 먼저 표를 채우며 코드를 손으로 따라가 보고, 그다음 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
         </p>
       </section>
       <div className="courses">
@@ -209,10 +209,17 @@ function Home() {
 
 function CourseBar({ meta, learnerKey, remote }: { meta: CourseMeta; learnerKey: string; remote: boolean }) {
   const prog = useCourseProgress(learnerKey, meta.id, remote);
-  const solved = tally(prog.state, Object.keys(prog.state.probs)).solved;
+  const keys = Object.keys(prog.state.probs);
+  const solved = tally(
+    prog.state,
+    keys.filter((k) => !isAdvId(k)),
+  ).solved;
+  const adv = tally(prog.state, keys.filter(isAdvId)).solved;
   return (
     <div>
-      <div className="faint">해결 {solved} / 50</div>
+      <div className="faint">
+        기본 해결 {solved} / 50{adv > 0 && <span className="adv-count"> · 심화 {adv}</span>}
+      </div>
       <div className="bar" aria-hidden>
         <i style={{ width: `${(solved / 50) * 100}%` }} />
       </div>
@@ -223,6 +230,8 @@ function CourseBar({ meta, learnerKey, remote }: { meta: CourseMeta; learnerKey:
 function CourseRoute({ meta }: { meta: CourseMeta }) {
   const { status } = useAuth();
   const learner = useLearner();
+  // 선생님은 잠금 없이 미리 볼 수 있다(심화·모의고사). 학생에게는 조건을 채워야 열림
+  const preview = useRoles()?.teacher === true;
   const [course, setCourse] = useState<Course | null>(null);
   const [err, setErr] = useState<string | null>(null);
   useEffect(() => {
@@ -243,9 +252,9 @@ function CourseRoute({ meta }: { meta: CourseMeta }) {
     <>
       {learner.guest && <GuestBar />}
       <Routes>
-        <Route index element={<CourseHome course={course} learnerKey={learnerKey} remote={remote} />} />
-        <Route path="mock/:n" element={<MockRoute course={course} learnerKey={learnerKey} remote={remote} />} />
-        <Route path=":pid" element={<ProblemRoute course={course} learnerKey={learnerKey} remote={remote} />} />
+        <Route index element={<CourseHome course={course} learnerKey={learnerKey} remote={remote} preview={preview} />} />
+        <Route path="mock/:n" element={<MockRoute course={course} learnerKey={learnerKey} remote={remote} preview={preview} />} />
+        <Route path=":pid" element={<ProblemRoute course={course} learnerKey={learnerKey} remote={remote} preview={preview} />} />
       </Routes>
     </>
   );
@@ -279,16 +288,65 @@ function GuestBar() {
   );
 }
 
-function MockRoute({ course, learnerKey, remote }: { course: Course; learnerKey: string; remote: boolean }) {
+interface RouteProps {
+  course: Course;
+  learnerKey: string;
+  remote: boolean;
+  preview: boolean;
+}
+
+function MockRoute({ course, learnerKey, remote, preview }: RouteProps) {
   const { n = '' } = useParams();
+  const prog = useCourseProgress(learnerKey, course.id, remote);
   const set = course.mocks.find((m) => String(m.n) === n);
   if (!set) return <Navigate to={courseMeta(course.id)!.path} replace />;
+  const ids = allProblems(course).map((p) => p.id);
+  if (!mockGate(prog.state, ids, set.key, preview)) {
+    if (prog.sync === 'loading') return <div className="page" role="status">기록 불러오는 중…</div>;
+    const solved = ids.filter((id) => prog.state.probs[id]?.solved).length;
+    return <Locked course={course} title={`모의고사 ${set.n}회`} text={`모의고사는 기본 문제 ${ids.length}개를 모두 푼 뒤에 열려요. 지금 ${solved}/${ids.length}개 풀었어요.`} />;
+  }
   return <MockPage key={set.key} course={course} set={set} learnerKey={learnerKey} remote={remote} />;
 }
 
-function ProblemRoute({ course, learnerKey, remote }: { course: Course; learnerKey: string; remote: boolean }) {
+function ProblemRoute({ course, learnerKey, remote, preview }: RouteProps) {
   const { pid = '' } = useParams();
+  const prog = useCourseProgress(learnerKey, course.id, remote);
   const f = findProblem(course, pid);
   if (!f) return <Navigate to={courseMeta(course.id)!.path} replace />;
-  return <ProblemPage course={course} type={f.type} problem={f.problem} index={f.index} learnerKey={learnerKey} remote={remote} />;
+  if (f.adv) {
+    const basicIds = f.type.problems.map((p) => p.id);
+    const gate = advGate(prog.state, typeKey(f.type), basicIds, preview);
+    if (gate !== 'open') {
+      if (prog.sync === 'loading') return <div className="page" role="status">기록 불러오는 중…</div>;
+      const solved = basicIds.filter((id) => prog.state.probs[id]?.solved).length;
+      return (
+        <Locked
+          course={course}
+          title={`유형 ${f.type.type} [심화] ${f.index + 1}`}
+          text={gate === 'ready' ? '기본 5문제를 모두 풀었어요. 과정 화면에서 [심화 열기]를 누르면 들어갈 수 있어요.' : `[심화]는 유형 ${f.type.type}의 기본 5문제를 모두 푼 뒤 열 수 있어요. 지금 ${solved}/5개 풀었어요.`}
+        />
+      );
+    }
+  }
+  return <ProblemPage course={course} type={f.type} problem={f.problem} index={f.index} adv={f.adv} learnerKey={learnerKey} remote={remote} />;
+}
+
+/** 아직 잠긴 곳(심화·모의고사)에 주소로 바로 들어왔을 때 */
+function Locked({ course, title, text }: { course: Course; title: string; text: string }) {
+  const meta = courseMeta(course.id)!;
+  return (
+    <div className="page narrow">
+      <div className="crumb">
+        <Link to="/">홈</Link> › <Link to={meta.path}>{meta.name}</Link>
+      </div>
+      <div className="card" style={{ marginTop: '0.75rem' }}>
+        <h1 style={{ marginTop: 0 }}>🔒 {title}</h1>
+        <p>{text}</p>
+        <Link to={meta.path} className="btn primary">
+          과정 화면으로
+        </Link>
+      </div>
+    </div>
+  );
 }

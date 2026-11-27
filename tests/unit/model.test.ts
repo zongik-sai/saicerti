@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { emptyProb, mergeState, sanitize, tally, type CourseState } from '../../src/features/progress/model';
+import { advGate, emptyProb, isAdvId, mergeState, mockGate, sanitize, tally, type CourseState } from '../../src/features/progress/model';
 
 const t = (s: string) => `2026-11-23T0${s}:00:00.000Z`;
 
@@ -63,5 +63,35 @@ describe('모의고사 기록 합치기', () => {
     const s = sanitize({ probs: {}, mocks: { m1: { round: 1, startedAt: t('1'), results: { t01: { score: 250, solved: 'y', tries: 3, at: t('2') }, t11: {} } }, m9: {}, m2: { results: {} } } });
     expect(Object.keys(s.mocks!)).toEqual(['m1']);
     expect(s.mocks!.m1.results).toEqual({ t01: { score: 0, solved: false, tries: 3, at: t('2') } });
+  });
+});
+
+describe('[심화]·모의고사 잠금(선생님 요청 2026-11-27)', () => {
+  const basic = ['a', 'b', 'c', 'd', 'e'].map((x) => `pyb-t01-${x}`);
+  const solved = (ids: string[]): CourseState => ({ v: 1, probs: Object.fromEntries(ids.map((id) => [id, { ...emptyProb(1), solved: true }])) });
+  it('심화 id를 알아보고, 기록 정리에서 남긴다', () => {
+    expect(isAdvId('pyb-t01-adv3')).toBe(true);
+    expect(isAdvId('pyb-t01-a')).toBe(false);
+    const s = sanitize({ probs: { 'pyb-t01-adv1': { solved: true }, 'pyb-t01-adv6': {}, 'cb-t10-adv5': {} }, advOpen: ['t01', 't01', 't11', 3, 't10'] });
+    expect(Object.keys(s.probs).sort()).toEqual(['cb-t10-adv5', 'pyb-t01-adv1']);
+    expect(s.advOpen).toEqual(['t01', 't10']);
+  });
+  it('연 유형(advOpen)은 두 기기 기록을 합친다', () => {
+    const m = mergeState({ v: 1, probs: {}, advOpen: ['t02'] }, { v: 1, probs: {}, advOpen: ['t01'] });
+    expect(m.advOpen).toEqual(['t01', 't02']);
+    expect(mergeState({ v: 1, probs: {} }, { v: 1, probs: {} }).advOpen).toBeUndefined();
+  });
+  it('기본 5문제를 다 풀어야 열 수 있고(ready), 연 뒤에 들어간다(open). 선생님 미리 보기는 늘 open', () => {
+    expect(advGate(solved(basic.slice(0, 4)), 't01', basic)).toBe('locked');
+    expect(advGate(solved(basic), 't01', basic)).toBe('ready');
+    expect(advGate({ ...solved(basic), advOpen: ['t01'] }, 't01', basic)).toBe('open');
+    expect(advGate({ ...solved(basic.slice(0, 4)), advOpen: ['t01'] }, 't01', basic)).toBe('locked');
+    expect(advGate({ v: 1, probs: {} }, 't01', basic, true)).toBe('open');
+  });
+  it('모의고사는 기본 문제를 모두 풀어야 열리고, 이미 시작한 회차 기록은 볼 수 있다', () => {
+    expect(mockGate(solved(basic.slice(1)), basic, 'm1')).toBe(false);
+    expect(mockGate(solved(basic), basic, 'm1')).toBe(true);
+    expect(mockGate({ v: 1, probs: {}, mocks: { m2: { round: 1, startedAt: t('1'), results: {} } } }, basic, 'm2')).toBe(true);
+    expect(mockGate({ v: 1, probs: {} }, basic, 'm1', true)).toBe(true);
   });
 });

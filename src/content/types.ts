@@ -60,6 +60,13 @@ export interface Problem {
   cspec?: CSpec;
 }
 
+/** 심화 문제 묶음(src/content/<과정>/adv/tNN.json, id <과정>-tNN-adv1~adv5). 필수가 아니고, 그 유형의 기본 5문제를 모두 풀면 열 수 있다 */
+export interface AdvSet {
+  intro: string;
+  skills: string[];
+  problems: Problem[];
+}
+
 export interface TypeFile {
   course: CourseId;
   type: number;
@@ -69,7 +76,10 @@ export interface TypeFile {
   lang?: Lang;
   skills: string[];
   intro: string;
+  /** [기본] 1~5 */
   problems: Problem[];
+  /** [심화] 1~5(불러올 때 adv 파일에서 붙임) */
+  adv?: AdvSet;
 }
 
 /** 모의고사 한 회: 원본 유형 1~10이 한 문제씩(같은 유형의 1·2·3회는 예시·테스트만 다름) */

@@ -3,6 +3,7 @@
 - 자격증 코딩 연습 사이트. 지금 과정: 프로그래밍 Python 기본(pyb, COS Pro 2급 Python 유형), 프로그래밍 Python 심화(pya, COS Pro 1급 Python 유형), 프로그래밍 C 기본(cb, COS Pro 2급 C 유형). C 심화(ca)·Data 과정은 나중에.
 - 연습 문제는 원본 기출과 형식·난이도가 비슷하지만 똑같지 않게 만든다(문장·상황·수치를 새로). 모의고사(`src/content/<과정>/mock/`)는 선생님 요청(2026-11-23)대로 원본과 같은 상황·코드·조건에 예시·테스트만 다르게 하되, 원본 문장을 글자 그대로 옮기지 않고 같은 뜻으로 다시 쓴다. 구름(goorm) 콘텐츠는 옮기지 않는다.
 - 문제 데이터는 `src/content/<과정>/tNN.json`(형식: docs/CONTENT_SCHEMA.md). 문제 id(`pyb-t01-a`)는 진도 키라 바꾸지 않는다. 내용을 고치면 version을 올린다.
+- 유형마다 [기본] 1~5(`tNN.json`, 필수)와 [심화] 1~5(`adv/tNN.json`, id `pyb-t01-adv1`~`adv5`, 선택)를 둔다(선생님 요청 2026-11-27). 심화는 1→5로 점점 어렵고 중간 점검 6~9단계로 앞에서부터 디딤돌을 놓는다(만들기: docs/ADV_BRIEF.md). 심화는 주황색, 그 유형의 기본 5문제를 모두 푼 뒤 학생이 '심화 열기'를 눌러야 들어간다. 모의고사는 기본 문제를 모두 푼 뒤 열리고 과정 화면 맨 아래에 둔다(이미 시작한 회차 기록은 볼 수 있음). 선생님 계정은 잠금 없이 미리 본다.
 - 문제를 바꾸면 반드시 `python3 tools/validate.py`(정답·테스트·빈칸·한 줄 수정·중간 점검 정답 검수)와 `npm test`를 통과시킨다.
 - 채점은 브라우저 안의 Pyodide(`public/pyworker.js` + `src/grader/harness.py`)로만 한다. 학생 코드를 서버로 보내거나 저장하지 않는다. 검수 도구와 브라우저는 같은 harness.py를 쓴다.
 - C 채점은 같은 워커에서 C 인터프리터(`src/grader/cinterp.py`, pycparser 3.12 wheel 동봉)로 한다(명세: docs/CINTERP_SPEC.md). C 문제를 바꾸면 검수 도구가 gcc(`tools/cref.py`)와 결과를 대조한다. 인터프리터를 고치면 `python3 tools/test_cinterp.py`도 통과시킨다. C 문제 만들기: docs/AGENT_BRIEF_C.md(시험지 그림은 `figures` 데이터로 다시 그린다).

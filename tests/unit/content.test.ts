@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { TypeFile } from '../../src/content/types';
@@ -12,6 +12,13 @@ const root = join(__dirname, '../../src/content');
 const COURSES = ['pyb', 'pya', 'cb'];
 const files: TypeFile[] = [];
 for (const c of COURSES) for (const f of readdirSync(join(root, c)).filter((x) => x.endsWith('.json')).sort()) files.push(JSON.parse(readFileSync(join(root, c, f), 'utf8')));
+/** [심화] 1~5(src/content/<과정>/adv/tNN.json) */
+const advFiles: TypeFile[] = [];
+for (const c of COURSES) {
+  const d = join(root, c, 'adv');
+  if (existsSync(d)) for (const f of readdirSync(d).filter((x) => x.endsWith('.json')).sort()) advFiles.push(JSON.parse(readFileSync(join(d, f), 'utf8')));
+}
+const every = [...files, ...advFiles];
 
 describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
   it('과정마다 10유형 × 5문제, id는 고유', () => {
@@ -24,8 +31,27 @@ describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
     expect(new Set(ids).size).toBe(50 * COURSES.length);
   });
 
+  it('[심화] 과정마다 10유형 × 5문제(adv1~adv5), 기본과 같은 형식·이름, 중간 점검 6~9단계', () => {
+    for (const c of COURSES) {
+      const fs = advFiles.filter((f) => f.course === c);
+      expect(fs.map((f) => f.type), c).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+      for (const f of fs) {
+        const base = files.find((b) => b.course === c && b.type === f.type)!;
+        expect(f.kind, `${c} t${f.type}`).toBe(base.kind);
+        expect(f.typeTitle, `${c} t${f.type}`).toBe(base.typeTitle);
+        expect(f.problems.map((p) => p.id)).toEqual([1, 2, 3, 4, 5].map((n) => `${c}-t${String(f.type).padStart(2, '0')}-adv${n}`));
+        for (const p of f.problems) {
+          expect(p.steps.length, p.id).toBeGreaterThanOrEqual(6);
+          expect(p.steps.length, p.id).toBeLessThanOrEqual(9);
+        }
+      }
+    }
+    const ids = every.flatMap((f) => f.problems.map((p) => p.id));
+    expect(new Set(ids).size).toBe(100 * COURSES.length);
+  });
+
   it('표·단답 정답은 화면 채점 규칙(cellOk)으로 자기 자신과 맞는다', () => {
-    for (const f of files)
+    for (const f of every)
       for (const p of f.problems)
         for (const s of p.steps) {
           if (s.kind === 'table') for (const c of s.rows.flat()) if (typeof c === 'object') expect(cellOk(c.a, c.a, c.alts), `${p.id} ${s.id}`).toBe(true);
@@ -35,7 +61,7 @@ describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
   });
 
   it('빈칸 정답을 넣으면 정답 코드가 된다(화면 조립 함수)', () => {
-    for (const f of files.filter((x) => x.kind === 'blank'))
+    for (const f of every.filter((x) => x.kind === 'blank'))
       for (const p of f.problems) {
         expect(countBlanks(p.code)).toBe(p.blanks!.length);
         const filled = fillBlanks(p.code, p.blanks!.map((b) => b.answer));
@@ -45,7 +71,7 @@ describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
   });
 
   it('중간 점검 질문·보기·해설에 코드 빈칸 번호(⟦n⟧)가 없다(질문만 읽고 풀 수 있게)', () => {
-    for (const f of files)
+    for (const f of every)
       for (const p of f.problems)
         for (const st of p.steps) {
           const shown = JSON.stringify(st, (k, v: unknown) => (k === 'check' ? undefined : v));
@@ -54,7 +80,7 @@ describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
   });
 
   it('C 과정 파일은 lang "c", 정답 코드에 main이 없다(채점기가 함수를 직접 부름)', () => {
-    for (const f of files.filter((x) => x.course === 'cb')) {
+    for (const f of every.filter((x) => x.course === 'cb')) {
       expect(f.lang, `${f.course} t${f.type}`).toBe('c');
       for (const p of f.problems) {
         expect(p.solution, p.id).not.toMatch(/\bmain\s*\(/);
@@ -66,7 +92,7 @@ describe('문제 데이터(자세한 검수는 tools/validate.py)', () => {
 describe('그림(figures)', () => {
   const texts = (p: TypeFile['problems'][number]) => [p.statement, p.explain ?? '', ...p.steps.flatMap((s) => [s.kind === 'table' ? s.prompt : s.q, s.explain])].join('\n');
   it('글 속 {{fig:ID}}는 그 문제의 그림을 가리키고, 그림은 모두 쓰이며 alt가 있다', () => {
-    for (const f of files)
+    for (const f of every)
       for (const p of f.problems) {
         const used = [...texts(p).matchAll(/\{\{fig:([\w-]+)\}\}/g)].map((m) => m[1]);
         const ids = (p.figures ?? []).map((x) => x.id);
@@ -110,7 +136,7 @@ describe('객관식 보기 섞기', () => {
   it('정답이 한 자리(①)에 몰리지 않는다', async () => {
     const { optionOrder, refersToPosition } = await import('../../src/components/Steps');
     const pos: number[] = [0, 0, 0, 0, 0];
-    for (const f of files)
+    for (const f of every)
       for (const p of f.problems)
         for (const s of p.steps)
           if (s.kind === 'mcq') {
