@@ -1,0 +1,3671 @@
+{
+ "course": "pyb",
+ "type": 3,
+ "typeTitle": "함수 나누어 완성하기",
+ "kind": "blank",
+ "skills": [
+  "함수 나누기",
+  "함수에 기준값 넘겨주기",
+  "세 가지 이상으로 나누어 세기",
+  "정렬 후 앞에서 k개 더하기",
+  "번호와 인덱스 바꾸기",
+  "동점·빈 결과 처리",
+  "열 합(이중 반복)"
+ ],
+ "intro": "기본 문제처럼 일을 단계로 나누어 보조 함수의 빈칸을 채우지만, 단계마다 지켜야 할 규칙이 더 많아요. 기준값을 함수에 넘겨주고, 세 가지 이상으로 나누어 세고, 정렬과 누적을 함께 써요. 뒤로 갈수록 동점·빈 결과·음수와 열 합(이중 반복)까지 처리해요.",
+ "problems": [
+  {
+   "id": "pyb-t03-adv1",
+   "version": 1,
+   "title": "체조 결선 진출 점수",
+   "statement": "체조 대회에서 심사위원 5명이 선수마다 점수를 매겼습니다. 2차원 리스트 `scores`의 각 행은 선수 한 명이 받은 5개의 점수입니다. 선수의 **최종 점수**는 5개 점수에서 가장 높은 점수 하나와 가장 낮은 점수 하나를 뺀 나머지 3개 점수의 합입니다. 가장 높은 점수(또는 가장 낮은 점수)가 여러 개이면 그중 하나만 뺍니다.\n\n최종 점수가 기준 점수 `cut` 이상인 선수는 **결선 진출**, `cut` 미만인 선수는 **탈락**입니다. 결선 진출 선수와 탈락 선수의 점수 차이를 다음 세 단계로 구합니다.\n- 1단계(`func_a`): 선수마다 최종 점수를 구해 리스트로 만듭니다.\n- 2단계(`func_b`): 1단계 리스트와 `cut`을 받아, 결선 진출 선수의 최종 점수끼리, 탈락 선수의 최종 점수끼리 더해 `[결선 진출 합계, 탈락 합계]` 리스트를 만듭니다. 선수가 하나도 없는 쪽의 합계는 0입니다.\n- 3단계(`func_c`): 2단계의 두 합계 중 큰 값에서 작은 값을 뺀 차이를 구합니다.\n\n`scores`와 `cut`이 매개변수로 주어질 때 3단계의 결과를 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "scores의 행 수(선수 수)는 1 이상 10 이하입니다.",
+    "scores의 각 행의 길이는 5이고, 원소는 0 이상 10 이하인 정수입니다.",
+    "cut은 0 이상 30 이하인 정수입니다."
+   ],
+   "returns": [
+    "결선 진출 합계와 탈락 합계의 차이(0 이상인 정수)를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "scores",
+    "cut"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        8,
+        9,
+        7,
+        9,
+        6
+       ],
+       [
+        5,
+        6,
+        4,
+        7,
+        5
+       ],
+       [
+        10,
+        9,
+        9,
+        8,
+        10
+       ],
+       [
+        6,
+        7,
+        7,
+        5,
+        8
+       ]
+      ],
+      20
+     ],
+     "expected": 56,
+     "explain": "선수별 최종 점수는 24, 16, 28, 20입니다. 최종 점수가 20인 넷째 선수도 결선 진출이므로 결선 진출 합계는 24 + 28 + 20 = 72, 탈락 합계는 16이고, 차이는 56입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        4,
+        2,
+        5,
+        1
+       ],
+       [
+        7,
+        7,
+        7,
+        7,
+        7
+       ]
+      ],
+      22
+     ],
+     "expected": 30,
+     "explain": "최종 점수는 9, 21입니다. 둘째 선수는 7점 다섯 개 중 가장 높은 것과 가장 낮은 것을 하나씩만 빼서 21점입니다. 두 선수 모두 22 미만이라 결선 진출 합계는 0, 탈락 합계는 30이고, 차이는 30입니다."
+    }
+   ],
+   "code": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(⟦1⟧)\n    return ret\n\ndef func_b(arr, cut):\n    ret = [0, 0]\n    for x in arr:\n        if ⟦2⟧:\n            ret[0] += x\n        else:\n            ⟦3⟧ += x\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    if ret < 0:\n        ret = -ret\n    return ret\n\ndef solution(scores, cut):\n    finals = func_a(scores)\n    groups = ⟦4⟧\n    answer = func_c(groups)\n    return answer",
+   "blanks": [
+    {
+     "answer": "sum(a) - max(a) - min(a)",
+     "alts": [
+      "sum(a) - min(a) - max(a)"
+     ]
+    },
+    {
+     "answer": "x >= cut",
+     "alts": [
+      "cut <= x"
+     ]
+    },
+    {
+     "answer": "ret[1]"
+    },
+    {
+     "answer": "func_b(finals, cut)"
+    }
+   ],
+   "solution": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a) - max(a) - min(a))\n    return ret\n\ndef func_b(arr, cut):\n    ret = [0, 0]\n    for x in arr:\n        if x >= cut:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    if ret < 0:\n        ret = -ret\n    return ret\n\ndef solution(scores, cut):\n    finals = func_a(scores)\n    groups = func_b(finals, cut)\n    answer = func_c(groups)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ]
+      ],
+      0
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        10,
+        10,
+        10,
+        10
+       ]
+      ],
+      30
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        7,
+        6,
+        6,
+        7
+       ],
+       [
+        3,
+        4,
+        3,
+        4,
+        3
+       ],
+       [
+        4,
+        3,
+        3,
+        3,
+        4
+       ]
+      ],
+      20
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        0,
+        5,
+        5,
+        5
+       ]
+      ],
+      15
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        0,
+        5,
+        5,
+        5
+       ]
+      ],
+      16
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        2,
+        8,
+        8,
+        5
+       ]
+      ],
+      15
+     ],
+     "expected": 15
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       [
+        5,
+        4,
+        3,
+        2,
+        1
+       ]
+      ],
+      9
+     ],
+     "expected": 18
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        5,
+        5,
+        5,
+        5
+       ],
+       [
+        9,
+        9,
+        9,
+        9,
+        9
+       ]
+      ],
+      15
+     ],
+     "expected": 42
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        9,
+        9,
+        9,
+        9
+       ],
+       [
+        5,
+        5,
+        5,
+        5,
+        5
+       ],
+       [
+        6,
+        6,
+        6,
+        6,
+        6
+       ],
+       [
+        4,
+        4,
+        4,
+        4,
+        4
+       ]
+      ],
+      20
+     ],
+     "expected": 18
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        7,
+        6,
+        6,
+        7
+       ],
+       [
+        3,
+        4,
+        3,
+        4,
+        3
+       ],
+       [
+        4,
+        3,
+        3,
+        3,
+        4
+       ]
+      ],
+      15
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        10,
+        0,
+        10,
+        0
+       ],
+       [
+        10,
+        0,
+        10,
+        0,
+        10
+       ]
+      ],
+      10
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      [
+       [
+        6,
+        8,
+        7,
+        9,
+        5
+       ],
+       [
+        9,
+        1,
+        9,
+        1,
+        9
+       ],
+       [
+        3,
+        3,
+        10,
+        0,
+        3
+       ],
+       [
+        8,
+        8,
+        8,
+        2,
+        10
+       ]
+      ],
+      19
+     ],
+     "expected": 55
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        5,
+        6,
+        7,
+        8
+       ],
+       [
+        8,
+        7,
+        6,
+        5,
+        4
+       ],
+       [
+        10,
+        9,
+        8,
+        7,
+        6
+       ],
+       [
+        0,
+        1,
+        2,
+        3,
+        4
+       ],
+       [
+        5,
+        5,
+        5,
+        5,
+        6
+       ],
+       [
+        2,
+        9,
+        4,
+        9,
+        4
+       ],
+       [
+        7,
+        3,
+        7,
+        3,
+        7
+       ],
+       [
+        10,
+        10,
+        9,
+        0,
+        1
+       ],
+       [
+        6,
+        6,
+        6,
+        6,
+        6
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        10
+       ]
+      ],
+      17
+     ],
+     "expected": 108
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        9,
+        6,
+        2,
+        8
+       ],
+       [
+        10,
+        2,
+        7,
+        7,
+        1
+       ]
+      ],
+      30
+     ],
+     "expected": 33
+    }
+   ],
+   "inputCheck": "def valid(scores, cut):\n    ok_int = lambda v, lo, hi: isinstance(v, int) and not isinstance(v, bool) and lo <= v <= hi\n    return isinstance(scores, list) and 1 <= len(scores) <= 10 and all(isinstance(r, list) and len(r) == 5 and all(ok_int(x, 0, 10) for x in r) for r in scores) and ok_int(cut, 0, 30)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "심사위원 점수가 [6, 8, 7, 9, 5]인 선수의 최종 점수는 어떤 점수들을 더한 값일까요?",
+     "options": [
+      "6 + 8 + 7",
+      "8 + 7 + 9",
+      "6 + 8 + 7 + 9 + 5",
+      "9 + 5"
+     ],
+     "answer": 0,
+     "explain": "가장 높은 점수 9와 가장 낮은 점수 5를 하나씩 빼면 6, 8, 7이 남아서 최종 점수는 21이에요. 이 값은 다섯 점수의 합 35에서 9와 5를 뺀 값과 같아요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "심사위원 점수가 [9, 9, 7, 8, 6]인 선수의 최종 점수는 얼마일까요?",
+     "a": "24",
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a) - max(a) - min(a))\n    return ret\n\ndef func_b(arr, cut):\n    ret = [0, 0]\n    for x in arr:\n        if x >= cut:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    if ret < 0:\n        ret = -ret\n    return ret\n\ndef solution(scores, cut):\n    finals = func_a(scores)\n    groups = func_b(finals, cut)\n    answer = func_c(groups)\n    return answer\n\ndef answers():\n    return [func_a([[9, 9, 7, 8, 6]])[0]]",
+     "explain": "가장 높은 점수 9가 두 개지만 하나만 빼서 9, 7, 8이 남아 24예요. 다섯 점수의 합 39에서 가장 큰 값 9와 가장 작은 값 6을 한 번씩 뺀 것과 같아요. 그래서 가장 큰 값이 여러 개여도 \"합 - 가장 큰 값 - 가장 작은 값\"으로 구할 수 있어요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "예시 1의 최종 점수 구하기",
+     "prompt": "예시 1의 선수마다 sum(a)(다섯 점수의 합)는 적어 두었어요. max(a)(가장 큰 값), min(a)(가장 작은 값), 최종 점수를 채워 보세요.",
+     "columns": [
+      "a (선수의 점수)",
+      "sum(a)",
+      "max(a)",
+      "min(a)",
+      "최종 점수"
+     ],
+     "rows": [
+      [
+       "[8, 9, 7, 9, 6]",
+       "39",
+       {
+        "a": "9"
+       },
+       {
+        "a": "6"
+       },
+       {
+        "a": "24"
+       }
+      ],
+      [
+       "[5, 6, 4, 7, 5]",
+       "27",
+       {
+        "a": "7"
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "16"
+       }
+      ],
+      [
+       "[10, 9, 9, 8, 10]",
+       "46",
+       {
+        "a": "10"
+       },
+       {
+        "a": "8"
+       },
+       {
+        "a": "28"
+       }
+      ],
+      [
+       "[6, 7, 7, 5, 8]",
+       "33",
+       {
+        "a": "8"
+       },
+       {
+        "a": "5"
+       },
+       {
+        "a": "20"
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a) - max(a) - min(a))\n    return ret\n\ndef func_b(arr, cut):\n    ret = [0, 0]\n    for x in arr:\n        if x >= cut:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    if ret < 0:\n        ret = -ret\n    return ret\n\ndef solution(scores, cut):\n    finals = func_a(scores)\n    groups = func_b(finals, cut)\n    answer = func_c(groups)\n    return answer\n\ndef answers():\n    out = []\n    for a in [[8, 9, 7, 9, 6], [5, 6, 4, 7, 5], [10, 9, 9, 8, 10], [6, 7, 7, 5, 8]]:\n        out += [max(a), min(a), func_a([a])[0]]\n    return out",
+     "explain": "선수마다 최종 점수는 sum(a)에서 max(a)와 min(a)를 뺀 값이에요. 예시 1의 최종 점수 리스트는 [24, 16, 28, 20]이 돼요. 1단계에서는 행마다 이 값을 리스트에 넣어요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`cut`이 20일 때, 최종 점수가 정확히 20인 선수는 어떻게 될까요?",
+     "options": [
+      "결선 진출",
+      "탈락",
+      "어느 쪽에도 넣지 않는다"
+     ],
+     "answer": 0,
+     "explain": "\"cut 이상\"은 cut과 같은 경우도 포함해요. 그래서 결선 진출인지 확인하는 조건은 같을 때도 참이 되는 비교(>=)를 써야 해요. \"미만\"은 cut보다 작은 경우만이라 20은 탈락이 아니에요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "2단계 따라가기",
+     "prompt": "예시 1의 최종 점수 [24, 16, 28, 20]과 cut = 20으로 func_b를 따라가요. x마다 `x >= cut`의 값(True/False)과 그 x를 더한 뒤의 ret를 채워 보세요. ret는 `[결선 진출 합계, 탈락 합계]` 모양이라 `[24, 0]`처럼 적어요.",
+     "columns": [
+      "x",
+      "x >= cut",
+      "ret"
+     ],
+     "rows": [
+      [
+       "24",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[24, 0]",
+        "alts": [
+         "24, 0"
+        ]
+       }
+      ],
+      [
+       "16",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[24, 16]",
+        "alts": [
+         "24, 16"
+        ]
+       }
+      ],
+      [
+       "28",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[52, 16]",
+        "alts": [
+         "52, 16"
+        ]
+       }
+      ],
+      [
+       "20",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[72, 16]",
+        "alts": [
+         "72, 16"
+        ]
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a) - max(a) - min(a))\n    return ret\n\ndef func_b(arr, cut):\n    ret = [0, 0]\n    for x in arr:\n        if x >= cut:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    if ret < 0:\n        ret = -ret\n    return ret\n\ndef solution(scores, cut):\n    finals = func_a(scores)\n    groups = func_b(finals, cut)\n    answer = func_c(groups)\n    return answer\n\ndef answers():\n    out = []\n    ret = [0, 0]\n    for x in func_a([[8, 9, 7, 9, 6], [5, 6, 4, 7, 5], [10, 9, 9, 8, 10], [6, 7, 7, 5, 8]]):\n        ok = x >= 20\n        if ok:\n            ret[0] += x\n        else:\n            ret[1] += x\n        out += [ok, list(ret)]\n    return out",
+     "explain": "결선 진출이면 ret[0]에, 탈락이면 ret[1]에 x를 더해요. 20은 cut과 같아서 결선 진출 쪽에 더해져요. 마지막 ret는 [72, 16]이고, 3단계에서 차이 56을 구해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "solution은 `finals = func_a(scores)`로 1단계를 한 뒤 2단계 함수를 불러요. 2단계 함수의 머리는 `def func_b(arr, cut):`예요. 첫 번째 매개변수 arr에는 어떤 값을 넘겨야 할까요?",
+     "options": [
+      "1단계 결과인 finals",
+      "처음 받은 2차원 리스트 scores",
+      "기준 점수 cut",
+      "3단계 결과인 answer"
+     ],
+     "answer": 0,
+     "explain": "func_b는 선수마다의 최종 점수를 보고 두 묶음으로 나눠요. 그래서 arr 자리에는 1단계 결과 finals를, cut 자리에는 기준 점수 cut을 머리에 적힌 순서대로 넘겨요. scores는 최종 점수를 구하기 전의 2차원 리스트라서 넘기면 안 돼요."
+    }
+   ],
+   "explain": "1단계는 sum(a) - max(a) - min(a)로 가장 높은 점수와 가장 낮은 점수를 한 번씩 빼요. 2단계는 cut을 함께 받아 x >= cut이면 ret[0], 아니면 ret[1]에 더하고, solution은 func_b에 finals와 cut을 함께 넘겨요. \"cut 이상\"이 같은 값을 포함한다는 점과, 함수에 필요한 값을 빠짐없이 넘기는 점이 핵심이에요."
+  },
+  {
+   "id": "pyb-t03-adv2",
+   "version": 1,
+   "title": "택배 상자 등급별 요금",
+   "statement": "택배 영업소에서 하루 동안 받은 상자를 기록했습니다. 2차원 리스트 `boxes`의 각 행은 상자 하나에 담긴 물건들의 무게(kg)이고, 상자마다 담긴 물건의 수가 다릅니다. 물건을 하나도 넣지 않은 빈 상자는 빈 리스트 `[]`로 기록되어 있습니다. 상자의 무게는 담긴 물건 무게의 합이고, 무게에 따라 등급과 요금이 다음과 같이 정해집니다.\n- 소형: 1kg 이상 5kg 이하, 요금 2000원\n- 중형: 5kg 초과 15kg 이하, 요금 3500원\n- 대형: 15kg 초과, 요금 5000원\n\n무게가 0인 빈 상자는 보내지 않으므로 어느 등급에도 넣지 않고 요금도 받지 않습니다. 하루 동안 받은 요금의 합계를 다음 세 단계로 구합니다.\n- 1단계(`func_a`): 상자마다 무게를 구해 리스트로 만듭니다.\n- 2단계(`func_b`): 1단계 리스트를 보고 등급별 상자 수를 세어 `[소형 수, 중형 수, 대형 수]` 리스트를 만듭니다.\n- 3단계(`func_c`): 2단계 리스트의 등급별 상자 수에 등급별 요금을 곱해 모두 더한 요금 합계를 구합니다.\n\n`boxes`가 매개변수로 주어질 때 요금 합계를 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "boxes의 행 수(상자 수)는 1 이상 20 이하입니다.",
+    "boxes의 각 행의 길이(물건 수)는 0 이상 6 이하이고, 원소(물건 무게)는 1 이상 10 이하인 정수입니다."
+   ],
+   "returns": [
+    "요금 합계(원)를 return 합니다. 보낼 상자가 없으면 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "boxes"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        2,
+        3
+       ],
+       [
+        4,
+        4,
+        1
+       ],
+       [],
+       [
+        10,
+        6
+       ],
+       [
+        5
+       ],
+       [
+        3,
+        3,
+        3,
+        3,
+        3,
+        1
+       ]
+      ]
+     ],
+     "expected": 17500,
+     "explain": "상자별 무게는 5, 9, 0, 16, 5, 16입니다. 빈 상자(0)를 빼면 소형 2개, 중형 1개, 대형 2개이므로 2000 × 2 + 3500 × 1 + 5000 × 2 = 17500원입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        8
+       ],
+       [
+        1
+       ],
+       [],
+       [
+        6
+       ],
+       [
+        10,
+        5,
+        1
+       ]
+      ]
+     ],
+     "expected": 14000,
+     "explain": "상자별 무게는 15, 1, 0, 6, 16입니다. 15kg인 상자는 15kg 이하라서 중형입니다. 소형 1개, 중형 2개, 대형 1개이므로 2000 + 3500 × 2 + 5000 = 14000원입니다."
+    }
+   ],
+   "code": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = [0, 0, 0]\n    for x in arr:\n        if ⟦1⟧:\n            continue\n        if ⟦2⟧:\n            ret[0] += 1\n        elif ⟦3⟧:\n            ret[1] += 1\n        else:\n            ret[2] += 1\n    return ret\n\ndef func_c(arr):\n    price = [2000, 3500, 5000]\n    total = 0\n    for i in range(3):\n        total += ⟦4⟧\n    return total\n\ndef solution(boxes):\n    weights = func_a(boxes)\n    counts = func_b(weights)\n    answer = ⟦5⟧\n    return answer",
+   "blanks": [
+    {
+     "answer": "x == 0",
+     "alts": [
+      "x <= 0",
+      "x < 1"
+     ]
+    },
+    {
+     "answer": "x <= 5",
+     "alts": [
+      "x < 6"
+     ]
+    },
+    {
+     "answer": "x <= 15",
+     "alts": [
+      "x < 16",
+      "5 < x <= 15"
+     ]
+    },
+    {
+     "answer": "arr[i] * price[i]",
+     "alts": [
+      "price[i] * arr[i]"
+     ]
+    },
+    {
+     "answer": "func_c(counts)"
+    }
+   ],
+   "solution": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = [0, 0, 0]\n    for x in arr:\n        if x == 0:\n            continue\n        if x <= 5:\n            ret[0] += 1\n        elif x <= 15:\n            ret[1] += 1\n        else:\n            ret[2] += 1\n    return ret\n\ndef func_c(arr):\n    price = [2000, 3500, 5000]\n    total = 0\n    for i in range(3):\n        total += arr[i] * price[i]\n    return total\n\ndef solution(boxes):\n    weights = func_a(boxes)\n    counts = func_b(weights)\n    answer = func_c(counts)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       []
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [],
+       [],
+       []
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        1
+       ]
+      ]
+     ],
+     "expected": 2000
+    },
+    {
+     "args": [
+      [
+       [
+        5
+       ]
+      ]
+     ],
+     "expected": 2000
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        3
+       ]
+      ]
+     ],
+     "expected": 3500
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        5
+       ]
+      ]
+     ],
+     "expected": 3500
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        6
+       ]
+      ]
+     ],
+     "expected": 5000
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+       ]
+      ]
+     ],
+     "expected": 5000
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [],
+       [
+        8,
+        8
+       ]
+      ]
+     ],
+     "expected": 10500
+    },
+    {
+     "args": [
+      [
+       [
+        2
+       ],
+       [
+        4
+       ],
+       [
+        1,
+        1
+       ],
+       [],
+       [
+        3,
+        2
+       ]
+      ]
+     ],
+     "expected": 8000
+    },
+    {
+     "args": [
+      [
+       [
+        9,
+        7
+       ],
+       [
+        10,
+        9,
+        8
+       ],
+       [
+        6,
+        6,
+        6
+       ],
+       [
+        10,
+        10
+       ]
+      ]
+     ],
+     "expected": 20000
+    },
+    {
+     "args": [
+      [
+       [
+        7
+       ],
+       [
+        1,
+        2,
+        3
+       ],
+       [],
+       [
+        4,
+        4,
+        4,
+        4
+       ],
+       [
+        10
+       ],
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        9,
+        9
+       ],
+       [],
+       [
+        5,
+        1
+       ],
+       [
+        3
+       ]
+      ]
+     ],
+     "expected": 29500
+    },
+    {
+     "args": [
+      [
+       [
+        1
+       ],
+       [
+        1
+       ],
+       [
+        1
+       ],
+       [
+        1
+       ],
+       [
+        1
+       ],
+       [
+        1
+       ],
+       [
+        1
+       ],
+       [
+        6
+       ],
+       [
+        6
+       ],
+       [
+        6
+       ],
+       [
+        6
+       ],
+       [
+        6
+       ],
+       [
+        6
+       ],
+       [
+        6
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        10,
+        10
+       ],
+       [
+        10,
+        10
+       ]
+      ]
+     ],
+     "expected": 68500
+    },
+    {
+     "args": [
+      [
+       [
+        6,
+        5,
+        4
+       ],
+       [
+        8
+       ],
+       [
+        1,
+        4
+       ],
+       [
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+       ],
+       [],
+       [
+        10,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        3,
+        3,
+        3,
+        3
+       ]
+      ]
+     ],
+     "expected": 19500
+    }
+   ],
+   "inputCheck": "def valid(boxes):\n    ok_int = lambda v: isinstance(v, int) and not isinstance(v, bool) and 1 <= v <= 10\n    return isinstance(boxes, list) and 1 <= len(boxes) <= 20 and all(isinstance(r, list) and 0 <= len(r) <= 6 and all(ok_int(x) for x in r) for r in boxes)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "무게가 정확히 15kg인 상자는 어느 등급일까요?",
+     "options": [
+      "소형",
+      "중형",
+      "대형",
+      "어느 등급에도 넣지 않는다"
+     ],
+     "answer": 1,
+     "explain": "중형은 5kg 초과 15kg 이하예요. \"이하\"는 같은 값을 포함하니 15kg은 중형이에요. 대형은 15kg \"초과\", 즉 15보다 큰 16kg부터예요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "빈 상자 `[]`의 무게를 `sum([])`로 구하면 얼마일까요?",
+     "a": "0",
+     "check": "def answers():\n    return [sum([])]",
+     "explain": "빈 리스트(값이 하나도 없는 리스트)의 합은 0이에요. 그래서 1단계 리스트에는 빈 상자도 0으로 들어가고, 2단계에서 무게가 0인 값을 따로 걸러 내야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "예시 1의 무게와 등급",
+     "prompt": "예시 1의 상자마다 무게와 등급을 채워 보세요. 등급은 `소형`, `중형`, `대형` 중 하나로 적고, 빈 상자는 `없음`이라고 적어요.",
+     "columns": [
+      "상자 a",
+      "무게",
+      "등급"
+     ],
+     "rows": [
+      [
+       "[2, 3]",
+       {
+        "a": "5"
+       },
+       {
+        "a": "소형"
+       }
+      ],
+      [
+       "[4, 4, 1]",
+       {
+        "a": "9"
+       },
+       {
+        "a": "중형"
+       }
+      ],
+      [
+       "[]",
+       {
+        "a": "0"
+       },
+       {
+        "a": "없음"
+       }
+      ],
+      [
+       "[10, 6]",
+       {
+        "a": "16"
+       },
+       {
+        "a": "대형"
+       }
+      ],
+      [
+       "[5]",
+       {
+        "a": "5"
+       },
+       {
+        "a": "소형"
+       }
+      ],
+      [
+       "[3, 3, 3, 3, 3, 1]",
+       {
+        "a": "16"
+       },
+       {
+        "a": "대형"
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = [0, 0, 0]\n    for x in arr:\n        if x == 0:\n            continue\n        if x <= 5:\n            ret[0] += 1\n        elif x <= 15:\n            ret[1] += 1\n        else:\n            ret[2] += 1\n    return ret\n\ndef func_c(arr):\n    price = [2000, 3500, 5000]\n    total = 0\n    for i in range(3):\n        total += arr[i] * price[i]\n    return total\n\ndef solution(boxes):\n    weights = func_a(boxes)\n    counts = func_b(weights)\n    answer = func_c(counts)\n    return answer\n\ndef grade(x):\n    if x == 0:\n        return '없음'\n    if x <= 5:\n        return '소형'\n    if x <= 15:\n        return '중형'\n    return '대형'\n\ndef answers():\n    out = []\n    for w in func_a([[2, 3], [4, 4, 1], [], [10, 6], [5], [3, 3, 3, 3, 3, 1]]):\n        out += [w, grade(w)]\n    return out",
+     "explain": "무게는 5, 9, 0, 16, 5, 16이에요. 5kg은 \"5kg 이하\"라서 소형이고, 16kg은 15kg을 넘어서 대형이에요. 무게가 0인 빈 상자는 어느 등급에도 넣지 않아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "2단계는 무게 x마다 (1) 빈 상자이면 `continue`로 남은 줄을 건너뛰고 다음 x로 넘어가고, (2) `if`로 소형인지 확인하고, (3) 소형이 아니면 `elif`로 중형인지 확인하고, (4) 나머지는 `else`로 대형으로 세요. (3)의 elif까지 내려오는 x는 어떤 값일까요?",
+     "options": [
+      "6 이상인 값",
+      "1 이상 5 이하인 값",
+      "0인 값",
+      "모든 값"
+     ],
+     "answer": 0,
+     "explain": "0은 (1)에서 건너뛰었고, 1~5는 (2)에서 소형으로 세었어요. if/elif는 위에서부터 차례로 확인해서 앞 조건이 거짓인 값만 아래로 내려와요. 그래서 elif에서는 15 이하인지만 확인하면 6 이상 15 이하인 중형을 골라낼 수 있어요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "예시 2로 2단계 따라가기",
+     "prompt": "예시 2의 1단계 결과는 [15, 1, 0, 6, 16]이에요. x마다 건너뛰는지(True/False)와, 그 x를 처리한 뒤의 ret(`[소형 수, 중형 수, 대형 수]`)를 채워 보세요.",
+     "columns": [
+      "x",
+      "건너뛰나?",
+      "ret"
+     ],
+     "rows": [
+      [
+       "15",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[0, 1, 0]",
+        "alts": [
+         "0, 1, 0"
+        ]
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[1, 1, 0]",
+        "alts": [
+         "1, 1, 0"
+        ]
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[1, 1, 0]",
+        "alts": [
+         "1, 1, 0"
+        ]
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[1, 2, 0]",
+        "alts": [
+         "1, 2, 0"
+        ]
+       }
+      ],
+      [
+       "16",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[1, 2, 1]",
+        "alts": [
+         "1, 2, 1"
+        ]
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = [0, 0, 0]\n    for x in arr:\n        if x == 0:\n            continue\n        if x <= 5:\n            ret[0] += 1\n        elif x <= 15:\n            ret[1] += 1\n        else:\n            ret[2] += 1\n    return ret\n\ndef func_c(arr):\n    price = [2000, 3500, 5000]\n    total = 0\n    for i in range(3):\n        total += arr[i] * price[i]\n    return total\n\ndef solution(boxes):\n    weights = func_a(boxes)\n    counts = func_b(weights)\n    answer = func_c(counts)\n    return answer\n\ndef answers():\n    out = []\n    ret = [0, 0, 0]\n    for x in func_a([[7, 8], [1], [], [6], [10, 5, 1]]):\n        skip = x == 0\n        if not skip:\n            if x <= 5:\n                ret[0] += 1\n            elif x <= 15:\n                ret[1] += 1\n            else:\n                ret[2] += 1\n        out += [skip, list(ret)]\n    return out",
+     "explain": "0은 건너뛰어서 ret가 그대로예요. 15는 중형, 1은 소형, 6은 중형, 16은 대형이라 마지막 ret는 [1, 2, 1]이에요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "3단계에서 `price = [2000, 3500, 5000]`이고 2단계 결과 arr가 [2, 1, 2]예요. `for i in range(3):`로 반복할 때, i = 2(대형) 차례에 total에 더해지는 값은 얼마일까요?",
+     "a": "10000",
+     "check": "def answers():\n    arr = [2, 1, 2]\n    price = [2000, 3500, 5000]\n    return [arr[2] * price[2]]",
+     "explain": "같은 인덱스 i에 있는 상자 수와 요금을 곱하면 그 등급의 요금이 돼요. i = 2이면 대형 2개 × 5000원 = 10000원이에요. i = 0, 1, 2일 때의 값을 모두 더한 total이 요금 합계예요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "2단계에서 빈 상자를 건너뛰는 부분을 빠뜨리면 무게 0이 소형으로 세어져요. 이때 예시 1의 요금 합계는 얼마가 될까요?",
+     "a": "19500",
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = [0, 0, 0]\n    for x in arr:\n        if x == 0:\n            continue\n        if x <= 5:\n            ret[0] += 1\n        elif x <= 15:\n            ret[1] += 1\n        else:\n            ret[2] += 1\n    return ret\n\ndef func_c(arr):\n    price = [2000, 3500, 5000]\n    total = 0\n    for i in range(3):\n        total += arr[i] * price[i]\n    return total\n\ndef solution(boxes):\n    weights = func_a(boxes)\n    counts = func_b(weights)\n    answer = func_c(counts)\n    return answer\n\ndef wrong_b(arr):\n    ret = [0, 0, 0]\n    for x in arr:\n        if x <= 5:\n            ret[0] += 1\n        elif x <= 15:\n            ret[1] += 1\n        else:\n            ret[2] += 1\n    return ret\n\ndef answers():\n    return [func_c(wrong_b(func_a([[2, 3], [4, 4, 1], [], [10, 6], [5], [3, 3, 3, 3, 3, 1]])))]",
+     "explain": "빈 상자 하나가 소형으로 잘못 세어져 2000원이 더해지므로 17500 + 2000 = 19500원이 돼요. 그래서 무게가 0인지 가장 먼저 확인하고 건너뛰어야 해요."
+    }
+   ],
+   "explain": "1단계는 sum(a)로 상자 무게를 구하는데, 빈 상자는 0이 돼요. 2단계는 x == 0이면 건너뛰고, x <= 5면 소형, elif x <= 15면 중형, 나머지는 대형으로 세어요. 3단계는 같은 인덱스의 상자 수와 요금을 곱해 더해요(arr[i] * price[i]). if/elif가 위에서부터 차례로 확인된다는 점을 이용하면 중형 조건을 짧게 쓸 수 있어요."
+  },
+  {
+   "id": "pyb-t03-adv3",
+   "version": 1,
+   "title": "반 대항 제기차기 점수 차",
+   "statement": "학교 축제에서 반 대항 제기차기 대회를 열었습니다. 2차원 리스트 `kicks`의 각 행은 한 반 학생들의 제기차기 기록(찬 횟수)이고, 반마다 참가한 학생 수가 다를 수 있습니다. **반 점수**는 그 반에서 기록이 좋은(찬 횟수가 많은) 순서대로 `k`명의 기록을 더한 값입니다. 기록이 같은 학생이 있어도 정해진 `k`명의 기록만 더합니다.\n\n가장 높은 반 점수와 가장 낮은 반 점수의 차이를 다음 세 단계로 구합니다.\n- 1단계(`func_a`): 한 반의 기록 리스트와 `k`를 받아, 기록을 큰 순서로 정렬한 뒤 앞에서부터 `k`개를 더해 반 점수를 구합니다.\n- 2단계(`func_b`): 모든 반에 대해 `func_a`를 불러 반 점수 리스트를 만듭니다.\n- 3단계(`func_c`): 반 점수 리스트에서 가장 높은 점수와 가장 낮은 점수의 차이를 구합니다.\n\n`kicks`와 `k`가 매개변수로 주어질 때 3단계의 결과를 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "kicks의 행 수(반 수)는 1 이상 10 이하입니다.",
+    "kicks의 각 행의 길이(그 반의 참가 학생 수)는 k 이상 10 이하이고, 원소는 0 이상 100 이하인 정수입니다.",
+    "k는 1 이상 5 이하인 정수입니다."
+   ],
+   "returns": [
+    "가장 높은 반 점수와 가장 낮은 반 점수의 차이(0 이상인 정수)를 return 합니다. 반이 하나뿐이면 0입니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "kicks",
+    "k"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        12,
+        30,
+        7,
+        25
+       ],
+       [
+        18,
+        18,
+        5
+       ],
+       [
+        40,
+        3,
+        2,
+        1,
+        9
+       ],
+       [
+        11,
+        22,
+        15
+       ]
+      ],
+      2
+     ],
+     "expected": 19,
+     "explain": "반 점수는 30 + 25 = 55, 18 + 18 = 36, 40 + 9 = 49, 22 + 15 = 37입니다. 가장 높은 55와 가장 낮은 36의 차이는 19입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        9,
+        9,
+        2
+       ],
+       [
+        8,
+        1,
+        6
+       ]
+      ],
+      3
+     ],
+     "expected": 8,
+     "explain": "k = 3이라 반마다 기록이 좋은 3명을 더합니다. 첫째 반은 9 + 9 + 5 = 23, 둘째 반은 참가자 3명을 모두 더해 8 + 6 + 1 = 15이므로 차이는 8입니다."
+    }
+   ],
+   "code": "def func_a(records, k):\n    s = ⟦1⟧\n    total = 0\n    for i in range(k):\n        total += ⟦2⟧\n    return total\n\ndef func_b(arr, k):\n    ret = []\n    for a in arr:\n        ret.append(⟦3⟧)\n    return ret\n\ndef func_c(arr):\n    return ⟦4⟧\n\ndef solution(kicks, k):\n    scores = ⟦5⟧\n    answer = func_c(scores)\n    return answer",
+   "blanks": [
+    {
+     "answer": "sorted(records, reverse=True)"
+    },
+    {
+     "answer": "s[i]"
+    },
+    {
+     "answer": "func_a(a, k)"
+    },
+    {
+     "answer": "max(arr) - min(arr)"
+    },
+    {
+     "answer": "func_b(kicks, k)"
+    }
+   ],
+   "solution": "def func_a(records, k):\n    s = sorted(records, reverse=True)\n    total = 0\n    for i in range(k):\n        total += s[i]\n    return total\n\ndef func_b(arr, k):\n    ret = []\n    for a in arr:\n        ret.append(func_a(a, k))\n    return ret\n\ndef func_c(arr):\n    return max(arr) - min(arr)\n\ndef solution(kicks, k):\n    scores = func_b(kicks, k)\n    answer = func_c(scores)\n    return answer",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        7
+       ]
+      ],
+      1
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ]
+      ],
+      2
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        100,
+        100,
+        100,
+        100,
+        100
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ]
+      ],
+      5
+     ],
+     "expected": 500
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        9,
+        4
+       ],
+       [
+        8,
+        2,
+        2
+       ]
+      ],
+      1
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        9,
+        4
+       ],
+       [
+        8,
+        2,
+        2
+       ]
+      ],
+      3
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        5,
+        5,
+        5
+       ],
+       [
+        10,
+        0,
+        10,
+        0
+       ],
+       [
+        6,
+        4,
+        6,
+        4
+       ]
+      ],
+      2
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+       ],
+       [
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+       ]
+      ],
+      4
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       [
+        50,
+        1,
+        1,
+        1
+       ],
+       [
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        30,
+        15,
+        0,
+        9
+       ]
+      ],
+      1
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      [
+       [
+        50,
+        1,
+        1,
+        1
+       ],
+       [
+        20,
+        20,
+        20,
+        20
+       ],
+       [
+        30,
+        15,
+        0,
+        9
+       ]
+      ],
+      3
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        8,
+        6,
+        4
+       ],
+       [
+        7,
+        7
+       ],
+       [
+        9,
+        1,
+        1
+       ],
+       [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+       ]
+      ],
+      2
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        15,
+        3,
+        27,
+        8,
+        19
+       ],
+       [
+        22,
+        22,
+        5,
+        13,
+        0
+       ],
+       [
+        9,
+        31,
+        2,
+        18,
+        11
+       ]
+      ],
+      5
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       [
+        12,
+        5
+       ],
+       [
+        4,
+        13
+       ],
+       [
+        9,
+        8
+       ],
+       [
+        17,
+        0
+       ],
+       [
+        6,
+        11
+       ],
+       [
+        10,
+        7
+       ],
+       [
+        3,
+        14
+       ],
+       [
+        16,
+        1
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        2,
+        15
+       ]
+      ],
+      1
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        100,
+        0,
+        100,
+        0,
+        100
+       ],
+       [
+        99,
+        99,
+        99,
+        1,
+        1,
+        1
+       ],
+       [
+        60,
+        70,
+        80,
+        90,
+        10,
+        20
+       ]
+      ],
+      4
+     ],
+     "expected": 2
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        40,
+        4,
+        40,
+        4
+       ]
+      ],
+      2
+     ],
+     "expected": 0
+    }
+   ],
+   "inputCheck": "def valid(kicks, k):\n    ok_int = lambda v, lo, hi: isinstance(v, int) and not isinstance(v, bool) and lo <= v <= hi\n    if not ok_int(k, 1, 5):\n        return False\n    return isinstance(kicks, list) and 1 <= len(kicks) <= 10 and all(isinstance(r, list) and k <= len(r) <= 10 and all(ok_int(x, 0, 100) for x in r) for r in kicks)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "한 반의 기록이 [12, 30, 7, 25]이고 k = 2일 때, 반 점수에 더하는 기록은 무엇일까요?",
+     "options": [
+      "30과 25",
+      "12와 30",
+      "7과 12",
+      "12, 30, 7, 25 모두"
+     ],
+     "answer": 0,
+     "explain": "기록이 좋은 순서, 즉 큰 순서로 2명을 골라요. 30과 25가 가장 커서 반 점수는 55예요. 리스트의 앞에서부터 2개(12, 30)를 고르는 것이 아니라는 점에 주의해요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "한 반의 기록이 [9, 7, 7, 3]이고 k = 2일 때 반 점수는 얼마일까요?",
+     "a": "16",
+     "check": "def func_a(records, k):\n    s = sorted(records, reverse=True)\n    total = 0\n    for i in range(k):\n        total += s[i]\n    return total\n\ndef func_b(arr, k):\n    ret = []\n    for a in arr:\n        ret.append(func_a(a, k))\n    return ret\n\ndef func_c(arr):\n    return max(arr) - min(arr)\n\ndef solution(kicks, k):\n    scores = func_b(kicks, k)\n    answer = func_c(scores)\n    return answer\n\ndef answers():\n    return [func_a([9, 7, 7, 3], 2)]",
+     "explain": "큰 순서로 놓으면 9, 7, 7, 3이에요. 7이 두 개지만 정해진 2명만 더하므로 9 + 7 = 16이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`sorted([12, 30, 7, 25], reverse=True)`의 결과는 무엇일까요?",
+     "options": [
+      "[30, 25, 12, 7]",
+      "[7, 12, 25, 30]",
+      "[12, 30, 7, 25]",
+      "[25, 7, 30, 12]"
+     ],
+     "answer": 0,
+     "explain": "sorted는 값을 정렬한 새 리스트를 만들어 줘요. reverse=True를 넣으면 큰 값부터(내림차순), 넣지 않으면 작은 값부터(오름차순) 정렬해요. 큰 순서로 정렬하면 앞의 k개가 바로 기록이 좋은 k명이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "1단계 반복 따라가기",
+     "prompt": "예시 2의 첫째 반 기록 [5, 9, 9, 2]를 큰 순서로 정렬한 리스트를 s라고 해요(k = 3). `for i in range(k):`로 반복하며 i마다 `s[i]`와, 그 값을 더한 뒤의 total을 채워 보세요.",
+     "columns": [
+      "i",
+      "s[i]",
+      "total"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "9"
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "9"
+       },
+       {
+        "a": "18"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "5"
+       },
+       {
+        "a": "23"
+       }
+      ]
+     ],
+     "check": "def answers():\n    s = sorted([5, 9, 9, 2], reverse=True)\n    out = []\n    total = 0\n    for i in range(3):\n        total += s[i]\n        out += [s[i], total]\n    return out",
+     "explain": "s는 [9, 9, 5, 2]예요. i가 0, 1, 2일 때 9, 9, 5를 더해 total은 23이 돼요. 반복은 k번만 하므로 가장 작은 2는 더하지 않아요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "예시 1의 반 점수",
+     "prompt": "예시 1(k = 2)의 반마다 큰 순서로 정렬한 리스트 s와 반 점수를 채워 보세요. 정렬한 리스트는 `[30, 25, 12, 7]`처럼 대괄호를 써서 적어요.",
+     "columns": [
+      "반 기록",
+      "정렬한 s",
+      "반 점수"
+     ],
+     "rows": [
+      [
+       "[12, 30, 7, 25]",
+       {
+        "a": "[30, 25, 12, 7]",
+        "alts": [
+         "30, 25, 12, 7"
+        ]
+       },
+       {
+        "a": "55"
+       }
+      ],
+      [
+       "[18, 18, 5]",
+       {
+        "a": "[18, 18, 5]",
+        "alts": [
+         "18, 18, 5"
+        ]
+       },
+       {
+        "a": "36"
+       }
+      ],
+      [
+       "[40, 3, 2, 1, 9]",
+       {
+        "a": "[40, 9, 3, 2, 1]",
+        "alts": [
+         "40, 9, 3, 2, 1"
+        ]
+       },
+       {
+        "a": "49"
+       }
+      ],
+      [
+       "[11, 22, 15]",
+       {
+        "a": "[22, 15, 11]",
+        "alts": [
+         "22, 15, 11"
+        ]
+       },
+       {
+        "a": "37"
+       }
+      ]
+     ],
+     "check": "def func_a(records, k):\n    s = sorted(records, reverse=True)\n    total = 0\n    for i in range(k):\n        total += s[i]\n    return total\n\ndef func_b(arr, k):\n    ret = []\n    for a in arr:\n        ret.append(func_a(a, k))\n    return ret\n\ndef func_c(arr):\n    return max(arr) - min(arr)\n\ndef solution(kicks, k):\n    scores = func_b(kicks, k)\n    answer = func_c(scores)\n    return answer\n\ndef answers():\n    out = []\n    for a in [[12, 30, 7, 25], [18, 18, 5], [40, 3, 2, 1, 9], [11, 22, 15]]:\n        out += [sorted(a, reverse=True), func_a(a, 2)]\n    return out",
+     "explain": "반 점수 리스트는 [55, 36, 49, 37]이에요. 2단계는 이렇게 반마다 1단계 함수를 불러 결과를 차례로 모으는 일을 해요. 3단계는 이 리스트에서 가장 큰 55와 가장 작은 36의 차이 19를 구해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "2단계 함수의 머리는 `def func_b(arr, k):`예요. 반 점수를 모으기만 하는 함수인데 왜 k도 받아야 할까요?",
+     "options": [
+      "func_b 안에서 반마다 func_a를 부를 때 k를 함께 넘겨야 해서",
+      "func_b가 반복을 k번만 해야 해서",
+      "func_b가 반 점수 리스트를 정렬해야 해서",
+      "k가 없어도 되지만 그냥 받는다"
+     ],
+     "answer": 0,
+     "explain": "반 점수를 구하는 func_a(records, k)는 기록 리스트와 k를 모두 받아야 해요. func_b는 반마다 func_a를 부르므로 받은 k를 그대로 넘겨줘요. 그래서 solution도 func_b를 부를 때 kicks와 k를 함께 넘기고, func_b의 반복은 k와 상관없이 모든 반을 돌아요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "1단계에서 정렬한 리스트 s 대신 처음 리스트로 `total += records[i]`라고 쓰면, 기록이 [12, 30, 7, 25]이고 k = 2일 때 반 점수는 얼마가 될까요?",
+     "a": "42",
+     "check": "def answers():\n    records = [12, 30, 7, 25]\n    total = 0\n    for i in range(2):\n        total += records[i]\n    return [total]",
+     "explain": "정렬하지 않은 records의 앞 두 값 12와 30을 더해 42가 돼요. 정답 55와 달라요. 정렬한 s에서 꺼내야 큰 기록부터 k개를 더할 수 있어요."
+    }
+   ],
+   "explain": "1단계는 sorted(records, reverse=True)로 큰 순서로 정렬한 뒤 앞에서부터 k개(s[i])를 더해요. 2단계는 반마다 func_a(a, k)를 불러 모으고, 3단계는 max(arr) - min(arr)로 차이를 구해요. 정렬하지 않은 리스트에서 꺼내거나, 함수에 k를 넘겨주는 것을 빠뜨리는 실수가 많아요."
+  },
+  {
+   "id": "pyb-t03-adv4",
+   "version": 1,
+   "title": "바자회 흑자 동아리 찾기",
+   "statement": "학교 바자회에서 동아리들이 5일 동안 가게를 열었습니다. 2차원 리스트 `profits`의 각 행은 동아리 하나의 날짜별 손익(천 원 단위)입니다. 이익이 난 날은 양수, 손해가 난 날은 음수, 본전인 날은 0입니다. 첫 번째 행이 1번 동아리, 두 번째 행이 2번 동아리인 식으로 번호가 붙습니다. 5일 손익의 합이 0보다 큰 동아리를 **흑자 동아리**라고 하며, 합이 0인 동아리는 흑자 동아리가 아닙니다.\n\n흑자 동아리의 수와, 흑자 동아리 가운데 손익의 합이 가장 큰 동아리의 번호를 다음 세 단계로 구합니다.\n- 1단계(`func_a`): 동아리마다 5일 손익의 합을 구해 리스트로 만듭니다.\n- 2단계(`func_b`): 1단계 리스트를 보고 흑자 동아리의 번호를 작은 번호부터 차례로 모아 리스트로 만듭니다.\n- 3단계(`func_c`): 1단계 리스트와 2단계 번호 리스트를 받아, 흑자 동아리 가운데 손익의 합이 가장 큰 동아리의 번호를 구합니다. 합이 가장 큰 동아리가 여럿이면 번호가 가장 작은 동아리를 고르고, 흑자 동아리가 없으면 -1로 합니다.\n\n`solution` 함수가 `[흑자 동아리 수, 3단계의 결과]`를 return 하도록 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "profits의 행 수(동아리 수)는 1 이상 15 이하입니다.",
+    "profits의 각 행의 길이는 5이고, 원소는 -20 이상 20 이하인 정수입니다."
+   ],
+   "returns": [
+    "[흑자 동아리 수, 손익의 합이 가장 큰 흑자 동아리의 번호]를 return 합니다. 흑자 동아리가 없으면 [0, -1]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "profits"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        4,
+        -3,
+        2,
+        0,
+        4
+       ],
+       [
+        -5,
+        1,
+        -2,
+        3,
+        -3
+       ],
+       [
+        6,
+        -1,
+        2,
+        -1,
+        3
+       ],
+       [
+        1,
+        -4,
+        3,
+        2,
+        -2
+       ],
+       [
+        -2,
+        8,
+        0,
+        -1,
+        4
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      3
+     ],
+     "explain": "동아리별 합은 7, -6, 9, 0, 9입니다. 흑자 동아리는 1·3·5번이고(합이 0인 4번은 아님) 3개입니다. 합이 가장 큰 9인 동아리가 3번과 5번이라 번호가 작은 3번을 고릅니다."
+    },
+    {
+     "args": [
+      [
+       [
+        -3,
+        1,
+        0,
+        -2,
+        1
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      -1
+     ],
+     "explain": "동아리별 합은 -3, 0이라 흑자 동아리가 없습니다. 그래서 [0, -1]입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        5,
+        -1,
+        0,
+        0
+       ],
+       [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+       ],
+       [
+        2,
+        3,
+        4,
+        5,
+        6
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      3
+     ],
+     "explain": "동아리별 합은 9, -5, 20입니다. 흑자 동아리는 1번과 3번이고, 합이 가장 큰 동아리는 20인 3번입니다."
+    }
+   ],
+   "code": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for i in range(len(arr)):\n        if ⟦1⟧:\n            ret.append(⟦2⟧)\n    return ret\n\ndef func_c(totals, nums):\n    if ⟦3⟧:\n        return -1\n    best = ⟦4⟧\n    for n in nums:\n        if ⟦5⟧:\n            best = n\n    return best\n\ndef solution(profits):\n    totals = func_a(profits)\n    nums = func_b(totals)\n    best = func_c(totals, nums)\n    return [⟦6⟧, best]",
+   "blanks": [
+    {
+     "answer": "arr[i] > 0",
+     "alts": [
+      "0 < arr[i]",
+      "arr[i] >= 1"
+     ]
+    },
+    {
+     "answer": "i + 1"
+    },
+    {
+     "answer": "len(nums) == 0",
+     "alts": [
+      "nums == []",
+      "not nums"
+     ]
+    },
+    {
+     "answer": "nums[0]"
+    },
+    {
+     "answer": "totals[n - 1] > totals[best - 1]",
+     "alts": [
+      "totals[best - 1] < totals[n - 1]"
+     ]
+    },
+    {
+     "answer": "len(nums)"
+    }
+   ],
+   "solution": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for i in range(len(arr)):\n        if arr[i] > 0:\n            ret.append(i + 1)\n    return ret\n\ndef func_c(totals, nums):\n    if len(nums) == 0:\n        return -1\n    best = nums[0]\n    for n in nums:\n        if totals[n - 1] > totals[best - 1]:\n            best = n\n    return best\n\ndef solution(profits):\n    totals = func_a(profits)\n    nums = func_b(totals)\n    best = func_c(totals, nums)\n    return [len(nums), best]",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -20,
+        -20,
+        -20,
+        -20,
+        -20
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        20,
+        20,
+        20,
+        20,
+        20
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        -1,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -1,
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        3,
+        0,
+        0,
+        0
+       ],
+       [
+        2,
+        2,
+        2,
+        0,
+        0
+       ],
+       [
+        6,
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        1
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        -5,
+        0,
+        0,
+        0
+       ],
+       [
+        -3,
+        4,
+        0,
+        0,
+        0
+       ],
+       [
+        2,
+        2,
+        -2,
+        -2,
+        1
+       ],
+       [
+        9,
+        -10,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -2,
+        1,
+        3,
+        -4,
+        5
+       ],
+       [
+        10,
+        -10,
+        10,
+        -10,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        20,
+        -20,
+        4,
+        0,
+        0
+       ],
+       [
+        3,
+        -1,
+        -1,
+        2,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      5,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        2,
+        2,
+        2,
+        2
+       ],
+       [
+        -20,
+        20,
+        -20,
+        20,
+        10
+       ],
+       [
+        5,
+        5,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -5,
+        -5,
+        1,
+        1,
+        1
+       ],
+       [
+        -4,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -1,
+        -2,
+        -3,
+        4,
+        1
+       ],
+       [
+        0,
+        0,
+        0,
+        -1,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -7,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -6,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -5,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -4,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -3,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -2,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        -1,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        1,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        2,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        3,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        4,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        5,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        6,
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        7,
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      7,
+      15
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       [
+        -1,
+        -2,
+        -3,
+        -4,
+        -5
+       ],
+       [
+        5,
+        4,
+        3,
+        2,
+        1
+       ],
+       [
+        0,
+        15,
+        0,
+        0,
+        0
+       ],
+       [
+        -6,
+        6,
+        -6,
+        6,
+        0
+       ],
+       [
+        7,
+        7,
+        0,
+        0,
+        0
+       ],
+       [
+        20,
+        -5,
+        0,
+        0,
+        0
+       ],
+       [
+        8,
+        0,
+        0,
+        0,
+        7
+       ],
+       [
+        -20,
+        0,
+        0,
+        0,
+        5
+       ],
+       [
+        3,
+        3,
+        3,
+        3,
+        3
+       ]
+      ]
+     ],
+     "expected": [
+      7,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        -2,
+        -2,
+        1,
+        0
+       ],
+       [
+        -8,
+        3,
+        3,
+        3,
+        0
+       ],
+       [
+        0,
+        0,
+        1,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      1
+     ]
+    }
+   ],
+   "inputCheck": "def valid(profits):\n    ok_int = lambda v: isinstance(v, int) and not isinstance(v, bool) and -20 <= v <= 20\n    return isinstance(profits, list) and 1 <= len(profits) <= 15 and all(isinstance(r, list) and len(r) == 5 and all(ok_int(x) for x in r) for r in profits)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "5일 손익의 합이 0인 동아리는 어떻게 될까요?",
+     "options": [
+      "흑자 동아리가 아니다",
+      "흑자 동아리다",
+      "번호를 -1로 적는다"
+     ],
+     "answer": 0,
+     "explain": "흑자 동아리는 합이 0보다 큰(0 초과) 동아리예요. 0은 이익도 손해도 없는 본전이라 흑자가 아니에요. 그래서 흑자인지 확인하는 조건은 합이 0일 때 거짓이 되어야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "1·2·3번 동아리의 합이 차례로 5, 8, 8이고 모두 흑자일 때, 3단계의 결과는 무엇일까요?",
+     "options": [
+      "2",
+      "3",
+      "8",
+      "1"
+     ],
+     "answer": 0,
+     "explain": "가장 큰 합 8을 가진 동아리가 2번과 3번이에요. 동점이면 번호가 작은 2번을 골라요. 3단계의 결과는 합(8)이 아니라 동아리 번호라는 점도 기억해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "1단계 결과가 [7, -6, 9, 0, 9]일 때, 2단계 결과(흑자 동아리 번호 리스트)는 무엇일까요?",
+     "options": [
+      "[1, 3, 5]",
+      "[0, 2, 4]",
+      "[7, 9, 9]",
+      "[1, 3, 4, 5]"
+     ],
+     "answer": 0,
+     "explain": "2단계는 합이 아니라 흑자 동아리의 번호를 모아요. 인덱스(리스트에서 0부터 세는 위치) 0, 2, 4가 흑자이고, 번호는 인덱스에 1을 더한 1, 3, 5예요. 합이 0인 4번은 빠져요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "2단계 따라가기",
+     "prompt": "예시 1의 1단계 결과 [7, -6, 9, 0, 9]로 func_b를 따라가요. 인덱스 i마다 흑자인지(True/False)와, 그 i를 처리한 뒤의 ret를 채워 보세요. ret는 `[1]`처럼 대괄호를 써서 적어요.",
+     "columns": [
+      "i",
+      "arr[i]",
+      "흑자인가?",
+      "ret"
+     ],
+     "rows": [
+      [
+       "0",
+       "7",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[1]",
+        "alts": [
+         "1"
+        ]
+       }
+      ],
+      [
+       "1",
+       "-6",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[1]",
+        "alts": [
+         "1"
+        ]
+       }
+      ],
+      [
+       "2",
+       "9",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[1, 3]",
+        "alts": [
+         "1, 3"
+        ]
+       }
+      ],
+      [
+       "3",
+       "0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "[1, 3]",
+        "alts": [
+         "1, 3"
+        ]
+       }
+      ],
+      [
+       "4",
+       "9",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "[1, 3, 5]",
+        "alts": [
+         "1, 3, 5"
+        ]
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for i in range(len(arr)):\n        if arr[i] > 0:\n            ret.append(i + 1)\n    return ret\n\ndef func_c(totals, nums):\n    if len(nums) == 0:\n        return -1\n    best = nums[0]\n    for n in nums:\n        if totals[n - 1] > totals[best - 1]:\n            best = n\n    return best\n\ndef solution(profits):\n    totals = func_a(profits)\n    nums = func_b(totals)\n    best = func_c(totals, nums)\n    return [len(nums), best]\n\ndef answers():\n    arr = func_a([[4, -3, 2, 0, 4], [-5, 1, -2, 3, -3], [6, -1, 2, -1, 3], [1, -4, 3, 2, -2], [-2, 8, 0, -1, 4]])\n    out = []\n    ret = []\n    for i in range(len(arr)):\n        ok = arr[i] > 0\n        if ok:\n            ret.append(i + 1)\n        out += [ok, list(ret)]\n    return out",
+     "explain": "흑자일 때만 그 동아리의 번호를 ret에 넣어요. 인덱스 3은 합이 0이라 넣지 않아요. 마지막 ret는 [1, 3, 5]이고, 이 리스트의 길이 3이 흑자 동아리 수예요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "3단계는 동아리 번호 n으로 1단계 리스트 totals에서 그 동아리의 합을 꺼내요. 5번 동아리의 합은 totals의 몇 번 인덱스에 있을까요?",
+     "a": "4",
+     "check": "def answers():\n    n = 5\n    return [n - 1]",
+     "explain": "번호는 1부터, 인덱스는 0부터 세므로 번호 n인 동아리의 합은 인덱스 n - 1에 있어요. 5번 동아리의 합은 totals[4]예요. best도 번호라서 best번 동아리의 합을 꺼낼 때도 똑같이 1을 빼요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "3단계 따라가기",
+     "prompt": "예시 1에서 totals = [7, -6, 9, 0, 9], nums = [1, 3, 5]이고, best는 nums의 첫 번호인 1에서 시작해요. n마다 n번 동아리의 합, 비교하기 전 best번 동아리의 합, n번의 합이 더 큰지(True/False), 처리한 뒤의 best를 채워 보세요.",
+     "columns": [
+      "n",
+      "n번의 합",
+      "best번의 합",
+      "더 큰가?",
+      "best"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "7"
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "9"
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "9"
+       },
+       {
+        "a": "9"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for i in range(len(arr)):\n        if arr[i] > 0:\n            ret.append(i + 1)\n    return ret\n\ndef func_c(totals, nums):\n    if len(nums) == 0:\n        return -1\n    best = nums[0]\n    for n in nums:\n        if totals[n - 1] > totals[best - 1]:\n            best = n\n    return best\n\ndef solution(profits):\n    totals = func_a(profits)\n    nums = func_b(totals)\n    best = func_c(totals, nums)\n    return [len(nums), best]\n\ndef answers():\n    totals = func_a([[4, -3, 2, 0, 4], [-5, 1, -2, 3, -3], [6, -1, 2, -1, 3], [1, -4, 3, 2, -2], [-2, 8, 0, -1, 4]])\n    nums = func_b(totals)\n    best = nums[0]\n    out = []\n    for n in nums:\n        a = totals[n - 1]\n        b = totals[best - 1]\n        if a > b:\n            best = n\n        out += [a, b, a > b, best]\n    return out",
+     "explain": "n = 3일 때 9가 7보다 커서 best가 3으로 바뀌어요. n = 5일 때는 9가 9보다 크지 않아서(같아서) 바뀌지 않아요. 그래서 동점이면 먼저 나온 작은 번호가 남아요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "3단계에서 best를 바꾸는 조건에 \"더 크다(>)\" 대신 \"크거나 같다(>=)\"를 쓰면, 예시 1의 3단계 결과는 몇 번이 될까요?",
+     "a": "5",
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for i in range(len(arr)):\n        if arr[i] > 0:\n            ret.append(i + 1)\n    return ret\n\ndef func_c(totals, nums):\n    if len(nums) == 0:\n        return -1\n    best = nums[0]\n    for n in nums:\n        if totals[n - 1] > totals[best - 1]:\n            best = n\n    return best\n\ndef solution(profits):\n    totals = func_a(profits)\n    nums = func_b(totals)\n    best = func_c(totals, nums)\n    return [len(nums), best]\n\ndef answers():\n    totals = func_a([[4, -3, 2, 0, 4], [-5, 1, -2, 3, -3], [6, -1, 2, -1, 3], [1, -4, 3, 2, -2], [-2, 8, 0, -1, 4]])\n    nums = func_b(totals)\n    best = nums[0]\n    for n in nums:\n        if totals[n - 1] >= totals[best - 1]:\n            best = n\n    return [best]",
+     "explain": ">=는 합이 같을 때도 best를 바꿔요. 그러면 n = 5일 때 9 >= 9가 참이라 best가 5로 바뀌어요. 동점이면 번호가 작은 동아리를 골라야 하므로 >를 써요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "profits = [[-5, 5, 0, 0, 0], [3, -4, 0, 0, 0]]일 때 solution의 return 값은 무엇일까요?",
+     "a": "[0, -1]",
+     "alts": [
+      "0, -1"
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for a in arr:\n        ret.append(sum(a))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for i in range(len(arr)):\n        if arr[i] > 0:\n            ret.append(i + 1)\n    return ret\n\ndef func_c(totals, nums):\n    if len(nums) == 0:\n        return -1\n    best = nums[0]\n    for n in nums:\n        if totals[n - 1] > totals[best - 1]:\n            best = n\n    return best\n\ndef solution(profits):\n    totals = func_a(profits)\n    nums = func_b(totals)\n    best = func_c(totals, nums)\n    return [len(nums), best]\n\ndef answers():\n    return [solution([[-5, 5, 0, 0, 0], [3, -4, 0, 0, 0]])]",
+     "explain": "합이 0과 -1이라 흑자 동아리가 없고 nums는 빈 리스트 []예요. 빈 리스트에는 nums[0]이 없어서 꺼내면 오류가 나므로, 3단계는 먼저 nums에 번호가 하나도 없는지 확인해 -1을 돌려줘요. 흑자 동아리 수는 nums의 길이인 0이에요."
+    }
+   ],
+   "explain": "2단계는 arr[i] > 0인 인덱스 i의 번호 i + 1을 모으고, 3단계는 nums가 비었으면 -1, 아니면 best = nums[0]에서 시작해 totals[n - 1] > totals[best - 1]일 때만 바꿔요. 번호와 인덱스가 1 차이 나는 점, 동점일 때 바꾸지 않도록 >를 쓰는 점, 빈 리스트에서 nums[0]을 꺼내지 않는 점이 핵심이에요. 흑자 동아리 수는 len(nums)예요."
+  },
+  {
+   "id": "pyb-t03-adv5",
+   "version": 1,
+   "title": "가장 붐비는 주차 구역",
+   "statement": "백화점 주차장의 층별·구역별 주차 대수를 조사했습니다. 2차원 리스트 `cars`에서 `cars[i][j]`는 (i + 1)층 (j + 1)구역에 주차된 차의 수입니다. 즉 첫 번째 행이 1층이고, 각 행의 첫 번째 값이 1구역입니다. 모든 층의 구역 수는 같습니다.\n\n차가 가장 많은 층, 차가 가장 많은 구역, 그리고 그 층과 그 구역이 만나는 칸의 차 수를 다음 단계로 구합니다.\n- 1단계(`func_a`): 층마다(행마다) 차 수의 합을 구해 리스트로 만듭니다.\n- 2단계(`func_b`): 구역마다(열마다) 모든 층의 차 수를 더해 리스트로 만듭니다.\n- 3단계(`func_c`): 리스트 하나를 받아 가장 큰 값이 있는 위치의 번호(1부터 셈)를 구합니다. 가장 큰 값이 여러 개이면 가장 작은 번호를 구합니다. 이 함수는 1단계 리스트와 2단계 리스트에 한 번씩 씁니다.\n\n`solution` 함수는 `[가장 붐비는 층 번호, 가장 붐비는 구역 번호, 그 층 그 구역의 차 수]`를 return 합니다. 단, 주차장에 차가 한 대도 없으면 `[0, 0, 0]`을 return 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "cars의 행 수(층 수)는 1 이상 8 이하입니다.",
+    "cars의 각 행의 길이(구역 수)는 1 이상 8 이하이고, 모든 행의 길이가 같습니다.",
+    "cars의 원소는 0 이상 50 이하인 정수입니다."
+   ],
+   "returns": [
+    "[가장 붐비는 층 번호, 가장 붐비는 구역 번호, 그 칸의 차 수]를 return 합니다. 차가 한 대도 없으면 [0, 0, 0]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "cars"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        3,
+        10,
+        2,
+        9
+       ],
+       [
+        8,
+        1,
+        9,
+        8
+       ],
+       [
+        0,
+        12,
+        6,
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      4,
+      8
+     ],
+     "explain": "층별 합은 24, 26, 25라서 2층, 구역별 합은 11, 23, 17, 24라서 4구역이 가장 붐빕니다. 2층 4구역의 차 수는 8입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        6,
+        0
+       ],
+       [
+        7,
+        0,
+        3
+       ],
+       [
+        5,
+        5,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      4
+     ],
+     "explain": "층별 합이 모두 10으로 같아서 번호가 가장 작은 1층을 고릅니다. 구역별 합은 16, 11, 3이라 1구역이고, 1층 1구역의 차 수는 4입니다."
+    }
+   ],
+   "code": "def func_a(arr):\n    ret = []\n    for row in arr:\n        ret.append(sum(row))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for j in range(⟦1⟧):\n        total = 0\n        for i in range(len(arr)):\n            total += ⟦2⟧\n        ret.append(total)\n    return ret\n\ndef func_c(arr):\n    best = 0\n    for i in range(1, len(arr)):\n        if ⟦3⟧:\n            best = i\n    return ⟦4⟧\n\ndef solution(cars):\n    floors = func_a(cars)\n    zones = func_b(cars)\n    if ⟦5⟧:\n        return [0, 0, 0]\n    f = func_c(floors)\n    z = ⟦6⟧\n    return [f, z, ⟦7⟧]",
+   "blanks": [
+    {
+     "answer": "len(arr[0])"
+    },
+    {
+     "answer": "arr[i][j]"
+    },
+    {
+     "answer": "arr[i] > arr[best]",
+     "alts": [
+      "arr[best] < arr[i]"
+     ]
+    },
+    {
+     "answer": "best + 1"
+    },
+    {
+     "answer": "sum(floors) == 0",
+     "alts": [
+      "sum(zones) == 0",
+      "max(floors) == 0"
+     ]
+    },
+    {
+     "answer": "func_c(zones)"
+    },
+    {
+     "answer": "cars[f - 1][z - 1]"
+    }
+   ],
+   "solution": "def func_a(arr):\n    ret = []\n    for row in arr:\n        ret.append(sum(row))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for j in range(len(arr[0])):\n        total = 0\n        for i in range(len(arr)):\n            total += arr[i][j]\n        ret.append(total)\n    return ret\n\ndef func_c(arr):\n    best = 0\n    for i in range(1, len(arr)):\n        if arr[i] > arr[best]:\n            best = i\n    return best + 1\n\ndef solution(cars):\n    floors = func_a(cars)\n    zones = func_b(cars)\n    if sum(floors) == 0:\n        return [0, 0, 0]\n    f = func_c(floors)\n    z = func_c(zones)\n    return [f, z, cars[f - 1][z - 1]]",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      7
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      8,
+      8
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        3
+       ],
+       [
+        9
+       ],
+       [
+        9
+       ],
+       [
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      1,
+      9
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      2,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        5
+       ],
+       [
+        5,
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        9,
+        0
+       ],
+       [
+        9,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        12
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      4,
+      12
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        4,
+        6
+       ],
+       [
+        6,
+        4,
+        2
+       ],
+       [
+        1,
+        1,
+        10
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      3,
+      6
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      50
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        3,
+        6,
+        9,
+        1
+       ],
+       [
+        7,
+        10,
+        2,
+        5,
+        8
+       ],
+       [
+        3,
+        6,
+        9,
+        1,
+        4
+       ],
+       [
+        10,
+        2,
+        5,
+        8,
+        0
+       ],
+       [
+        6,
+        9,
+        1,
+        4,
+        7
+       ],
+       [
+        2,
+        5,
+        8,
+        0,
+        3
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      2,
+      10
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        12,
+        0,
+        30,
+        5,
+        8
+       ],
+       [
+        3,
+        25,
+        4,
+        9,
+        0
+       ],
+       [
+        20,
+        6,
+        1,
+        14,
+        7
+       ],
+       [
+        0,
+        18,
+        2,
+        11,
+        22
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        1,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      3,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        1
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        0,
+        5
+       ],
+       [
+        5,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      4
+     ]
+    }
+   ],
+   "inputCheck": "def valid(cars):\n    ok_int = lambda v: isinstance(v, int) and not isinstance(v, bool) and 0 <= v <= 50\n    if not (isinstance(cars, list) and 1 <= len(cars) <= 8 and all(isinstance(r, list) for r in cars)):\n        return False\n    m = len(cars[0])\n    return 1 <= m <= 8 and all(len(r) == m and all(ok_int(x) for x in r) for r in cars)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`cars[1][2]`는 몇 층 몇 구역의 차 수일까요?",
+     "options": [
+      "2층 3구역",
+      "1층 2구역",
+      "3층 2구역",
+      "2층 2구역"
+     ],
+     "answer": 0,
+     "explain": "앞의 인덱스 1은 행(층), 뒤의 인덱스 2는 열(구역)이에요. 인덱스는 0부터 세고 번호는 1부터 세니, 각각 1을 더한 2층 3구역이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "3단계 함수에 [10, 10, 10]을 넣으면 결과는 무엇일까요?",
+     "options": [
+      "1",
+      "3",
+      "0",
+      "10"
+     ],
+     "answer": 0,
+     "explain": "세 값이 모두 가장 큰 값 10이라 동점이에요. 동점이면 가장 작은 번호를 고르고, 위치는 0부터 세지만 번호는 1부터 세므로 결과는 1이에요. 0은 위치(인덱스)이고 10은 값이라 답이 아니에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "예시 1의 cars는 3개 층이고, 층마다 4개 구역이 있어요. 1단계 결과(층별 합)와 2단계 결과(구역별 합)는 각각 몇 개의 값을 가질까요?",
+     "options": [
+      "층별 3개, 구역별 4개",
+      "층별 4개, 구역별 3개",
+      "둘 다 3개",
+      "둘 다 4개"
+     ],
+     "answer": 0,
+     "explain": "층별 합은 행마다 하나라서 행의 수 len(cars) = 3개예요. 구역별 합은 열마다 하나라서 한 행의 길이, 즉 첫 번째 행 cars[0]의 길이 4개예요. 그래서 2단계의 바깥 반복은 행의 수가 아니라 열의 수만큼 돌아야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "2단계 안쪽 반복 따라가기",
+     "prompt": "예시 1에서 j = 1(2구역)일 때, 안쪽 반복 `for i in range(len(arr)):`를 따라가요. i마다 더하는 차 수(i번 행의 j번 열 값)와, 더한 뒤의 total을 채워 보세요.",
+     "columns": [
+      "i",
+      "층",
+      "더하는 차 수",
+      "total"
+     ],
+     "rows": [
+      [
+       "0",
+       "1층",
+       {
+        "a": "10"
+       },
+       {
+        "a": "10"
+       }
+      ],
+      [
+       "1",
+       "2층",
+       {
+        "a": "1"
+       },
+       {
+        "a": "11"
+       }
+      ],
+      [
+       "2",
+       "3층",
+       {
+        "a": "12"
+       },
+       {
+        "a": "23"
+       }
+      ]
+     ],
+     "check": "def answers():\n    arr = [[3, 10, 2, 9], [8, 1, 9, 8], [0, 12, 6, 7]]\n    j = 1\n    total = 0\n    out = []\n    for i in range(len(arr)):\n        total += arr[i][j]\n        out += [arr[i][j], total]\n    return out",
+     "explain": "j를 1로 고정하고 i만 0, 1, 2로 바꾸며 각 행의 1번 열 값 10, 1, 12를 더해요. 그래서 2구역의 합은 23이에요. 같은 일을 j = 0, 1, 2, 3마다 하면 구역별 합 리스트 [11, 23, 17, 24]가 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "3단계 따라가기",
+     "prompt": "구역별 합 [11, 23, 17, 24]를 3단계 함수의 arr로 넣어 따라가요. best는 위치 0에서 시작하고, i는 1부터 돌아요. i마다 arr[i], 비교하기 전의 arr[best], arr[i]가 더 큰지(True/False), 처리한 뒤의 best를 채워 보세요.",
+     "columns": [
+      "i",
+      "arr[i]",
+      "arr[best]",
+      "더 큰가?",
+      "best"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "23"
+       },
+       {
+        "a": "11"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "17"
+       },
+       {
+        "a": "23"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "24"
+       },
+       {
+        "a": "23"
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    arr = [11, 23, 17, 24]\n    best = 0\n    out = []\n    for i in range(1, len(arr)):\n        before = arr[best]\n        big = arr[i] > before\n        if big:\n            best = i\n        out += [arr[i], before, big, best]\n    return out",
+     "explain": "i = 1일 때 23이 11보다 커서 best가 1로 바뀌고, i = 2일 때 17은 23보다 작아서 그대로예요. i = 3일 때 24가 23보다 커서 best가 3으로 바뀌어요. best는 위치(인덱스) 3이므로, 문제에서 원하는 구역 번호는 1을 더한 4예요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "solution에서 가장 붐비는 층 번호 f = 2, 구역 번호 z = 4를 구했어요. 2층 4구역의 차 수를 cars에서 꺼내려면 행 인덱스와 열 인덱스가 각각 얼마여야 할까요? `[행 인덱스, 열 인덱스]`처럼 적어 보세요.",
+     "a": "[1, 3]",
+     "alts": [
+      "1, 3"
+     ],
+     "check": "def answers():\n    f, z = 2, 4\n    return [[f - 1, z - 1]]",
+     "explain": "번호에서 1을 빼면 인덱스가 돼요. 그래서 2층 4구역은 행 인덱스 1, 열 인덱스 3이고, 예시 1에서 그 값은 8이에요. f와 z는 번호이므로 칸을 꺼낼 때 각각 1을 빼야 해요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "3단계 함수가 번호가 아니라 위치 best를 그대로 돌려준다고 해 봐요. solution의 나머지는 그대로일 때, 예시 1에서 solution의 return 값은 무엇이 될까요?",
+     "a": "[1, 3, 2]",
+     "alts": [
+      "1, 3, 2"
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for row in arr:\n        ret.append(sum(row))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for j in range(len(arr[0])):\n        total = 0\n        for i in range(len(arr)):\n            total += arr[i][j]\n        ret.append(total)\n    return ret\n\ndef func_c(arr):\n    best = 0\n    for i in range(1, len(arr)):\n        if arr[i] > arr[best]:\n            best = i\n    return best + 1\n\ndef solution(cars):\n    floors = func_a(cars)\n    zones = func_b(cars)\n    if sum(floors) == 0:\n        return [0, 0, 0]\n    f = func_c(floors)\n    z = func_c(zones)\n    return [f, z, cars[f - 1][z - 1]]\n\ndef wrong_c(arr):\n    best = 0\n    for i in range(1, len(arr)):\n        if arr[i] > arr[best]:\n            best = i\n    return best\n\ndef answers():\n    cars = [[3, 10, 2, 9], [8, 1, 9, 8], [0, 12, 6, 7]]\n    f = wrong_c(func_a(cars))\n    z = wrong_c(func_b(cars))\n    return [[f, z, cars[f - 1][z - 1]]]",
+     "explain": "층은 위치 1, 구역은 위치 3이 그대로 나와서 [1, 3, …]이 되고, 칸도 한 칸씩 어긋난 cars[0][2] = 2를 꺼내요. 위치와 번호가 1 차이 나는 것을 놓치면 세 값이 모두 틀려져요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "cars = [[0, 0, 0], [0, 0, 0]]일 때, 차가 한 대도 없는지 확인하는 부분이 없다면 solution은 무엇을 return 할까요?",
+     "a": "[1, 1, 0]",
+     "alts": [
+      "1, 1, 0"
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for row in arr:\n        ret.append(sum(row))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for j in range(len(arr[0])):\n        total = 0\n        for i in range(len(arr)):\n            total += arr[i][j]\n        ret.append(total)\n    return ret\n\ndef func_c(arr):\n    best = 0\n    for i in range(1, len(arr)):\n        if arr[i] > arr[best]:\n            best = i\n    return best + 1\n\ndef solution(cars):\n    floors = func_a(cars)\n    zones = func_b(cars)\n    if sum(floors) == 0:\n        return [0, 0, 0]\n    f = func_c(floors)\n    z = func_c(zones)\n    return [f, z, cars[f - 1][z - 1]]\n\ndef answers():\n    cars = [[0, 0, 0], [0, 0, 0]]\n    f = func_c(func_a(cars))\n    z = func_c(func_b(cars))\n    return [[f, z, cars[f - 1][z - 1]]]",
+     "explain": "모든 합이 0으로 같아서 3단계 함수는 가장 작은 번호 1을 돌려줘요. 그래서 [1, 1, 0]이 나오지만 문제에서는 [0, 0, 0]을 원해요. 그러니 3단계 함수를 부르기 전에 전체 차 수의 합이 0인지 먼저 확인해야 해요."
+    },
+    {
+     "id": "s9",
+     "kind": "table",
+     "title": "새 주차장으로 전체 정리",
+     "prompt": "cars = [[2, 9], [7, 7], [0, 5]]일 때 층별 합, 구역별 합, 층 번호 f, 구역 번호 z, solution의 return 값을 채워 보세요. 리스트는 대괄호를 써서 적어요.",
+     "columns": [
+      "층별 합",
+      "구역별 합",
+      "f",
+      "z",
+      "return 값"
+     ],
+     "rows": [
+      [
+       {
+        "a": "[11, 14, 5]",
+        "alts": [
+         "11, 14, 5"
+        ]
+       },
+       {
+        "a": "[9, 21]",
+        "alts": [
+         "9, 21"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "[2, 2, 7]",
+        "alts": [
+         "2, 2, 7"
+        ]
+       }
+      ]
+     ],
+     "check": "def func_a(arr):\n    ret = []\n    for row in arr:\n        ret.append(sum(row))\n    return ret\n\ndef func_b(arr):\n    ret = []\n    for j in range(len(arr[0])):\n        total = 0\n        for i in range(len(arr)):\n            total += arr[i][j]\n        ret.append(total)\n    return ret\n\ndef func_c(arr):\n    best = 0\n    for i in range(1, len(arr)):\n        if arr[i] > arr[best]:\n            best = i\n    return best + 1\n\ndef solution(cars):\n    floors = func_a(cars)\n    zones = func_b(cars)\n    if sum(floors) == 0:\n        return [0, 0, 0]\n    f = func_c(floors)\n    z = func_c(zones)\n    return [f, z, cars[f - 1][z - 1]]\n\ndef answers():\n    cars = [[2, 9], [7, 7], [0, 5]]\n    floors = func_a(cars)\n    zones = func_b(cars)\n    return [floors, zones, func_c(floors), func_c(zones), solution(cars)]",
+     "explain": "층별 합 [11, 14, 5]에서 가장 큰 14는 2층, 구역별 합 [9, 21]에서 가장 큰 21은 2구역이에요. 2층 2구역의 차 수는 cars[1][1] = 7이라 [2, 2, 7]을 return 해요."
+    }
+   ],
+   "explain": "1단계는 행 합을, 2단계는 바깥 반복으로 열 j를 len(arr[0])번, 안쪽 반복으로 행 i를 돌며 arr[i][j]를 더해요. 3단계는 arr[i] > arr[best]일 때만 위치를 바꿔 동점이면 작은 번호를 남기고, 번호로 바꾸려고 best + 1을 돌려줘요. solution은 전체 합이 0인지 먼저 확인하고, 같은 func_c를 층과 구역에 한 번씩 쓴 뒤 cars[f - 1][z - 1]로 칸의 값을 꺼내요."
+  }
+ ]
+}

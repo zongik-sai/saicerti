@@ -1965,16 +1965,20 @@
        ],
        [
         "10:30:00",
-        "11:30:00"
+        "11:15:00"
+       ],
+       [
+        "09:50:00",
+        "10:50:00"
        ]
       ],
       "01:00:00"
      ],
      "expected": [
-      3,
+      4,
       2
      ],
-     "explain": "기록은 차례로 2700초, 2700초, 3600초이고, 3번의 3600초는 제한 시간과 같아 인정받으므로 3명이 인정받습니다. 1번과 2번의 기록이 같지만 2번이 먼저 출발했으므로 [3, 2]를 return 합니다."
+     "explain": "기록은 차례로 2700초, 2700초, 2700초, 3600초이고, 4번의 3600초는 제한 시간과 같아 인정받으므로 4명이 인정받습니다. 기록이 가장 짧은 1~3번 중 가장 먼저 출발한 2번이 1등이며, 4번은 가장 먼저 출발했지만 기록이 더 길어 1등이 아닙니다. 따라서 [4, 2]를 return 합니다."
     },
     {
      "args": [
@@ -2636,6 +2640,25 @@
         "a": "37800"
        },
        {
+        "a": "2700"
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "35400"
+       },
+       {
         "a": "3600"
        },
        {
@@ -2650,8 +2673,8 @@
        }
       ]
      ],
-     "check": "def answers():\n    def to_sec(s):\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        second = int(s[6]) * 10 + int(s[7])\n        return hour * 3600 + minute * 60 + second\n    def finished(s):\n        return s != '--:--:--'\n    def solve(walkers, limit, init=86400):\n        max_rec = to_sec(limit)\n        count = 0\n        best_num = -1\n        best_rec = init\n        best_start = 0\n        for i in range(len(walkers)):\n            start = to_sec(walkers[i][0])\n            if finished(walkers[i][1]):\n                rec = to_sec(walkers[i][1]) - start\n                if rec <= max_rec:\n                    count += 1\n                    if rec < best_rec or (rec == best_rec and start < best_start):\n                        best_num = i + 1\n                        best_rec = rec\n                        best_start = start\n        return [count, best_num]\n    w = [['10:20:00', '11:05:00'], ['10:00:00', '10:45:00'], ['10:30:00', '11:30:00']]\n    out = []\n    prev = -1\n    for k in range(1, 4):\n        st = to_sec(w[k - 1][0])\n        rec = to_sec(w[k - 1][1]) - st\n        b = solve(w[:k], '01:00:00')[1]\n        out += [st, rec, b != prev, b]\n        prev = b\n    return out",
-     "explain": "1번은 2700 < 86400이라 1등이 돼요. 2번은 기록이 2700으로 같지만 출발이 36000초로 1번(37200초)보다 빨라서 1등이 바뀌어요. 3번은 기록 3600초가 더 길어 그대로예요."
+     "check": "def answers():\n    def to_sec(s):\n        hour = int(s[0]) * 10 + int(s[1])\n        minute = int(s[3]) * 10 + int(s[4])\n        second = int(s[6]) * 10 + int(s[7])\n        return hour * 3600 + minute * 60 + second\n    def finished(s):\n        return s != '--:--:--'\n    def solve(walkers, limit, init=86400):\n        max_rec = to_sec(limit)\n        count = 0\n        best_num = -1\n        best_rec = init\n        best_start = 0\n        for i in range(len(walkers)):\n            start = to_sec(walkers[i][0])\n            if finished(walkers[i][1]):\n                rec = to_sec(walkers[i][1]) - start\n                if rec <= max_rec:\n                    count += 1\n                    if rec < best_rec or (rec == best_rec and start < best_start):\n                        best_num = i + 1\n                        best_rec = rec\n                        best_start = start\n        return [count, best_num]\n    w = [['10:20:00', '11:05:00'], ['10:00:00', '10:45:00'], ['10:30:00', '11:15:00'], ['09:50:00', '10:50:00']]\n    out = []\n    prev = -1\n    for k in range(1, 5):\n        st = to_sec(w[k - 1][0])\n        rec = to_sec(w[k - 1][1]) - st\n        b = solve(w[:k], '01:00:00')[1]\n        out += [st, rec, b != prev, b]\n        prev = b\n    return out",
+     "explain": "1번은 2700 < 86400이라 1등이 돼요. 2번은 기록이 같고 출발(36000초)이 1번(37200초)보다 빨라서 1등이 바뀌어요. 3번은 기록은 같지만 늦게 출발해서, 4번은 가장 먼저 출발했지만 기록이 더 길어서 1등이 그대로예요. 출발한 시각은 기록이 같을 때만 비교해요."
     },
     {
      "id": "s7",
@@ -2719,10 +2742,10 @@
       [
        [],
        [
-        "09:00~09:40"
+        "23:40~00:20"
        ],
        [
-        "23:40~00:20"
+        "09:00~09:40"
        ],
        [
         "10:00~10:20"
@@ -2733,7 +2756,7 @@
       2,
       1200
      ],
-     "explain": "1번 회원은 기록이 없어 0원입니다. 2번 회원의 40분과 3번 회원의 자정을 넘긴 40분은 모두 넘은 10분에 200원이 붙어 1200원이고, 4번 회원은 20분이라 1000원입니다. 1200원인 회원 중 번호가 작은 2번이므로 [2, 1200]을 return 합니다."
+     "explain": "1번 회원은 기록이 없어 0원입니다. 2번 회원의 자정을 넘긴 40분과 3번 회원의 40분은 모두 넘은 10분에 200원이 붙어 1200원이고, 4번 회원은 20분이라 1000원입니다. 1200원인 회원 중 번호가 작은 2번이므로 [2, 1200]을 return 합니다."
     },
     {
      "args": [
@@ -2946,6 +2969,22 @@
      "expected": [
       2,
       1000
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        "23:00~01:00"
+       ],
+       [
+        "10:00~11:00"
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2800
      ]
     },
     {

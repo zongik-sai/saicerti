@@ -382,6 +382,48 @@
      "args": [
       [
        [
+        1,
+        50,
+        5,
+        10
+       ],
+       [
+        2,
+        50,
+        6,
+        10
+       ],
+       [
+        3,
+        30,
+        30,
+        50
+       ],
+       [
+        4,
+        25,
+        25,
+        40
+       ],
+       [
+        5,
+        20,
+        20,
+        30
+       ]
+      ],
+      10,
+      2
+     ],
+     "expected": [
+      3,
+      4
+     ]
+    },
+    {
+     "args": [
+      [
+       [
         16,
         45,
         35,
@@ -4737,6 +4779,41 @@
      "args": [
       [
        [
+        2,
+        100
+       ],
+       [
+        2,
+        0
+       ],
+       [
+        5,
+        50
+       ],
+       [
+        5,
+        50
+       ],
+       [
+        9,
+        60
+       ],
+       [
+        9,
+        40
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      9,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       [
         5,
         30
        ],
@@ -6897,42 +6974,42 @@
        [
         3,
         4,
-        2,
-        2
-       ],
-       [
-        1,
-        3,
         0,
-        1
-       ],
-       [
-        2,
-        4,
-        4,
         0
        ],
        [
         1,
-        4,
+        3,
         2,
         2
        ],
        [
         2,
-        3,
+        4,
+        0,
+        1
+       ],
+       [
+        1,
+        4,
         1,
         1
+       ],
+       [
+        2,
+        3,
+        1,
+        2
        ]
       ]
      ],
      "expected": [
-      3,
-      2,
       1,
-      4
+      4,
+      2,
+      3
      ],
-     "explain": "총 승점은 3번 팀 5점, 1번 팀과 2번 팀 4점, 4번 팀 2점입니다. 1번 팀(득실차 +1)과 2번 팀(득실차 +2)은 득실차가 큰 2번 팀이 앞입니다. 따라서 1번 팀부터 순위는 3위, 2위, 1위, 4위입니다."
+     "explain": "1번, 3번, 4번 팀은 총 승점이 5점으로 같고, 그중 득실차가 +2로 가장 큰 1번 팀이 1위입니다. 3번 팀과 4번 팀은 득실차도 +1로 같아서 득점의 합이 4점으로 더 많은 3번 팀이 2위, 2점인 4번 팀이 3위입니다. 세 경기를 모두 진 2번 팀은 득실차가 -4로 4위이므로 [1, 4, 2, 3]을 return 합니다."
     },
     {
      "args": [
@@ -8657,22 +8734,7 @@
       [
        "1",
        {
-        "a": "4"
-       },
-       {
-        "a": "1",
-        "alts": [
-         "+1"
-        ]
-       },
-       {
         "a": "5"
-       }
-      ],
-      [
-       "2",
-       {
-        "a": "4"
        },
        {
         "a": "2",
@@ -8682,6 +8744,18 @@
        },
        {
         "a": "6"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "0"
+       },
+       {
+        "a": "-4"
+       },
+       {
+        "a": "2"
        }
       ],
       [
@@ -8702,18 +8776,21 @@
       [
        "4",
        {
+        "a": "5"
+       },
+       {
+        "a": "1",
+        "alts": [
+         "+1"
+        ]
+       },
+       {
         "a": "2"
-       },
-       {
-        "a": "-4"
-       },
-       {
-        "a": "4"
        }
       ]
      ],
-     "check": "def make_table(n, games):\n    table = [[0, 0, 0] for _ in range(n + 1)]\n    for a, b, sa, sb in games:\n        table[a][1] += sa - sb\n        table[b][1] += sb - sa\n        table[a][2] += sa\n        table[b][2] += sb\n        if sa > sb:\n            table[a][0] += 3\n        elif sa < sb:\n            table[b][0] += 3\n        else:\n            table[a][0] += 1\n            table[b][0] += 1\n    return table\n\ndef solution(n, games):\n    answer = []\n    table = make_table(n, games)\n    teams = list(range(1, n + 1))\n    teams.sort(key=lambda t: (-table[t][0], -table[t][1], -table[t][2]))\n    answer = [0] * n\n    for i in range(n):\n        t = teams[i]\n        if i > 0 and table[t] == table[teams[i - 1]]:\n            answer[t - 1] = answer[teams[i - 1] - 1]\n        else:\n            answer[t - 1] = i + 1\n    return answer\n\ndef answers():\n    table = make_table(4, [[1, 2, 3, 1], [3, 4, 2, 2], [1, 3, 0, 1], [2, 4, 4, 0], [1, 4, 2, 2], [2, 3, 1, 1]])\n    out = []\n    for t in range(1, 5):\n        out += table[t]\n    return out",
-     "explain": "3번 팀은 1승 2무로 5점이에요. 1번 팀과 2번 팀은 4점으로 같지만 득실차가 2번 팀(+2)이 더 커요. 4번 팀은 2무 1패에 0:4로 져서 득실차가 -4예요."
+     "check": "def make_table(n, games):\n    table = [[0, 0, 0] for _ in range(n + 1)]\n    for a, b, sa, sb in games:\n        table[a][1] += sa - sb\n        table[b][1] += sb - sa\n        table[a][2] += sa\n        table[b][2] += sb\n        if sa > sb:\n            table[a][0] += 3\n        elif sa < sb:\n            table[b][0] += 3\n        else:\n            table[a][0] += 1\n            table[b][0] += 1\n    return table\n\ndef solution(n, games):\n    answer = []\n    table = make_table(n, games)\n    teams = list(range(1, n + 1))\n    teams.sort(key=lambda t: (-table[t][0], -table[t][1], -table[t][2]))\n    answer = [0] * n\n    for i in range(n):\n        t = teams[i]\n        if i > 0 and table[t] == table[teams[i - 1]]:\n            answer[t - 1] = answer[teams[i - 1] - 1]\n        else:\n            answer[t - 1] = i + 1\n    return answer\n\ndef answers():\n    table = make_table(4, [[1, 2, 3, 1], [3, 4, 0, 0], [1, 3, 2, 2], [2, 4, 0, 1], [1, 4, 1, 1], [2, 3, 1, 2]])\n    out = []\n    for t in range(1, 5):\n        out += table[t]\n    return out",
+     "explain": "1번·3번·4번 팀은 모두 1승 2무로 5점이에요. 1번 팀은 득실차가 +2로 가장 크고, 3번과 4번 팀은 득실차가 +1로 같아서 득점의 합(4점, 2점)으로 나눠요. 2번 팀은 3패라 득실차가 -4예요."
     },
     {
      "id": "s6",
@@ -8887,7 +8964,7 @@
        [
         3,
         2,
-        40,
+        45,
         1
        ],
        [
@@ -8917,12 +8994,12 @@
       ]
      ],
      "expected": [
-      3,
       1,
+      3,
       4,
       2
      ],
-     "explain": "3번 팀은 1번 문제를 15분에 맞혔고 그 전에 오답이 1번 있어 35점, 2번 문제를 40분에 맞혀 40점으로 벌점이 75점입니다. 1번 팀도 2문제를 풀었지만 벌점이 12 + (45 + 20) = 77점이라 3번 팀 뒤이고, 50분에 1번 문제에 낸 오답은 이미 맞힌 뒤라 무시합니다. 4번 팀은 3번 문제만 풀어(2번 문제의 오답은 벌점에 넣지 않음) 3위이고, 제출이 없는 2번 팀이 마지막입니다."
+     "explain": "1번 팀은 1번 문제를 12분에, 2번 문제를 오답 1번 뒤 45분에 맞혀 벌점이 12 + (45 + 20) = 77점입니다. 50분에 1번 문제에 낸 오답은 이미 맞힌 뒤라 무시합니다. 3번 팀도 2문제를 풀었지만 벌점이 (15 + 20) + 45 = 80점이라 1번 팀 뒤입니다. 4번 팀은 3번 문제만 풀어(2번 문제의 오답은 벌점에 넣지 않음) 3위이고, 제출이 없는 2번 팀이 마지막입니다."
     },
     {
      "args": [
@@ -8939,6 +9016,12 @@
         1,
         10,
         1
+       ],
+       [
+        2,
+        3,
+        15,
+        0
        ],
        [
         3,
@@ -8971,7 +9054,7 @@
       1,
       3
      ],
-     "explain": "1번 팀과 2번 팀은 2문제를 풀고 벌점이 60점으로 같습니다. 마지막 풀이 시각이 30분으로 더 이른 2번 팀이 50분인 1번 팀보다 앞입니다. 3번 팀은 1문제만 풀어 마지막입니다."
+     "explain": "1번 팀과 2번 팀은 2문제를 풀고 벌점이 60점으로 같습니다. 2번 팀이 15분에 3번 문제에 낸 오답은 그 문제를 끝내 풀지 못했으므로 벌점에 넣지 않습니다. 마지막 풀이 시각이 30분으로 더 이른 2번 팀이 50분인 1번 팀보다 앞이고, 1문제만 푼 3번 팀이 마지막입니다."
     },
     {
      "args": [
@@ -9296,6 +9379,67 @@
       1,
       2,
       3
+     ]
+    },
+    {
+     "args": [
+      4,
+      [
+       [
+        1,
+        1,
+        10,
+        1
+       ],
+       [
+        2,
+        1,
+        20,
+        1
+       ],
+       [
+        3,
+        1,
+        25,
+        1
+       ],
+       [
+        4,
+        1,
+        30,
+        1
+       ],
+       [
+        4,
+        2,
+        30,
+        1
+       ],
+       [
+        3,
+        2,
+        35,
+        1
+       ],
+       [
+        2,
+        2,
+        40,
+        1
+       ],
+       [
+        1,
+        2,
+        50,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      4,
+      3,
+      2,
+      1
      ]
     },
     {
@@ -12018,7 +12162,7 @@
        }
       ]
      ],
-     "check": "def answers():\n    first = [0] * 9\n    wrong = [0] * 9\n    out = []\n    for t, p, time, ok in [[3, 1, 10, 0], [1, 1, 12, 1], [3, 1, 15, 1], [4, 2, 20, 0], [1, 2, 30, 0], [3, 2, 40, 1], [1, 2, 45, 1], [1, 1, 50, 0], [4, 2, 60, 0], [4, 3, 100, 1]]:\n        if t != 1:\n            continue\n        already = first[p] > 0\n        if not already:\n            if ok == 1:\n                first[p] = time\n            else:\n                wrong[p] += 1\n        out += [already, first[p], wrong[p]]\n    return out",
+     "check": "def answers():\n    first = [0] * 9\n    wrong = [0] * 9\n    out = []\n    for t, p, time, ok in [[3, 1, 10, 0], [1, 1, 12, 1], [3, 1, 15, 1], [4, 2, 20, 0], [1, 2, 30, 0], [3, 2, 45, 1], [1, 2, 45, 1], [1, 1, 50, 0], [4, 2, 60, 0], [4, 3, 100, 1]]:\n        if t != 1:\n            continue\n        already = first[p] > 0\n        if not already:\n            if ok == 1:\n                first[p] = time\n            else:\n                wrong[p] += 1\n        out += [already, first[p], wrong[p]]\n    return out",
      "explain": "1번 문제는 12분에 바로 맞혔어요. 2번 문제는 30분 오답 뒤 45분에 맞혀 오답 수가 1이에요. 50분에 1번 문제에 낸 오답은 이미 맞힌 뒤라 무시해서 오답 수가 0 그대로예요."
     },
     {
@@ -12063,10 +12207,10 @@
         "a": "2"
        },
        {
-        "a": "75"
+        "a": "80"
        },
        {
-        "a": "40"
+        "a": "45"
        }
       ],
       [
@@ -12082,8 +12226,8 @@
        }
       ]
      ],
-     "check": "def team_stats(n, submissions):\n    first = [[0] * 9 for _ in range(n + 1)]\n    wrong = [[0] * 9 for _ in range(n + 1)]\n    for t, p, time, ok in submissions:\n        if first[t][p] > 0:\n            continue\n        if ok == 1:\n            first[t][p] = time\n        else:\n            wrong[t][p] += 1\n    stats = [[0, 0, 0] for _ in range(n + 1)]\n    for t in range(1, n + 1):\n        for p in range(1, 9):\n            if first[t][p] > 0:\n                stats[t][0] += 1\n                stats[t][1] += first[t][p] + 20 * wrong[t][p]\n                stats[t][2] = max(stats[t][2], first[t][p])\n    return stats\n\ndef solution(n, submissions):\n    answer = []\n    stats = team_stats(n, submissions)\n    teams = list(range(1, n + 1))\n    teams.sort(key=lambda t: (-stats[t][0], stats[t][1], stats[t][2], t))\n    answer = teams\n    return answer\n\ndef answers():\n    stats = team_stats(4, [[3, 1, 10, 0], [1, 1, 12, 1], [3, 1, 15, 1], [4, 2, 20, 0], [1, 2, 30, 0], [3, 2, 40, 1], [1, 2, 45, 1], [1, 1, 50, 0], [4, 2, 60, 0], [4, 3, 100, 1]])\n    out = []\n    for t in range(1, 5):\n        out += stats[t]\n    return out",
-     "explain": "1번 팀은 12 + (45 + 20) = 77점, 3번 팀은 (15 + 20) + 40 = 75점이에요. 4번 팀은 3번 문제만 풀어 100점이고 2번 문제의 오답은 넣지 않아요. 2번 팀은 제출이 없어 모두 0이에요."
+     "check": "def team_stats(n, submissions):\n    first = [[0] * 9 for _ in range(n + 1)]\n    wrong = [[0] * 9 for _ in range(n + 1)]\n    for t, p, time, ok in submissions:\n        if first[t][p] > 0:\n            continue\n        if ok == 1:\n            first[t][p] = time\n        else:\n            wrong[t][p] += 1\n    stats = [[0, 0, 0] for _ in range(n + 1)]\n    for t in range(1, n + 1):\n        for p in range(1, 9):\n            if first[t][p] > 0:\n                stats[t][0] += 1\n                stats[t][1] += first[t][p] + 20 * wrong[t][p]\n                stats[t][2] = max(stats[t][2], first[t][p])\n    return stats\n\ndef solution(n, submissions):\n    answer = []\n    stats = team_stats(n, submissions)\n    teams = list(range(1, n + 1))\n    teams.sort(key=lambda t: (-stats[t][0], stats[t][1], stats[t][2], t))\n    answer = teams\n    return answer\n\ndef answers():\n    stats = team_stats(4, [[3, 1, 10, 0], [1, 1, 12, 1], [3, 1, 15, 1], [4, 2, 20, 0], [1, 2, 30, 0], [3, 2, 45, 1], [1, 2, 45, 1], [1, 1, 50, 0], [4, 2, 60, 0], [4, 3, 100, 1]])\n    out = []\n    for t in range(1, 5):\n        out += stats[t]\n    return out",
+     "explain": "1번 팀은 12 + (45 + 20) = 77점, 3번 팀은 (15 + 20) + 45 = 80점이에요. 4번 팀은 3번 문제만 풀어 100점이고 2번 문제의 오답은 넣지 않아요. 2번 팀은 제출이 없어 모두 0이에요."
     },
     {
      "id": "s6",
@@ -12106,8 +12250,8 @@
      "alts": [
       "97점"
      ],
-     "check": "def answers():\n    first = {}\n    wrong = {}\n    for t, p, time, ok in [[3, 1, 10, 0], [1, 1, 12, 1], [3, 1, 15, 1], [4, 2, 20, 0], [1, 2, 30, 0], [3, 2, 40, 1], [1, 2, 45, 1], [1, 1, 50, 0], [4, 2, 60, 0], [4, 3, 100, 1]]:\n        if t != 1:\n            continue\n        if ok == 1:\n            first[p] = time\n        else:\n            wrong[p] = wrong.get(p, 0) + 1\n    return [sum(first[p] + 20 * wrong.get(p, 0) for p in first)]",
-     "explain": "건너뛰지 않으면 50분에 1번 문제에 낸 오답까지 세어 1번 문제가 12 + 20 = 32점이 돼요. 2번 문제 65점과 더하면 97점으로, 올바른 값 77점보다 커져요. 맞힌 뒤에 다시 정답을 내면 처음 정답 시각까지 덮어써지는 문제도 생겨요."
+     "check": "def answers():\n    first = {}\n    wrong = {}\n    for t, p, time, ok in [[3, 1, 10, 0], [1, 1, 12, 1], [3, 1, 15, 1], [4, 2, 20, 0], [1, 2, 30, 0], [3, 2, 45, 1], [1, 2, 45, 1], [1, 1, 50, 0], [4, 2, 60, 0], [4, 3, 100, 1]]:\n        if t != 1:\n            continue\n        if ok == 1:\n            first[p] = time\n        else:\n            wrong[p] = wrong.get(p, 0) + 1\n    return [sum(first[p] + 20 * wrong.get(p, 0) for p in first)]",
+     "explain": "건너뛰지 않으면 50분에 1번 문제에 낸 오답까지 세어 1번 문제가 12 + 20 = 32점이 돼요. 2번 문제 65점과 더하면 97점이 되어, 벌점 80점인 3번 팀보다 뒤로 밀려 순위가 틀려져요. 맞힌 뒤에 다시 정답을 내면 처음 정답 시각까지 덮어써지는 문제도 생겨요."
     },
     {
      "id": "s8",
