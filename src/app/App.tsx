@@ -13,6 +13,14 @@ import { AdminPage } from '../features/admin/AdminPage';
 import { useRoles } from '../features/admin/roles';
 import { tally } from '../features/progress/model';
 
+/** 로그인하지 않은 사람도 문제를 풀 수 있다(선생님 요청 2026-11-27). 기록은 이 브라우저에만(접두사 saicerti:v1:guest:), 서버·선생님 화면에는 가지 않는다 */
+const GUEST_KEY = 'guest';
+function useLearner(): { learnerKey: string; remote: boolean; guest: boolean } {
+  const { identity } = useAuth();
+  if (!identity) return { learnerKey: GUEST_KEY, remote: false, guest: true };
+  return { learnerKey: identity.learnerKey, remote: identity.kind === 'user', guest: false };
+}
+
 export function App() {
   return (
     <HashRouter>
@@ -32,7 +40,8 @@ export function App() {
 }
 
 function Shell({ children }: { children: ReactNode }) {
-  const { identity, signOut, exitDemo } = useAuth();
+  const { identity, signOut, exitDemo, signIn, status } = useAuth();
+  const loc = useLocation();
   const roles = useRoles();
   const [warn, setWarn] = useState(false);
   const out = async (force = false) => {
@@ -76,6 +85,11 @@ function Shell({ children }: { children: ReactNode }) {
                 {identity.kind === 'demo' ? '데모 끝내기' : '로그아웃'}
               </button>
             )}
+            {!identity && status !== 'loading' && isSupabaseConfigured && (
+              <button className="btn small" onClick={() => void signIn(loc.pathname)}>
+                로그인
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -100,13 +114,13 @@ function Shell({ children }: { children: ReactNode }) {
   );
 }
 
-function SignIn({ next }: { next: string }) {
+function SignIn({ next, title = '로그인하면 기록이 남아요' }: { next: string; title?: string }) {
   const { signIn, startDemo, authError, clearError, expired, status } = useAuth();
   if (status === 'loading') return <div className="page" role="status">불러오는 중…</div>;
   return (
     <div className="card" style={{ maxWidth: 520 }}>
-      <h2>로그인하고 시작해요</h2>
-      <p className="muted">학교 Google 계정으로 로그인하면 푼 문제와 중간 점검 기록이 저장되어 어느 기기에서나 이어서 할 수 있어요.</p>
+      <h2>{title}</h2>
+      <p className="muted">로그인하지 않아도 문제를 풀 수 있어요(기록은 이 브라우저에만 남아요). 학교 Google 계정으로 로그인하면 푼 문제와 중간 점검 기록이 계정에 저장되어 어느 기기에서나 이어서 할 수 있고, 선생님 화면에도 보여요.</p>
       {expired && <p className="notice warn">로그인이 만료되었어요. 다시 로그인해 주세요.</p>}
       {authError && (
         <p className="notice bad" role="alert">
@@ -137,6 +151,7 @@ function SignIn({ next }: { next: string }) {
 
 function Home() {
   const { identity } = useAuth();
+  const learner = useLearner();
   return (
     <div className="page">
       <section className="hero">
@@ -153,7 +168,7 @@ function Home() {
             <p className="muted" style={{ margin: 0 }}>
               {c.blurb}
             </p>
-            {identity && <CourseBar meta={c} learnerKey={identity.learnerKey} remote={identity.kind === 'user'} />}
+            <CourseBar meta={c} learnerKey={learner.learnerKey} remote={learner.remote} />
             <span className="btn primary" style={{ alignSelf: 'flex-start', marginTop: '0.3rem' }}>
               시작하기 →
             </span>
@@ -206,8 +221,8 @@ function CourseBar({ meta, learnerKey, remote }: { meta: CourseMeta; learnerKey:
 }
 
 function CourseRoute({ meta }: { meta: CourseMeta }) {
-  const { identity, status } = useAuth();
-  const loc = useLocation();
+  const { status } = useAuth();
+  const learner = useLearner();
   const [course, setCourse] = useState<Course | null>(null);
   const [err, setErr] = useState<string | null>(null);
   useEffect(() => {
@@ -221,24 +236,46 @@ function CourseRoute({ meta }: { meta: CourseMeta }) {
     };
   }, [meta.id]);
   if (status === 'loading') return <div className="page" role="status">불러오는 중…</div>;
-  if (!identity)
-    return (
-      <div className="page narrow">
-        <div className="crumb">
-          <Link to="/">홈</Link> › {meta.name}
-        </div>
-        <h1>{meta.name}</h1>
-        <SignIn next={loc.pathname} />
-      </div>
-    );
   if (err) return <div className="page notice bad">문제를 불러오지 못했어요. 새로고침해 주세요.</div>;
   if (!course || course.id !== meta.id) return <div className="page" role="status">문제 불러오는 중…</div>;
+  const { learnerKey, remote } = learner;
   return (
-    <Routes>
-      <Route index element={<CourseHome course={course} learnerKey={identity.learnerKey} remote={identity.kind === 'user'} />} />
-      <Route path="mock/:n" element={<MockRoute course={course} learnerKey={identity.learnerKey} remote={identity.kind === 'user'} />} />
-      <Route path=":pid" element={<ProblemRoute course={course} learnerKey={identity.learnerKey} remote={identity.kind === 'user'} />} />
-    </Routes>
+    <>
+      {learner.guest && <GuestBar />}
+      <Routes>
+        <Route index element={<CourseHome course={course} learnerKey={learnerKey} remote={remote} />} />
+        <Route path="mock/:n" element={<MockRoute course={course} learnerKey={learnerKey} remote={remote} />} />
+        <Route path=":pid" element={<ProblemRoute course={course} learnerKey={learnerKey} remote={remote} />} />
+      </Routes>
+    </>
+  );
+}
+
+/** 로그인하지 않고 푸는 중이라는 안내(로그인 만료면 더 눈에 띄게) */
+function GuestBar() {
+  const { signIn, expired, authError, clearError } = useAuth();
+  const loc = useLocation();
+  return (
+    <div className="page guest-wrap">
+      <div className={`notice guest-bar${expired ? ' warn' : ''}`} role="status">
+        <span>
+          {expired ? '로그인이 만료되었어요. 지금부터의 기록은 이 브라우저에만 남아요. 다시 로그인해 주세요.' : '로그인하지 않고 푸는 중이에요. 기록은 이 브라우저에만 남고 선생님 화면에는 보이지 않아요.'}
+        </span>
+        {isSupabaseConfigured && (
+          <button className="btn small primary" onClick={() => void signIn(loc.pathname)}>
+            Google 계정으로 로그인
+          </button>
+        )}
+      </div>
+      {authError && (
+        <p className="notice bad" role="alert" style={{ marginTop: '0.5rem' }}>
+          로그인 오류: {authError}{' '}
+          <button className="btn small ghost" onClick={clearError}>
+            닫기
+          </button>
+        </p>
+      )}
+    </div>
   );
 }
 

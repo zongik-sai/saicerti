@@ -11,6 +11,7 @@
 - 배움 숲(saiedu)과 같은 사이트(zongik-sai.github.io)·같은 Supabase 프로젝트를 쓴다: localStorage 접두사 `saicerti:v1:`, 로그인 저장 키 `saicerti-auth`를 바꾸지 않는다(서로의 기록·로그인을 건드리지 않게).
 - 서버 표는 saiedu의 `course_progress`(과목 pyb·pya·cb)와 `save_course_progress`·`course_class_overview`·`am_i_teacher`를 쓴다. 교사 관리는 saiedu와 같은 `am_i_admin`·`account_list`·`set_teacher`·`set_admin`·`revoke_listed_email`·`role_audit_list`(권한 확인은 서버). 과목 목록 SQL은 saiedu 저장소 `supabase/migrations/20261026000000_courses.sql`이 기준이다.
 - 클라이언트에 service_role/secret 키를 넣지 않는다. Google 로그인은 진짜 OAuth(루트 callback + HashRouter).
+- 로그인하지 않아도 과정·문제·모의고사에 들어가 풀 수 있다(선생님 요청 2026-11-27). 이때 기록·초안은 이 브라우저에만(`saicerti:v1:guest:`) 남고 서버·선생님 화면에 가지 않으며, 로그인해도 계정 기록과 합치지 않는다(같은 컴퓨터의 다른 학생 기록이 섞이지 않게). 반 현황·교사 관리는 로그인 필요.
 - 개발용 데모는 `npm run dev`에서만, 화면에 '개발용 데모'로 표시한다. 운영 빌드는 데모를 거부한다.
 - 집중 모드(전체화면 잠금)는 이 사이트에 두지 않는다.
 - 학생은 사전 지식이 적다: 처음 나오는 용어는 중간 점검 질문·해설에서 짧게 풀어 준다. 문제 문장은 시험지 말투(합니다체), 중간 점검은 해요체.
