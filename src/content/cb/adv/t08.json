@@ -452,6 +452,7 @@
      "a": "9",
      "alts": [],
      "check": "def solve(hours, open_time, close_time, buggy=False):\n    count = [0] * 24\n    answer, maxCount = -1, 0\n    trace = []\n    for h in hours:\n        cond = (open_time <= h <= close_time) if buggy else (open_time <= h < close_time)\n        if cond:\n            count[h] += 1\n            if count[h] > maxCount or (count[h] == maxCount and h < answer):\n                maxCount = count[h]\n                answer = h\n        trace.append([1 if cond else 0, maxCount, answer])\n    return answer, trace\n\ndef answers():\n    return [solve([17, 9, 17, 9, 17, 8], 9, 17)[0]]",
+     "code": "start",
      "explain": "17시는 문을 닫는 시각이라 세지 않고, 8시는 문을 열기 전이라 세지 않아요. 손님은 9시 2명뿐이라 9를 return 해요. 틀린 코드였다면 17시가 3명이 되어 17을 return 했을 거예요."
     }
    ],
@@ -2955,6 +2956,7 @@
       "y"
      ],
      "check": "def letter_index(c):\n    if 'a' <= c <= 'z':\n        return ord(c) - ord('a')\n    if 'A' <= c <= 'Z':\n        return ord(c) - ord('A')\n    return -1\n\ndef solve(text, buggy=False):\n    count = [0] * 26\n    for ch in text:\n        k = letter_index(ch)\n        if k != -1:\n            count[k] += 1\n    best, maxCount = -1, 0\n    trace = []\n    for ch in text:\n        k = letter_index(ch)\n        cond = k != -1 and (count[k] >= maxCount if buggy else count[k] > maxCount)\n        if cond:\n            maxCount = count[k]\n            best = k\n        trace.append([1 if cond else 0, chr(ord('a') + best) if best >= 0 else '-'])\n    return chr(ord('a') + best), trace, count\n\ndef answers():\n    return [solve(\"Yummy yam\")[0]]",
+     "code": "start",
      "explain": "y와 m이 3번씩으로 가장 많아요. 문장에서는 맨 앞의 'Y'가 m보다 먼저 나오므로 `\"y\"`예요. 알파벳 순서로 골랐다면 m이 됐을 거예요."
     }
    ],
@@ -3377,6 +3379,7 @@
      "a": "9",
      "alts": [],
      "check": "def solve(rides, buggy=False):\n    count = [0] * 10\n    for r in rides:\n        count[r] += 1\n    first, second = -1, -1\n    trace = []\n    for k in range(10):\n        if count[k] == 0:\n            continue\n        c1 = first == -1 or count[k] > count[first]\n        c2 = None\n        if c1:\n            second = first\n            first = k\n        else:\n            c2 = (second != -1 and count[k] > count[second]) if buggy else (second == -1 or count[k] > count[second])\n            if c2:\n                second = k\n        trace.append([k, count[k], 1 if c1 else 0, None if c2 is None else (1 if c2 else 0), first, second])\n    return second, trace\n\ndef answers():\n    return [solve([9, 0])[0]]",
+     "code": "start",
      "explain": "0번과 9번이 1회씩이라 번호가 작은 0번이 1위, 9번이 2위예요. k = 0에서 0번이 1위가 되고, k = 9에서 2위 자리가 비어 있으니 9번이 2위가 돼요."
     }
    ],
@@ -4421,6 +4424,7 @@
      "a": "-1",
      "alts": [],
      "check": "def is_inner(r, c, rows, cols, buggy=False):\n    if buggy:\n        return (r > 0 and r < rows - 1) or (c > 0 and c < cols - 1)\n    return r > 0 and r < rows - 1 and c > 0 and c < cols - 1\n\ndef counts(land, buggy=False):\n    count = [0] * 5\n    for r in range(len(land)):\n        for c in range(6):\n            if is_inner(r, c, len(land), 6, buggy) and land[r][c] != 0:\n                count[land[r][c]] += 1\n    return count\n\ndef solve(land, buggy=False):\n    count = counts(land, buggy)\n    answer, maxCount = -1, 0\n    for t in range(1, 5):\n        if count[t] > maxCount:\n            maxCount = count[t]\n            answer = t\n    return answer\n\ndef answers():\n    return [solve([[2, 2, 2, 2, 2, 2], [2, 0, 0, 0, 0, 2], [2, 2, 2, 2, 2, 2]])]",
+     "code": "start",
      "explain": "안쪽 칸은 1행의 가운데 4칸뿐인데 모두 바다(0)라서 세지 않아요. 센 칸이 없으니 most_kind에서 answer가 처음 값 -1 그대로 남아요. 해안의 풀밭은 아무리 많아도 세지 않아요."
     }
    ],
