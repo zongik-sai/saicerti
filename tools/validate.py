@@ -9,6 +9,8 @@
 - 함수 작성: 처음(빈) 코드는 테스트에서 틀림
 - 입력 조건(inputCheck)이 모든 예시·테스트에서 참
 - 중간 점검 표·단답의 정답이 check 코드의 계산과 같음
+- 심화 문제(src/content/<과정>/adv/tNN.json, id <과정>-tNN-adv1~adv5): 기본 유형과 같은 형식(kind),
+  중간 점검 6~9단계(표 2개·객관식 2개 이상), 숨은 테스트 12개 이상
 실패가 하나라도 있으면 종료 코드 1.
 """
 import json
@@ -70,10 +72,19 @@ def lines(code):
     return [l.rstrip() for l in code.rstrip('\n').split('\n')]
 
 
-def check_steps(where, p):
+# 코드를 보고 푸는 단계: 질문 위에 처음 코드가 보이도록 "code": "start"가 있어야 한다(선생님 요청 2026-11-27)
+NEEDS_CODE = {
+    'fix': re.compile(r'틀린 코드|처음 코드|지금 코드|\d+\s*번(째)?\s*줄|어느 줄|어떤 줄|틀린 줄|틀린 return|틀린 func|틀린 함수'),
+    'blank': re.compile(r'빈칸\s*\d|처음 코드'),
+    'write': re.compile(r'처음 코드'),
+}
+
+
+def check_steps(where, p, adv=False, kind=None):
     steps = p.get('steps')
-    if not isinstance(steps, list) or not (3 <= len(steps) <= 6):
-        err(where, 'steps는 3~6개')
+    lo, hi = (6, 9) if adv else (3, 6)
+    if not isinstance(steps, list) or not (lo <= len(steps) <= hi):
+        err(where, f'steps는 {lo}~{hi}개' + ('(심화 문제)' if adv else ''))
         return
     ids = set()
     kinds = []
@@ -82,6 +93,13 @@ def check_steps(where, p):
         if not isinstance(s, dict):
             err(w, '객체가 아님')
             continue
+        if MARK.search(json.dumps({k_: v_ for k_, v_ in s.items() if k_ != 'check'}, ensure_ascii=False)):
+            err(w, '중간 점검에 빈칸 번호(⟦1⟧ 등)를 쓰지 말 것 — 질문만 읽고 풀리게 코드 조각을 직접 적는다')
+        if 'code' in s and s['code'] != 'start':
+            err(w, 'code는 "start"만 쓸 수 있음(질문 위에 처음 코드를 보여 줌)')
+        shown_text = ' '.join(str(s.get(k_, '')) for k_ in ('title', 'q', 'prompt')) + ' ' + ' '.join(map(str, s.get('options', [])))
+        if kind in NEEDS_CODE and NEEDS_CODE[kind].search(shown_text) and s.get('code') != 'start':
+            err(w, f'코드를 보고 푸는 단계("{NEEDS_CODE[kind].search(shown_text).group(0)}")에는 "code": "start"를 넣어 질문 위에 처음 코드를 보여 줄 것')
         sid = s.get('id')
         if not isinstance(sid, str) or not re.match(r'^s\d+$', sid) or sid in ids:
             err(w, f'id 오류 {sid!r}')
@@ -160,13 +178,14 @@ def check_steps(where, p):
                     err(w, f'정답 {s.get("a")!r} ≠ 계산 {res}')
         else:
             err(w, f'kind 오류 {k!r}(mcq|table|short)')
-    if 'table' not in kinds:
-        err(where, '표 채우기(table) 단계가 하나 이상 필요')
-    if 'mcq' not in kinds:
-        err(where, '객관식(mcq) 단계가 하나 이상 필요')
+    need = 2 if adv else 1
+    if kinds.count('table') < need:
+        err(where, f'표 채우기(table) 단계가 {need}개 이상 필요')
+    if kinds.count('mcq') < need:
+        err(where, f'객관식(mcq) 단계가 {need}개 이상 필요')
 
 
-def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
+def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False, adv=False):
     req = ['id', 'version', 'title', 'statement', 'params', 'returns', 'funcName', 'argNames', 'examples', 'code', 'solution', 'tests', 'inputCheck', 'steps', 'explain']
     for k in req:
         if k not in p:
@@ -206,8 +225,9 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
         err(where, 'examples 2~3개')
         return
     tests = p['tests']
-    if not isinstance(tests, list) or len(tests) < 10:
-        err(where, f'tests 10개 이상(지금 {len(tests) if isinstance(tests, list) else "?"})')
+    min_tests = 12 if adv else 10
+    if not isinstance(tests, list) or len(tests) < min_tests:
+        err(where, f'tests {min_tests}개 이상(지금 {len(tests) if isinstance(tests, list) else "?"})')
         return
     allc = []
     for j, c in enumerate(ex + tests):
@@ -330,7 +350,7 @@ def check_problem(where, p, course, tnum, kind, expected_id, seen, mock=False):
             err(where, '처음 코드에 funcName 함수 정의 없음')
     if mock and p.get('steps') == []:
         return  # 모의고사: 중간 점검 없이 실전처럼
-    check_steps(where, p)
+    check_steps(where, p, adv, kind)
 
 
 def check_file(path, seen):
@@ -341,9 +361,10 @@ def check_file(path, seen):
         err(where, f'JSON 오류: {e}')
         return 0
     mock = bool(re.search(r'[/\\]mock[/\\]t\d{2}\.json$', path))
-    m = re.search(r'(pyb|pya|cb|ca)[/\\](?:mock[/\\])?t(\d{2})\.json$', path)
+    adv = bool(re.search(r'[/\\]adv[/\\]t\d{2}\.json$', path))
+    m = re.search(r'(pyb|pya|cb|ca)[/\\](?:(?:mock|adv)[/\\])?t(\d{2})\.json$', path)
     if not m:
-        err(where, '파일 경로는 src/content/<pyb|pya>/tNN.json 또는 src/content/<pyb|pya>/mock/tNN.json')
+        err(where, '파일 경로는 src/content/<과정>/tNN.json, .../mock/tNN.json, .../adv/tNN.json')
         return 0
     course, tnum = m.group(1), int(m.group(2))
     if d.get('course') != course or d.get('type') != tnum:
@@ -365,6 +386,23 @@ def check_file(path, seen):
     if not isinstance(d.get('intro'), str) or len(d['intro']) < 20:
         err(where, 'intro(유형 소개 2~3문장) 필요')
     probs = d.get('problems')
+    if adv:
+        # 심화 문제: 같은 유형의 기본 문제 파일과 형식·이름이 같아야 한다
+        base = os.path.join(os.path.dirname(os.path.dirname(path)), f't{tnum:02d}.json')
+        try:
+            bd = json.load(open(base, encoding='utf-8'))
+            if bd.get('kind') != kind:
+                err(where, f'심화 문제 kind는 기본 유형과 같아야 함({bd.get("kind")})')
+            if bd.get('typeTitle') != d.get('typeTitle'):
+                err(where, f'심화 문제 typeTitle은 기본 유형과 같아야 함({bd.get("typeTitle")!r})')
+        except Exception as e:  # noqa: BLE001
+            err(where, f'같은 유형의 기본 문제 파일을 읽지 못함: {e}')
+        if not isinstance(probs, list) or len(probs) != 5:
+            err(where, '심화 problems는 5개(adv1~adv5)')
+            return 0
+        for i, p in enumerate(probs):
+            check_problem(f'{where} #{i + 1}', p, course, tnum, kind, f'{course}-t{tnum:02d}-adv{i + 1}', seen, adv=True)
+        return len(probs)
     if mock:
         # 모의고사: 원본 유형마다 3세트(m1~m3)
         if not isinstance(probs, list) or len(probs) != 3:

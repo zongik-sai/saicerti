@@ -739,6 +739,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    for i, a in enumerate([[30, 52, 41, 45], [38, 41, 60, 25]]):\n        a.sort()\n        if i == 1:\n            out.append(list(a))\n        mid = a[1:-1]\n        total = sum(mid)\n        out += [mid, total, total // len(mid)]\n    return out",
+     "code": "start",
      "explain": "정렬하면 가장 작은 값이 맨 앞, 가장 큰 값이 맨 뒤로 가서 a[1:-1]만으로 둘을 한 번에 뺄 수 있어요. 2번 학생은 79 ÷ 2 = 39.5라 소수점 아래를 버린 39예요."
     },
     {
@@ -1531,6 +1532,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    for a in [[25, 18, 40, 22, 30], [15, 35, 20, 21]]:\n        a.sort()\n        mid = a[1:-1]\n        total = 0\n        for t in mid:\n            total += t\n        out += [mid, total, len(mid), total // len(mid)]\n    return out",
+     "code": "start",
      "explain": "1번은 77 ÷ 3 = 25.66…이라 몫은 25, 2번은 41 ÷ 2 = 20.5라 몫은 20이에요. 배달원마다 남은 개수가 달라서 len(a)로 나눠야 해요."
     },
     {
@@ -1544,6 +1546,7 @@
       "ret[len(ret)]"
      ],
      "answer": 2,
+     "code": "start",
      "explain": "큰 값부터 정렬했으니 가장 작은 값은 맨 뒤에 있어요. 인덱스 -1은 맨 뒤 원소를 뜻해요. ret[0]은 가장 큰 값이고, ret[len(ret)]은 범위를 벗어나 오류가 나요."
     },
     {
@@ -2169,6 +2172,7 @@
       "가장 높은 당도만 빠진다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "sorted(a)는 정렬된 새 리스트 s를 만들 뿐 a를 바꾸지 않아요. 1번 농가에서 a[1:-1]은 [11, 19]가 되어 오히려 가장 낮은 값과 가장 높은 값이 남아요."
     },
     {
@@ -2177,6 +2181,7 @@
      "q": "예시 1에서 func_b가 ret.sort()까지 마친 뒤의 ret은 무엇일까요? (리스트로 써 보세요.)",
      "a": "[9, 13, 15]",
      "check": "def answers():\n    ret = []\n    for a in [[15, 11, 19, 12], [12, 18, 15, 10, 20], [9, 8, 9]]:\n        mid = sorted(a)[1:-1]\n        ret.append(sum(mid) // len(mid))\n    ret.sort()\n    return [ret]",
+     "code": "start",
      "explain": "ret.sort()는 작은 값부터 정렬해요. 그러면 가장 낮은 대표 당도는 맨 앞, 가장 높은 대표 당도는 맨 뒤에 놓여요."
     }
    ],
@@ -2910,6 +2915,7 @@
       ]
      ],
      "check": "def answers():\n    out = []\n    for i, a in enumerate([[70, 40, 85, 90], [60, 65, 55], [100, 20]]):\n        a.sort(reverse=True)\n        if i > 0:\n            out.append(list(a))\n        mid = a[:-1]\n        avg = sum(mid) // len(mid)\n        out += [mid, avg, avg > 75]\n    return out",
+     "code": "start",
      "explain": "큰 값부터 정렬하면 가장 낮은 점수는 맨 뒤에 있어요. 맨 뒤 하나를 빼고 평균을 내면 1번 81, 2번 62, 3번 100이에요."
     },
     {
@@ -3928,6 +3934,7 @@
       "arr[k + 1]"
      ],
      "answer": 2,
+     "code": "start",
      "explain": "인덱스는 0부터 세서 첫 번째가 arr[0], k번째는 arr[k - 1]이에요. arr[k]는 하나 뒤의 값을 꺼내고, k가 휴대폰 수와 같으면 범위를 벗어나 오류가 나요."
     },
     {
@@ -3941,6 +3948,7 @@
       "func_a → func_b → func_c"
      ],
      "answer": 3,
+     "code": "start",
      "explain": "먼저 정렬해 양 끝을 자르고(func_a), 남은 기록으로 평균을 낸 뒤(func_b), 평균들 가운데 k번째를 골라요(func_c). 앞 함수의 결과가 다음 함수의 재료가 돼요."
     }
    ],

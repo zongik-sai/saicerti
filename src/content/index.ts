@@ -51,6 +51,21 @@ const mockLoaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   cb: import.meta.glob<TypeFile>('./cb/mock/t*.json', { import: 'default' }),
 };
 
+const advLoaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
+  pyb: import.meta.glob<TypeFile>('./pyb/adv/t*.json', { import: 'default' }),
+  pya: import.meta.glob<TypeFile>('./pya/adv/t*.json', { import: 'default' }),
+  cb: import.meta.glob<TypeFile>('./cb/adv/t*.json', { import: 'default' }),
+};
+
+/** 심화 파일을 같은 유형 번호의 기본 유형에 붙인다 */
+export function attachAdv(types: TypeFile[], advFiles: TypeFile[]): TypeFile[] {
+  const byType = new Map(advFiles.filter((a) => a && Array.isArray(a.problems)).map((a) => [a.type, a]));
+  return types.map((t) => {
+    const a = byType.get(t.type);
+    return a ? { ...t, adv: { intro: a.intro, skills: a.skills ?? [], problems: a.problems } } : t;
+  });
+}
+
 export const MOCK_SETS = 3;
 
 /** 유형별 모의고사 파일(문제 3개: 1·2·3회) → 회별 묶음 */
@@ -70,12 +85,13 @@ export function loadCourse(id: CourseId): Promise<Course> {
   let p = cache.get(id);
   if (!p) {
     const meta = courseMeta(id)!;
-    p = Promise.all([Promise.all(Object.values(loaders[id]).map((l) => l())), Promise.all(Object.values(mockLoaders[id]).map((l) => l()))]).then(([types, mocks]) => ({
+    const all = (ls: Record<string, () => Promise<TypeFile>>) => Promise.all(Object.values(ls).map((l) => l()));
+    p = Promise.all([all(loaders[id]), all(mockLoaders[id]), all(advLoaders[id])]).then(([types, mocks, adv]) => ({
       id,
       name: meta.name,
       exam: meta.exam,
       blurb: meta.blurb,
-      types: types.filter((t) => t && Array.isArray(t.problems)).sort((a, b) => a.type - b.type),
+      types: attachAdv(types.filter((t) => t && Array.isArray(t.problems)).sort((a, b) => a.type - b.type), adv),
       mocks: buildMocks(mocks),
     }));
     cache.set(id, p);
@@ -84,12 +100,26 @@ export function loadCourse(id: CourseId): Promise<Course> {
   return p;
 }
 
-export function findProblem(course: Course, pid: string): { type: TypeFile; problem: Problem; index: number } | null {
+export interface Found {
+  type: TypeFile;
+  problem: Problem;
+  index: number;
+  /** [심화] 문제인가 */
+  adv: boolean;
+}
+
+export function findProblem(course: Course, pid: string): Found | null {
   for (const t of course.types) {
     const i = t.problems.findIndex((p) => p.id === pid);
-    if (i >= 0) return { type: t, problem: t.problems[i], index: i };
+    if (i >= 0) return { type: t, problem: t.problems[i], index: i, adv: false };
+    const j = t.adv?.problems.findIndex((p) => p.id === pid) ?? -1;
+    if (j >= 0) return { type: t, problem: t.adv!.problems[j], index: j, adv: true };
   }
   return null;
 }
 
+/** [기본] 문제 전체(모의고사를 열 조건, 진도 막대) */
 export const allProblems = (course: Course): Problem[] => course.types.flatMap((t) => t.problems);
+/** [심화] 문제 전체 */
+export const allAdvProblems = (course: Course): Problem[] => course.types.flatMap((t) => t.adv?.problems ?? []);
+export const typeKey = (t: { type: number }) => `t${String(t.type).padStart(2, '0')}`;

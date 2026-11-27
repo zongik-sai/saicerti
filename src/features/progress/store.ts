@@ -182,6 +182,8 @@ export interface CourseProgress {
   update: (pid: string, ver: number, fn: (p: ProbState) => ProbState) => void;
   /** 모의고사 한 회(m1~m3) 기록 바꾸기 */
   updateMock: (key: string, fn: (m: MockState | undefined) => MockState) => void;
+  /** [심화] 열기(유형 t01~t10) */
+  openAdv: (tkey: string) => void;
   retry: () => void;
 }
 
@@ -211,6 +213,13 @@ export function useCourseProgress(learnerKey: string, course: CourseId, remote: 
     updateMock: (key, fn) => {
       const next = fn(e.state.mocks?.[key]);
       e.state = { ...e.state, mocks: { ...(e.state.mocks ?? {}), [key]: next } };
+      persistLocal(e, e.remote);
+      emit(e);
+      schedule(e);
+    },
+    openAdv: (tkey) => {
+      if (e.state.advOpen?.includes(tkey)) return;
+      e.state = { ...e.state, advOpen: [...new Set([...(e.state.advOpen ?? []), tkey])].sort() };
       persistLocal(e, e.remote);
       emit(e);
       schedule(e);

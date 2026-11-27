@@ -19,10 +19,16 @@ export interface InputCell {
 }
 export type TableCell = string | InputCell;
 
+/** code: 'start'면 그 단계 질문 위에 처음 코드(한 줄 수정이면 틀린 코드)를 줄 번호와 함께 펼쳐 보인다(선생님 요청 2026-11-27) */
+interface StepBase {
+  id: string;
+  explain: string;
+  code?: 'start';
+}
 export type Step =
-  | { id: string; kind: 'mcq'; q: string; options: string[]; answer: number; explain: string }
-  | { id: string; kind: 'table'; title?: string; prompt: string; columns: string[]; rows: TableCell[][]; check?: string; explain: string }
-  | { id: string; kind: 'short'; q: string; a: string; alts?: string[]; check?: string; explain: string };
+  | (StepBase & { kind: 'mcq'; q: string; options: string[]; answer: number })
+  | (StepBase & { kind: 'table'; title?: string; prompt: string; columns: string[]; rows: TableCell[][]; check?: string })
+  | (StepBase & { kind: 'short'; q: string; a: string; alts?: string[]; check?: string });
 
 /** 문제 속 그림(시험지의 이미지를 화면에서 다시 그림). 설명 글에서 한 줄짜리 `{{fig:ID}}`로 넣는다 */
 export type Figure =
@@ -60,6 +66,13 @@ export interface Problem {
   cspec?: CSpec;
 }
 
+/** 심화 문제 묶음(src/content/<과정>/adv/tNN.json, id <과정>-tNN-adv1~adv5). 필수가 아니고, 그 유형의 기본 5문제를 모두 풀면 열 수 있다 */
+export interface AdvSet {
+  intro: string;
+  skills: string[];
+  problems: Problem[];
+}
+
 export interface TypeFile {
   course: CourseId;
   type: number;
@@ -69,7 +82,10 @@ export interface TypeFile {
   lang?: Lang;
   skills: string[];
   intro: string;
+  /** [기본] 1~5 */
   problems: Problem[];
+  /** [심화] 1~5(불러올 때 adv 파일에서 붙임) */
+  adv?: AdvSet;
 }
 
 /** 모의고사 한 회: 원본 유형 1~10이 한 문제씩(같은 유형의 1·2·3회는 예시·테스트만 다름) */

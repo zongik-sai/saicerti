@@ -1,5 +1,6 @@
 // 화면 전체 점검: 모든 문제를 실제 화면에서 중간 점검(정답 입력) → 코드(정답) → 채점까지 진행해 '모든 테스트 통과'를 확인한다.
-// 사용: npm run dev (다른 창) → node scripts/check-all-ui.cjs <스크린샷 폴더> <pyb|pya> [문제 id...]
+// 사용: npm run dev (다른 창) → node scripts/check-all-ui.cjs <스크린샷 폴더> <pyb|pya|cb> [adv] [문제 id...]
+//   adv: [심화] 문제(adv/tNN.json)를 점검한다. 이때 기본 문제를 모두 푼 것으로·심화를 모두 연 것으로 데모 기록을 미리 넣는다.
 // Playwright 브라우저가 설치된 환경에서 실행한다.
 const { chromium } = require('playwright');
 const fs = require('fs');
@@ -17,10 +18,11 @@ function optionOrder(options, seed, fixed = false) {
   }
   return idx;
 }
-// 사용: node flow.cjs <shots dir> <course> <pid...>  (pid 생략 시 전체)
 (async () => {
-  const [S, course, ...pids] = process.argv.slice(2);
-  const root = require('path').join(__dirname, '..', 'src', 'content', course);
+  const [S, course, ...rest] = process.argv.slice(2);
+  const adv = rest[0] === 'adv';
+  const pids = adv ? rest.slice(1) : rest;
+  const root = require('path').join(__dirname, '..', 'src', 'content', course, adv ? 'adv' : '');
   const files = fs.readdirSync(root).filter((f) => f.endsWith('.json')).sort();
   const probs = [];
   for (const f of files) { const d = JSON.parse(fs.readFileSync(root + '/' + f, 'utf8')); for (const p of d.problems) probs.push({ ...p, kind: d.kind }); }
@@ -31,7 +33,15 @@ function optionOrder(options, seed, fixed = false) {
   page.on('pageerror', (e) => errs.push('pageerror ' + e.message));
   await page.goto('http://localhost:5174/');
   await page.getByRole('button', { name: '개발용 데모로 둘러보기' }).click();
-  const path = course === 'pyb' ? 'basic' : 'advanced';
+  if (adv) {
+    const now = new Date().toISOString();
+    const probs = {};
+    for (let t = 1; t <= 10; t++) for (const l of 'abcde') probs[`${course}-t${String(t).padStart(2, '0')}-${l}`] = { ver: 99, steps: [], stepsDone: true, solved: true, tries: 1, lastAt: now };
+    const advOpen = Array.from({ length: 10 }, (_, i) => `t${String(i + 1).padStart(2, '0')}`);
+    await page.evaluate(([k, v]) => localStorage.setItem(k, v), [`saicerti:v1:demo:${course}`, JSON.stringify({ state: { v: 1, probs, advOpen }, revision: 0 })]);
+    await page.reload();
+  }
+  const path = { pyb: 'basic', pya: 'advanced', cb: 'c-basic' }[course];
   const results = [];
   for (const p of target) {
     const t0 = Date.now();

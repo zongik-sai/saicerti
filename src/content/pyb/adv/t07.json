@@ -1,0 +1,2723 @@
+{
+ "course": "pyb",
+ "type": 7,
+ "typeTitle": "누적 계산 고치기",
+ "kind": "fix",
+ "skills": [
+  "누적 합(+=)",
+  "조건에 맞는 값만 누적",
+  "max·min 직접 찾기",
+  "연산자 우선순위",
+  "보조 함수와 return 위치",
+  "음수·동점·빈 결과",
+  "2차원 리스트",
+  "한 줄 버그 찾기"
+ ],
+ "intro": "기본 문제처럼 가장 큰 값(또는 가장 작은 값)과의 차이를 누적하지만, 건너뛸 칸·두 가지 누적값·보조 함수·음수 점수·2차원 리스트처럼 지켜야 할 규칙이 더 많아요. 틀린 한 줄도 조건의 경계, 기준값 계산식, return 위치, 시작값, 누적할 변수처럼 덜 눈에 띄는 곳에 숨어 있어요.",
+ "problems": [
+  {
+   "id": "pyb-t07-adv1",
+   "version": 1,
+   "title": "책꽂이 칸 맞추기",
+   "statement": "도서부에서 책꽂이를 정리하려 합니다. 책꽂이의 칸마다 꽂힌 책의 수가 왼쪽 칸부터 차례로 리스트 `shelf`에 담겨 있습니다. 책이 0권인 칸은 장식품을 올려 두는 **장식 칸**이라서 책을 꽂지 않고 그대로 비워 둡니다. 장식 칸이 아닌 칸에는 책을 더 꽂아서, 그 칸의 책 수를 책이 가장 많이 꽂힌 칸의 책 수와 같게 맞추려 합니다.\n\n예를 들어 `shelf`가 [4, 0, 7, 5, 0, 2]이면 책이 가장 많이 꽂힌 칸은 7권입니다. 장식 칸 두 곳은 그대로 두고, 나머지 칸에 (7 - 4) + (7 - 7) + (7 - 5) + (7 - 2) = 3 + 0 + 2 + 5 = 10권을 더 꽂아야 합니다.\n\n칸마다 꽂힌 책의 수를 담은 리스트 `shelf`가 주어질 때, 책을 모두 몇 권 더 꽂아야 하는지 return 하도록 solution 함수를 작성했습니다. 이 코드는 max 함수를 쓰지 않고 반복문으로 가장 많은 책 수를 찾습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "shelf는 칸마다 꽂힌 책의 수를 담은 리스트이며, 길이는 1 이상 20 이하입니다.",
+    "shelf의 원소는 0 이상 30 이하인 정수이며, 0은 장식 칸을 뜻합니다."
+   ],
+   "returns": [
+    "장식 칸이 아닌 모든 칸의 책 수를 가장 많이 꽂힌 칸과 같게 맞추려면 더 꽂아야 하는 책의 수를 return 합니다.",
+    "모든 칸이 장식 칸이면 더 꽂을 책이 없으므로 0을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "shelf"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       4,
+       0,
+       7,
+       5,
+       0,
+       2
+      ]
+     ],
+     "expected": 10,
+     "explain": "가장 많이 꽂힌 칸이 7권이므로 장식 칸 두 곳을 빼고 3 + 0 + 2 + 5 = 10권을 더 꽂습니다."
+    },
+    {
+     "args": [
+      [
+       0,
+       15,
+       8,
+       0,
+       11
+      ]
+     ],
+     "expected": 11,
+     "explain": "가장 많이 꽂힌 칸이 15권이므로 장식 칸 두 곳을 빼고 (15 - 15) + (15 - 8) + (15 - 11) = 0 + 7 + 4 = 11권을 더 꽂습니다."
+    }
+   ],
+   "code": "def solution(shelf):\n    most = 0\n    for b in shelf:\n        if b > most:\n            most = b\n    add = 0\n    for b in shelf:\n        if b >= 0:\n            add += most - b\n    return add",
+   "bugLine": 8,
+   "solution": "def solution(shelf):\n    most = 0\n    for b in shelf:\n        if b > most:\n            most = b\n    add = 0\n    for b in shelf:\n        if b > 0:\n            add += most - b\n    return add",
+   "tests": [
+    {
+     "args": [
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       30
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       1,
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       0,
+       1
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       1,
+       30
+      ]
+     ],
+     "expected": 29
+    },
+    {
+     "args": [
+      [
+       30,
+       1,
+       0
+      ]
+     ],
+     "expected": 29
+    },
+    {
+     "args": [
+      [
+       5,
+       5,
+       5
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       30
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       30
+      ]
+     ],
+     "expected": 551
+    },
+    {
+     "args": [
+      [
+       30,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0,
+       1,
+       0
+      ]
+     ],
+     "expected": 261
+    },
+    {
+     "args": [
+      [
+       3,
+       0,
+       3,
+       0,
+       9,
+       0
+      ]
+     ],
+     "expected": 12
+    },
+    {
+     "args": [
+      [
+       10,
+       20,
+       0,
+       15,
+       0,
+       5,
+       20
+      ]
+     ],
+     "expected": 30
+    },
+    {
+     "args": [
+      [
+       2,
+       4,
+       6,
+       8,
+       10,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      [
+       0,
+       7
+      ]
+     ],
+     "expected": 0
+    }
+   ],
+   "inputCheck": "def valid(shelf):\n    return isinstance(shelf, list) and 1 <= len(shelf) <= 20 and all(isinstance(b, int) and 0 <= b <= 30 for b in shelf)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "shelf = [4, 0, 7, 5, 0, 2]에서 책이 0권인 칸은 어떻게 처리해야 할까요?",
+     "options": [
+      "다른 칸처럼 7권이 되도록 책 7권을 꽂는다",
+      "장식 칸이므로 그대로 비워 두고, 더 꽂는 책 수에 넣지 않는다",
+      "1권만 꽂아서 장식 칸이 아니게 만든다",
+      "장식 칸이 하나라도 있으면 0을 return 한다"
+     ],
+     "answer": 1,
+     "explain": "책이 0권인 칸은 장식 칸이라 책을 꽂지 않아요. 그래서 장식 칸은 더하는 책 수에 넣지 않고, 장식 칸이 아닌 칸만 (가장 많은 책 수 - 그 칸의 책 수)를 더해요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "shelf = [0, 3, 0, 5]이면 책을 모두 몇 권 더 꽂아야 할까요?",
+     "a": "2",
+     "alts": [],
+     "check": "def solution(shelf):\n    most = 0\n    for b in shelf:\n        if b > most:\n            most = b\n    add = 0\n    for b in shelf:\n        if b > 0:\n            add += most - b\n    return add\n\n\ndef answers():\n    return [solution([0, 3, 0, 5])]",
+     "explain": "가장 많이 꽂힌 칸은 5권이에요. 장식 칸 두 곳은 빼고 (5 - 3) + (5 - 5) = 2권이에요. 장식 칸까지 5권씩 채운다고 생각하면 12권이 되어 틀려요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "가장 많은 책 수 찾기",
+     "prompt": "shelf = [4, 0, 7, 5, 0, 2]이고, 처음에 most = 0이에요. 첫 번째 반복에서 칸의 책 수 b를 하나 볼 때마다 조건 `b > most`의 결과(True 또는 False)와 그 반복이 끝난 뒤의 most를 채워 보세요.",
+     "columns": [
+      "b",
+      "b > most",
+      "반복 후 most"
+     ],
+     "rows": [
+      [
+       "4",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "7",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "7"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    most = 0\n    for b in [4, 0, 7, 5, 0, 2]:\n        big = b > most\n        if big:\n            most = b\n        out += [big, most]\n    return out",
+     "explain": "most는 지금까지 본 칸 중 가장 많은 책 수를 기억하는 변수예요. 더 큰 값을 만나면 = 로 바꿔 넣어서 마지막에 7이 남아요. 책 수는 0 이상이라 most를 0에서 시작해도 가장 큰 값을 바르게 찾아요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "더 꽂을 책 수 쌓기",
+     "prompt": "가장 많은 책 수는 most = 7이에요. 두 번째 반복에서 칸마다 조건 `b > 0`의 결과와, 그 칸을 처리한 뒤의 add를 채워 보세요. 조건이 참일 때만 `add += most - b`를 해요(add += x는 add = add + x와 같아요).",
+     "columns": [
+      "b",
+      "b > 0",
+      "반복 후 add"
+     ],
+     "rows": [
+      [
+       "4",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "7",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "10"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    add = 0\n    for b in [4, 0, 7, 5, 0, 2]:\n        ok = b > 0\n        if ok:\n            add += 7 - b\n        out += [ok, add]\n    return out",
+     "explain": "장식 칸(0)에서는 조건이 거짓이라 add가 그대로예요. 나머지 칸에서 3, 0, 2, 5를 차례로 더해 쌓으면(누적) 10이 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "처음 주어진 코드는 두 번째 반복의 조건이 `if b >= 0:`이에요. 이 코드는 예시 1(shelf = [4, 0, 7, 5, 0, 2])에서 무엇을 return 할까요?",
+     "a": "24",
+     "alts": [],
+     "check": "def solution(shelf):\n    most = 0\n    for b in shelf:\n        if b > most:\n            most = b\n    add = 0\n    for b in shelf:\n        if b >= 0:\n            add += most - b\n    return add\n\n\ndef answers():\n    return [solution([4, 0, 7, 5, 0, 2])]",
+     "code": "start",
+     "explain": "0 >= 0은 참이라서 장식 칸도 조건을 통과해요. 장식 칸마다 7 - 0 = 7권이 더해져 10 + 7 + 7 = 24가 돼요. \"0 이상\"(>=)은 0을 포함하고, \"0보다 크다\"(>)는 0을 포함하지 않아요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "장식 칸을 빼고 바르게 동작하도록 고친 것은 무엇일까요?",
+     "options": [
+      "9번째 줄: `add = most - b`",
+      "2번째 줄: `most = 1`",
+      "8번째 줄: `if b > 0:`",
+      "8번째 줄: `if b > most:`"
+     ],
+     "answer": 2,
+     "code": "start",
+     "explain": "장식 칸(0)만 빼야 하니 조건은 \"0보다 크다\"인 b > 0이에요(b != 0도 같은 뜻이에요). add = most - b는 마지막 칸의 값만 남기고, most를 1로 바꿔도 장식 칸이 그대로 더해져요. b > most는 늘 거짓이라 아무것도 더하지 않아요."
+    }
+   ],
+   "explain": "조건에 맞는 칸만 누적할 때는 조건의 경계를 꼭 확인해야 해요. b >= 0은 0도 포함해서 장식 칸까지 (가장 많은 책 수 - 0)권이 더해져요. \"0보다 큰 칸만\"을 뜻하는 b > 0으로 고쳐야 해요."
+  },
+  {
+   "id": "pyb-t07-adv2",
+   "version": 1,
+   "title": "모래 더미 평평하게 고르기",
+   "statement": "놀이터 모래밭에 모래 더미 여러 개가 있고, 더미마다 높이(cm)가 리스트 `piles`에 담겨 있습니다. 모든 더미의 높이를 같게 고르려고, **기준 높이**를 (가장 높은 더미의 높이 + 가장 낮은 더미의 높이)를 2로 나눈 몫으로 정합니다. 기준 높이보다 낮은 더미에는 모자란 높이만큼 모래를 **채우고**, 기준 높이보다 높은 더미는 넘치는 높이만큼 모래를 **깎아** 냅니다. 기준 높이와 같은 더미는 그대로 둡니다.\n\n예를 들어 `piles`가 [3, 9, 5, 12, 4]이면 기준 높이는 (12 + 3)을 2로 나눈 몫인 7입니다. 채우는 높이는 (7 - 3) + (7 - 5) + (7 - 4) = 4 + 2 + 3 = 9cm이고, 깎는 높이는 (9 - 7) + (12 - 7) = 2 + 5 = 7cm입니다.\n\n더미마다 높이를 담은 리스트 `piles`가 주어질 때, [채우는 높이의 합, 깎는 높이의 합]을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "piles는 모래 더미마다 높이(cm)를 담은 리스트이며, 길이는 1 이상 20 이하입니다.",
+    "piles의 원소는 1 이상 100 이하인 정수입니다."
+   ],
+   "returns": [
+    "[채우는 높이의 합, 깎는 높이의 합]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "piles"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       3,
+       9,
+       5,
+       12,
+       4
+      ]
+     ],
+     "expected": [
+      9,
+      7
+     ],
+     "explain": "기준 높이는 (12 + 3) // 2 = 7입니다. 채우는 높이는 4 + 2 + 3 = 9cm, 깎는 높이는 2 + 5 = 7cm입니다."
+    },
+    {
+     "args": [
+      [
+       6,
+       14,
+       10,
+       7
+      ]
+     ],
+     "expected": [
+      7,
+      4
+     ],
+     "explain": "기준 높이는 (14 + 6) // 2 = 10입니다. 10cm인 더미는 그대로 두고, 채우는 높이는 4 + 3 = 7cm, 깎는 높이는 4cm입니다."
+    }
+   ],
+   "code": "def solution(piles):\n    high = max(piles)\n    low = min(piles)\n    level = high + low // 2\n    fill = 0\n    cut = 0\n    for p in piles:\n        if p < level:\n            fill += level - p\n        elif p > level:\n            cut += p - level\n    return [fill, cut]",
+   "bugLine": 4,
+   "solution": "def solution(piles):\n    high = max(piles)\n    low = min(piles)\n    level = (high + low) // 2\n    fill = 0\n    cut = 0\n    for p in piles:\n        if p < level:\n            fill += level - p\n        elif p > level:\n            cut += p - level\n    return [fill, cut]",
+   "tests": [
+    {
+     "args": [
+      [
+       1
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       100
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       100
+      ]
+     ],
+     "expected": [
+      49,
+      50
+     ]
+    },
+    {
+     "args": [
+      [
+       100,
+       1
+      ]
+     ],
+     "expected": [
+      49,
+      50
+     ]
+    },
+    {
+     "args": [
+      [
+       2,
+       2,
+       2
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       2
+      ]
+     ],
+     "expected": [
+      0,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       3
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       5,
+       6,
+       7
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       100,
+       1,
+       100,
+       1,
+       100,
+       1,
+       100,
+       1,
+       100,
+       1,
+       100,
+       1,
+       100,
+       1,
+       100,
+       1,
+       100,
+       1,
+       100
+      ]
+     ],
+     "expected": [
+      490,
+      500
+     ]
+    },
+    {
+     "args": [
+      [
+       10,
+       20,
+       30,
+       40,
+       50
+      ]
+     ],
+     "expected": [
+      30,
+      30
+     ]
+    },
+    {
+     "args": [
+      [
+       7,
+       7,
+       8
+      ]
+     ],
+     "expected": [
+      0,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       50,
+       1,
+       1,
+       1
+      ]
+     ],
+     "expected": [
+      72,
+      25
+     ]
+    },
+    {
+     "args": [
+      [
+       99,
+       100,
+       98
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       12,
+       30,
+       25,
+       18,
+       4,
+       9
+      ]
+     ],
+     "expected": [
+      26,
+      22
+     ]
+    },
+    {
+     "args": [
+      [
+       3,
+       5
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    }
+   ],
+   "inputCheck": "def valid(piles):\n    return isinstance(piles, list) and 1 <= len(piles) <= 20 and all(isinstance(p, int) and 1 <= p <= 100 for p in piles)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "piles = [3, 9, 5, 12, 4]일 때 기준 높이는 얼마일까요?",
+     "options": [
+      "6",
+      "7",
+      "7.5",
+      "13"
+     ],
+     "answer": 1,
+     "explain": "가장 높은 더미는 12cm, 가장 낮은 더미는 3cm예요. 12 + 3 = 15를 2로 나눈 몫은 7이에요. 몫은 나눗셈에서 소수점 아래를 버린 정수 부분이고, 파이썬에서는 // 로 구해요(15 // 2 = 7)."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "piles = [2, 7]이면 solution은 무엇을 return 해야 할까요? [채우는 높이의 합, 깎는 높이의 합] 꼴로 써 보세요.",
+     "a": "[2, 3]",
+     "alts": [],
+     "check": "def solution(piles):\n    high = max(piles)\n    low = min(piles)\n    level = (high + low) // 2\n    fill = 0\n    cut = 0\n    for p in piles:\n        if p < level:\n            fill += level - p\n        elif p > level:\n            cut += p - level\n    return [fill, cut]\n\n\ndef answers():\n    return [solution([2, 7])]",
+     "explain": "기준 높이는 (7 + 2) // 2 = 4예요(9를 2로 나눈 몫). 2cm 더미에는 2cm를 채우고, 7cm 더미는 3cm를 깎아요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "높이가 p인 더미 하나를 볼 때 할 일로 알맞은 것은 무엇일까요? (level은 기준 높이예요.)",
+     "options": [
+      "모든 더미에 대해 fill에 level - p를 더한다",
+      "p < level이면 fill을 level - p로 바꾸고, p > level이면 cut을 p - level로 바꾼다",
+      "p < level이면 fill에 level - p를, p > level이면 cut에 p - level을 더하고, 같으면 아무것도 하지 않는다",
+      "p < level이면 fill에 p - level을, p > level이면 cut에 level - p를 더한다"
+     ],
+     "answer": 2,
+     "explain": "낮은 더미와 높은 더미를 나누어 각각 따로 누적(계속 더해 쌓기)해요. 차이는 큰 값에서 작은 값을 빼야 양수가 돼요. 바꿔 넣으면(=) 마지막 더미 값만 남고, 기준과 같은 더미는 채울 것도 깎을 것도 없어요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "piles = [3, 9, 5, 12, 4]이고 기준 높이 level = 7이에요. 더미마다 채움·깎음·그대로 중 무엇인지와, 그 더미를 처리한 뒤의 fill과 cut을 채워 보세요.",
+     "columns": [
+      "p",
+      "채움/깎음/그대로",
+      "반복 후 fill",
+      "반복 후 cut"
+     ],
+     "rows": [
+      [
+       "3",
+       {
+        "a": "채움",
+        "alts": [
+         "채우기",
+         "채운다"
+        ]
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "깎음",
+        "alts": [
+         "깎기",
+         "깎는다"
+        ]
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "채움",
+        "alts": [
+         "채우기",
+         "채운다"
+        ]
+       },
+       {
+        "a": "6"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "깎음",
+        "alts": [
+         "깎기",
+         "깎는다"
+        ]
+       },
+       {
+        "a": "6"
+       },
+       {
+        "a": "7"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "채움",
+        "alts": [
+         "채우기",
+         "채운다"
+        ]
+       },
+       {
+        "a": "9"
+       },
+       {
+        "a": "7"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    fill = cut = 0\n    level = (12 + 3) // 2\n    for p in [3, 9, 5, 12, 4]:\n        if p < level:\n            fill += level - p\n            k = \"채움\"\n        elif p > level:\n            cut += p - level\n            k = \"깎음\"\n        else:\n            k = \"그대로\"\n        out += [k, fill, cut]\n    return out",
+     "explain": "fill은 채우는 더미에서만, cut은 깎는 더미에서만 늘어나요. 다섯 더미를 모두 처리하면 [9, 7]이 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "piles = [6, 14, 10, 7]이에요. 먼저 기준 높이 level을 구한 뒤, 더미마다 level - p의 값과 그 더미를 처리한 뒤의 fill과 cut을 채워 보세요.",
+     "columns": [
+      "p",
+      "level - p",
+      "반복 후 fill",
+      "반복 후 cut"
+     ],
+     "rows": [
+      [
+       "6",
+       {
+        "a": "4"
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "14",
+       {
+        "a": "-4"
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "10",
+       {
+        "a": "0"
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "7",
+       {
+        "a": "3"
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    piles = [6, 14, 10, 7]\n    level = (max(piles) + min(piles)) // 2\n    out = []\n    fill = cut = 0\n    for p in piles:\n        if p < level:\n            fill += level - p\n        elif p > level:\n            cut += p - level\n        out += [level - p, fill, cut]\n    return out",
+     "explain": "level = (14 + 6) // 2 = 10이에요. level - p가 양수면 그만큼 채우고, 음수면 부호를 뗀 만큼 깎고, 0이면 그대로 둬요. 그래서 [7, 4]가 돼요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "파이썬은 `high + low // 2`를 어떤 순서로 계산할까요? high = 12, low = 3일 때 `high + low // 2`의 값을 구해 보세요.",
+     "a": "13",
+     "alts": [],
+     "check": "def answers():\n    high = 12\n    low = 3\n    return [high + low // 2]",
+     "explain": "// 는 + 보다 먼저 계산해요(연산자 우선순위). 그래서 12 + (3 // 2) = 12 + 1 = 13이에요. 처음 주어진 코드처럼 기준 높이가 13이 되면 모든 더미가 기준보다 낮아져서 예시 1에서 [32, 0]이 나와요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "틀린 줄을 바르게 고친 것은 무엇일까요?",
+     "options": [
+      "4번째 줄: `level = (high + low) / 2`",
+      "11번째 줄: `cut += level - p`",
+      "4번째 줄: `level = (high + low) // 2`",
+      "12번째 줄: `return [cut, fill]`"
+     ],
+     "answer": 2,
+     "code": "start",
+     "explain": "괄호로 더하기를 먼저 묶은 뒤 // 로 몫을 구해야 해요. / 는 15 / 2 = 7.5처럼 실수를 만들어서 몫이 아니에요. cut에 level - p를 더하면 음수가 쌓이고, return 순서를 바꾸면 문제에서 정한 [채우는 높이, 깎는 높이] 순서와 달라져요."
+    }
+   ],
+   "explain": "기준값을 계산하는 식도 누적만큼 중요해요. high + low // 2는 // 를 먼저 계산해 high + (low // 2)가 되므로, 더하기를 괄호로 묶어 (high + low) // 2로 고쳐야 해요. 기준이 바르게 정해져야 채우는 더미와 깎는 더미가 제대로 나뉘어 누적돼요."
+  },
+  {
+   "id": "pyb-t07-adv3",
+   "version": 1,
+   "title": "스피커 음량 맞추기",
+   "statement": "강당에 스피커 여러 대가 있고, 스피커마다 지금 음량이 리스트 `volumes`에 담겨 있습니다. 모든 스피커의 음량을 같게 맞추려고 합니다. 스피커의 버튼을 한 번 누르면 그 스피커의 음량이 1만큼 올라가거나 1만큼 내려갑니다. 음량을 맞추는 방법은 다음 두 가지 중 하나를 고릅니다.\n\n- 방법 1: 모든 스피커의 음량을 가장 큰 음량에 맞추어 올립니다.\n- 방법 2: 모든 스피커의 음량을 가장 작은 음량에 맞추어 내립니다.\n\n예를 들어 `volumes`가 [7, 3, 9, 4, 8]이면 방법 1은 (9 - 7) + (9 - 3) + (9 - 9) + (9 - 4) + (9 - 8) = 14번, 방법 2는 (7 - 3) + (3 - 3) + (9 - 3) + (4 - 3) + (8 - 3) = 16번 버튼을 눌러야 합니다. 따라서 버튼을 더 적게 누르는 방법 1의 14번이 답입니다. 두 방법의 횟수가 같으면 그 횟수가 답입니다.\n\n스피커마다 음량을 담은 리스트 `volumes`가 주어질 때, 두 방법 중 버튼을 더 적게 누르는 방법으로 버튼을 몇 번 눌러야 하는지 return 하도록 solution 함수를 작성했습니다. count_up 함수는 방법 1, count_down 함수는 방법 2로 버튼을 누르는 횟수를 구합니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "volumes는 스피커마다 음량을 담은 리스트이며, 길이는 1 이상 20 이하입니다.",
+    "volumes의 원소는 0 이상 50 이하인 정수입니다."
+   ],
+   "returns": [
+    "두 방법 중 버튼을 더 적게 누르는 방법의 버튼 횟수를 return 합니다. 두 방법의 횟수가 같으면 그 횟수를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "volumes"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       7,
+       3,
+       9,
+       4,
+       8
+      ]
+     ],
+     "expected": 14,
+     "explain": "방법 1은 2 + 6 + 0 + 5 + 1 = 14번, 방법 2는 4 + 0 + 6 + 1 + 5 = 16번이므로 14를 return 합니다."
+    },
+    {
+     "args": [
+      [
+       10,
+       2,
+       1,
+       1
+      ]
+     ],
+     "expected": 10,
+     "explain": "방법 1은 0 + 8 + 9 + 9 = 26번, 방법 2는 9 + 1 + 0 + 0 = 10번이므로 10을 return 합니다."
+    },
+    {
+     "args": [
+      [
+       5,
+       1,
+       9
+      ]
+     ],
+     "expected": 12,
+     "explain": "방법 1은 4 + 8 + 0 = 12번, 방법 2는 4 + 0 + 8 = 12번으로 같으므로 12를 return 합니다."
+    }
+   ],
+   "code": "def count_up(volumes):\n    loud = volumes[0]\n    for v in volumes:\n        if v > loud:\n            loud = v\n    presses = 0\n    for v in volumes:\n        presses += loud - v\n    return presses\n\ndef count_down(volumes):\n    quiet = volumes[0]\n    for v in volumes:\n        if v < quiet:\n            quiet = v\n    presses = 0\n    for v in volumes:\n        presses += v - quiet\n        return presses\n\ndef solution(volumes):\n    up = count_up(volumes)\n    down = count_down(volumes)\n    if up < down:\n        return up\n    return down",
+   "bugLine": 19,
+   "solution": "def count_up(volumes):\n    loud = volumes[0]\n    for v in volumes:\n        if v > loud:\n            loud = v\n    presses = 0\n    for v in volumes:\n        presses += loud - v\n    return presses\n\ndef count_down(volumes):\n    quiet = volumes[0]\n    for v in volumes:\n        if v < quiet:\n            quiet = v\n    presses = 0\n    for v in volumes:\n        presses += v - quiet\n    return presses\n\ndef solution(volumes):\n    up = count_up(volumes)\n    down = count_down(volumes)\n    if up < down:\n        return up\n    return down",
+   "tests": [
+    {
+     "args": [
+      [
+       0
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       50
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       3,
+       3,
+       3
+      ]
+     ],
+     "expected": 0
+    },
+    {
+     "args": [
+      [
+       0,
+       50
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       50
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       50,
+       50,
+       0
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       0,
+       50,
+       50,
+       50
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       10,
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       0
+      ]
+     ],
+     "expected": 50
+    },
+    {
+     "args": [
+      [
+       0,
+       50,
+       0,
+       50,
+       0,
+       50,
+       0,
+       50,
+       0,
+       50,
+       0,
+       50,
+       0,
+       50,
+       0,
+       50,
+       0,
+       50,
+       0,
+       50
+      ]
+     ],
+     "expected": 500
+    },
+    {
+     "args": [
+      [
+       5,
+       9,
+       9,
+       9
+      ]
+     ],
+     "expected": 4
+    },
+    {
+     "args": [
+      [
+       9,
+       1,
+       2
+      ]
+     ],
+     "expected": 9
+    },
+    {
+     "args": [
+      [
+       20,
+       35,
+       5,
+       40,
+       15,
+       25
+      ]
+     ],
+     "expected": 100
+    },
+    {
+     "args": [
+      [
+       8,
+       8,
+       2,
+       8
+      ]
+     ],
+     "expected": 6
+    }
+   ],
+   "inputCheck": "def valid(volumes):\n    return isinstance(volumes, list) and 1 <= len(volumes) <= 20 and all(isinstance(v, int) and 0 <= v <= 50 for v in volumes)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "count_up 함수와 count_down 함수는 각각 어떤 값을 구해서 돌려줄까요?",
+     "options": [
+      "count_up은 가장 큰 음량, count_down은 가장 작은 음량",
+      "count_up은 방법 1(가장 큰 음량에 맞춰 올리기)의 버튼 횟수, count_down은 방법 2(가장 작은 음량에 맞춰 내리기)의 버튼 횟수",
+      "count_up은 음량의 합, count_down은 스피커의 수",
+      "count_up은 두 방법 중 적은 횟수, count_down은 많은 횟수"
+     ],
+     "answer": 1,
+     "explain": "보조 함수는 큰 일을 나눠 맡는 작은 함수예요. count_up과 count_down이 각 방법의 버튼 횟수를 구해 돌려주면, solution은 두 값을 비교해 작은 쪽을 돌려줘요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "volumes = [2, 8, 8]이면 solution은 무엇을 return 해야 할까요?",
+     "a": "6",
+     "alts": [],
+     "check": "def count_up(volumes):\n    loud = volumes[0]\n    for v in volumes:\n        if v > loud:\n            loud = v\n    presses = 0\n    for v in volumes:\n        presses += loud - v\n    return presses\n\ndef count_down(volumes):\n    quiet = volumes[0]\n    for v in volumes:\n        if v < quiet:\n            quiet = v\n    presses = 0\n    for v in volumes:\n        presses += v - quiet\n    return presses\n\ndef solution(volumes):\n    up = count_up(volumes)\n    down = count_down(volumes)\n    if up < down:\n        return up\n    return down\n\n\ndef answers():\n    return [solution([2, 8, 8])]",
+     "explain": "방법 1은 (8 - 2) + 0 + 0 = 6번, 방법 2는 0 + (8 - 2) + (8 - 2) = 12번이에요. 더 적은 6을 돌려줘요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "count_up 따라가기",
+     "prompt": "count_up([7, 3, 9, 4, 8])을 따라가요. 첫 번째 반복이 끝나면 loud = 9예요. 두 번째 반복에서 v마다 loud - v의 값과, 그 v를 처리한 뒤의 presses를 채워 보세요.",
+     "columns": [
+      "v",
+      "loud - v",
+      "반복 후 presses"
+     ],
+     "rows": [
+      [
+       "7",
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "6"
+       },
+       {
+        "a": "8"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "0"
+       },
+       {
+        "a": "8"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "5"
+       },
+       {
+        "a": "13"
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "1"
+       },
+       {
+        "a": "14"
+       }
+      ]
+     ],
+     "check": "def count_up(volumes):\n    loud = volumes[0]\n    for v in volumes:\n        if v > loud:\n            loud = v\n    presses = 0\n    for v in volumes:\n        presses += loud - v\n    return presses\n\ndef count_down(volumes):\n    quiet = volumes[0]\n    for v in volumes:\n        if v < quiet:\n            quiet = v\n    presses = 0\n    for v in volumes:\n        presses += v - quiet\n    return presses\n\ndef solution(volumes):\n    up = count_up(volumes)\n    down = count_down(volumes)\n    if up < down:\n        return up\n    return down\n\n\ndef answers():\n    volumes = [7, 3, 9, 4, 8]\n    loud = max(volumes)\n    out = []\n    presses = 0\n    for v in volumes:\n        presses += loud - v\n        out += [loud - v, presses]\n    assert presses == count_up(volumes)\n    return out",
+     "explain": "모든 스피커를 9로 올리는 횟수를 하나씩 쌓으면 14번이에요. count_up은 두 번째 반복이 다 끝난 뒤에 return presses를 하므로 14를 돌려줘요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "count_down 따라가기(바르게 동작할 때)",
+     "prompt": "count_down([7, 3, 9, 4, 8])이 바르게 동작한다면, 첫 번째 반복이 끝난 뒤 quiet는 가장 작은 음량 3이에요. 두 번째 반복에서 v마다 v - quiet의 값과, 그 v를 처리한 뒤의 presses를 채워 보세요.",
+     "columns": [
+      "v",
+      "v - quiet",
+      "반복 후 presses"
+     ],
+     "rows": [
+      [
+       "7",
+       {
+        "a": "4"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "0"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "9",
+       {
+        "a": "6"
+       },
+       {
+        "a": "10"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "1"
+       },
+       {
+        "a": "11"
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "5"
+       },
+       {
+        "a": "16"
+       }
+      ]
+     ],
+     "check": "def count_up(volumes):\n    loud = volumes[0]\n    for v in volumes:\n        if v > loud:\n            loud = v\n    presses = 0\n    for v in volumes:\n        presses += loud - v\n    return presses\n\ndef count_down(volumes):\n    quiet = volumes[0]\n    for v in volumes:\n        if v < quiet:\n            quiet = v\n    presses = 0\n    for v in volumes:\n        presses += v - quiet\n    return presses\n\ndef solution(volumes):\n    up = count_up(volumes)\n    down = count_down(volumes)\n    if up < down:\n        return up\n    return down\n\n\ndef answers():\n    volumes = [7, 3, 9, 4, 8]\n    quiet = min(volumes)\n    out = []\n    presses = 0\n    for v in volumes:\n        presses += v - quiet\n        out += [v - quiet, presses]\n    assert presses == count_down(volumes)\n    return out",
+     "explain": "방법 2는 4 + 0 + 6 + 1 + 5 = 16번이에요. 그래서 예시 1의 답은 14와 16 중 작은 14예요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "함수 안의 for 문 안쪽(반복하는 부분)에 return이 있으면 어떻게 될까요?",
+     "options": [
+      "반복을 끝까지 마친 뒤에 값을 돌려준다",
+      "return을 만나는 그 순간 함수가 끝나고, 그때의 값을 돌려준다",
+      "return을 건너뛰고 다음 반복으로 넘어간다",
+      "반복할 때마다 값을 하나씩 돌려주어 리스트가 된다"
+     ],
+     "answer": 1,
+     "explain": "return은 그 자리에서 함수를 끝내요. 그래서 누적이 모두 끝난 뒤에 돌려주려면 return을 for 문 밖, 즉 for와 같은 들여쓰기(줄 앞 공백)에 써야 해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "처음 주어진 코드를 예시 1(volumes = [7, 3, 9, 4, 8])로 실행하면 14가 아니라 4가 나와요. count_down이 돌려주는 4는 언제 만들어진 값일까요?",
+     "options": [
+      "두 번째 for 문의 첫 번째 반복(v = 7)에서 presses가 7 - 3 = 4가 된 순간",
+      "두 번째 for 문이 모두 끝난 뒤",
+      "첫 번째 for 문에서 quiet를 찾을 때",
+      "count_up이 4를 돌려줄 때"
+     ],
+     "answer": 0,
+     "code": "start",
+     "explain": "count_down의 19번째 줄 return presses가 18번째 줄과 같은 들여쓰기라서 for 문 안쪽에 있어요. 첫 번째 반복에서 presses = 4가 되자마자 함수가 끝나요. up = 14보다 4가 작으니 solution은 4를 돌려줘요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "틀린 줄을 바르게 고친 것은 무엇일까요?",
+     "options": [
+      "18번째 줄: `presses = v - quiet`",
+      "19번째 줄: `return presses`를 for 문 밖으로 꺼낸다(17번째 줄 for와 같은 들여쓰기)",
+      "24번째 줄: `if up > down:`",
+      "9번째 줄: `return presses`를 for 문 안쪽으로 들여 쓴다"
+     ],
+     "answer": 1,
+     "code": "start",
+     "explain": "누적이 모두 끝난 뒤에 return 해야 하므로 19번째 줄의 들여쓰기를 줄여 for 문 밖으로 꺼내요. 줄 앞 공백만 바꿔도 한 줄을 고친 거예요. count_up의 9번째 줄은 이미 for 문 밖에 있어서 바르게 동작해요."
+    }
+   ],
+   "explain": "return은 만나는 순간 함수를 끝내므로, 누적하는 for 문 안쪽에 있으면 첫 번째 값만 더한 채 돌아가요. count_down의 return presses를 for 문 밖(for와 같은 들여쓰기)으로 꺼내야 모든 스피커의 횟수가 쌓여요. 보조 함수가 여러 개면 함수마다 따로 따라가 보며 어느 함수가 틀린 값을 돌려주는지 찾으세요."
+  },
+  {
+   "id": "pyb-t07-adv4",
+   "version": 1,
+   "title": "퀴즈 대회 보너스 점수",
+   "statement": "퀴즈 대회에서 팀마다 얻은 점수가 리스트 `scores`에 담겨 있습니다. 문제를 틀리면 점수가 깎이므로 점수가 음수인 팀도 있습니다. 진행자는 점수가 가장 높은 팀보다 점수가 낮은 팀마다 **보너스 점수**를 주려 합니다. 한 팀이 받는 보너스는 (가장 높은 점수 - 그 팀의 점수)점이지만, 한 팀에 줄 수 있는 보너스는 최대 `limit`점이라서 이보다 많이 모자란 팀은 `limit`점만 받습니다. 가장 높은 점수를 얻은 팀은 여러 팀일 수 있으며, 이 팀들은 보너스를 받지 않습니다.\n\n예를 들어 `scores`가 [-3, -8, -1, -5]이고 `limit`이 5이면 가장 높은 점수는 -1점입니다. -3점 팀은 -1 - (-3) = 2점을 받고, -8점 팀은 7점이 모자라지만 5점만 받고, -5점 팀은 4점을 받습니다. 보너스의 합은 2 + 5 + 4 = 11점이고, 보너스를 받는 팀은 3팀입니다.\n\n팀마다 얻은 점수를 담은 리스트 `scores`와 한 팀이 받을 수 있는 보너스의 최댓값 `limit`이 주어질 때, [보너스 점수의 합, 보너스를 받는 팀의 수]를 return 하도록 solution 함수를 작성했습니다. 이 코드는 max 함수를 쓰지 않고 반복문으로 가장 높은 점수를 찾습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "scores는 팀마다 얻은 점수를 담은 리스트이며, 길이는 1 이상 20 이하입니다.",
+    "scores의 원소는 -50 이상 50 이하인 정수입니다.",
+    "limit은 한 팀이 받을 수 있는 보너스의 최댓값이며, 1 이상 100 이하인 정수입니다."
+   ],
+   "returns": [
+    "[보너스 점수의 합, 보너스를 받는 팀의 수]를 return 합니다.",
+    "모든 팀의 점수가 같으면 보너스를 받는 팀이 없으므로 [0, 0]을 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "scores",
+    "limit"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       -3,
+       -8,
+       -1,
+       -5
+      ],
+      5
+     ],
+     "expected": [
+      11,
+      3
+     ],
+     "explain": "가장 높은 점수는 -1점입니다. 보너스는 2 + 5 + 4 = 11점(-8점 팀은 한도 5점)이고, 받는 팀은 3팀입니다."
+    },
+    {
+     "args": [
+      [
+       4,
+       -2,
+       4,
+       0
+      ],
+      10
+     ],
+     "expected": [
+      10,
+      2
+     ],
+     "explain": "가장 높은 점수 4점인 팀이 둘이고, 이 두 팀은 보너스를 받지 않습니다. -2점 팀이 6점, 0점 팀이 4점을 받아 합은 10점, 받는 팀은 2팀입니다."
+    },
+    {
+     "args": [
+      [
+       -7,
+       -7,
+       -7
+      ],
+      3
+     ],
+     "expected": [
+      0,
+      0
+     ],
+     "explain": "모든 팀의 점수가 같아 보너스를 받는 팀이 없으므로 [0, 0]입니다."
+    }
+   ],
+   "code": "def solution(scores, limit):\n    top = 0\n    for s in scores:\n        if s > top:\n            top = s\n    bonus = 0\n    teams = 0\n    for s in scores:\n        if s < top:\n            gap = top - s\n            if gap > limit:\n                gap = limit\n            bonus += gap\n            teams += 1\n    return [bonus, teams]",
+   "bugLine": 2,
+   "solution": "def solution(scores, limit):\n    top = scores[0]\n    for s in scores:\n        if s > top:\n            top = s\n    bonus = 0\n    teams = 0\n    for s in scores:\n        if s < top:\n            gap = top - s\n            if gap > limit:\n                gap = limit\n            bonus += gap\n            teams += 1\n    return [bonus, teams]",
+   "tests": [
+    {
+     "args": [
+      [
+       0
+      ],
+      1
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       -50
+      ],
+      100
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       50,
+       -50
+      ],
+      100
+     ],
+     "expected": [
+      100,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       50,
+       -50
+      ],
+      1
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       -50,
+       -49
+      ],
+      1
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       -1,
+       -1,
+       -2
+      ],
+      5
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       0,
+       0,
+       0
+      ],
+      7
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       0,
+       -1
+      ],
+      100
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       -10,
+       -20,
+       -30,
+       -40
+      ],
+      15
+     ],
+     "expected": [
+      40,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -50,
+       -49
+      ],
+      100
+     ],
+     "expected": [
+      19,
+      19
+     ]
+    },
+    {
+     "args": [
+      [
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50,
+       50
+      ],
+      1
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       5,
+       3,
+       5,
+       1,
+       5
+      ],
+      3
+     ],
+     "expected": [
+      5,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       -5,
+       5
+      ],
+      100
+     ],
+     "expected": [
+      10,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       -2,
+       -9,
+       -4,
+       -9,
+       -2
+      ],
+      6
+     ],
+     "expected": [
+      14,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       12,
+       -30,
+       7,
+       12,
+       0,
+       -1
+      ],
+      20
+     ],
+     "expected": [
+      50,
+      4
+     ]
+    }
+   ],
+   "inputCheck": "def valid(scores, limit):\n    return isinstance(scores, list) and 1 <= len(scores) <= 20 and all(isinstance(s, int) and -50 <= s <= 50 for s in scores) and isinstance(limit, int) and 1 <= limit <= 100",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "scores = [4, -2, 4, 0]에서 가장 높은 점수 4점을 얻은 팀이 두 팀이에요. 이 두 팀은 어떻게 될까요?",
+     "options": [
+      "먼저 나온 팀만 보너스를 받지 않고, 나중 팀은 받는다",
+      "두 팀 모두 보너스를 받지 않는다",
+      "두 팀 모두 1점씩 보너스를 받는다",
+      "가장 높은 팀이 둘이면 [0, 0]을 return 한다"
+     ],
+     "answer": 1,
+     "explain": "가장 높은 점수와 같은 팀은 모자란 점수가 0이라 보너스를 받지 않아요. 그래서 보너스를 받는 팀은 4점보다 낮은 -2점 팀과 0점 팀, 두 팀이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "가장 높은 점수가 -1점일 때, -8점인 팀은 가장 높은 점수보다 몇 점 모자랄까요? (limit은 생각하지 않아요.)",
+     "a": "7",
+     "alts": [],
+     "check": "def answers():\n    top = -1\n    s = -8\n    return [top - s]",
+     "explain": "-1 - (-8) = -1 + 8 = 7이에요. 음수를 빼는 것은 그 수의 부호를 바꿔 더하는 것과 같아요. 가장 높은 점수에서 그 팀의 점수를 빼면 차이는 항상 0 이상이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "보너스를 받는 팀 하나(모자란 점수 gap = top - s)를 처리하는 방법으로 알맞은 것은 무엇일까요?",
+     "options": [
+      "gap을 bonus에 더한 뒤, bonus가 limit보다 크면 bonus를 limit으로 바꾼다",
+      "gap이 limit보다 크면 그 팀은 보너스를 받지 않는다",
+      "gap이 limit보다 크면 gap을 limit으로 바꾼 뒤, gap을 bonus에 더하고 teams를 1 늘린다",
+      "gap이 limit보다 크면 gap을 limit으로 바꾼 뒤, bonus를 gap으로 바꾸고 teams를 1 늘린다"
+     ],
+     "answer": 2,
+     "explain": "limit은 한 팀이 받을 수 있는 최댓값이지, 보너스 합계의 최댓값이 아니에요. 팀마다 gap을 limit 이하로 줄인 뒤 bonus에 += 로 쌓아요. bonus = gap처럼 바꿔 넣으면 마지막 팀의 값만 남아요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "보너스 쌓기 따라가기",
+     "prompt": "예시 1(scores = [-3, -8, -1, -5], limit = 5)에서 가장 높은 점수 top = -1이라고 해요. 두 번째 반복에서 팀마다 조건 `s < top`의 결과, 한도를 적용한 뒤의 gap, 그 팀을 처리한 뒤의 bonus와 teams를 채워 보세요. 보너스를 받지 않는 팀의 gap 칸은 \"-\"로 두었어요.",
+     "columns": [
+      "s",
+      "s < top",
+      "gap(한도 적용 후)",
+      "반복 후 bonus",
+      "반복 후 teams"
+     ],
+     "rows": [
+      [
+       "-3",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "-8",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "5"
+       },
+       {
+        "a": "7"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "-1",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       "-",
+       {
+        "a": "7"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "-5",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "11"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def answers():\n    top = -1\n    limit = 5\n    out = []\n    bonus = teams = 0\n    for s in [-3, -8, -1, -5]:\n        ok = s < top\n        out.append(ok)\n        if ok:\n            gap = top - s\n            if gap > limit:\n                gap = limit\n            bonus += gap\n            teams += 1\n            out.append(gap)\n        out += [bonus, teams]\n    return out",
+     "explain": "-8점 팀은 7점이 모자라지만 한도 5점까지만 받아요. -1점 팀은 가장 높은 점수라 조건이 거짓이어서 아무것도 바뀌지 않아요. 그래서 [11, 3]이 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "처음 코드로 가장 높은 점수 찾기",
+     "prompt": "처음 주어진 코드는 `top = 0`에서 시작해요. 예시 1(scores = [-3, -8, -1, -5])로 첫 번째 반복을 따라가며 조건 `s > top`의 결과와 그 반복이 끝난 뒤의 top을 채워 보세요.",
+     "columns": [
+      "s",
+      "s > top",
+      "반복 후 top"
+     ],
+     "rows": [
+      [
+       "-3",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "-8",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "-1",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "-5",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "0"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    top = 0\n    for s in [-3, -8, -1, -5]:\n        big = s > top\n        if big:\n            top = s\n        out += [big, top]\n    return out",
+     "code": "start",
+     "explain": "점수가 모두 음수라 0보다 큰 점수가 하나도 없어요. 그래서 top은 0에서 바뀌지 않고, 실제 가장 높은 점수 -1을 찾지 못해요. 시작값 0이 리스트에 없는 값이라서 생긴 문제예요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "처음 주어진 코드는 예시 1(scores = [-3, -8, -1, -5], limit = 5)에서 무엇을 return 할까요? [보너스 점수의 합, 보너스를 받는 팀의 수] 꼴로 써 보세요.",
+     "a": "[14, 4]",
+     "alts": [],
+     "check": "def solution(scores, limit):\n    top = 0\n    for s in scores:\n        if s > top:\n            top = s\n    bonus = 0\n    teams = 0\n    for s in scores:\n        if s < top:\n            gap = top - s\n            if gap > limit:\n                gap = limit\n            bonus += gap\n            teams += 1\n    return [bonus, teams]\n\n\ndef answers():\n    return [solution([-3, -8, -1, -5], 5)]",
+     "code": "start",
+     "explain": "top이 0이면 모자란 점수가 3, 8, 1, 5로 커지고, 8은 한도 5로 줄어 합이 3 + 5 + 1 + 5 = 14예요. 가장 높은 -1점 팀도 0보다 낮아서 보너스를 받으니 팀 수가 4가 돼요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "틀린 줄을 바르게 고친 것은 무엇일까요?",
+     "options": [
+      "2번째 줄: `top = -1`",
+      "4번째 줄: `if s >= top:`",
+      "10번째 줄: `gap = s - top`",
+      "2번째 줄: `top = scores[0]`"
+     ],
+     "answer": 3,
+     "code": "start",
+     "explain": "가장 큰 값을 찾을 때는 리스트에 실제로 있는 값(첫 번째 점수)에서 시작해야 음수만 있어도 바르게 찾아요. top = -1은 예시 1·2에서는 맞지만, 예시 3처럼 모두 -7점이면 top이 -1로 남아 틀려요. s >= top으로 바꿔도 시작값 0은 그대로라 소용없어요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "고친 코드에 scores = [-4, -9, -4], limit = 3을 넣으면 무엇을 return 할까요?",
+     "a": "[3, 1]",
+     "alts": [],
+     "check": "def solution(scores, limit):\n    top = scores[0]\n    for s in scores:\n        if s > top:\n            top = s\n    bonus = 0\n    teams = 0\n    for s in scores:\n        if s < top:\n            gap = top - s\n            if gap > limit:\n                gap = limit\n            bonus += gap\n            teams += 1\n    return [bonus, teams]\n\n\ndef answers():\n    return [solution([-4, -9, -4], 3)]",
+     "code": "start",
+     "explain": "가장 높은 점수는 -4점이고 두 팀이 같아서 둘 다 보너스를 받지 않아요. -9점 팀은 5점이 모자라지만 한도 3점만 받아 [3, 1]이에요."
+    }
+   ],
+   "explain": "가장 큰 값을 찾는 변수를 0에서 시작하면, 점수가 모두 음수일 때 0보다 큰 값이 없어 top이 0으로 남아요. 그러면 모든 팀의 모자란 점수가 커지고 가장 높은 팀까지 보너스를 받아요. top = scores[0]처럼 리스트의 실제 값에서 시작해야 음수·동점·모두 같은 경우에도 바르게 동작해요."
+  },
+  {
+   "id": "pyb-t07-adv5",
+   "version": 1,
+   "title": "단체 사진 받침대",
+   "statement": "졸업 앨범 단체 사진을 찍으려고 학생들이 여러 줄로 섰습니다. 2차원 리스트 `photo`의 원소 하나하나는 한 줄에 선 학생들의 키(cm)를 왼쪽부터 담은 리스트입니다. 결석한 학생의 자리는 0입니다. 같은 줄 학생들의 머리 높이를 맞추려고, 결석하지 않은 학생마다 받침대를 놓아 그 줄에서 키가 가장 큰 학생과 같은 높이가 되게 합니다. 학생 한 명에게 필요한 받침대의 높이는 (그 줄에서 가장 큰 키 - 그 학생의 키)cm이고, 결석한 자리에는 받침대를 놓지 않습니다.\n\n예를 들어 `photo`가 [[150, 0, 162, 158], [170, 168, 170], [0, 0, 0], [149, 161, 0, 149]]이면 줄마다 필요한 받침대 높이의 합은 1번째 줄이 (162 - 150) + (162 - 162) + (162 - 158) = 16cm, 2번째 줄이 2cm, 3번째 줄이 0cm, 4번째 줄이 (161 - 149) + (161 - 161) + (161 - 149) = 24cm입니다. 모두 더하면 42cm이고, 받침대 높이의 합이 가장 큰 줄은 4번째 줄입니다.\n\n`photo`가 주어질 때, [모든 줄의 받침대 높이의 합, 받침대 높이의 합이 가장 큰 줄의 번호]를 return 하도록 solution 함수를 작성했습니다. 줄 번호는 앞줄부터 1, 2, 3, …으로 셉니다. tallest 함수는 한 줄에서 가장 큰 키를 구합니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
+   "params": [
+    "photo는 줄마다 학생들의 키를 담은 2차원 리스트이며, 줄의 수는 1 이상 10 이하입니다.",
+    "한 줄의 자리 수는 1 이상 10 이하입니다.",
+    "photo의 원소는 0이거나 100 이상 200 이하인 정수이며, 0은 결석한 학생의 자리입니다."
+   ],
+   "returns": [
+    "[모든 줄의 받침대 높이의 합, 받침대 높이의 합이 가장 큰 줄의 번호]를 return 합니다.",
+    "받침대 높이의 합이 가장 큰 줄이 여러 개이면 그중 번호가 가장 작은 줄의 번호를 넣습니다.",
+    "받침대가 필요한 줄이 하나도 없으면 줄 번호 자리에 0을 넣습니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "photo"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        150,
+        0,
+        162,
+        158
+       ],
+       [
+        170,
+        168,
+        170
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        149,
+        161,
+        0,
+        149
+       ]
+      ]
+     ],
+     "expected": [
+      42,
+      4
+     ],
+     "explain": "줄마다 16, 2, 0, 24cm가 필요하므로 합은 42cm이고, 가장 많이 필요한 줄은 4번째 줄입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        155,
+        160
+       ],
+       [
+        160,
+        155
+       ]
+      ]
+     ],
+     "expected": [
+      10,
+      1
+     ],
+     "explain": "두 줄 모두 5cm가 필요해 합은 10cm입니다. 합이 가장 큰 줄이 두 개이므로 번호가 작은 1번째 줄을 고릅니다."
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0
+       ],
+       [
+        172,
+        172,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ],
+     "explain": "받침대가 필요한 학생이 없어 합은 0cm이고, 줄 번호 자리에도 0을 넣습니다."
+    }
+   ],
+   "code": "def tallest(line):\n    best = 0\n    for h in line:\n        if h > best:\n            best = h\n    return best\n\ndef solution(photo):\n    total = 0\n    worst = 0\n    worst_need = 0\n    for i in range(len(photo)):\n        top = tallest(photo[i])\n        need = 0\n        for h in photo[i]:\n            if h > 0:\n                total += top - h\n        total += need\n        if need > worst_need:\n            worst_need = need\n            worst = i + 1\n    return [total, worst]",
+   "bugLine": 17,
+   "solution": "def tallest(line):\n    best = 0\n    for h in line:\n        if h > best:\n            best = h\n    return best\n\ndef solution(photo):\n    total = 0\n    worst = 0\n    worst_need = 0\n    for i in range(len(photo)):\n        top = tallest(photo[i])\n        need = 0\n        for h in photo[i]:\n            if h > 0:\n                need += top - h\n        total += need\n        if need > worst_need:\n            worst_need = need\n            worst = i + 1\n    return [total, worst]",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        100
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        200,
+        100
+       ]
+      ]
+     ],
+     "expected": [
+      100,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        100,
+        200
+       ],
+       [
+        200,
+        100
+       ]
+      ]
+     ],
+     "expected": [
+      200,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        100,
+        101
+       ],
+       [
+        100,
+        102
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        150
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        150,
+        0,
+        150
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ],
+       [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200
+       ]
+      ]
+     ],
+     "expected": [
+      9000,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        160,
+        170,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        165,
+        165,
+        180
+       ]
+      ]
+     ],
+     "expected": [
+      40,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        120,
+        0,
+        130
+       ],
+       [
+        125,
+        135,
+        0,
+        0,
+        115
+       ],
+       [
+        140
+       ]
+      ]
+     ],
+     "expected": [
+      40,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        180,
+        175
+       ],
+       [
+        150,
+        155,
+        160
+       ],
+       [
+        199,
+        100
+       ]
+      ]
+     ],
+     "expected": [
+      119,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        100,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        200
+       ]
+      ]
+     ],
+     "expected": [
+      100,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        150,
+        150
+       ],
+       [
+        140,
+        150
+       ],
+       [
+        150,
+        140
+       ]
+      ]
+     ],
+     "expected": [
+      20,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        101,
+        102,
+        103
+       ],
+       [
+        110,
+        100
+       ]
+      ]
+     ],
+     "expected": [
+      13,
+      2
+     ]
+    }
+   ],
+   "inputCheck": "def valid(photo):\n    return isinstance(photo, list) and 1 <= len(photo) <= 10 and all(isinstance(line, list) and 1 <= len(line) <= 10 and all(isinstance(h, int) and (h == 0 or 100 <= h <= 200) for h in line) for line in photo)",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1의 1번째 줄 [150, 0, 162, 158]에 선 학생들은 받침대를 놓아 몇 cm에 맞출까요?",
+     "options": [
+      "170cm(모든 줄을 통틀어 가장 큰 키)",
+      "150cm(그 줄의 첫 번째 학생 키)",
+      "162cm(그 줄에서 가장 큰 키)",
+      "0cm(그 줄에서 가장 작은 값)"
+     ],
+     "answer": 2,
+     "code": "start",
+     "explain": "2차원 리스트는 리스트 안에 리스트가 들어 있는 것이에요. photo[0]이 1번째 줄 [150, 0, 162, 158]이고, 줄마다 그 줄에서 가장 큰 키에 맞춰요. 그래서 줄이 바뀔 때마다 가장 큰 키를 새로 구해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "줄마다 필요한 받침대 높이의 합이 앞줄부터 차례로 5, 9, 9, 2cm라면, return 값의 줄 번호 자리에는 무엇이 들어갈까요?",
+     "options": [
+      "1",
+      "2",
+      "3",
+      "0"
+     ],
+     "answer": 1,
+     "explain": "가장 큰 합은 9cm이고 2번째 줄과 3번째 줄이 같아요. 동점이면 번호가 작은 2번째 줄을 골라요. 줄 번호는 1부터 세므로 인덱스(0부터 세는 위치) i에 1을 더한 i + 1이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "solution이 줄 하나를 처리하는 순서로 알맞은 것은 무엇일까요?",
+     "options": [
+      "그 줄의 가장 큰 키 구하기 → 그 줄의 받침대 합 구하기 → 전체 합에 더하기 → 지금까지 가장 큰 합인지 확인하기",
+      "전체 합에 더하기 → 그 줄의 가장 큰 키 구하기 → 그 줄의 받침대 합 구하기",
+      "모든 줄을 통틀어 가장 큰 키 구하기 → 학생마다 받침대 높이를 전체 합에 더하기",
+      "그 줄의 받침대 합 구하기 → 그 줄의 가장 큰 키 구하기 → 가장 큰 합인지 확인하기"
+     ],
+     "answer": 0,
+     "explain": "받침대 높이는 그 줄의 가장 큰 키를 알아야 구할 수 있어요. 그 줄의 합을 먼저 다 구해야 전체 합에 더하고, 다른 줄의 합과 크기를 비교할 수 있어요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "1번째 줄의 받침대 합",
+     "prompt": "photo[0] = [150, 0, 162, 158]이에요. tallest(photo[0])는 162를 돌려줘요(top = 162). need = 0에서 시작해, 안쪽 for 문에서 학생의 키 h마다 조건 `h > 0`의 결과와 그 학생을 처리한 뒤의 need를 채워 보세요. 조건이 참이면 그 학생의 받침대 높이 top - h를 need에 더해요.",
+     "columns": [
+      "h",
+      "h > 0",
+      "반복 후 need"
+     ],
+     "rows": [
+      [
+       "150",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "0",
+       {
+        "a": "False",
+        "alts": [
+         "false",
+         "거짓"
+        ]
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "162",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "158",
+       {
+        "a": "True",
+        "alts": [
+         "true",
+         "참"
+        ]
+       },
+       {
+        "a": "16"
+       }
+      ]
+     ],
+     "check": "def tallest(line):\n    best = 0\n    for h in line:\n        if h > best:\n            best = h\n    return best\n\ndef solution(photo):\n    total = 0\n    worst = 0\n    worst_need = 0\n    for i in range(len(photo)):\n        top = tallest(photo[i])\n        need = 0\n        for h in photo[i]:\n            if h > 0:\n                need += top - h\n        total += need\n        if need > worst_need:\n            worst_need = need\n            worst = i + 1\n    return [total, worst]\n\n\ndef answers():\n    line = [150, 0, 162, 158]\n    top = tallest(line)\n    out = []\n    need = 0\n    for h in line:\n        ok = h > 0\n        if ok:\n            need += top - h\n        out += [ok, need]\n    return out",
+     "code": "start",
+     "explain": "결석한 자리(0)는 조건이 거짓이라 건너뛰어요. 나머지 학생의 받침대 12, 0, 4cm를 쌓아 1번째 줄의 합은 16cm예요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "줄마다 따라가기",
+     "prompt": "예시 1을 바깥 for 문으로 따라가요. 처음에는 total = 0, worst_need = 0, worst = 0이에요. 줄(i)마다 그 줄의 need와, 그 줄을 처리한 뒤의 total, worst_need, worst를 채워 보세요. need가 worst_need보다 클 때만 worst_need와 worst를 바꿔요.",
+     "columns": [
+      "i",
+      "photo[i]",
+      "need",
+      "반복 후 total",
+      "반복 후 worst_need",
+      "반복 후 worst"
+     ],
+     "rows": [
+      [
+       "0",
+       "[150, 0, 162, 158]",
+       {
+        "a": "16"
+       },
+       {
+        "a": "16"
+       },
+       {
+        "a": "16"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "1",
+       "[170, 168, 170]",
+       {
+        "a": "2"
+       },
+       {
+        "a": "18"
+       },
+       {
+        "a": "16"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "2",
+       "[0, 0, 0]",
+       {
+        "a": "0"
+       },
+       {
+        "a": "18"
+       },
+       {
+        "a": "16"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "3",
+       "[149, 161, 0, 149]",
+       {
+        "a": "24"
+       },
+       {
+        "a": "42"
+       },
+       {
+        "a": "24"
+       },
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def tallest(line):\n    best = 0\n    for h in line:\n        if h > best:\n            best = h\n    return best\n\ndef solution(photo):\n    total = 0\n    worst = 0\n    worst_need = 0\n    for i in range(len(photo)):\n        top = tallest(photo[i])\n        need = 0\n        for h in photo[i]:\n            if h > 0:\n                need += top - h\n        total += need\n        if need > worst_need:\n            worst_need = need\n            worst = i + 1\n    return [total, worst]\n\n\ndef answers():\n    photo = [[150, 0, 162, 158], [170, 168, 170], [0, 0, 0], [149, 161, 0, 149]]\n    out = []\n    total = worst = worst_need = 0\n    for i in range(len(photo)):\n        top = tallest(photo[i])\n        need = 0\n        for h in photo[i]:\n            if h > 0:\n                need += top - h\n        total += need\n        if need > worst_need:\n            worst_need = need\n            worst = i + 1\n        out += [need, total, worst_need, worst]\n    assert [total, worst] == solution(photo)\n    return out",
+     "explain": "2번째 줄(2cm)과 3번째 줄(0cm)은 16보다 작아서 worst가 그대로 1이에요. 4번째 줄(24cm)에서 worst_need가 24, worst가 i + 1 = 4로 바뀌어요. 그래서 [42, 4]가 돼요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "solution 안에서 `need = 0`은 바깥 for 문 안쪽에 있어서 줄이 바뀔 때마다 다시 실행돼요. 그 까닭으로 알맞은 것은 무엇일까요?",
+     "options": [
+      "total을 줄마다 0으로 만들기 위해",
+      "need는 지금 보는 한 줄의 받침대 합만 기억해야 하기 때문",
+      "need는 모든 줄의 받침대 합을 기억해야 하기 때문",
+      "tallest 함수가 need를 쓰기 때문"
+     ],
+     "answer": 1,
+     "explain": "total은 모든 줄의 합, need는 한 줄의 합이에요. 줄마다 need를 0에서 다시 쌓아야 줄끼리 합을 비교해 받침대가 가장 많이 필요한 줄을 찾을 수 있어요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "처음 주어진 코드는 예시 1에서 무엇을 return 할까요? [합, 줄 번호] 꼴로 써 보세요.",
+     "a": "[42, 0]",
+     "alts": [],
+     "check": "def tallest(line):\n    best = 0\n    for h in line:\n        if h > best:\n            best = h\n    return best\n\ndef solution(photo):\n    total = 0\n    worst = 0\n    worst_need = 0\n    for i in range(len(photo)):\n        top = tallest(photo[i])\n        need = 0\n        for h in photo[i]:\n            if h > 0:\n                total += top - h\n        total += need\n        if need > worst_need:\n            worst_need = need\n            worst = i + 1\n    return [total, worst]\n\n\ndef answers():\n    return [solution([[150, 0, 162, 158], [170, 168, 170], [0, 0, 0], [149, 161, 0, 149]])]",
+     "code": "start",
+     "explain": "처음 코드는 학생의 받침대 높이를 need가 아니라 total에 바로 더해요. 그래서 total은 42로 맞지만 need는 줄마다 0으로 남아 worst_need보다 커지지 않고, worst가 0이 돼요. 앞의 값이 맞았다고 모두 맞은 것은 아니에요."
+    },
+    {
+     "id": "s8",
+     "kind": "mcq",
+     "q": "틀린 줄을 바르게 고친 것은 무엇일까요?",
+     "options": [
+      "18번째 줄: `total = need`",
+      "14번째 줄: `need = total`",
+      "17번째 줄: `need += top - h`",
+      "19번째 줄: `if need >= worst_need:`"
+     ],
+     "answer": 2,
+     "code": "start",
+     "explain": "학생마다의 받침대 높이는 먼저 그 줄의 합 need에 쌓고, 줄이 끝나면 18번째 줄에서 total에 need를 더해요. total = need로 바꾸면 마지막 줄의 값만 남고, >= 로 바꾸면 동점일 때 뒤쪽 줄을 골라요."
+    },
+    {
+     "id": "s9",
+     "kind": "short",
+     "q": "고친 코드에 photo = [[0, 165], [158, 160], [171, 169]]를 넣으면 무엇을 return 할까요?",
+     "a": "[4, 2]",
+     "alts": [],
+     "check": "def tallest(line):\n    best = 0\n    for h in line:\n        if h > best:\n            best = h\n    return best\n\ndef solution(photo):\n    total = 0\n    worst = 0\n    worst_need = 0\n    for i in range(len(photo)):\n        top = tallest(photo[i])\n        need = 0\n        for h in photo[i]:\n            if h > 0:\n                need += top - h\n        total += need\n        if need > worst_need:\n            worst_need = need\n            worst = i + 1\n    return [total, worst]\n\n\ndef answers():\n    return [solution([[0, 165], [158, 160], [171, 169]])]",
+     "code": "start",
+     "explain": "1번째 줄은 결석 자리를 빼면 학생이 한 명뿐이라 0cm, 2번째·3번째 줄은 2cm씩이에요. 합은 4cm이고, 2cm로 같은 두 줄 중 번호가 작은 2번째 줄을 골라 [4, 2]예요."
+    }
+   ],
+   "explain": "누적할 값이 여러 개일 때는 무엇을 어디에 쌓는지 구분해야 해요. 학생의 받침대 높이를 total에 바로 더하면 합계는 맞아도 줄마다의 합 need가 0으로 남아, 받침대가 가장 많이 필요한 줄을 찾지 못해요. 안쪽 반복에서는 need에 쌓고, 줄이 끝나면 total에 need를 더하도록 고쳐야 해요."
+  }
+ ]
+}

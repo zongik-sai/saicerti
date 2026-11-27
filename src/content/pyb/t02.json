@@ -1079,6 +1079,7 @@
       "weight <= 100 and size <= 5"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "and는 '그리고'라는 뜻으로, 양쪽이 모두 True일 때만 True예요. or는 한쪽만 True여도 True라서 무거운 상자까지 소형이 돼요. '이하'는 < 가 아니라 <= 로 써요."
     },
     {
@@ -1929,6 +1930,7 @@
       "day[1] < 7 and day[0] <= 80"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "풍속은 day[0], 미세먼지는 day[1]이에요. '7 미만'은 < 7, '80 이하'는 <= 80이고, 두 조건을 모두 만족해야 하니 and로 묶어요."
     },
     {
@@ -1938,6 +1940,7 @@
      "a": "1500",
      "alts": [],
      "check": "def answers():\n    answer = 0\n    for day in [[3, 45], [7, 30], [5, 80], [2, 81], [6, 120], [0, 10]]:\n        if day[0] < 7 or day[1] <= 80:\n            answer += 250\n        else:\n            answer += 60\n    return [answer]",
+     "code": "start",
      "explain": "or는 두 조건 중 하나만 True여도 True예요. 예시 1은 6일 모두 둘 중 하나는 만족해서 250×6 = 1500이 되어 버려요. 그래서 and를 써야 해요."
     }
    ],
@@ -2918,6 +2921,7 @@
       "record[1] >= 25 and record[0] <= -3"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "record[0]은 얼음 두께, record[1]은 기온이에요. '25 이상'은 >= 25, '영하 3도 이하'는 <= -3이고, 두 조건을 and로 묶어요."
     },
     {
@@ -3812,6 +3816,7 @@
       "today[1] > 6 or today[0] < 4"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "일조 시간은 today[1], 구름 양은 today[0]이에요. '초과'는 >, '미만'은 < 로 쓰고, 두 조건을 모두 만족해야 하니 and로 묶어요."
     },
     {
@@ -5011,6 +5016,7 @@
       "day[0] >= 28 and day[1] <= 35 and day[1] == 0"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "범위는 '28 이상'과 '35 이하' 두 조건을 and로 이어서 나타내요. 같은지 비교할 때는 = 가 아니라 == 를 써요(= 는 변수에 값을 넣는 기호예요). 기온은 day[0], 강수량은 day[1]이에요."
     },
     {
@@ -5020,6 +5026,7 @@
      "a": "4100",
      "alts": [],
      "check": "def answers():\n    answer = 0\n    for day in [[30, 0], [28, 0], [36, 0], [33, 5], [27, 0], [35, 0]]:\n        if day[0] >= 28 and day[1] == 0:\n            answer += 900\n        else:\n            answer += 250\n    return [answer]",
+     "code": "start",
      "explain": "36도인 3번째 날까지 물놀이 날로 세어져 900×4 + 250×2 = 4100이 돼요. 정답 3450과 달라지니 범위의 위쪽 끝도 꼭 검사해야 해요."
     }
    ],

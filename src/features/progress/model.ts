@@ -43,6 +43,8 @@ export interface CourseState {
   v: 1;
   probs: Record<string, ProbState>;
   mocks?: Record<string, MockState>;
+  /** [심화]를 연 유형(t01~t10). 그 유형의 기본 5문제를 모두 푼 뒤 학생이 직접 연다 */
+  advOpen?: string[];
 }
 
 export const emptyState = (): CourseState => ({ v: 1, probs: {} });
@@ -105,6 +107,8 @@ export function mergeState(a: CourseState | null | undefined, b: CourseState | n
   const probs: Record<string, ProbState> = {};
   for (const id of new Set([...Object.keys(sa.probs), ...Object.keys(sb.probs)])) probs[id] = mergeProb(sa.probs[id], sb.probs[id]);
   const out: CourseState = { v: 1, probs };
+  const open = uniq(sa.advOpen, sb.advOpen);
+  if (open.length) out.advOpen = open;
   const ma = sa.mocks ?? {};
   const mb = sb.mocks ?? {};
   const keys = new Set([...Object.keys(ma), ...Object.keys(mb)]);
@@ -115,7 +119,10 @@ export function mergeState(a: CourseState | null | undefined, b: CourseState | n
   return out;
 }
 
-const PID = /^(pyb|pya|cb|ca)-t\d{2}-[a-e]$/;
+const PID = /^(pyb|pya|cb|ca)-t\d{2}-([a-e]|adv[1-5])$/;
+const TKEY = /^t(0[1-9]|10)$/;
+/** [심화] 문제 id(…-adv1~adv5) */
+export const isAdvId = (id: string) => /-adv[1-5]$/.test(id);
 const SID = /^s\d{1,2}$/;
 const ISO = (v: unknown): string | undefined => (typeof v === 'string' && v.length <= 40 && !Number.isNaN(Date.parse(v)) ? v : undefined);
 
@@ -145,6 +152,11 @@ export function sanitize(raw: unknown): CourseState {
     if (saw) ps.sawAnswerAt = saw;
     out.probs[id] = ps;
   }
+  const advOpen = (raw as { advOpen?: unknown }).advOpen;
+  if (Array.isArray(advOpen)) {
+    const open = [...new Set(advOpen.filter((t): t is string => typeof t === 'string' && TKEY.test(t)))].sort();
+    if (open.length) out.advOpen = open;
+  }
   const mocks = (raw as { mocks?: unknown }).mocks;
   if (mocks && typeof mocks === 'object') {
     for (const [k, v] of Object.entries(mocks as Record<string, unknown>)) {
@@ -157,7 +169,7 @@ export function sanitize(raw: unknown): CourseState {
       if (endedAt) ms.endedAt = endedAt;
       const res = m.results && typeof m.results === 'object' ? (m.results as Record<string, unknown>) : {};
       for (const [t, r] of Object.entries(res)) {
-        if (!/^t(0[1-9]|10)$/.test(t) || !r || typeof r !== 'object') continue;
+        if (!TKEY.test(t) || !r || typeof r !== 'object') continue;
         const x = r as Record<string, unknown>;
         ms.results[t] = {
           score: typeof x.score === 'number' && x.score >= 0 && x.score <= 100 ? Math.round(x.score) : 0,
@@ -191,4 +203,25 @@ export function tally(state: CourseState, ids: string[]): Tally {
     if (p.solved) solved++;
   }
   return { solved, stepsDone, started };
+}
+
+/** 문제 묶음 중 해결한 수 */
+export const solvedCount = (state: CourseState, ids: string[]) => ids.filter((id) => state.probs[id]?.solved).length;
+
+/**
+ * [심화] 잠금 상태: locked(기본 5문제를 아직 다 못 풂) → ready(다 풀었고, 누르면 열림) → open(연 뒤).
+ * bypass(선생님 미리 보기)면 언제나 open.
+ */
+export type AdvGate = 'locked' | 'ready' | 'open';
+export function advGate(state: CourseState, tkey: string, basicIds: string[], bypass = false): AdvGate {
+  if (bypass) return 'open';
+  const done = basicIds.length > 0 && solvedCount(state, basicIds) === basicIds.length;
+  if (!done) return 'locked';
+  return state.advOpen?.includes(tkey) ? 'open' : 'ready';
+}
+
+/** 모의고사는 [기본] 문제를 모두 푼 뒤에 연다. 이미 시작한 회차의 기록은 계속 볼 수 있다. bypass(선생님 미리 보기)면 열림 */
+export function mockGate(state: CourseState, basicIds: string[], mockKey: string, bypass = false): boolean {
+  if (bypass || state.mocks?.[mockKey]) return true;
+  return basicIds.length > 0 && solvedCount(state, basicIds) === basicIds.length;
 }

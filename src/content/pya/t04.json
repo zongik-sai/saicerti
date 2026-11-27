@@ -223,6 +223,7 @@
       ]
      ],
      "check": "def max_number(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    digits = list(str(372))\n    out.append(digits[:])\n    digits.sort(reverse=True)\n    out.append(digits[:])\n    big = max_number(372)\n    small = min_number(372)\n    out += [big, small, big + small]\n    return out",
+     "code": "start",
      "explain": "내림차순으로 정렬하면 ['7', '3', '2']가 되고, 이어 붙이면 '732', 정수로 바꾸면 732예요. 오름차순이면 237이 되고, 두 수를 더하면 969예요."
     },
     {
@@ -460,6 +461,7 @@
       ]
      ],
      "check": "def biggest(value):\n    digits = list(str(value))\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef smallest(value):\n    digits = list(str(value))\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    d = list(str(2026))\n    out.append(d[:])\n    d.sort(reverse=True)\n    out.append(d[:])\n    out.append(biggest(2026))\n    d.sort()\n    out.append(d[:])\n    out.append(smallest(2026))\n    diff = biggest(2026) - smallest(2026)\n    out += [diff, diff // 9]\n    return out",
+     "code": "start",
      "explain": "내림차순(큰 것부터)이면 '6220' → 6220, 오름차순(작은 것부터)이면 '0226' → 226이에요. 차이 5994를 9로 나눈 몫은 666이에요."
     },
     {
@@ -1034,6 +1036,7 @@
       ]
      ],
      "check": "def max_number(text):\n    digits = list(text)\n    digits.sort(reverse=True)\n    return int(\"\".join(digits))\n\ndef min_number(text):\n    digits = list(text)\n    digits.sort()\n    return int(\"\".join(digits))\n\ndef answers():\n    out = []\n    text = str(40) + str(17)\n    out.append(repr(text))\n    d = list(text)\n    d.sort(reverse=True)\n    out.append(d[:])\n    out.append(max_number(text))\n    d.sort()\n    out.append(d[:])\n    out.append(min_number(text))\n    out.append(max_number(text) - min_number(text))\n    return out",
+     "code": "start",
      "explain": "'4017'을 글자로 나누어 내림차순이면 7410, 오름차순이면 '0147' → 147이에요. 7410 − 147 = 7263이에요."
     },
     {

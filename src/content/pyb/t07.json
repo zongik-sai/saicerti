@@ -14,7 +14,7 @@
  "problems": [
   {
    "id": "pyb-t07-a",
-   "version": 1,
+   "version": 2,
    "title": "물병 가득 채우기",
    "statement": "캠프에서 용량이 모두 `full`mL로 같은 물병 여러 개에 물을 나누어 담아 두었습니다. 물병마다 담긴 물의 양이 달라서, 물을 더 부어 모든 물병을 가득 채우려고 합니다. 물병 하나를 가득 채우려면 (`full` - 그 물병에 담긴 물의 양)mL를 더 부어야 합니다.\n\n예를 들어 `full`이 500이고 물병에 담긴 물이 각각 [200, 350, 500, 120]mL라면, 더 부어야 하는 물은 (500 - 200) + (500 - 350) + (500 - 500) + (500 - 120) = 300 + 150 + 0 + 380 = 830mL입니다.\n\n물병마다 담긴 물의 양을 담은 리스트 `water`와 물병 하나의 용량 `full`이 주어질 때, 모든 물병을 가득 채우려면 물을 모두 몇 mL 더 부어야 하는지 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
    "params": [
@@ -250,12 +250,12 @@
      "id": "s2",
      "kind": "table",
      "title": "예시 1 따라가기",
-     "prompt": "water = [200, 350, 500, 120], full = 500이에요. 물병 하나를 처리할 때마다 full - w 값과, 그 물병을 처리한 **뒤** 틀린 코드(need = full - w)와 고친 코드(need += full - w)의 need 값을 채워 보세요. need += x는 need = need + x와 같아요.",
+     "prompt": "water = [200, 350, 500, 120], full = 500이에요. 물병 하나를 처리할 때마다 full - w 값과, 그 물병을 처리한 **뒤** 틀린 코드의 need 값, 그리고 문제에서 원하는 값(지금까지 물병마다 더 부을 양을 모두 더한 값)을 채워 보세요.",
      "columns": [
       "w",
       "full - w",
       "틀린 코드: need",
-      "고친 코드: need"
+      "원하는 값: 지금까지의 합"
      ],
      "rows": [
       [
@@ -308,7 +308,8 @@
       ]
      ],
      "check": "def answers():\n    water = [200, 350, 500, 120]\n    full = 500\n    out = []\n    wrong = 0\n    right = 0\n    for w in water:\n        wrong = full - w\n        right += full - w\n        out += [full - w, wrong, right]\n    return out",
-     "explain": "= 는 변수에 새 값을 바꿔 넣기(대입)라서 앞에서 구한 값이 사라지고 마지막 값 380만 남아요. += 는 원래 값에 더해 쌓으므로 830이 돼요."
+     "code": "start",
+     "explain": "틀린 코드의 `need = full - w`는 need에 새 값을 바꿔 넣기(대입)만 해서, 앞에서 구한 값이 사라지고 마지막 값 380만 남아요. 문제에서는 물병마다 부을 양을 모두 더해 쌓아야(누적) 하므로 830이 되어야 해요."
     },
     {
      "id": "s3",
@@ -321,6 +322,7 @@
       "5번째 줄을 return need * len(water) 로 바꾼다"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "물병마다 구한 차이를 need에 계속 더해야 하므로 4번째 줄의 = 를 += 로 바꿔요. w - full 은 음수가 되고, 마지막 값에 개수를 곱해도 합계가 되지 않아요."
     },
     {
@@ -330,6 +332,7 @@
      "a": "300",
      "alts": [],
      "check": "def answers():\n    need = 0\n    for w in [0, 0, 0]:\n        need += 100 - w\n    return [need]",
+     "code": "start",
      "explain": "빈 물병 3개를 100mL씩 채워야 하니 100 + 100 + 100 = 300이에요."
     }
    ],
@@ -337,7 +340,7 @@
   },
   {
    "id": "pyb-t07-b",
-   "version": 1,
+   "version": 2,
    "title": "블록 탑 높이 맞추기",
    "statement": "블록으로 쌓은 탑 여러 개가 나란히 있습니다. 탑마다 쌓인 블록 수가 달라서, 블록을 더 올려 모든 탑의 높이를 똑같이 만들려고 합니다. 블록을 빼지는 않으며, 더 올리는 블록 수는 최대한 적게 하려 합니다.\n\n이때 모든 탑을 가장 높은 탑의 높이에 맞추면 더 올리는 블록 수가 가장 적습니다. 예를 들어 탑마다 쌓인 블록이 [4, 9, 6, 9, 2]개라면 모든 탑을 9층에 맞추어 (9 - 4) + (9 - 9) + (9 - 6) + (9 - 9) + (9 - 2) = 5 + 0 + 3 + 0 + 7 = 15개를 더 올리면 됩니다.\n\n탑마다 쌓인 블록 수를 담은 리스트 `towers`가 주어질 때, 모든 탑의 높이를 같게 만들려면 블록을 최소 몇 개 더 올려야 하는지 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
    "params": [
@@ -635,12 +638,12 @@
      "id": "s2",
      "kind": "table",
      "title": "예시 1 따라가기",
-     "prompt": "highest = 9예요. 탑 하나를 처리한 뒤 틀린 코드(answer += 1)와 고친 코드(answer += highest - t)의 answer 값을 채워 보세요. answer += x는 answer = answer + x와 같아요.",
+     "prompt": "highest = 9예요. 탑 하나를 처리한 뒤 틀린 코드의 answer 값과, 문제에서 원하는 값(지금까지 탑마다 더 올려야 하는 블록 수를 모두 더한 값)을 채워 보세요. answer += x는 answer = answer + x와 같아요.",
      "columns": [
       "t",
       "highest - t",
       "틀린 코드: answer",
-      "고친 코드: answer"
+      "원하는 값: 지금까지의 합"
      ],
      "rows": [
       [
@@ -695,6 +698,7 @@
       ]
      ],
      "check": "def answers():\n    towers = [4, 9, 6, 9, 2]\n    highest = max(towers)\n    out = []\n    wrong = 0\n    right = 0\n    for t in towers:\n        wrong += 1\n        right += highest - t\n        out += [wrong, right]\n    return out",
+     "code": "start",
      "explain": "틀린 코드는 탑마다 1씩만 더해서 탑의 개수 5를 세게 돼요. 우리가 더해야 하는 것은 탑마다 모자란 블록 수(highest - t)예요."
     },
     {
@@ -708,6 +712,7 @@
       "5번째 줄: answer += highest - t"
      ],
      "answer": 3,
+     "code": "start",
      "explain": "모자란 블록 수는 (가장 높은 높이 - 그 탑의 높이)예요. = 를 쓰면 마지막 탑의 값만 남고, t - highest 는 음수가 돼요. min으로 바꾸면 가장 낮은 탑에 맞추게 되어 틀려요."
     },
     {
@@ -717,6 +722,7 @@
      "a": "0",
      "alts": [],
      "check": "def answers():\n    towers = [6]\n    answer = 0\n    highest = max(towers)\n    for t in towers:\n        answer += highest - t\n    return [answer]",
+     "code": "start",
      "explain": "탑이 하나면 그 탑이 가장 높은 탑이에요. 6 - 6 = 0이라 더 올릴 블록이 없어요."
     }
    ],
@@ -724,7 +730,7 @@
   },
   {
    "id": "pyb-t07-c",
-   "version": 1,
+   "version": 2,
    "title": "쿠키 접시 똑같이 맞추기",
    "statement": "간식 시간에 접시마다 쿠키가 몇 개씩 놓여 있습니다. 모든 접시의 쿠키 수를 똑같이 맞추려고 하는데, 쿠키를 더 놓을 수는 없고 접시에서 덜어 내기만 할 수 있습니다. 덜어 내는 쿠키 수는 최대한 적게 하려 합니다.\n\n이때 모든 접시를 쿠키가 가장 적은 접시에 맞추면 덜어 내는 쿠키 수가 가장 적습니다. 예를 들어 접시마다 놓인 쿠키가 [7, 4, 9, 4, 6]개라면 모든 접시를 4개에 맞추어 (7 - 4) + (4 - 4) + (9 - 4) + (4 - 4) + (6 - 4) = 3 + 0 + 5 + 0 + 2 = 10개를 덜어 내면 됩니다.\n\n접시마다 놓인 쿠키 수를 담은 리스트 `plates`가 주어질 때, 모든 접시의 쿠키 수를 같게 만들려면 쿠키를 최소 몇 개 덜어 내야 하는지 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
    "params": [
@@ -997,11 +1003,11 @@
      "id": "s2",
      "kind": "table",
      "title": "예시 1 따라가기",
-     "prompt": "fewest = 4예요. 접시 하나를 처리할 때마다 그 접시에서 덜어 낼 쿠키 수(cookie - fewest)와, 그 접시를 처리한 **뒤** 고친 코드(removed += cookie - fewest)의 removed 값을 채워 보세요.",
+     "prompt": "fewest = 4예요. 접시 하나를 처리할 때마다 그 접시에서 덜어 낼 쿠키 수(cookie - fewest)와, 그 접시까지 덜어 낸 쿠키 수를 모두 더한 값(문제에서 원하는 값)을 채워 보세요.",
      "columns": [
       "cookie",
       "cookie - fewest",
-      "고친 코드: removed"
+      "원하는 값: 지금까지의 합"
      ],
      "rows": [
       [
@@ -1051,6 +1057,7 @@
       ]
      ],
      "check": "def answers():\n    plates = [7, 4, 9, 4, 6]\n    fewest = min(plates)\n    out = []\n    removed = 0\n    for cookie in plates:\n        removed += cookie - fewest\n        out += [cookie - fewest, removed]\n    return out",
+     "code": "start",
      "explain": "접시마다 덜어 낼 수를 removed에 계속 더해 쌓으면(누적) 마지막에 3 + 0 + 5 + 0 + 2 = 10이 돼요."
     },
     {
@@ -1060,6 +1067,7 @@
      "a": "2",
      "alts": [],
      "check": "def answers():\n    plates = [7, 4, 9, 4, 6]\n    removed = 0\n    fewest = min(plates)\n    for cookie in plates:\n        removed = cookie - fewest\n    return [removed]",
+     "code": "start",
      "explain": "= 는 새 값으로 바꿔 넣기라서 반복할 때마다 앞의 값이 지워져요. 마지막 접시 6 - 4 = 2만 남아요."
     },
     {
@@ -1073,6 +1081,7 @@
       "2번째 줄: removed = fewest"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "덜어 낼 수는 (그 접시의 쿠키 - 가장 적은 쿠키 수)이고, 이 값을 += 로 쌓아야 해요. fewest - cookie 는 음수가 되고, max로 바꾸면 가장 많은 접시에 맞추게 되어 틀려요."
     }
    ],
@@ -1414,6 +1423,7 @@
      "a": "60",
      "alts": [],
      "check": "def answers():\n    pages = [120, 85, 150, 150, 90]\n    best = 150\n    total = 0\n    for i in range(len(pages)):\n        total = best - pages[i]\n    return [total]",
+     "code": "start",
      "explain": "8번째 줄 total = best - pages[i] 는 반복할 때마다 total을 새 값으로 바꿔요. 그래서 마지막 학생의 값 150 - 90 = 60만 남아요. 올바른 답은 155예요."
     },
     {
@@ -1427,6 +1437,7 @@
       "5번째 줄도 사실은 += 로 바꿔야 하기 때문"
      ],
      "answer": 2,
+     "code": "start",
      "explain": "best는 \"지금까지 가장 큰 값\" 하나를 기억하므로 새 값으로 바꿔 넣는 = 가 맞아요. total은 \"지금까지의 합계\"라서 원래 값에 더하는 += 가 필요해요."
     },
     {
@@ -1440,6 +1451,7 @@
       "total = best + pages[i]"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "학생마다 모자란 쪽수(best - pages[i])를 total에 더해 쌓아요. i는 위치(인덱스)일 뿐 읽은 쪽수가 아니라서 best - i 는 틀려요. pages[i] - best 는 음수가 돼요."
     }
    ],
@@ -1447,7 +1459,7 @@
   },
   {
    "id": "pyb-t07-e",
-   "version": 1,
+   "version": 2,
    "title": "화단 꽃 모종 비용",
    "statement": "학교 화단 여러 곳에 꽃이 피어 있습니다. 화단마다 꽃의 수가 달라서, 꽃이 가장 많은 화단과 같은 수가 되도록 나머지 화단에 꽃 모종을 더 심으려 합니다. 모종 한 개를 심으면 꽃이 한 송이 늘고, 모종 한 개의 가격은 `price`원입니다. 따라서 화단 하나에 드는 비용은 (가장 많은 꽃의 수 - 그 화단의 꽃의 수) × `price`원입니다.\n\n예를 들어 화단마다 핀 꽃이 [6, 10, 3, 8]송이이고 `price`가 500이면, 화단마다 드는 비용은 (10 - 6) × 500 = 2000원, (10 - 10) × 500 = 0원, (10 - 3) × 500 = 3500원, (10 - 8) × 500 = 1000원이므로 모두 6500원입니다.\n\n화단마다 핀 꽃의 수를 담은 리스트 `beds`와 모종 한 개의 가격 `price`가 주어질 때, 모종을 사는 데 드는 비용의 합을 return 하도록 solution 함수를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어서 몇몇 입력에 대해서는 올바르게 동작하지 않습니다.\n\n코드에서 한 줄만 변경해서 프로그램이 올바르게 동작하도록 해 주세요.",
    "params": [
@@ -1682,12 +1694,12 @@
      "id": "s2",
      "kind": "table",
      "title": "예시 1 따라가기",
-     "prompt": "첫 번째 반복문이 끝나면 most = 10이에요. 두 번째 반복문에서 화단마다 틀린 식(most - f * price)과 고친 식((most - f) * price)의 값, 그리고 그 화단을 처리한 **뒤** 고친 코드의 cost를 채워 보세요(price = 500).",
+     "prompt": "첫 번째 반복문이 끝나면 most = 10이에요. 두 번째 반복문에서 화단마다 틀린 식 most - f * price의 값, 문제대로 계산한 그 화단의 비용(모자란 꽃 수 × 가격), 그리고 그 화단까지의 비용을 모두 더한 값을 채워 보세요(price = 500).",
      "columns": [
       "f",
-      "most - f * price",
-      "(most - f) * price",
-      "고친 코드: cost"
+      "틀린 식: most - f * price",
+      "모자란 꽃 수 × 가격",
+      "원하는 값: 지금까지의 합"
      ],
      "rows": [
       [
@@ -1740,7 +1752,8 @@
       ]
      ],
      "check": "def answers():\n    beds = [6, 10, 3, 8]\n    price = 500\n    most = beds[0]\n    for f in beds:\n        if f > most:\n            most = f\n    out = []\n    cost = 0\n    for f in beds:\n        cost += (most - f) * price\n        out += [most - f * price, (most - f) * price, cost]\n    return out",
-     "explain": "틀린 식은 f * price를 먼저 계산해서 10에서 빼므로 음수가 나와요. 괄호를 친 식은 모자란 꽃 수에 가격을 곱해서 2000, 0, 3500, 1000이 되고, 모두 더하면 6500이에요."
+     "code": "start",
+     "explain": "틀린 식은 곱셈 f * price를 먼저 계산한 뒤 10에서 빼서 음수가 나와요. 모자란 꽃 수를 먼저 구한 뒤 가격을 곱해야 2000, 0, 3500, 1000이 되고, 모두 더하면 6500이에요."
     },
     {
      "id": "s3",
@@ -1766,6 +1779,7 @@
       "2번째 줄: most = 0"
      ],
      "answer": 1,
+     "code": "start",
      "explain": "화단마다 (모자란 꽃 수) × 가격을 cost에 더해 쌓아야 해요. = 로 쓰면 마지막 화단의 비용만 남아요. most += f 는 가장 큰 값이 아니라 합을 만들어 버리고, most = 0 으로 바꿔도 괄호 문제는 그대로예요."
     }
    ],

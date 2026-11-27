@@ -672,6 +672,7 @@
       ]
      ],
      "check": "def func_a(arr):\n    return [sum(a) for a in arr]\n\ndef func_b(arr):\n    ret = [0, 0]\n    for x in arr:\n        if x >= 30:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    return -ret if ret < 0 else ret\n\ndef answers():\n    harvest = [[8, 9, 7, 10], [3, 5, 4, 6], [10, 12, 9, 8], [6, 7, 8, 6]]\n    out = []\n    ret = [0, 0]\n    for x in func_a(harvest):\n        if x >= 30:\n            ret[0] += x\n        else:\n            ret[1] += x\n        out += [x, x >= 30, ret[0], ret[1]]\n    return out",
+     "code": "start",
      "explain": "34와 39는 풍년 나무라서 ret[0]에, 18과 27은 보통 나무라서 ret[1]에 더해져요. 이렇게 값을 계속 더해 쌓는 것을 '누적'이라고 해요."
     },
     {
@@ -685,6 +686,7 @@
       "0"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "차이는 큰 값에서 작은 값을 뺀 크기라서 음수가 될 수 없어요. ret가 음수면 부호를 바꾼 -ret를 돌려줘요. 이렇게 부호를 뗀 크기를 '절댓값'이라고 해요."
     },
     {
@@ -1720,6 +1722,7 @@
       ]
      ],
      "check": "def func_a(arr):\n    ret = [0, 0]\n    for x in arr:\n        if x > 0:\n            ret[0] += 1\n        else:\n            ret[1] += 1\n    return ret\n\ndef func_b(arr):\n    return [sum(a) for a in arr]\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    return -ret if ret < 0 else ret\n\ndef answers():\n    out = []\n    ret = [0, 0]\n    for x in func_b([[3, -2, 5, 0, 1], [-4, 2, -1, 0, -3], [2, 2, -2, -2, 0], [-1, -1, 4, 0, -3], [1, -5, 2, 0, -1]]):\n        if x > 0:\n            ret[0] += 1\n        else:\n            ret[1] += 1\n        out += [x, ret[0], ret[1]]\n    return out",
+     "code": "start",
      "explain": "이 문제는 점수를 더하는 게 아니라 판의 수를 세요. 그래서 조건에 맞는 칸에 1씩 더해요. 합이 0인 셋째 판은 ret[1]이 늘어나요."
     },
     {
@@ -1733,6 +1736,7 @@
       "x != 0"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "x >= 0을 쓰면 합이 0인 판이 이긴 판으로 세어져요. '0보다 크다'는 x > 0이에요."
     },
     {
@@ -2375,6 +2379,7 @@
       ]
      ],
      "check": "def func_a(arr):\n    gap = arr[0] - arr[1]\n    if gap < 0:\n        gap = -gap\n    return gap\n\ndef func_b(arr):\n    ret = []\n    for row in arr:\n        total = 0\n        for v in row:\n            total += v\n        ret.append(total)\n    return ret\n\ndef func_c(arr):\n    ret = [0, 0]\n    for x in arr:\n        if x % 2 == 0:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef answers():\n    out = []\n    ret = [0, 0]\n    for x in func_b([[1, 2, 3, 4], [6, 6, 5, 1], [2, 2, 2, 3], [5, 4, 6, 6]]):\n        if x % 2 == 0:\n            ret[0] += x\n        else:\n            ret[1] += x\n        out += [x, x % 2, ret[0], ret[1]]\n    return out",
+     "code": "start",
      "explain": "%는 나머지를 구하는 연산자예요. x % 2가 0이면 짝수, 1이면 홀수예요. 짝수인 10과 18은 ret[0]에, 홀수인 9와 21은 ret[1]에 누적(계속 더해 쌓기)돼요."
     },
     {
@@ -2388,6 +2393,7 @@
       "x % 2 == 1"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "x % 2 == 0이면 짝수예요. x // 2는 몫이라서 짝수 판별에 쓸 수 없고, x % 2 == 1은 홀수일 때 참이 돼요."
     },
     {
@@ -2396,6 +2402,7 @@
      "q": "func_a([9, 20])의 return 값은 무엇일까요?",
      "a": "11",
      "check": "def func_a(arr):\n    gap = arr[0] - arr[1]\n    if gap < 0:\n        gap = -gap\n    return gap\n\ndef func_b(arr):\n    ret = []\n    for row in arr:\n        total = 0\n        for v in row:\n            total += v\n        ret.append(total)\n    return ret\n\ndef func_c(arr):\n    ret = [0, 0]\n    for x in arr:\n        if x % 2 == 0:\n            ret[0] += x\n        else:\n            ret[1] += x\n    return ret\n\ndef answers():\n    return [func_a([9, 20])]",
+     "code": "start",
      "explain": "gap = 9 - 20 = -11로 음수예요. 음수일 때 gap = -gap으로 부호를 바꾸므로 11을 돌려줘요. 이렇게 부호를 뗀 크기가 절댓값이에요."
     }
    ],
@@ -3287,6 +3294,7 @@
       ]
      ],
      "check": "def func_a(arr):\n    return [sum(a) for a in arr]\n\ndef func_b(arr):\n    ret = [0, 0]\n    half = len(arr) // 2\n    for i in range(len(arr)):\n        if i < half:\n            ret[0] += arr[i]\n        else:\n            ret[1] += arr[i]\n    return ret\n\ndef func_c(arr):\n    ret = arr[0] - arr[1]\n    return -ret if ret < 0 else ret\n\ndef answers():\n    arr = func_a([[2, 3, 1, 4], [5, 0, 2, 3], [1, 1, 1, 1], [4, 4, 3, 5], [0, 2, 2, 1], [3, 3, 0, 2]])\n    out = []\n    ret = [0, 0]\n    half = len(arr) // 2\n    for i in range(len(arr)):\n        if i < half:\n            ret[0] += arr[i]\n        else:\n            ret[1] += arr[i]\n        out += [i < half, list(ret)]\n    return out",
+     "code": "start",
      "explain": "인덱스는 0부터 세서 i = 0, 1, 2가 1~3번째 달(전반기)이에요. i가 3이 되는 순간부터 후반기라서 ret[1]에 더해져요."
     },
     {
@@ -3300,6 +3308,7 @@
       "arr[len(arr) // 2]"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "//는 나눗셈의 몫, %는 나머지예요. 6 // 2 = 3이라 인덱스 0, 1, 2가 전반기가 돼요. len(arr) % 2는 짝수 길이에서 항상 0이 돼요."
     },
     {
@@ -4497,6 +4506,7 @@
       "3"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "blue(청팀)가 white(백팀)보다 크니 첫 번째 if로 가요. 이긴 팀 번호 1과, 큰 점수에서 작은 점수를 뺀 3을 리스트로 돌려줘요."
     },
     {
@@ -4510,6 +4520,7 @@
       "func_b(points) / func_a(totals) / teams"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "1단계(행 합)는 func_b, 2단계(팀 나누기)는 func_a가 맡아요. 2단계에는 points가 아니라 1단계 결과 totals를 넘겨요. func_c는 매개변수가 두 개(blue, white)라서 teams[0], teams[1]을 따로 넘겨야 해요."
     },
     {

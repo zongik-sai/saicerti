@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import type { Figure, InputCell, Lang, Step, TableCell } from '../content/types';
+import { Fragment, useEffect, useState } from 'react';
+import type { Figure, InputCell, Lang, ProblemKind, Step, TableCell } from '../content/types';
+import { highlightLine } from './pyHighlight';
 import { cellOk } from '../lib/pyrepr';
 import { inline, Rich } from './Rich';
 
@@ -20,6 +21,9 @@ interface Props {
   onReveal: () => void;
   onNext: () => void;
   isLast: boolean;
+  /** 문제의 처음 코드(한 줄 수정이면 틀린 코드, 빈칸 채우기면 빈칸이 있는 코드) */
+  startCode?: string;
+  kind?: ProblemKind;
 }
 
 const isInput = (c: TableCell): c is InputCell => typeof c === 'object' && c !== null;
@@ -43,12 +47,58 @@ export function optionOrder(options: string[], seed: string, fixed = false): num
 }
 
 /** 중간 점검 한 단계. 맞히면 ✓(세 번 틀리면 정답 보기). 단계 이동은 문제 화면에서 자유롭게 한다. */
+const CODE_LABEL: Record<ProblemKind, string> = { fix: '틀린 코드(이 중 한 줄이 틀렸어요)', blank: '빈칸이 있는 코드', write: '처음 코드' };
+
+/**
+ * 중간 점검에서 보는 코드: 코드를 보고 푸는 단계(code: 'start')는 질문 위에 펼쳐서,
+ * 한 줄 수정·빈칸 채우기의 다른 단계는 접어서(눌러서 펼침) 보여 준다. 줄 번호를 붙인다.
+ */
+export function StepCode({ code, kind, lang = 'python', open }: { code: string; kind: ProblemKind; lang?: Lang; open: boolean }) {
+  const lines = code.split('\n');
+  const width = String(lines.length).length;
+  return (
+    <details className="step-code" open={open}>
+      <summary>{CODE_LABEL[kind]}</summary>
+      <pre className="sol-code numbered" aria-label={CODE_LABEL[kind]}>
+        <code>
+          {lines.map((line, li) => {
+            const parts: React.ReactNode[] = [];
+            let last = 0;
+            for (const m of line.matchAll(/⟦(\d+)⟧/g)) {
+              const idx = m.index ?? 0;
+              if (idx > last) parts.push(<Fragment key={`t${idx}`}>{highlightLine(line.slice(last, idx), `s${li}-${idx}`, lang)}</Fragment>);
+              parts.push(
+                <span key={`b${idx}`} className="blank-mark" aria-label={`빈칸 ${m[1]}`}>
+                  {m[1]}
+                </span>,
+              );
+              last = idx + m[0].length;
+            }
+            if (last < line.length) parts.push(<Fragment key="end">{highlightLine(line.slice(last), `s${li}-e`, lang)}</Fragment>);
+            return (
+              <span key={li} className="ln-row">
+                <span className="ln" aria-hidden>
+                  {String(li + 1).padStart(width, ' ')}
+                </span>
+                {parts}
+                {line === '' ? ' ' : null}
+              </span>
+            );
+          })}
+        </code>
+      </pre>
+    </details>
+  );
+}
+
 export function StepView(p: Props) {
+  const showCode = !!p.startCode && !!p.kind && (p.step.code === 'start' || p.kind !== 'write');
   return (
     <div className="card" aria-live="polite">
       <div className="step-kind">
         중간 점검 {p.index + 1}/{p.total} · {KIND[p.step.kind]}
       </div>
+      {showCode && <StepCode key={`${p.seed}-${p.step.id}`} code={p.startCode!} kind={p.kind!} lang={p.lang} open={p.step.code === 'start'} />}
       {p.step.kind === 'mcq' && <Mcq {...p} step={p.step} />}
       {p.step.kind === 'table' && <Table {...p} step={p.step} />}
       {p.step.kind === 'short' && <Short {...p} step={p.step} />}
