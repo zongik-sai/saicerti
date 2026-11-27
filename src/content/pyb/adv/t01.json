@@ -1,0 +1,4390 @@
+{
+ "course": "pyb",
+ "type": 1,
+ "typeTitle": "행마다 최댓값·최솟값",
+ "kind": "blank",
+ "skills": [
+  "2차원 리스트",
+  "행 번호와 인덱스",
+  "홀짝 판별(%)",
+  "max·min",
+  "빈 리스트 처리",
+  "if·elif 순서",
+  "최댓값 직접 찾기",
+  "동점 처리",
+  "abs(절댓값)",
+  "보조 함수"
+ ],
+ "intro": "기본 문제의 \"홀수 번째 행은 최댓값, 짝수 번째 행은 최솟값\"에 규칙을 하나씩 더해요. 빈 행, 3의 배수 규칙, max·min을 직접 만드는 함수, 동점일 때 고를 위치, 행운의 수에 가장 가까운 값까지 처리해요.",
+ "problems": [
+  {
+   "id": "pyb-t01-adv1",
+   "version": 1,
+   "title": "노선별 승차 인원 보고",
+   "statement": "마을버스 회사가 노선마다 정류장별 승차 인원을 조사했습니다. 노선 수는 정해져 있지 않고, 노선마다 조사한 정류장 수도 다릅니다. 위에서부터 1번째, 3번째, 5번째, …… 노선(홀수 번째)은 가장 붐비는 정류장의 승차 인원(**가장 큰** 값)을, 2번째, 4번째, …… 노선(짝수 번째)은 가장 한산한 정류장의 승차 인원(**가장 작은** 값)을 보고합니다. 단, 그날 운행하지 않아 조사 기록이 없는 노선(빈 리스트)은 **-1**을 보고합니다.\n\n노선별 승차 인원을 담은 2차원 리스트 `riders`가 매개변수로 주어질 때, 노선마다 보고할 값을 1번째 노선부터 순서대로 리스트에 담아 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "riders의 길이(노선 수)는 1 이상 10 이하이며, riders[0]이 1번째 노선입니다.",
+    "각 노선의 길이(조사한 정류장 수)는 0 이상 6 이하입니다. 길이가 0인 노선은 그날 운행하지 않은 노선입니다.",
+    "승차 인원은 0 이상 60 이하인 정수입니다."
+   ],
+   "returns": [
+    "노선마다 보고할 값을 1번째 노선부터 순서대로 담은 리스트를 return 합니다. 리스트의 길이는 노선 수와 같습니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "riders"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        12,
+        30,
+        7,
+        25
+       ],
+       [
+        5,
+        18,
+        3
+       ],
+       [],
+       [
+        40,
+        22,
+        35,
+        9,
+        28
+       ],
+       [
+        0,
+        14,
+        6
+       ]
+      ]
+     ],
+     "expected": [
+      30,
+      3,
+      -1,
+      9,
+      14
+     ],
+     "explain": "1·5번째 노선(홀수 번째)은 가장 큰 30, 14를, 2·4번째 노선(짝수 번째)은 가장 작은 3, 9를 보고합니다. 3번째 노선은 조사 기록이 없으므로 -1입니다."
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        8,
+        2,
+        8
+       ],
+       [
+        0
+       ],
+       []
+      ]
+     ],
+     "expected": [
+      -1,
+      2,
+      0,
+      -1
+     ],
+     "explain": "1·4번째 노선은 기록이 없어 -1이고, 2번째 노선은 가장 작은 2를 보고합니다. 3번째 노선은 승차 인원이 0명인 정류장 하나뿐이라 0을 보고합니다."
+    }
+   ],
+   "code": "def solution(riders):\n    answer = []\n    for i in range(⟦1⟧):\n        row = riders[i]\n        if ⟦2⟧:\n            answer.append(-1)\n        elif ⟦3⟧:\n            answer.append(⟦4⟧)\n        else:\n            answer.append(min(row))\n    return answer",
+   "blanks": [
+    {
+     "answer": "len(riders)"
+    },
+    {
+     "answer": "len(row) == 0",
+     "alts": [
+      "row == []",
+      "not row"
+     ]
+    },
+    {
+     "answer": "i % 2 == 0",
+     "alts": [
+      "i % 2 != 1",
+      "not i % 2"
+     ]
+    },
+    {
+     "answer": "max(row)"
+    }
+   ],
+   "solution": "def solution(riders):\n    answer = []\n    for i in range(len(riders)):\n        row = riders[i]\n        if len(row) == 0:\n            answer.append(-1)\n        elif i % 2 == 0:\n            answer.append(max(row))\n        else:\n            answer.append(min(row))\n    return answer",
+   "inputCheck": "def valid(riders):\n    if not isinstance(riders, list) or not (1 <= len(riders) <= 10):\n        return False\n    for r in riders:\n        if not isinstance(r, list) or not (0 <= len(r) <= 6):\n            return False\n        for x in r:\n            if not isinstance(x, int) or isinstance(x, bool) or not (0 <= x <= 60):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 2에서 1번째 노선은 빈 리스트 `[]`이고, 2번째 노선은 `[8, 2, 8]`이에요. 두 노선이 보고할 값을 순서대로 고르면?",
+     "options": [
+      "-1, 2",
+      "0, 2",
+      "-1, 8",
+      "0, 8"
+     ],
+     "answer": 0,
+     "explain": "빈 리스트(원소가 하나도 없는 리스트)는 운행하지 않은 노선이라 -1을 보고해요. 2번째 노선은 짝수 번째라 가장 작은 2를 보고해요. 승차 인원 0은 \"운행했지만 아무도 타지 않음\"이라서 -1과 구별해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`max([])`나 `min([])`처럼 빈 리스트에 max나 min을 쓰면 어떻게 될까요?",
+     "options": [
+      "오류(ValueError)가 나서 프로그램이 멈춘다",
+      "0을 돌려준다",
+      "-1을 돌려준다",
+      "빈 리스트 []를 돌려준다"
+     ],
+     "answer": 0,
+     "explain": "max와 min은 비교할 값이 하나도 없으면 오류를 내요. 그래서 빈 노선에는 max·min을 쓰면 안 되고, -1을 따로 넣어 줘야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "한 노선 `row`를 처리하는 순서로 알맞은 것은?",
+     "options": [
+      "먼저 빈 리스트인지 확인해 비었으면 -1, 아니면 홀수 번째인지 확인해 max 또는 min",
+      "먼저 홀수 번째인지 확인해 max 또는 min을 구하고, 그 뒤에 빈 리스트인지 확인",
+      "max와 min을 둘 다 먼저 구해 두고, 빈 리스트면 -1로 바꾸기",
+      "빈 리스트인지는 확인하지 않고 홀수 번째인지만 확인"
+     ],
+     "answer": 0,
+     "explain": "if와 elif는 위에서부터 처음 참인 곳 하나만 실행해요. 빈 리스트인지를 맨 앞 if에서 먼저 물어야, 빈 노선에서 max·min이 실행되지 않아 오류가 나지 않아요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "i는 0부터 시작해요(i = 0이 1번째 노선). 노선마다 `len(row) == 0`과 `i % 2 == 0`이 참(True)인지 거짓(False)인지, 보고할 값을 채워 보세요. 빈 노선은 elif까지 가지 않으므로 그 칸은 비워 두었어요.",
+     "columns": [
+      "i",
+      "row",
+      "len(row) == 0",
+      "i % 2 == 0",
+      "보고할 값"
+     ],
+     "rows": [
+      [
+       "0",
+       "[12, 30, 7, 25]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "30"
+       }
+      ],
+      [
+       "1",
+       "[5, 18, 3]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "2",
+       "[]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "—",
+       {
+        "a": "-1"
+       }
+      ],
+      [
+       "3",
+       "[40, 22, 35, 9, 28]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "4",
+       "[0, 14, 6]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "14"
+       }
+      ]
+     ],
+     "check": "def solution(riders):\n    answer = []\n    for i in range(len(riders)):\n        row = riders[i]\n        if len(row) == 0:\n            answer.append(-1)\n        elif i % 2 == 0:\n            answer.append(max(row))\n        else:\n            answer.append(min(row))\n    return answer\n\ndef answers():\n    riders = [[12, 30, 7, 25], [5, 18, 3], [], [40, 22, 35, 9, 28], [0, 14, 6]]\n    res = solution(riders)\n    out = []\n    for i in range(len(riders)):\n        row = riders[i]\n        out.append(len(row) == 0)\n        if len(row) > 0:\n            out.append(i % 2 == 0)\n        out.append(res[i])\n    return out",
+     "explain": "i가 0, 4일 때(1·5번째 노선) `i % 2 == 0`이 참이라 max를, i가 1, 3일 때는 거짓이라 min을 썼어요. i가 2인 노선은 비어 있어서 첫 if에서 -1을 넣고 끝나요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "`answer`에 값이 하나씩 붙는(append) 모습을 따라가요. 노선마다 보고할 값과, 그 노선을 처리한 뒤의 answer를 채워 보세요.",
+     "columns": [
+      "i",
+      "row",
+      "보고할 값",
+      "answer(이 노선 처리 뒤)"
+     ],
+     "rows": [
+      [
+       "0",
+       "[]",
+       {
+        "a": "-1"
+       },
+       {
+        "a": "[-1]"
+       }
+      ],
+      [
+       "1",
+       "[8, 2, 8]",
+       {
+        "a": "2"
+       },
+       {
+        "a": "[-1, 2]"
+       }
+      ],
+      [
+       "2",
+       "[0]",
+       {
+        "a": "0"
+       },
+       {
+        "a": "[-1, 2, 0]"
+       }
+      ],
+      [
+       "3",
+       "[]",
+       {
+        "a": "-1"
+       },
+       {
+        "a": "[-1, 2, 0, -1]"
+       }
+      ]
+     ],
+     "check": "def solution(riders):\n    answer = []\n    for i in range(len(riders)):\n        row = riders[i]\n        if len(row) == 0:\n            answer.append(-1)\n        elif i % 2 == 0:\n            answer.append(max(row))\n        else:\n            answer.append(min(row))\n    return answer\n\ndef answers():\n    riders = [[], [8, 2, 8], [0], []]\n    out = []\n    for k in range(1, len(riders) + 1):\n        part = solution(riders[:k])\n        out += [part[-1], part]\n    return out",
+     "explain": "빈 노선(i = 0, 3)은 -1, 짝수 번째인 i = 1은 min으로 2, 홀수 번째인 i = 2는 max로 0이에요. 노선마다 값이 하나씩 붙으므로 answer의 길이는 노선 수와 같아져요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "노선 수가 정해져 있지 않아요. 모든 노선을 한 번씩 보려면 `for i in range(식):`의 식에 무엇이 알맞을까요?",
+     "options": [
+      "len(riders)",
+      "len(riders) - 1",
+      "len(row)",
+      "10"
+     ],
+     "answer": 0,
+     "explain": "`range(len(riders))`는 i를 0부터 (노선 수 - 1)까지 바꿔요. `len(riders) - 1`이면 마지막 노선을 빠뜨리고, `10`으로 고정하면 노선이 10개보다 적을 때 없는 인덱스를 읽어 오류가 나요. `len(row)`는 한 노선의 정류장 수예요."
+    }
+   ],
+   "explain": "빈 노선에 max나 min을 쓰면 오류가 나므로, 맨 앞 if에서 `len(row) == 0`인지 먼저 확인해 -1을 넣어요. 빈 노선이 아니면 i가 0부터라는 점에 맞춰 `i % 2 == 0`(홀수 번째)일 때 `max(row)`, 아니면 `min(row)`를 넣어요. 승차 인원 0과 기록 없음(-1)을 헷갈리지 않아야 해요.",
+   "tests": [
+    {
+     "args": [
+      [
+       []
+      ]
+     ],
+     "expected": [
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+       ]
+      ]
+     ],
+     "expected": [
+      60
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       []
+      ]
+     ],
+     "expected": [
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        60
+       ],
+       [
+        60,
+        0,
+        60
+       ]
+      ]
+     ],
+     "expected": [
+      60,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5
+       ],
+       []
+      ]
+     ],
+     "expected": [
+      5,
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      -1,
+      5
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        60,
+        1,
+        60
+       ],
+       [],
+       [],
+       [
+        1,
+        60,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      60,
+      -1,
+      -1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        37,
+        54,
+        12,
+        58,
+        34,
+        59
+       ],
+       [
+        22,
+        29,
+        3,
+        42,
+        32,
+        13
+       ],
+       [
+        38,
+        14,
+        58,
+        18,
+        31,
+        44
+       ],
+       [
+        50,
+        13,
+        21,
+        28,
+        4,
+        16
+       ],
+       [
+        12,
+        10,
+        5,
+        28,
+        49,
+        34
+       ],
+       [
+        23,
+        12,
+        30,
+        50,
+        20,
+        15
+       ],
+       [
+        40,
+        50,
+        25,
+        27,
+        13,
+        4
+       ],
+       [
+        27,
+        29,
+        19,
+        13,
+        7,
+        41
+       ],
+       [
+        52,
+        39,
+        43,
+        21,
+        42,
+        54
+       ],
+       [
+        56,
+        17,
+        25,
+        50,
+        24,
+        14
+       ]
+      ]
+     ],
+     "expected": [
+      59,
+      3,
+      58,
+      4,
+      49,
+      12,
+      50,
+      7,
+      54,
+      14
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        25,
+        47
+       ],
+       [
+        26,
+        0,
+        55,
+        29,
+        13
+       ],
+       [
+        6,
+        22,
+        50,
+        1
+       ],
+       [
+        45,
+        23
+       ],
+       [],
+       [
+        36,
+        52
+       ],
+       [
+        2
+       ],
+       [
+        11,
+        17,
+        4
+       ],
+       [
+        9,
+        25,
+        43,
+        46,
+        52,
+        23
+       ],
+       [
+        36,
+        30,
+        10,
+        31,
+        54
+       ]
+      ]
+     ],
+     "expected": [
+      47,
+      0,
+      50,
+      23,
+      -1,
+      36,
+      2,
+      4,
+      52,
+      10
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        19,
+        55,
+        55,
+        11
+       ],
+       [
+        33,
+        43,
+        55,
+        0,
+        5
+       ],
+       [],
+       [],
+       [
+        22,
+        34,
+        60,
+        44
+       ],
+       [
+        53,
+        52,
+        7
+       ],
+       [
+        45,
+        39,
+        49,
+        38,
+        51
+       ]
+      ]
+     ],
+     "expected": [
+      55,
+      0,
+      -1,
+      -1,
+      60,
+      7,
+      51
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        50,
+        40,
+        8,
+        43
+       ],
+       [
+        59,
+        50
+       ],
+       [
+        47,
+        59
+       ]
+      ]
+     ],
+     "expected": [
+      50,
+      50,
+      59
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        20,
+        30
+       ],
+       [
+        30,
+        20,
+        10
+       ],
+       [],
+       [
+        7,
+        7,
+        7
+       ],
+       [],
+       [
+        59,
+        58
+       ]
+      ]
+     ],
+     "expected": [
+      30,
+      10,
+      -1,
+      7,
+      -1,
+      58
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pyb-t01-adv2",
+   "version": 1,
+   "title": "등산로 구간별 고도 기록",
+   "statement": "등산 동아리가 등산로를 여러 구간으로 나누어, 구간마다 몇 군데에서 고도(m)를 재었습니다. 구간 수와 구간마다 잰 횟수는 정해져 있지 않습니다. 구간마다 기록할 값은 구간 번호(1번째부터 셉니다)에 따라 다음과 같이 정합니다.\n\n- 3의 배수 번째 구간(3번째, 6번째, 9번째, ……)은 그 구간의 **고도 차이**(가장 높은 고도 - 가장 낮은 고도)를 기록합니다.\n- 그 밖의 홀수 번째 구간은 **가장 높은** 고도를 기록합니다.\n- 그 밖의 짝수 번째 구간은 **가장 낮은** 고도를 기록합니다.\n\n구간별 고도를 담은 2차원 리스트 `sections`가 매개변수로 주어질 때, 구간마다 기록할 값을 1번째 구간부터 순서대로 리스트에 담아 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "sections의 길이(구간 수)는 1 이상 12 이하이며, sections[0]이 1번째 구간입니다.",
+    "각 구간의 길이(잰 횟수)는 1 이상 6 이하입니다.",
+    "고도는 0 이상 2000 이하인 정수입니다."
+   ],
+   "returns": [
+    "구간마다 기록할 값을 1번째 구간부터 순서대로 담은 리스트를 return 합니다. 리스트의 길이는 구간 수와 같습니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "sections"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        320,
+        450,
+        410
+       ],
+       [
+        380,
+        300,
+        520,
+        290
+       ],
+       [
+        600,
+        750,
+        680
+       ],
+       [
+        700,
+        820,
+        640
+       ],
+       [
+        900,
+        860,
+        980,
+        910
+       ],
+       [
+        1000,
+        1200,
+        1100
+       ]
+      ]
+     ],
+     "expected": [
+      450,
+      290,
+      150,
+      640,
+      980,
+      200
+     ],
+     "explain": "3번째와 6번째 구간은 3의 배수 번째라 고도 차이 750 - 600 = 150, 1200 - 1000 = 200을 기록합니다. 1·5번째 구간은 가장 높은 450, 980을, 2·4번째 구간은 가장 낮은 290, 640을 기록합니다."
+    },
+    {
+     "args": [
+      [
+       [
+        50
+       ],
+       [
+        70,
+        70
+       ],
+       [
+        10,
+        90,
+        40
+       ]
+      ]
+     ],
+     "expected": [
+      50,
+      70,
+      80
+     ],
+     "explain": "한 번만 잰 1번째 구간은 그 값 50이 가장 높은 고도입니다. 3번째 구간은 고도 차이 90 - 10 = 80을 기록합니다."
+    }
+   ],
+   "code": "def solution(sections):\n    answer = []\n    for i in range(len(sections)):\n        num = ⟦1⟧\n        row = sections[i]\n        if ⟦2⟧:\n            answer.append(⟦3⟧)\n        elif ⟦4⟧:\n            answer.append(max(row))\n        else:\n            answer.append(min(row))\n    return answer",
+   "blanks": [
+    {
+     "answer": "i + 1"
+    },
+    {
+     "answer": "num % 3 == 0",
+     "alts": [
+      "not num % 3"
+     ]
+    },
+    {
+     "answer": "max(row) - min(row)"
+    },
+    {
+     "answer": "num % 2 == 1",
+     "alts": [
+      "num % 2 != 0",
+      "num % 2"
+     ]
+    }
+   ],
+   "solution": "def solution(sections):\n    answer = []\n    for i in range(len(sections)):\n        num = i + 1\n        row = sections[i]\n        if num % 3 == 0:\n            answer.append(max(row) - min(row))\n        elif num % 2 == 1:\n            answer.append(max(row))\n        else:\n            answer.append(min(row))\n    return answer",
+   "inputCheck": "def valid(sections):\n    if not isinstance(sections, list) or not (1 <= len(sections) <= 12):\n        return False\n    for r in sections:\n        if not isinstance(r, list) or not (1 <= len(r) <= 6):\n            return False\n        for x in r:\n            if not isinstance(x, int) or isinstance(x, bool) or not (0 <= x <= 2000):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "6번째 구간은 짝수 번째이면서 3의 배수 번째이기도 해요. 6번째 구간에서는 무엇을 기록할까요?",
+     "options": [
+      "고도 차이(가장 높은 고도 - 가장 낮은 고도)",
+      "가장 낮은 고도",
+      "가장 높은 고도",
+      "고도 차이와 가장 낮은 고도를 둘 다"
+     ],
+     "answer": 0,
+     "explain": "규칙에 \"그 밖의 짝수 번째 구간\"이라고 했어요. \"그 밖의\"는 3의 배수 번째가 아닌 구간이라는 뜻이라, 6번째처럼 3의 배수이면 짝수여도 고도 차이를 기록해요. 값은 하나만 기록해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "규칙 확인: 구간 1~6",
+     "prompt": "`%`는 나눈 나머지예요. 코드는 if에서 `num % 3 == 0`을 먼저 묻고, 거짓일 때만 elif에서 `num % 2 == 1`을 물어요(참이면 묻지 않으므로 그 칸은 비워 두었어요). 마지막 칸에는 최고·최저·차이 중 하나를 써 보세요.",
+     "columns": [
+      "num(구간 번호)",
+      "num % 3 == 0",
+      "num % 2 == 1",
+      "기록할 것"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "최고",
+        "alts": [
+         "가장 높은 고도",
+         "최고 고도"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "최저",
+        "alts": [
+         "가장 낮은 고도",
+         "최저 고도"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "—",
+       {
+        "a": "차이",
+        "alts": [
+         "고도 차이",
+         "고도차이"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "최저",
+        "alts": [
+         "가장 낮은 고도",
+         "최저 고도"
+        ]
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "최고",
+        "alts": [
+         "가장 높은 고도",
+         "최고 고도"
+        ]
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       "—",
+       {
+        "a": "차이",
+        "alts": [
+         "고도 차이",
+         "고도차이"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for num in range(1, 7):\n        out.append(num % 3 == 0)\n        if num % 3 == 0:\n            out.append('차이')\n        elif num % 2 == 1:\n            out += [True, '최고']\n        else:\n            out += [False, '최저']\n    return out",
+     "explain": "3과 6은 첫 if가 참이라 차이를 기록하고 elif는 보지 않아요. 나머지 1, 5는 홀수라 최고, 2, 4는 짝수라 최저예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "if / elif / else로 세 규칙을 나눌 때, 맨 처음 if에서 물어야 하는 것은?",
+     "options": [
+      "3의 배수 번째인지",
+      "홀수 번째인지",
+      "짝수 번째인지",
+      "어느 것을 먼저 물어도 결과가 같다"
+     ],
+     "answer": 0,
+     "explain": "if와 elif는 위에서부터 처음 참인 곳 하나만 실행해요. 홀수 번째인지를 먼저 물으면 3번째·9번째 구간이 그 자리에서 가장 높은 고도로 처리되어 버려요. 그래서 다른 규칙보다 앞서는 3의 배수 규칙을 맨 앞에 둬요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "`for i in range(len(sections)):`에서 i가 5일 때, 그 구간은 몇 번째 구간일까요? (숫자만)",
+     "a": "6",
+     "check": "def answers():\n    i = 5\n    return [i + 1]",
+     "explain": "i는 인덱스(리스트 안의 위치 번호)라서 0부터 세고, 구간 번호는 1부터 세요. 그래서 구간 번호는 언제나 인덱스보다 1 커요. 3의 배수·홀짝 판별은 인덱스가 아니라 구간 번호로 해야 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "반복할 때마다 구간 번호 `num`과 그 구간에서 기록할 값을 채워 보세요.",
+     "columns": [
+      "i",
+      "num",
+      "row",
+      "기록할 값"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "1"
+       },
+       "[320, 450, 410]",
+       {
+        "a": "450"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "2"
+       },
+       "[380, 300, 520, 290]",
+       {
+        "a": "290"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "3"
+       },
+       "[600, 750, 680]",
+       {
+        "a": "150"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "4"
+       },
+       "[700, 820, 640]",
+       {
+        "a": "640"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "5"
+       },
+       "[900, 860, 980, 910]",
+       {
+        "a": "980"
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "6"
+       },
+       "[1000, 1200, 1100]",
+       {
+        "a": "200"
+       }
+      ]
+     ],
+     "check": "def solution(sections):\n    answer = []\n    for i in range(len(sections)):\n        num = i + 1\n        row = sections[i]\n        if num % 3 == 0:\n            answer.append(max(row) - min(row))\n        elif num % 2 == 1:\n            answer.append(max(row))\n        else:\n            answer.append(min(row))\n    return answer\n\ndef answers():\n    sections = [[320, 450, 410], [380, 300, 520, 290], [600, 750, 680], [700, 820, 640], [900, 860, 980, 910], [1000, 1200, 1100]]\n    res = solution(sections)\n    out = []\n    for i in range(len(sections)):\n        out += [i + 1, res[i]]\n    return out",
+     "explain": "num이 3, 6일 때는 고도 차이(150, 200), 1, 5일 때는 가장 높은 고도(450, 980), 2, 4일 때는 가장 낮은 고도(290, 640)를 기록했어요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "예시 2 따라가기",
+     "prompt": "구간마다 `max(row)`와 `min(row)`를 구한 뒤, 규칙에 맞는 기록할 값을 채워 보세요.",
+     "columns": [
+      "num",
+      "row",
+      "max(row)",
+      "min(row)",
+      "기록할 값"
+     ],
+     "rows": [
+      [
+       "1",
+       "[50]",
+       {
+        "a": "50"
+       },
+       {
+        "a": "50"
+       },
+       {
+        "a": "50"
+       }
+      ],
+      [
+       "2",
+       "[70, 70]",
+       {
+        "a": "70"
+       },
+       {
+        "a": "70"
+       },
+       {
+        "a": "70"
+       }
+      ],
+      [
+       "3",
+       "[10, 90, 40]",
+       {
+        "a": "90"
+       },
+       {
+        "a": "10"
+       },
+       {
+        "a": "80"
+       }
+      ]
+     ],
+     "check": "def solution(sections):\n    answer = []\n    for i in range(len(sections)):\n        num = i + 1\n        row = sections[i]\n        if num % 3 == 0:\n            answer.append(max(row) - min(row))\n        elif num % 2 == 1:\n            answer.append(max(row))\n        else:\n            answer.append(min(row))\n    return answer\n\ndef answers():\n    sections = [[50], [70, 70], [10, 90, 40]]\n    res = solution(sections)\n    out = []\n    for i in range(len(sections)):\n        row = sections[i]\n        out += [max(row), min(row), res[i]]\n    return out",
+     "explain": "값이 하나뿐인 [50]은 max와 min이 모두 50이에요. 3번째 구간은 max(row) - min(row) = 90 - 10 = 80을 기록해요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "구간 번호 num이 3의 배수인지 묻는 조건으로 알맞은 것은?",
+     "options": [
+      "num % 3 == 0",
+      "num // 3 == 0",
+      "num % 3 == 1",
+      "i % 3 == 0"
+     ],
+     "answer": 0,
+     "explain": "3의 배수는 3으로 나눈 나머지가 0이에요. `//`는 몫이라 다른 뜻이고, `i % 3 == 0`은 i가 0, 3, 6일 때, 즉 1·4·7번째 구간에서 참이 되어 틀려요."
+    }
+   ],
+   "explain": "인덱스 i 대신 구간 번호 `num = i + 1`로 판단해요. 3의 배수 번째 구간은 짝수·홀수보다 먼저 정해지므로 맨 앞 if에 `num % 3 == 0`을 두고 `max(row) - min(row)`를 기록해요. 그 밖에는 `num % 2 == 1`이면 max, 아니면 min이에요. 조건의 순서를 바꾸면 3·9번째 구간이나 6·12번째 구간이 틀려요.",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2000,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      2000
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1
+       ],
+       [
+        2
+       ],
+       [
+        5
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      2,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        7
+       ],
+       [
+        7,
+        7
+       ],
+       [
+        7,
+        7
+       ],
+       [
+        7,
+        7
+       ],
+       [
+        7,
+        7
+       ],
+       [
+        7,
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      7,
+      7,
+      0,
+      7,
+      7,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ],
+       [
+        0,
+        2000
+       ]
+      ]
+     ],
+     "expected": [
+      2000,
+      0,
+      2000,
+      0,
+      2000,
+      2000,
+      2000,
+      0,
+      2000,
+      0,
+      2000,
+      2000
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1564,
+        789,
+        1320,
+        960,
+        838,
+        1788
+       ],
+       [
+        405,
+        401,
+        1385,
+        815,
+        1985,
+        115
+       ],
+       [
+        876,
+        906,
+        1742,
+        924,
+        73,
+        1841
+       ],
+       [
+        1080,
+        667,
+        412,
+        486,
+        1012,
+        1289
+       ],
+       [
+        1251,
+        1545,
+        1752,
+        1316,
+        1071,
+        393
+       ],
+       [
+        1779,
+        823,
+        669,
+        975,
+        262,
+        871
+       ],
+       [
+        952,
+        1526,
+        1464,
+        1696,
+        1449,
+        1345
+       ],
+       [
+        75,
+        1069,
+        509,
+        1541,
+        520,
+        915
+       ],
+       [
+        965,
+        1789,
+        1764,
+        1008,
+        554,
+        1982
+       ],
+       [
+        93,
+        1904,
+        1839,
+        362,
+        1780,
+        1283
+       ],
+       [
+        1578,
+        204,
+        79,
+        778,
+        533,
+        23
+       ],
+       [
+        362,
+        436,
+        1873,
+        413,
+        255,
+        732
+       ]
+      ]
+     ],
+     "expected": [
+      1788,
+      115,
+      1768,
+      412,
+      1752,
+      1517,
+      1696,
+      75,
+      1428,
+      93,
+      1578,
+      1618
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1799,
+        451
+       ],
+       [
+        1619,
+        1339,
+        405,
+        892,
+        486,
+        631
+       ],
+       [
+        718,
+        392,
+        611,
+        598,
+        688,
+        1772
+       ],
+       [
+        1568,
+        496,
+        1996,
+        715
+       ],
+       [
+        1255
+       ],
+       [
+        1623,
+        786
+       ],
+       [
+        1067,
+        1561,
+        1173,
+        708
+       ],
+       [
+        838,
+        323,
+        492
+       ],
+       [
+        1799,
+        714,
+        1815,
+        706,
+        227
+       ],
+       [
+        1202,
+        664
+       ],
+       [
+        165
+       ],
+       [
+        1985,
+        1032,
+        798,
+        1167,
+        653,
+        215
+       ]
+      ]
+     ],
+     "expected": [
+      1799,
+      405,
+      1380,
+      496,
+      1255,
+      837,
+      1561,
+      323,
+      1588,
+      664,
+      165,
+      1770
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1881,
+        1510,
+        345
+       ],
+       [
+        1769,
+        1217,
+        1387
+       ],
+       [
+        1962,
+        1456,
+        619,
+        1339
+       ],
+       [
+        1926,
+        1818,
+        263,
+        1146,
+        379,
+        1360
+       ],
+       [
+        955,
+        273,
+        900,
+        111,
+        1796
+       ],
+       [
+        352
+       ],
+       [
+        1486,
+        1331,
+        909
+       ],
+       [
+        1530,
+        1237,
+        278,
+        54
+       ],
+       [
+        207,
+        384,
+        1157,
+        1648
+       ]
+      ]
+     ],
+     "expected": [
+      1881,
+      1217,
+      1343,
+      263,
+      1796,
+      0,
+      1486,
+      54,
+      1441
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1304,
+        26
+       ],
+       [
+        1648
+       ],
+       [
+        1766,
+        1965,
+        179,
+        1016,
+        785,
+        12
+       ],
+       [
+        398,
+        1069,
+        1395
+       ],
+       [
+        1623,
+        177,
+        421,
+        844,
+        957,
+        1969
+       ]
+      ]
+     ],
+     "expected": [
+      1304,
+      1648,
+      1953,
+      398,
+      1969
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        100,
+        200
+       ],
+       [
+        300,
+        100
+       ]
+      ]
+     ],
+     "expected": [
+      200,
+      100
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        1,
+        9
+       ],
+       [
+        5,
+        1,
+        9
+       ],
+       [
+        5,
+        1,
+        9
+       ],
+       [
+        5,
+        1,
+        9
+       ]
+      ]
+     ],
+     "expected": [
+      9,
+      1,
+      8,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1500
+       ],
+       [
+        1500
+       ],
+       [
+        1500
+       ],
+       [
+        1500
+       ],
+       [
+        1500
+       ],
+       [
+        1500
+       ],
+       [
+        1500
+       ]
+      ]
+     ],
+     "expected": [
+      1500,
+      1500,
+      0,
+      1500,
+      1500,
+      0,
+      1500
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        10,
+        20,
+        30,
+        40,
+        50,
+        60
+       ],
+       [
+        60,
+        50,
+        40,
+        30,
+        20,
+        10
+       ],
+       [
+        2000,
+        0,
+        1000
+       ],
+       [
+        3,
+        4
+       ],
+       [
+        8,
+        9
+       ],
+       [
+        0,
+        0,
+        2000
+       ]
+      ]
+     ],
+     "expected": [
+      60,
+      10,
+      2000,
+      3,
+      9,
+      2000
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pyb-t01-adv3",
+   "version": 1,
+   "title": "탐사 로봇의 신호 세기 합",
+   "statement": "탐사 로봇이 여러 구역을 차례로 돌며 구역마다 신호 세기를 몇 번씩 재었습니다. 1번째, 3번째, 5번째, …… 구역(홀수 번째)에서는 **가장 센** 신호(가장 큰 값)를, 2번째, 4번째, …… 구역(짝수 번째)에서는 **가장 약한** 신호(가장 작은 값)를 기록하고, 기록한 값을 모두 더해 보고합니다.\n\n이 프로그램은 내장 함수 max, min을 쓰지 않고 다음 두 보조 함수를 직접 만들어 씁니다.\n- `biggest(row)`: 리스트 row에서 가장 큰 값을 찾아 return 합니다.\n- `smallest(row)`: 리스트 row에서 가장 작은 값을 찾아 return 합니다.\n\n구역별 신호 세기를 담은 2차원 리스트 `signals`가 매개변수로 주어질 때, 기록한 값의 합계를 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "signals의 길이(구역 수)는 1 이상 10 이하이며, signals[0]이 1번째 구역입니다.",
+    "각 구역의 길이(잰 횟수)는 1 이상 8 이하입니다.",
+    "신호 세기는 1 이상 1000 이하인 자연수입니다."
+   ],
+   "returns": [
+    "기록한 값의 합계(정수)를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "signals"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        120,
+        340,
+        200
+       ],
+       [
+        80,
+        150,
+        95,
+        60
+       ],
+       [
+        400,
+        410,
+        390
+       ],
+       [
+        75,
+        70
+       ]
+      ]
+     ],
+     "expected": 880,
+     "explain": "1·3번째 구역에서 가장 센 340, 410을, 2·4번째 구역에서 가장 약한 60, 70을 기록하므로 340 + 60 + 410 + 70 = 880입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        5
+       ],
+       [
+        9,
+        9,
+        9
+       ],
+       [
+        1,
+        1000
+       ]
+      ]
+     ],
+     "expected": 1014,
+     "explain": "1번째 구역은 5, 2번째 구역은 모든 값이 9라서 9, 3번째 구역은 1000을 기록하므로 5 + 9 + 1000 = 1014입니다."
+    }
+   ],
+   "code": "def biggest(row):\n    big = row[0]\n    for x in row:\n        if ⟦1⟧:\n            big = x\n    return big\n\ndef smallest(row):\n    small = ⟦2⟧\n    for x in row:\n        if x < small:\n            ⟦3⟧\n    return small\n\ndef solution(signals):\n    total = 0\n    for i in range(len(signals)):\n        if ⟦4⟧:\n            total += biggest(signals[i])\n        else:\n            total += ⟦5⟧\n    return total",
+   "blanks": [
+    {
+     "answer": "x > big",
+     "alts": [
+      "x >= big",
+      "big < x"
+     ]
+    },
+    {
+     "answer": "row[0]"
+    },
+    {
+     "answer": "small = x"
+    },
+    {
+     "answer": "i % 2 == 0",
+     "alts": [
+      "i % 2 != 1",
+      "not i % 2"
+     ]
+    },
+    {
+     "answer": "smallest(signals[i])"
+    }
+   ],
+   "solution": "def biggest(row):\n    big = row[0]\n    for x in row:\n        if x > big:\n            big = x\n    return big\n\ndef smallest(row):\n    small = row[0]\n    for x in row:\n        if x < small:\n            small = x\n    return small\n\ndef solution(signals):\n    total = 0\n    for i in range(len(signals)):\n        if i % 2 == 0:\n            total += biggest(signals[i])\n        else:\n            total += smallest(signals[i])\n    return total",
+   "inputCheck": "def valid(signals):\n    if not isinstance(signals, list) or not (1 <= len(signals) <= 10):\n        return False\n    for r in signals:\n        if not isinstance(r, list) or not (1 <= len(r) <= 8):\n            return False\n        for x in r:\n            if not isinstance(x, int) or isinstance(x, bool) or not (1 <= x <= 1000):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "예시 1의 2번째 구역 `[80, 150, 95, 60]`에서 기록할 값은 무엇일까요?",
+     "options": [
+      "60",
+      "150",
+      "80",
+      "95"
+     ],
+     "answer": 0,
+     "explain": "2번째는 짝수 번째 구역이라 가장 약한 신호, 즉 가장 작은 값을 기록해요. 네 값 중 가장 작은 값은 맨 끝의 60이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "max를 쓰지 않고 `biggest(row)`가 가장 큰 값을 찾는 방법으로 알맞은 것은?",
+     "options": [
+      "첫 값을 \"지금까지 가장 큰 값\"으로 정해 두고, 값을 하나씩 보며 그보다 큰 값이 나오면 바꾼다",
+      "값을 하나씩 보며 바로 앞의 값보다 크면 그 값을 곧바로 return 한다",
+      "첫 값과 마지막 값 중 더 큰 값을 return 한다",
+      "모든 값을 더한 뒤 개수로 나눈다"
+     ],
+     "answer": 0,
+     "explain": "\"지금까지 가장 큰 값\"을 변수 하나에 기억해 두고 끝까지 하나씩 비교하며 바꾸면, 다 보고 난 뒤 그 변수에 가장 큰 값이 남아요. 중간에 return 하면 뒤쪽 값을 보지 못하고, 모든 값을 더해 개수로 나누면 평균이 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "biggest 따라가기",
+     "prompt": "`biggest([70, 85, 60, 85, 90])`을 따라가요. big은 첫 값 70에서 시작해요. x를 하나씩 볼 때마다 `x > big`이 참(True)인지 거짓(False)인지와, 그 x를 본 뒤의 big을 채워 보세요.",
+     "columns": [
+      "x",
+      "x > big",
+      "big(이 x를 본 뒤)"
+     ],
+     "rows": [
+      [
+       "70",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "70"
+       }
+      ],
+      [
+       "85",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "85"
+       }
+      ],
+      [
+       "60",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "85"
+       }
+      ],
+      [
+       "85",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "85"
+       }
+      ],
+      [
+       "90",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "90"
+       }
+      ]
+     ],
+     "check": "def answers():\n    row = [70, 85, 60, 85, 90]\n    out = []\n    big = row[0]\n    for x in row:\n        c = x > big\n        if c:\n            big = x\n        out += [c, big]\n    return out",
+     "explain": "첫 x는 big과 같은 70이라 거짓이에요. 85와 90을 만날 때만 big이 바뀌고, 두 번째 85는 big(85)보다 크지 않아 그대로예요. 마지막 big 90이 가장 큰 값이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "예시 1 따라가기",
+     "prompt": "`total`은 기록한 값을 계속 더해 쌓는(누적) 변수예요. 구역마다 `i % 2 == 0`이 참인지, 기록할 값, 더한 뒤의 total을 채워 보세요.",
+     "columns": [
+      "i",
+      "signals[i]",
+      "i % 2 == 0",
+      "기록할 값",
+      "total"
+     ],
+     "rows": [
+      [
+       "0",
+       "[120, 340, 200]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "340"
+       },
+       {
+        "a": "340"
+       }
+      ],
+      [
+       "1",
+       "[80, 150, 95, 60]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "60"
+       },
+       {
+        "a": "400"
+       }
+      ],
+      [
+       "2",
+       "[400, 410, 390]",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "410"
+       },
+       {
+        "a": "810"
+       }
+      ],
+      [
+       "3",
+       "[75, 70]",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "70"
+       },
+       {
+        "a": "880"
+       }
+      ]
+     ],
+     "check": "def biggest(row):\n    big = row[0]\n    for x in row:\n        if x > big:\n            big = x\n    return big\n\ndef smallest(row):\n    small = row[0]\n    for x in row:\n        if x < small:\n            small = x\n    return small\n\ndef solution(signals):\n    total = 0\n    for i in range(len(signals)):\n        if i % 2 == 0:\n            total += biggest(signals[i])\n        else:\n            total += smallest(signals[i])\n    return total\n\ndef answers():\n    signals = [[120, 340, 200], [80, 150, 95, 60], [400, 410, 390], [75, 70]]\n    out = []\n    total = 0\n    for i in range(len(signals)):\n        if i % 2 == 0:\n            v = biggest(signals[i])\n        else:\n            v = smallest(signals[i])\n        total += v\n        out += [i % 2 == 0, v, total]\n    return out",
+     "explain": "i는 0부터라서 `i % 2 == 0`이 참인 i = 0, 2가 홀수 번째 구역이에요. 그때는 biggest, 거짓일 때는 smallest가 돌려준 값을 total에 더해 880이 됐어요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`smallest(row)`에서 `small`의 처음 값(초깃값)으로 어떤 row에서도 항상 맞는 것은?",
+     "options": [
+      "row[0]",
+      "0",
+      "row[1]",
+      "len(row)"
+     ],
+     "answer": 0,
+     "explain": "초깃값은 row 안에 실제로 있는 값이어야 안전해요. 0으로 시작하면 모든 값이 1 이상이라 0이 끝까지 남고, row[1]은 값이 하나뿐인 row에서 인덱스 오류가 나요. len(row)는 값의 개수일 뿐이에요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "`smallest`에서 실수로 `small = 0`으로 시작하면, `smallest([80, 150, 95, 60])`은 무엇을 return 할까요? (숫자만)",
+     "a": "0",
+     "check": "def smallest(row):\n    small = 0\n    for x in row:\n        if x < small:\n            small = x\n    return small\n\ndef answers():\n    return [smallest([80, 150, 95, 60])]",
+     "explain": "모든 값이 0보다 커서 `x < small`이 한 번도 참이 되지 않아요. 그래서 small은 처음 값 0 그대로 return 돼요. 가장 작은 값을 찾을 때 0으로 시작하는 실수가 특히 많아요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "`smallest` 안의 반복에서 `if x < small:`이 참일 때 해야 할 일로 알맞은 것은?",
+     "options": [
+      "small = x",
+      "x = small",
+      "return x",
+      "small = small + x"
+     ],
+     "answer": 0,
+     "explain": "더 작은 값 x를 찾았으니 \"지금까지 가장 작은 값\"인 small을 x로 바꿔야 해요. `x = small`은 반복 변수만 바꿔서 small은 그대로이고, return x는 뒤쪽 값을 보지 못한 채 끝내요."
+    }
+   ],
+   "explain": "가장 큰 값(가장 작은 값)을 직접 찾을 때는 첫 값 `row[0]`을 기준으로 두고, 더 큰(더 작은) 값을 만날 때마다 바꿔요. solution은 `i % 2 == 0`(홀수 번째 구역)이면 biggest, 아니면 smallest의 결과를 total에 누적해요. 초깃값을 0으로 두면 smallest가 항상 0을 돌려주는 실수가 생겨요.",
+   "tests": [
+    {
+     "args": [
+      [
+       [
+        1
+       ]
+      ]
+     ],
+     "expected": 1
+    },
+    {
+     "args": [
+      [
+       [
+        1000
+       ]
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      [
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ],
+       [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+       ]
+      ]
+     ],
+     "expected": 10000
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ],
+       [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+       ]
+      ]
+     ],
+     "expected": 10
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        1000
+       ]
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      [
+       [
+        1000,
+        1
+       ]
+      ]
+     ],
+     "expected": 1000
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        4,
+        3
+       ],
+       [
+        3,
+        4,
+        5
+       ]
+      ]
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        3,
+        4,
+        5
+       ],
+       [
+        5,
+        4,
+        3
+       ]
+      ]
+     ],
+     "expected": 8
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        9,
+        4,
+        9,
+        1
+       ],
+       [
+        8,
+        3,
+        6,
+        3,
+        7
+       ],
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+       ]
+      ]
+     ],
+     "expected": 20
+    },
+    {
+     "args": [
+      [
+       [
+        33,
+        246,
+        993,
+        759,
+        200,
+        95,
+        580,
+        970
+       ],
+       [
+        639,
+        265,
+        581,
+        529,
+        408,
+        162,
+        420,
+        485
+       ],
+       [
+        809,
+        597,
+        848,
+        91,
+        263,
+        542,
+        557,
+        791
+       ],
+       [
+        703,
+        33,
+        609,
+        842,
+        125,
+        712,
+        401,
+        142
+       ],
+       [
+        505,
+        297,
+        947,
+        5,
+        843,
+        636,
+        692,
+        423
+       ],
+       [
+        287,
+        723,
+        962,
+        40,
+        235,
+        221,
+        346,
+        153
+       ],
+       [
+        161,
+        213,
+        604,
+        301,
+        815,
+        111,
+        719,
+        255
+       ],
+       [
+        848,
+        730,
+        720,
+        537,
+        669,
+        943,
+        258,
+        539
+       ],
+       [
+        982,
+        256,
+        823,
+        751,
+        897,
+        22,
+        905,
+        279
+       ],
+       [
+        899,
+        911,
+        775,
+        282,
+        832,
+        708,
+        649,
+        131
+       ]
+      ]
+     ],
+     "expected": 5209
+    },
+    {
+     "args": [
+      [
+       [
+        74,
+        660,
+        1000,
+        921,
+        903,
+        506
+       ],
+       [
+        277,
+        1000,
+        567
+       ],
+       [
+        897,
+        126,
+        862
+       ],
+       [
+        497,
+        96,
+        188
+       ],
+       [
+        40,
+        331,
+        970,
+        590,
+        655,
+        955,
+        242
+       ],
+       [
+        987,
+        735,
+        641
+       ],
+       [
+        723,
+        442
+       ],
+       [
+        110
+       ],
+       [
+        139,
+        173,
+        258,
+        197,
+        669,
+        700
+       ],
+       [
+        638
+       ]
+      ]
+     ],
+     "expected": 6052
+    },
+    {
+     "args": [
+      [
+       [
+        265
+       ],
+       [
+        65
+       ],
+       [
+        198,
+        516,
+        706,
+        875,
+        188
+       ],
+       [
+        41,
+        507,
+        982,
+        513,
+        158,
+        592,
+        189
+       ],
+       [
+        73,
+        498
+       ],
+       [
+        154,
+        217,
+        529,
+        462,
+        687,
+        358,
+        514
+       ]
+      ]
+     ],
+     "expected": 1898
+    },
+    {
+     "args": [
+      [
+       [
+        22,
+        3,
+        31,
+        43,
+        30,
+        27,
+        2
+       ],
+       [
+        26,
+        28,
+        5,
+        13,
+        30
+       ],
+       [
+        21,
+        35,
+        36
+       ],
+       [
+        35,
+        41,
+        6,
+        17,
+        44,
+        10,
+        10,
+        22
+       ]
+      ]
+     ],
+     "expected": 90
+    },
+    {
+     "args": [
+      [
+       [
+        500
+       ],
+       [
+        400,
+        600
+       ],
+       [
+        700,
+        300,
+        800
+       ],
+       [
+        200,
+        900,
+        100,
+        1000
+       ]
+      ]
+     ],
+     "expected": 1800
+    }
+   ]
+  },
+  {
+   "id": "pyb-t01-adv4",
+   "version": 1,
+   "title": "모의 투자 종목별 기록한 날",
+   "statement": "경제 동아리의 모의 투자 게임에서 종목마다 하루에 한 번씩 가격 변화를 기록했습니다. 가격이 오른 날은 양수, 내린 날은 음수, 그대로인 날은 0이며, 기록은 1일째부터 날짜 순서대로 들어 있습니다. 종목마다 기록할 날은 종목 번호(1번째부터 셉니다)에 따라 다음과 같이 정합니다.\n\n- 홀수 번째 종목은 변화 값이 **가장 큰** 날을 기록합니다. 그런 날이 여러 번이면 그중 **가장 이른** 날을 기록합니다.\n- 짝수 번째 종목은 변화 값이 **가장 작은** 날을 기록합니다. 그런 날이 여러 번이면 그중 **가장 늦은** 날을 기록합니다.\n- 아직 거래하지 않아 기록이 없는 종목(빈 리스트)은 **0**을 기록합니다.\n\n보조 함수 `find_day(row, num)`은 num번째 종목의 기록 row(빈 리스트가 아님)를 받아 기록할 날(1일째면 1)을 return 합니다. 종목별 가격 변화를 담은 2차원 리스트 `changes`가 매개변수로 주어질 때, 종목마다 기록할 날을 1번째 종목부터 순서대로 리스트에 담아 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "changes의 길이(종목 수)는 1 이상 10 이하이며, changes[0]이 1번째 종목입니다.",
+    "각 종목의 길이(기록한 날 수)는 0 이상 7 이하이며, 각 종목의 0번 인덱스가 1일째 기록입니다.",
+    "가격 변화는 -50 이상 50 이하인 정수입니다."
+   ],
+   "returns": [
+    "종목마다 기록할 날을 1번째 종목부터 순서대로 담은 리스트를 return 합니다. 리스트의 길이는 종목 수와 같습니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "changes"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        3,
+        -2,
+        5,
+        1,
+        5
+       ],
+       [
+        -4,
+        2,
+        -1,
+        -4,
+        0
+       ],
+       [],
+       [
+        -7,
+        -3,
+        -9,
+        -2
+       ],
+       [
+        -6,
+        -1,
+        -8,
+        -1
+       ]
+      ]
+     ],
+     "expected": [
+      3,
+      4,
+      0,
+      3,
+      2
+     ],
+     "explain": "1번째 종목은 가장 큰 5가 3일째와 5일째에 있어 이른 3일째를, 2번째 종목은 가장 작은 -4가 1일째와 4일째에 있어 늦은 4일째를 기록합니다. 3번째 종목은 기록이 없어 0이고, 4번째 종목은 가장 작은 -9가 있는 3일째, 5번째 종목은 가장 큰 -1이 처음 나온 2일째입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        0,
+        0,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      3
+     ],
+     "explain": "두 종목 모두 모든 날의 값이 0입니다. 1번째 종목은 가장 이른 1일째를, 2번째 종목은 가장 늦은 3일째를 기록합니다."
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        7
+       ],
+       [
+        -5
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      1,
+      1
+     ],
+     "explain": "1번째 종목은 기록이 없어 0입니다. 기록이 하루뿐인 2·3번째 종목은 그날인 1일째를 기록합니다."
+    }
+   ],
+   "code": "def find_day(row, num):\n    pos = 0\n    for j in range(1, len(row)):\n        if num % 2 == 1:\n            if ⟦1⟧:\n                pos = j\n        else:\n            if ⟦2⟧:\n                pos = j\n    return ⟦3⟧\n\ndef solution(changes):\n    answer = []\n    for i in range(len(changes)):\n        if ⟦4⟧:\n            answer.append(0)\n        else:\n            answer.append(⟦5⟧)\n    return answer",
+   "blanks": [
+    {
+     "answer": "row[j] > row[pos]",
+     "alts": [
+      "row[pos] < row[j]"
+     ]
+    },
+    {
+     "answer": "row[j] <= row[pos]",
+     "alts": [
+      "row[pos] >= row[j]"
+     ]
+    },
+    {
+     "answer": "pos + 1"
+    },
+    {
+     "answer": "len(changes[i]) == 0",
+     "alts": [
+      "changes[i] == []",
+      "not changes[i]"
+     ]
+    },
+    {
+     "answer": "find_day(changes[i], i + 1)"
+    }
+   ],
+   "solution": "def find_day(row, num):\n    pos = 0\n    for j in range(1, len(row)):\n        if num % 2 == 1:\n            if row[j] > row[pos]:\n                pos = j\n        else:\n            if row[j] <= row[pos]:\n                pos = j\n    return pos + 1\n\ndef solution(changes):\n    answer = []\n    for i in range(len(changes)):\n        if len(changes[i]) == 0:\n            answer.append(0)\n        else:\n            answer.append(find_day(changes[i], i + 1))\n    return answer",
+   "inputCheck": "def valid(changes):\n    if not isinstance(changes, list) or not (1 <= len(changes) <= 10):\n        return False\n    for r in changes:\n        if not isinstance(r, list) or not (0 <= len(r) <= 7):\n            return False\n        for x in r:\n            if not isinstance(x, int) or isinstance(x, bool) or not (-50 <= x <= 50):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "1번째 종목의 기록이 `[3, -2, 5, 1, 5]`예요. 기록할 날은 언제일까요?",
+     "options": [
+      "3일째",
+      "5일째",
+      "2일째",
+      "1일째"
+     ],
+     "answer": 0,
+     "explain": "1번째는 홀수 번째 종목이라 값이 가장 큰 날을 찾아요. 가장 큰 값 5가 3일째와 5일째에 두 번 있으므로, 그중 가장 이른 3일째를 기록해요. 날은 1일째부터 세므로 인덱스(0부터)보다 1 커요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "2번째 종목의 기록이 `[2, -1, 4, -1]`이면 기록할 날은 몇 일째일까요? (숫자만)",
+     "a": "4",
+     "check": "def find_day(row, num):\n    pos = 0\n    for j in range(1, len(row)):\n        if num % 2 == 1:\n            if row[j] > row[pos]:\n                pos = j\n        else:\n            if row[j] <= row[pos]:\n                pos = j\n    return pos + 1\n\ndef solution(changes):\n    answer = []\n    for i in range(len(changes)):\n        if len(changes[i]) == 0:\n            answer.append(0)\n        else:\n            answer.append(find_day(changes[i], i + 1))\n    return answer\n\ndef answers():\n    return [find_day([2, -1, 4, -1], 2)]",
+     "explain": "2번째는 짝수 번째 종목이라 값이 가장 작은 날을 찾아요. 가장 작은 값 -1이 2일째와 4일째에 있으므로, 그중 가장 늦은 4일째예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`find_day`에서 변수 `pos`가 기억하는 것은 무엇일까요?",
+     "options": [
+      "지금까지 본 기록 중에서 고를 값이 있는 위치(인덱스)",
+      "지금까지 본 값 중에서 가장 큰 값 그 자체",
+      "기록할 날(1일째부터 센 날짜)",
+      "반복에서 지금 보고 있는 위치"
+     ],
+     "answer": 0,
+     "explain": "pos는 값이 아니라 인덱스(리스트 안의 위치 번호, 0부터)를 기억해요. 그 위치의 값은 `row[pos]`로 꺼내 비교하고, 날짜는 인덱스보다 1 크니 마지막에 1을 더해 돌려줘요. 지금 보고 있는 위치는 j예요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "홀수 번째 종목: > 와 >= 비교",
+     "prompt": "`[3, -2, 5, 1, 5]`를 따라가요. pos는 0에서 시작하고, j = 1부터 row[j]와 row[pos]를 비교해 참이면 pos = j로 바꿔요. 비교를 `row[j] > row[pos]`로 할 때와 `row[j] >= row[pos]`로 할 때 각각, 그 j를 본 뒤의 pos를 채워 보세요.",
+     "columns": [
+      "j",
+      "row[j]",
+      "pos (> 로 비교)",
+      "pos (>= 로 비교)"
+     ],
+     "rows": [
+      [
+       "1",
+       "-2",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "2",
+       "5",
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "3",
+       "1",
+       {
+        "a": "2"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "4",
+       "5",
+       {
+        "a": "2"
+       },
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def trace(row, cmp):\n    pos = 0\n    out = []\n    for j in range(1, len(row)):\n        if cmp(row[j], row[pos]):\n            pos = j\n        out.append(pos)\n    return out\n\ndef answers():\n    row = [3, -2, 5, 1, 5]\n    a = trace(row, lambda x, y: x > y)\n    b = trace(row, lambda x, y: x >= y)\n    out = []\n    for k in range(len(a)):\n        out += [a[k], b[k]]\n    return out",
+     "explain": "`>`는 같은 5가 다시 나와도 바꾸지 않아 pos가 2(3일째)에 남고, `>=`는 같은 값에서도 바꿔 pos가 4(5일째)로 옮겨가요. 가장 이른 날을 원하면 등호 없는 `>`를 써야 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "짝수 번째 종목: < 와 <= 비교",
+     "prompt": "`[-4, 2, -1, -4, 0]`을 따라가요. 이번에는 가장 작은 값을 찾으므로 비교를 `row[j] < row[pos]`로 할 때와 `row[j] <= row[pos]`로 할 때 각각, 그 j를 본 뒤의 pos를 채워 보세요.",
+     "columns": [
+      "j",
+      "row[j]",
+      "pos (< 로 비교)",
+      "pos (<= 로 비교)"
+     ],
+     "rows": [
+      [
+       "1",
+       "2",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "2",
+       "-1",
+       {
+        "a": "0"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "3",
+       "-4",
+       {
+        "a": "0"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "4",
+       "0",
+       {
+        "a": "0"
+       },
+       {
+        "a": "3"
+       }
+      ]
+     ],
+     "check": "def trace(row, cmp):\n    pos = 0\n    out = []\n    for j in range(1, len(row)):\n        if cmp(row[j], row[pos]):\n            pos = j\n        out.append(pos)\n    return out\n\ndef answers():\n    row = [-4, 2, -1, -4, 0]\n    a = trace(row, lambda x, y: x < y)\n    b = trace(row, lambda x, y: x <= y)\n    out = []\n    for k in range(len(a)):\n        out += [a[k], b[k]]\n    return out",
+     "explain": "j = 3에서 같은 -4를 만나요. `<`는 바꾸지 않아 pos가 0(1일째)에 남고, `<=`는 pos를 3(4일째)으로 옮겨요. 가장 늦은 날을 원하면 등호가 있는 `<=`를 써야 해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "앞의 두 표를 보고, 홀수 번째 종목(가장 큰 값 중 가장 이른 날)과 짝수 번째 종목(가장 작은 값 중 가장 늦은 날)에 쓸 비교를 바르게 짝지은 것을 고르세요.",
+     "options": [
+      "홀수 번째: row[j] > row[pos] / 짝수 번째: row[j] <= row[pos]",
+      "홀수 번째: row[j] >= row[pos] / 짝수 번째: row[j] < row[pos]",
+      "홀수 번째: row[j] > row[pos] / 짝수 번째: row[j] < row[pos]",
+      "홀수 번째: row[j] >= row[pos] / 짝수 번째: row[j] <= row[pos]"
+     ],
+     "answer": 0,
+     "explain": "등호를 넣으면 같은 값이 다시 나올 때 pos가 뒤로 옮겨가 가장 늦은 날이 남고, 등호를 빼면 처음 위치가 남아 가장 이른 날이 돼요. 그래서 홀수 번째는 `>`, 짝수 번째는 `<=`예요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "solution에서 종목 번호 대신 인덱스 i를 그대로 넘겨, 1번째 종목을 `find_day([3, -2, 5, 1, 5], 0)`처럼 부르면 무엇이 return 될까요? (숫자만)",
+     "a": "2",
+     "check": "def find_day(row, num):\n    pos = 0\n    for j in range(1, len(row)):\n        if num % 2 == 1:\n            if row[j] > row[pos]:\n                pos = j\n        else:\n            if row[j] <= row[pos]:\n                pos = j\n    return pos + 1\n\ndef solution(changes):\n    answer = []\n    for i in range(len(changes)):\n        if len(changes[i]) == 0:\n            answer.append(0)\n        else:\n            answer.append(find_day(changes[i], i + 1))\n    return answer\n\ndef answers():\n    return [find_day([3, -2, 5, 1, 5], 0)]",
+     "explain": "num이 0이면 `0 % 2 == 1`이 거짓이라 짝수 번째 규칙(가장 작은 값)으로 처리돼 -2가 있는 2일째가 나와요. 1번째 종목은 홀수 번째 규칙이어야 하므로, find_day에는 인덱스보다 1 큰 종목 번호를 넘겨야 해요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "`solution([[-3, -3], [], [-8]])`의 결과는 무엇일까요? (리스트로)",
+     "a": "[1, 0, 1]",
+     "check": "def find_day(row, num):\n    pos = 0\n    for j in range(1, len(row)):\n        if num % 2 == 1:\n            if row[j] > row[pos]:\n                pos = j\n        else:\n            if row[j] <= row[pos]:\n                pos = j\n    return pos + 1\n\ndef solution(changes):\n    answer = []\n    for i in range(len(changes)):\n        if len(changes[i]) == 0:\n            answer.append(0)\n        else:\n            answer.append(find_day(changes[i], i + 1))\n    return answer\n\ndef answers():\n    return [solution([[-3, -3], [], [-8]])]",
+     "explain": "모든 값이 음수여도 pos가 첫날(인덱스 0)에서 시작하므로 문제없어요(가장 큰 값을 0에서 시작하면 틀려요). 빈 종목을 find_day에 넘기면 반복이 한 번도 돌지 않아 1을 돌려주므로, solution에서 먼저 빈 종목을 골라 0을 넣어야 해요. 기록이 하루뿐인 [-8]은 1일째예요."
+    }
+   ],
+   "explain": "pos에 고를 값의 위치(인덱스)를 기억하고, 첫날(pos = 0)을 처음 후보로 두어 음수만 있어도 맞게 찾아요. 가장 이른 날은 등호 없는 `row[j] > row[pos]`, 가장 늦은 날은 등호가 있는 `row[j] <= row[pos]`로 비교하고, 날짜는 `pos + 1`이에요. solution에서는 빈 종목을 먼저 0으로 처리하고, find_day에 종목 번호 `i + 1`을 넘겨야 홀짝 규칙이 맞아요.",
+   "tests": [
+    {
+     "args": [
+      [
+       []
+      ]
+     ],
+     "expected": [
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -50,
+        -50,
+        -50,
+        -50,
+        -50,
+        -50,
+        -50
+       ]
+      ]
+     ],
+     "expected": [
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1
+       ],
+       [
+        -50,
+        -50,
+        -50,
+        -50,
+        -50,
+        -50,
+        -50
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      7
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ],
+       [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      7
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -1,
+        -2,
+        -3,
+        -4
+       ],
+       [
+        -4,
+        -3,
+        -2,
+        -1
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+       ],
+       [
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+       ]
+      ]
+     ],
+     "expected": [
+      7,
+      7
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+       ],
+       [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       [],
+       []
+      ]
+     ],
+     "expected": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -3,
+        0,
+        -3,
+        1,
+        -3,
+        2,
+        1
+       ],
+       [
+        -3,
+        -1,
+        -2,
+        0,
+        -3,
+        -3,
+        2
+       ],
+       [
+        2,
+        3,
+        0,
+        -3,
+        1,
+        -3,
+        -2
+       ],
+       [
+        2,
+        1,
+        2,
+        2,
+        -2,
+        -2,
+        -2
+       ],
+       [
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        2,
+        -1
+       ],
+       [
+        1,
+        -3,
+        -1,
+        -1,
+        3,
+        1,
+        1
+       ],
+       [
+        -2,
+        -3,
+        -3,
+        -1,
+        -3,
+        0,
+        0
+       ],
+       [
+        3,
+        0,
+        1,
+        -2,
+        1,
+        3,
+        3
+       ],
+       [
+        0,
+        -3,
+        1,
+        3,
+        -2,
+        3,
+        2
+       ],
+       [
+        -1,
+        -3,
+        2,
+        1,
+        -1,
+        -1,
+        2
+       ]
+      ]
+     ],
+     "expected": [
+      6,
+      6,
+      2,
+      7,
+      2,
+      2,
+      6,
+      4,
+      4,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        -2,
+        0,
+        3
+       ],
+       [
+        0,
+        -2,
+        0
+       ],
+       [
+        -1,
+        1,
+        -1,
+        -2
+       ],
+       [],
+       [
+        -1,
+        -3
+       ],
+       [
+        -3,
+        0,
+        0,
+        -3,
+        -3,
+        1,
+        -1
+       ],
+       [],
+       [
+        1,
+        -1,
+        1,
+        0
+       ],
+       [
+        2,
+        -2,
+        0,
+        -3
+       ],
+       [
+        1,
+        -3
+       ]
+      ]
+     ],
+     "expected": [
+      4,
+      2,
+      2,
+      0,
+      1,
+      5,
+      0,
+      2,
+      1,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -17
+       ],
+       [
+        -38,
+        -18,
+        -35,
+        2,
+        -34,
+        -21
+       ],
+       [
+        2,
+        49
+       ],
+       [
+        -18,
+        10,
+        36
+       ],
+       [
+        3,
+        -42,
+        -38
+       ],
+       [
+        -33
+       ],
+       [
+        -33,
+        47,
+        17,
+        24,
+        5,
+        -36
+       ],
+       [
+        15,
+        -35,
+        45,
+        22,
+        9,
+        37,
+        36
+       ]
+      ]
+     ],
+     "expected": [
+      1,
+      1,
+      2,
+      1,
+      1,
+      1,
+      2,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2,
+        9,
+        9,
+        2
+       ],
+       [
+        2,
+        9,
+        9,
+        2
+       ],
+       [
+        -5,
+        0,
+        -5,
+        0
+       ],
+       [
+        -5,
+        0,
+        -5,
+        0
+       ]
+      ]
+     ],
+     "expected": [
+      2,
+      4,
+      2,
+      3
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        3,
+        -50,
+        3,
+        -50,
+        3
+       ],
+       [],
+       [
+        -50,
+        50,
+        -50
+       ]
+      ]
+     ],
+     "expected": [
+      0,
+      4,
+      0,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pyb-t01-adv5",
+   "version": 1,
+   "title": "행운의 수에 가장 가까운 줄",
+   "statement": "보드게임 '행운의 수 찾기'에서는 수가 적힌 칸이 여러 줄로 놓여 있습니다. 줄 수와 줄마다 놓인 칸 수는 정해져 있지 않고, 칸이 하나도 없는 빈 줄도 있으며, 칸에 적힌 수는 음수일 수도 있습니다. 플레이어는 맨 위 줄부터 차례로, 1번째, 3번째, 5번째, …… 줄(홀수 번째)에서는 **가장 큰** 수를, 2번째, 4번째, …… 줄(짝수 번째)에서는 **가장 작은** 수를 하나씩 줍습니다. 빈 줄에서는 아무것도 줍지 않지만, 줄 번호는 빈 줄까지 포함해 셉니다.\n\n주운 수 중 행운의 수 `lucky`에 가장 가까운 수(lucky와의 차이가 가장 작은 수)를 찾아 [그 수를 주운 줄 번호, 그 수]를 return 하려 합니다. 차이는 두 수 중 큰 수에서 작은 수를 뺀 값입니다.\n- 차이가 가장 작은 수가 여러 개이면 그중 **더 작은 수**를 고릅니다.\n- 고른 수를 주운 줄이 여러 개이면 그중 **가장 위쪽**(번호가 작은) 줄을 고릅니다.\n- 주운 수가 하나도 없으면 빈 리스트 `[]`를 return 합니다.\n\n보조 함수 `pick(row, num)`은 num번째 줄 row(빈 리스트가 아님)에서 주울 수를 return 합니다. 줄별 칸에 적힌 수를 담은 2차원 리스트 `board`와 정수 `lucky`가 매개변수로 주어질 때, 위 규칙대로 return 하도록 solution 함수를 작성하려 합니다. 빈칸을 채워 전체 코드를 완성해 주세요.",
+   "params": [
+    "board의 길이(줄 수)는 0 이상 10 이하이며, board[0]이 1번째(맨 위) 줄입니다.",
+    "각 줄의 길이(칸 수)는 0 이상 6 이하입니다.",
+    "칸에 적힌 수와 lucky는 -100 이상 100 이하인 정수입니다."
+   ],
+   "returns": [
+    "[줄 번호, 주운 수]를 return 합니다. 주운 수가 하나도 없으면 []를 return 합니다."
+   ],
+   "funcName": "solution",
+   "argNames": [
+    "board",
+    "lucky"
+   ],
+   "examples": [
+    {
+     "args": [
+      [
+       [
+        4,
+        9,
+        2
+       ],
+       [
+        8,
+        5,
+        11
+       ],
+       [],
+       [
+        12,
+        3,
+        10
+       ],
+       [
+        -3,
+        9,
+        1
+       ]
+      ],
+      7
+     ],
+     "expected": [
+      2,
+      5
+     ],
+     "explain": "1·2·4·5번째 줄에서 9, 5, 3, 9를 줍고(3번째 줄은 빈 줄), 7과의 차이는 2, 2, 4, 2입니다. 차이가 2로 가장 작은 9, 5, 9 중 더 작은 수 5를 고르므로 [2, 5]입니다."
+    },
+    {
+     "args": [
+      [
+       [
+        -5,
+        -8
+       ],
+       [
+        -2,
+        -1
+       ],
+       [],
+       [
+        -5,
+        -3,
+        0
+       ]
+      ],
+      -4
+     ],
+     "expected": [
+      1,
+      -5
+     ],
+     "explain": "1·2·4번째 줄에서 -5, -2, -5를 줍고, -4와의 차이는 1, 2, 1입니다. 차이가 가장 작은 수는 1번째 줄과 4번째 줄의 -5로 같으므로, 더 위쪽인 1번째 줄을 골라 [1, -5]입니다."
+    },
+    {
+     "args": [
+      [
+       [],
+       []
+      ],
+      0
+     ],
+     "expected": [],
+     "explain": "모든 줄이 비어 있어 주운 수가 없으므로 []입니다."
+    }
+   ],
+   "code": "def pick(row, num):\n    if ⟦1⟧:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if ⟦2⟧:\n            value = ⟦3⟧\n            gap = ⟦4⟧\n            if ⟦5⟧ or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif ⟦6⟧:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]",
+   "blanks": [
+    {
+     "answer": "num % 2 == 1",
+     "alts": [
+      "num % 2 != 0",
+      "num % 2"
+     ]
+    },
+    {
+     "answer": "len(board[i]) > 0",
+     "alts": [
+      "len(board[i]) != 0",
+      "board[i]"
+     ]
+    },
+    {
+     "answer": "pick(board[i], i + 1)"
+    },
+    {
+     "answer": "abs(value - lucky)",
+     "alts": [
+      "abs(lucky - value)"
+     ]
+    },
+    {
+     "answer": "best_num == 0"
+    },
+    {
+     "answer": "gap == best_gap and value < best_value"
+    }
+   ],
+   "solution": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]",
+   "inputCheck": "def valid(board, lucky):\n    if not isinstance(board, list) or not (0 <= len(board) <= 10):\n        return False\n    if not isinstance(lucky, int) or isinstance(lucky, bool) or not (-100 <= lucky <= 100):\n        return False\n    for r in board:\n        if not isinstance(r, list) or not (0 <= len(r) <= 6):\n            return False\n        for x in r:\n            if not isinstance(x, int) or isinstance(x, bool) or not (-100 <= x <= 100):\n                return False\n    return True",
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "lucky가 7이고 주운 수가 9, 5, 3이에요. 각 수와 lucky의 차이를 순서대로 바르게 쓴 것은?",
+     "options": [
+      "2, 2, 4",
+      "2, -2, -4",
+      "-2, 2, 4",
+      "16, 12, 10"
+     ],
+     "answer": 0,
+     "explain": "차이는 큰 수에서 작은 수를 뺀 값이라 음수가 되지 않아요. 파이썬에서는 `abs(값)`(절댓값: 음수면 부호를 떼어 양수로 바꿔 주는 함수)로 `abs(9 - 7) = 2`, `abs(5 - 7) = 2`, `abs(3 - 7) = 4`처럼 구해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "lucky가 0이에요. 1번째 줄에서 3을, 4번째 줄에서 -3을 주웠고 다른 줄은 모두 비어 있어요. 무엇을 return 할까요?",
+     "options": [
+      "[4, -3]",
+      "[1, 3]",
+      "[1, -3]",
+      "[4, 3]"
+     ],
+     "answer": 0,
+     "explain": "3과 -3은 0과의 차이가 둘 다 3으로 같아요. 차이가 같으면 더 작은 수인 -3을 고르고, -3을 주운 줄은 4번째 줄이라 [4, -3]이에요. 줄 번호와 수를 짝 맞춰 return 해야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "`board = [[], [6, 2], []]`, `lucky = 0`일 때 결과는 무엇일까요? (리스트로)",
+     "a": "[2, 2]",
+     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    return [solution([[], [6, 2], []], 0)]",
+     "explain": "빈 줄은 줍지 않지만 줄 번호는 세므로 [6, 2]는 2번째 줄이에요. 짝수 번째 줄이라 가장 작은 2를 줍고, 주운 수가 이것 하나뿐이라 [2, 2]예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "한 줄을 처리하는 순서로 알맞은 것은? (best_num·best_value·best_gap은 지금까지 가장 나은 후보의 줄 번호·수·차이예요.)",
+     "options": [
+      "빈 줄이면 건너뛴다 → 줄 번호로 주울 수를 구한다 → lucky와의 차이를 구한다 → 후보보다 나으면 후보를 바꾼다",
+      "주울 수를 구한다 → 빈 줄이면 건너뛴다 → 후보보다 나으면 후보를 바꾼다 → lucky와의 차이를 구한다",
+      "줄마다 lucky와의 차이가 가장 작은 칸을 찾아 후보와 비교한다",
+      "모든 줄의 수 중 가장 큰 수와 가장 작은 수만 구해 lucky와 비교한다"
+     ],
+     "answer": 0,
+     "explain": "빈 줄에 max·min을 쓰면 오류가 나므로 먼저 걸러요. 주울 수는 줄 번호의 홀짝으로 정해지고(lucky와 가까운 칸을 줍는 것이 아니에요), 그 수의 차이를 구해야 후보와 비교할 수 있어요. best_num이 0이면 아직 후보가 없다는 뜻이에요(줄 번호는 1부터)."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "예시 1: 주울 수와 차이",
+     "prompt": "예시 1(lucky = 7)을 따라가요. 줄마다 줄 번호, 주울 수, lucky와의 차이를 채워 보세요. 빈 줄은 줍지 않으므로 그 칸은 비워 두었어요.",
+     "columns": [
+      "i",
+      "줄 번호",
+      "board[i]",
+      "주울 수",
+      "차이"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "1"
+       },
+       "[4, 9, 2]",
+       {
+        "a": "9"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "2"
+       },
+       "[8, 5, 11]",
+       {
+        "a": "5"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "3"
+       },
+       "[]",
+       "—",
+       "—"
+      ],
+      [
+       "3",
+       {
+        "a": "4"
+       },
+       "[12, 3, 10]",
+       {
+        "a": "3"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "5"
+       },
+       "[-3, 9, 1]",
+       {
+        "a": "9"
+       },
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    board = [[4, 9, 2], [8, 5, 11], [], [12, 3, 10], [-3, 9, 1]]\n    out = []\n    for i in range(len(board)):\n        out.append(i + 1)\n        if len(board[i]) > 0:\n            v = pick(board[i], i + 1)\n            out += [v, abs(v - 7)]\n    return out",
+     "explain": "줄 번호는 i + 1이고, 홀수 번째 줄(1, 5)은 max, 짝수 번째 줄(2, 4)은 min을 주워요. 그래서 pick에는 인덱스 i가 아니라 줄 번호 i + 1을 넘겨야 해요. 3번째 줄은 비어 있어도 번호는 세요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "예시 1: 후보 바꾸기",
+     "prompt": "처음에는 best_num = 0(아직 후보 없음)이에요. 앞 표의 값으로, 줄마다 후보를 바꾸는지(True/False)와 그 줄을 처리한 뒤의 best_num, best_value를 채워 보세요. 후보가 없거나 차이가 더 작으면 바꾸고, 차이가 같으면 수가 더 작을 때만 바꿔요.",
+     "columns": [
+      "줄 번호",
+      "주운 수",
+      "차이",
+      "후보를 바꾸나?",
+      "best_num",
+      "best_value"
+     ],
+     "rows": [
+      [
+       "1",
+       "9",
+       "2",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "2",
+       "5",
+       "2",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "4",
+       "3",
+       "4",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "5",
+       "9",
+       "2",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "5"
+       }
+      ]
+     ],
+     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    board = [[4, 9, 2], [8, 5, 11], [], [12, 3, 10], [-3, 9, 1]]\n    out = []\n    for k in range(1, len(board) + 1):\n        if len(board[k - 1]) == 0:\n            continue\n        before = solution(board[:k - 1], 7)\n        after = solution(board[:k], 7)\n        out += [before != after, after[0], after[1]]\n    return out",
+     "explain": "1번째 줄은 후보가 없어서 무조건 후보가 돼요. 2번째 줄의 5는 차이가 같은 2이고 9보다 작아서 바꾸고, 4번째 줄(차이 4)과 5번째 줄(차이는 같지만 9가 더 큼)에서는 바꾸지 않아 [2, 5]가 남아요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "후보를 바꾸는 조건에서 \"아직 후보가 없다\"를 빼고 `if gap < best_gap:`만 쓰면(elif는 그대로) 예시 1에서 무엇이 return 될까요? (리스트로)",
+     "a": "[]",
+     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef wrong(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    return [wrong([[4, 9, 2], [8, 5, 11], [], [12, 3, 10], [-3, 9, 1]], 7)]",
+     "explain": "best_gap이 0에서 시작하는데 차이는 0보다 작아질 수 없어서 `gap < best_gap`이 한 번도 참이 되지 않아요(이 예시에는 차이가 0인 수도 없어요). 그래서 best_num이 0으로 남아 []가 나와요. 첫 후보는 비교 없이 받아야 하므로 \"best_num이 0인가\"를 or로 함께 물어요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "차이가 같을 때의 조건을 `value <= best_value`로 바꾸어 `elif gap == best_gap and value <= best_value:`라고 쓰면, 예시 2(lucky = -4)에서 무엇이 return 될까요? (리스트로)",
+     "a": "[4, -5]",
+     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef wrong(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value <= best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    return [wrong([[-5, -8], [-2, -1], [], [-5, -3, 0]], -4)]",
+     "explain": "4번째 줄의 -5는 1번째 줄의 -5와 차이도 수도 같아요. `<=`면 같은 수에서도 후보를 아래쪽 줄로 바꿔 [4, -5]가 되지만, 규칙은 위쪽 줄이라 [1, -5]가 맞아요. 그래서 수를 비교할 때는 등호 없는 `<`를 써요."
+    },
+    {
+     "id": "s9",
+     "kind": "table",
+     "title": "경계 사례 결과 예측",
+     "prompt": "규칙을 모두 모아 결과를 예측해 보세요. 빈 board, 음수, 차이가 같은 경우, 수까지 같은 경우가 섞여 있어요.",
+     "columns": [
+      "board",
+      "lucky",
+      "결과"
+     ],
+     "rows": [
+      [
+       "[]",
+       "3",
+       {
+        "a": "[]"
+       }
+      ],
+      [
+       "[[-100]]",
+       "100",
+       {
+        "a": "[1, -100]"
+       }
+      ],
+      [
+       "[[5, 1], [1, 5]]",
+       "3",
+       {
+        "a": "[2, 1]"
+       }
+      ],
+      [
+       "[[2], [2]]",
+       "2",
+       {
+        "a": "[1, 2]"
+       }
+      ],
+      [
+       "[[], [9, -9]]",
+       "0",
+       {
+        "a": "[2, -9]"
+       }
+      ]
+     ],
+     "check": "def pick(row, num):\n    if num % 2 == 1:\n        return max(row)\n    return min(row)\n\ndef solution(board, lucky):\n    best_num = 0\n    best_value = 0\n    best_gap = 0\n    for i in range(len(board)):\n        if len(board[i]) > 0:\n            value = pick(board[i], i + 1)\n            gap = abs(value - lucky)\n            if best_num == 0 or gap < best_gap:\n                best_num = i + 1\n                best_value = value\n                best_gap = gap\n            elif gap == best_gap and value < best_value:\n                best_num = i + 1\n                best_value = value\n    if best_num == 0:\n        return []\n    return [best_num, best_value]\n\ndef answers():\n    cases = [[[], 3], [[[-100]], 100], [[[5, 1], [1, 5]], 3], [[[2], [2]], 2], [[[], [9, -9]], 0]]\n    return [solution(b, l) for b, l in cases]",
+     "explain": "줄이 없으면 []예요. [[5, 1], [1, 5]]는 1번째 줄에서 5, 2번째 줄에서 1을 줍는데 3과의 차이가 같아 더 작은 1을 골라 [2, 1]이고, [[2], [2]]는 수까지 같아 위쪽 줄인 [1, 2]예요. [[], [9, -9]]는 2번째 줄에서 가장 작은 -9를 주워요."
+    }
+   ],
+   "explain": "pick은 줄 번호의 홀짝(`num % 2 == 1`)으로 max 또는 min을 고르고, solution은 빈 줄을 건너뛰며 줄 번호 `i + 1`을 넘겨요. 차이는 `abs(value - lucky)`로 구하고, 아직 후보가 없거나(best_num == 0) 차이가 더 작으면 후보를 바꾸며, 차이가 같을 때는 수가 더 작을 때(`<`)만 바꿔요. 등호를 넣거나 첫 후보 조건을 빼면 동점·경계 사례에서 틀려요.",
+   "tests": [
+    {
+     "args": [
+      [],
+      0
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      [
+       [],
+       [],
+       []
+      ],
+      5
+     ],
+     "expected": []
+    },
+    {
+     "args": [
+      [
+       [
+        -100
+       ]
+      ],
+      100
+     ],
+     "expected": [
+      1,
+      -100
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        100
+       ]
+      ],
+      -100
+     ],
+     "expected": [
+      1,
+      100
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        5,
+        1
+       ],
+       [
+        1,
+        5
+       ]
+      ],
+      3
+     ],
+     "expected": [
+      2,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        2
+       ],
+       [
+        2
+       ]
+      ],
+      2
+     ],
+     "expected": [
+      1,
+      2
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        1,
+        5
+       ],
+       [
+        5,
+        1
+       ]
+      ],
+      3
+     ],
+     "expected": [
+      2,
+      1
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       [],
+       [],
+       [
+        7
+       ]
+      ],
+      -3
+     ],
+     "expected": [
+      4,
+      7
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        0,
+        10
+       ],
+       [
+        10,
+        0
+       ],
+       [
+        6,
+        4
+       ],
+       [
+        4,
+        6
+       ]
+      ],
+      5
+     ],
+     "expected": [
+      4,
+      4
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -1
+       ],
+       [
+        -1,
+        -1,
+        0,
+        2,
+        -1,
+        3
+       ],
+       [
+        3,
+        5,
+        0,
+        -5,
+        1,
+        4
+       ],
+       [
+        4,
+        3,
+        5
+       ],
+       [
+        -4,
+        0,
+        3,
+        2,
+        -2
+       ],
+       [],
+       [],
+       [
+        -1,
+        -3
+       ],
+       [
+        -4
+       ],
+       [
+        1,
+        3,
+        -1,
+        -5,
+        1,
+        -1
+       ]
+      ],
+      0
+     ],
+     "expected": [
+      1,
+      -1
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        -26,
+        -21,
+        -37,
+        -7,
+        -53,
+        41
+       ],
+       [],
+       [
+        87,
+        80,
+        48
+       ],
+       [
+        9,
+        3,
+        -5,
+        -29,
+        -98,
+        -60
+       ],
+       [
+        56
+       ],
+       [
+        -20,
+        7,
+        65,
+        -98,
+        33
+       ],
+       [
+        96,
+        59,
+        -14,
+        58,
+        -28,
+        63
+       ],
+       [],
+       [
+        0,
+        40
+       ],
+       [
+        45,
+        -72,
+        32,
+        14
+       ]
+      ],
+      -79
+     ],
+     "expected": [
+      10,
+      -72
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        63,
+        73,
+        -1,
+        -14,
+        -36,
+        23
+       ],
+       [
+        -42,
+        42,
+        36,
+        -65,
+        66,
+        27
+       ],
+       [
+        30,
+        99,
+        63,
+        -70,
+        79,
+        -34
+       ],
+       [
+        34,
+        -3,
+        -99,
+        -54,
+        -15,
+        -29
+       ],
+       [
+        -95,
+        -30,
+        -76,
+        85,
+        27,
+        -82
+       ],
+       [
+        16,
+        24,
+        -47,
+        -69,
+        39,
+        0
+       ],
+       [
+        -56,
+        77,
+        -72,
+        -89,
+        85,
+        71
+       ],
+       [
+        32,
+        -33,
+        -86,
+        98,
+        23,
+        -16
+       ],
+       [
+        -100,
+        94,
+        27,
+        39,
+        -67,
+        -80
+       ],
+       [
+        13,
+        -98,
+        21,
+        29,
+        -52,
+        64
+       ]
+      ],
+      0
+     ],
+     "expected": [
+      2,
+      -65
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        4,
+        -16,
+        15,
+        8,
+        -8
+       ],
+       [
+        20
+       ],
+       [
+        -12,
+        4
+       ],
+       [
+        1,
+        -11,
+        19,
+        18,
+        -5
+       ],
+       [
+        -17,
+        -9,
+        14,
+        5,
+        9,
+        -9
+       ],
+       [
+        -18
+       ],
+       [
+        -20,
+        -10,
+        12,
+        13
+       ]
+      ],
+      -7
+     ],
+     "expected": [
+      4,
+      -11
+     ]
+    },
+    {
+     "args": [
+      [
+       [],
+       [
+        -9,
+        9
+       ],
+       [],
+       [
+        9,
+        -9
+       ]
+      ],
+      0
+     ],
+     "expected": [
+      2,
+      -9
+     ]
+    },
+    {
+     "args": [
+      [
+       [
+        50,
+        -50,
+        0
+       ],
+       [
+        -50,
+        50,
+        0
+       ],
+       [],
+       [
+        0,
+        0
+       ],
+       [
+        -1
+       ]
+      ],
+      -1
+     ],
+     "expected": [
+      5,
+      -1
+     ]
+    }
+   ]
+  }
+ ]
+}
