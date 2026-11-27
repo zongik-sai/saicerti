@@ -1236,7 +1236,7 @@
      "id": "s5",
      "kind": "table",
      "title": "틀린 조건과 규칙 비교하기",
-     "prompt": "틀린 코드의 12번째 줄 조건은 `(A || B) && C` 모양이에요. A는 `visit[b] > visit[answer]`, B는 `visit[b] == visit[answer]`, C는 `total[b] > total[answer]`예요. 경우마다 12번째 줄 조건의 값과, 규칙대로라면 b가 더 인기 있는지를 채워 보세요(참 1, 거짓 0).",
+     "prompt": "틀린 코드의 12번째 줄 조건은 `(A || B) && C` 모양이에요. A는 `visit[b] > visit[answer]`, B는 `visit[b] == visit[answer]`, C는 `total[b] > total[answer]`예요. 반복에서 b는 늘 answer보다 번호가 커요. 경우마다 12번째 줄 조건의 값과, 규칙대로라면 b가 더 인기 있는지를 채워 보세요(참 1, 거짓 0).",
      "columns": [
       "visit[b]",
       "visit[answer]",

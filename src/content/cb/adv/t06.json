@@ -1410,6 +1410,7 @@
       "up은 1이 되고, down은 1 늘어난다"
      ],
      "answer": 0,
+     "code": "start",
      "explain": "올라가는 구간은 한 기록만큼 길어지고, 내려가는 구간은 여기서 끊겨요. down = 1은 지금 기록 하나에서 내려가는 구간을 새로 셀 준비예요. 다음에 내려가면 지금 층이 새 내려가는 구간의 첫 기록이 되어 down이 2가 돼요."
     },
     {
@@ -3103,6 +3104,7 @@
       "1, -300"
      ],
      "check": "def answers():\n    m = [-300, 0, -300]\n    sg = lambda x: (x > 0) - (x < 0)\n    bl = bs = ln = s = 0\n    for i, x in enumerate(m):\n        if sg(x) == 0:\n            ln = s = 0\n        elif i > 0 and sg(x) == sg(m[i - 1]):\n            ln, s = ln + 1, s + x\n        else:\n            ln, s = 1, x\n        if ln > bl or (ln == bl and abs(s) > abs(bs)):\n            bl, bs = ln, s\n    return [[bl, bs]]",
+     "code": "start",
      "explain": "두 출금 사이에 거래가 없는 날이 있어서 {-300}과 {-300}은 서로 다른 구간이에요. 둘 다 1일이고 절댓값도 300으로 같으니 앞의 구간을 골라 {1, -300}이에요. 0인 날에 구간을 끊지 않으면 {2, -600}이 되어 버려요."
     }
    ],
@@ -3970,6 +3972,7 @@
       ]
      ],
      "check": "def answers():\n    h = [2, 4, 4, 6, 3, 1, 5, 2]\n    n = len(h)\n    up = [1] * n\n    down = [1] * n\n    for i in range(1, n):\n        up[i] = up[i - 1] + 1 if h[i] > h[i - 1] else 1\n    for i in range(n - 2, -1, -1):\n        down[i] = down[i + 1] + 1 if h[i] > h[i + 1] else 1\n    out = []\n    for i in range(n):\n        out += [down[i], up[i] + down[i] - 1 if up[i] > 1 and down[i] > 1 else 0]\n    return out",
+     "code": "start",
      "explain": "4 → 4처럼 높이가 같으면 오르막이 끊겨서 인덱스 3의 up은 2예요. 봉우리는 인덱스 3(4칸 산 {4, 6, 3, 1})과 인덱스 6(3칸 산 {1, 5, 2})이고, 고친 코드는 더 긴 4를 돌려줘요."
     }
    ],
