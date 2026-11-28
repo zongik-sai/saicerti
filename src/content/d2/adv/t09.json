@@ -1,0 +1,1400 @@
+{
+ "course": "d2",
+ "type": 9,
+ "typeTitle": "결측치 다루기",
+ "kind": "fix",
+ "skills": [
+  "fillna(평균)",
+  "그룹별 결측 비율",
+  "count()와 결측치",
+  "두 열의 결측(& · |)",
+  "True/False의 mean = 비율",
+  "dropna(subset)와 fillna의 순서"
+ ],
+ "intro": "결측치를 평균으로 채운 뒤 집계하거나, 그룹별 결측 비율·두 열의 결측을 함께 다루는 더 긴 코드에서 잘못된 한 줄을 찾아요. 빈 값을 지울지 채울지, 비율의 분모가 무엇인지까지 따져야 해요.",
+ "problems": [
+  {
+   "id": "d2-t09-adv1",
+   "version": 1,
+   "title": "빈 별점을 평균으로 채운 매장 평균",
+   "statement": "카페 주문 데이터의 `rating` 열은 별점(1~5)인데, 손님이 별점을 남기지 않은 주문은 칸이 비어 있습니다(결측치).\n\n별점을 남기지 않은 주문은 별점을 남긴 주문들의 평균 별점(채우기 전 `rating` 열의 평균)으로 채운 뒤, 매장(`store`)별 평균 별점을 구하려고 합니다. 매장별 평균 별점 중 가장 높은 값을 구하도록 다음 코드를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\navg = df[\"rating\"].mean()\ndf[\"rating\"] = df[\"rating\"].fillna(0)\nstore_mean = df.groupby(\"store\")[\"rating\"].mean()\n\ndef solution():\n    answer = round(store_mean.max(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 6,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\navg = df[\"rating\"].mean()\ndf[\"rating\"] = df[\"rating\"].fillna(avg)\nstore_mean = df.groupby(\"store\")[\"rating\"].mean()\n\ndef solution():\n    answer = round(store_mean.max(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 3.86
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 3.85
+    },
+    {
+     "data": 2,
+     "expected": 3.82
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`fillna(값)`은 무슨 일을 할까요?",
+     "options": [
+      "결측치(NaN)인 칸만 괄호 안의 값으로 채운다",
+      "결측치가 있는 행을 지운다",
+      "결측치인 칸을 True로 바꾼다",
+      "모든 칸을 괄호 안의 값으로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "fillna는 'fill NA(빈 값 채우기)'라는 뜻이에요. 값이 있는 칸은 그대로 두고 NaN 칸만 채워요. 행을 지우는 것은 dropna()예요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`df[\"rating\"].mean()`은 결측치를 어떻게 다룰까요?",
+     "options": [
+      "결측치가 있으면 결과가 NaN이 된다",
+      "결측치를 0으로 보고 평균을 낸다",
+      "결측치를 빼고 값이 있는 칸만으로 평균을 낸다",
+      "결측치가 있으면 오류가 난다"
+     ],
+     "answer": 2,
+     "explain": "pandas의 mean()·sum()·count()는 NaN을 건너뛰고 계산해요. 그래서 채우기 전에 구한 평균은 별점을 남긴 주문들만의 평균이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "채우기 전 평균 구하기",
+     "prompt": "매장 두 곳의 주문 별점이 아래와 같아요. 두 매장을 합쳐 값이 있는 별점만으로 채우기 전 평균(avg)을 구해 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "구하는 것",
+      "값"
+     ],
+     "rows": [
+      [
+       "값이 있는 별점 수",
+       {
+        "a": "8",
+        "alts": [
+         "8.0"
+        ]
+       }
+      ],
+      [
+       "값이 있는 별점의 합",
+       {
+        "a": "30",
+        "alts": [
+         "30.0"
+        ]
+       }
+      ],
+      [
+       "채우기 전 평균 avg",
+       {
+        "a": "3.75"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    df = pd.DataFrame({\"store\": [\"A\"] * 5 + [\"B\"] * 6,\n                       \"rating\": [5, 5, None, 4, 4, 3, None, 3, 4, None, 2]})\n    r = df[\"rating\"]\n    return [int(r.count()), f(r.sum()), f(r.mean())]",
+     "explain": "NaN 3칸은 빼고 값이 있는 8칸만 계산해요. 30 ÷ 8 = 3.75예요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "두 방법으로 채운 뒤 매장별 평균",
+     "prompt": "위 표의 NaN을 두 방법으로 채운 뒤 매장별 평균 별점을 구하고, 마지막 줄에 가장 높은 값을 적어 보세요(반올림 둘째 자리).",
+     "columns": [
+      "매장",
+      "avg(3.75)로 채운 뒤 평균",
+      "0으로 채운 뒤 평균"
+     ],
+     "rows": [
+      [
+       "A",
+       {
+        "a": "4.35"
+       },
+       {
+        "a": "3.6"
+       }
+      ],
+      [
+       "B",
+       {
+        "a": "3.25"
+       },
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       }
+      ],
+      [
+       "가장 높은 값",
+       {
+        "a": "4.35"
+       },
+       {
+        "a": "3.6"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    df = pd.DataFrame({\"store\": [\"A\"] * 5 + [\"B\"] * 6,\n                       \"rating\": [5, 5, None, 4, 4, 3, None, 3, 4, None, 2]})\n    avg = df[\"rating\"].mean()\n    m1 = df.assign(r=df[\"rating\"].fillna(avg)).groupby(\"store\")[\"r\"].mean()\n    m0 = df.assign(r=df[\"rating\"].fillna(0)).groupby(\"store\")[\"r\"].mean()\n    return [f(m1[\"A\"]), f(m0[\"A\"]), f(m1[\"B\"]), f(m0[\"B\"]), f(m1.max()), f(m0.max())]",
+     "explain": "0으로 채우면 '0점을 줬다'는 가짜 값이 생겨서 평균이 크게 떨어져요. 빈 칸이 많은 매장(B)일수록 더 많이 떨어져요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "틀린 코드의 6번 줄을 실행하면, 별점을 남기지 않은 주문의 rating은 무엇이 될까요?",
+     "options": [
+      "avg(채우기 전 평균)",
+      "0",
+      "NaN 그대로",
+      "그 매장의 평균"
+     ],
+     "answer": 1,
+     "explain": "fillna(0)이라서 NaN 칸이 모두 0점이 돼요. 1~5점 별점에 0점이 많이 섞이니 매장 평균이 크게 낮아져요(예시 데이터에서 2.67).",
+     "code": "start"
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "6번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "df[\"rating\"] = df[\"rating\"].fillna(3)",
+      "df[\"rating\"] = df[\"rating\"].dropna()",
+      "df[\"rating\"] = df[\"rating\"].isna()",
+      "df[\"rating\"] = df[\"rating\"].fillna(avg)"
+     ],
+     "answer": 3,
+     "explain": "avg는 채우기 전에 5번 줄에서 구해 둔 평균이에요. fillna(avg)로 NaN 칸만 avg로 채우면 문제에서 말한 방법이 돼요. 3은 평균이 아니고, dropna()와 isna()는 채우는 함수가 아니에요.",
+     "code": "start"
+    }
+   ],
+   "explain": "결측치를 평균으로 채울 때는 채우기 전에 평균(avg)을 먼저 구해 두고 `fillna(avg)`로 NaN 칸만 채워요. 0으로 채우면 '0점을 줬다'는 가짜 값이 생겨 평균이 크게 낮아져요. 평균으로 채우면 전체 평균은 그대로지만, 매장마다 빈 칸 수가 달라 매장별 평균은 조금씩 바뀌어요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "매장 두 곳의 주문 별점(NaN = 별점을 남기지 않음)",
+     "alt": "매장 A의 별점 5, 5, NaN, 4, 4와 매장 B의 별점 3, NaN, 3, 4, NaN, 2를 적은 표.",
+     "head": [
+      "매장",
+      "주문별 별점"
+     ],
+     "rows": [
+      [
+       "A",
+       "5, 5, NaN, 4, 4"
+      ],
+      [
+       "B",
+       "3, NaN, 3, 4, NaN, 2"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t09-adv2",
+   "version": 1,
+   "title": "학년별 과학 결시 비율",
+   "statement": "학생 성적 데이터의 `science` 열은 과학 점수인데, 과학 시험에 결시한 학생은 칸이 비어 있습니다(결측치). `grade` 열은 학년(1~3)입니다.\n\n학년마다 과학 결시 비율(%)을 (그 학년의 결시생 수) ÷ (그 학년의 전체 학생 수) × 100으로 구해, 세 학년 중 가장 높은 결시 비율을 구하려고 다음 코드를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf[\"absent\"] = df[\"science\"].isna()\nn_absent = df.groupby(\"grade\")[\"absent\"].sum()\nrate = n_absent / df.groupby(\"grade\")[\"science\"].count() * 100\n\ndef solution():\n    answer = round(rate.max(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 7,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf[\"absent\"] = df[\"science\"].isna()\nn_absent = df.groupby(\"grade\")[\"absent\"].sum()\nrate = n_absent / df.groupby(\"grade\")[\"absent\"].count() * 100\n\ndef solution():\n    answer = round(rate.max(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 5.78
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 6.07
+    },
+    {
+     "data": 2,
+     "expected": 5.92
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "학년별 결시 비율의 분모(나누는 수)는 무엇일까요?",
+     "options": [
+      "그 학년에서 과학 시험을 본 학생 수",
+      "그 학년의 전체 학생 수(결시생 포함)",
+      "모든 학년의 전체 학생 수",
+      "그 학년의 결시생 수"
+     ],
+     "answer": 1,
+     "explain": "비율 = 부분 ÷ 전체예요. 여기서 '전체'는 그 학년 학생 모두라서, 과학 점수가 빈(결측치인) 결시생도 분모에 들어가요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`df.groupby(\"grade\")[\"absent\"].sum()`은 무엇을 구할까요? (`absent`는 결시면 True, 아니면 False)",
+     "options": [
+      "학년마다 결시생 수",
+      "학년마다 전체 학생 수",
+      "전체 결시생 수 하나",
+      "학년마다 결시 비율"
+     ],
+     "answer": 0,
+     "explain": "groupby(\"grade\")는 학년이 같은 행끼리 묶어 묶음마다 따로 계산해요. True/False를 sum()으로 더하면 True(결시)의 개수가 학년마다 하나씩 나와요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 표로 학년별 세기",
+     "prompt": "학생 9명이 아래와 같아요(science가 NaN이면 결시). 학년마다 세 가지 수를 세어 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "grade",
+      "결시생 수",
+      "전체 학생 수",
+      "과학 점수가 있는 학생 수"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       },
+       {
+        "a": "5",
+        "alts": [
+         "5.0"
+        ]
+       },
+       {
+        "a": "4",
+        "alts": [
+         "4.0"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       },
+       {
+        "a": "4",
+        "alts": [
+         "4.0"
+        ]
+       },
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"grade\": [1, 1, 1, 1, 1, 2, 2, 2, 2],\n                       \"science\": [70, None, 85, 64, 92, 90, None, 60, 75]})\n    df[\"absent\"] = df[\"science\"].isna()\n    g = df.groupby(\"grade\")\n    a, t, s = g[\"absent\"].sum(), g[\"absent\"].count(), g[\"science\"].count()\n    out = []\n    for k in [1, 2]:\n        out += [int(a[k]), int(t[k]), int(s[k])]\n    return out",
+     "explain": "과학 점수가 있는 학생 수는 결시생을 뺀 수라서 전체 학생 수보다 결시생 수만큼 작아요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "두 분모로 비율 구하기",
+     "prompt": "위 표로 학년별 결시 비율(%)을 두 가지 분모로 구하고, 마지막 줄에 가장 높은 값을 적어 보세요(반올림 둘째 자리).",
+     "columns": [
+      "grade",
+      "결시생 수 ÷ 전체 학생 수 × 100",
+      "결시생 수 ÷ 과학 점수가 있는 학생 수 × 100"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "20",
+        "alts": [
+         "20.0"
+        ]
+       },
+       {
+        "a": "25",
+        "alts": [
+         "25.0"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "25",
+        "alts": [
+         "25.0"
+        ]
+       },
+       {
+        "a": "33.33"
+       }
+      ],
+      [
+       "가장 높은 값",
+       {
+        "a": "25",
+        "alts": [
+         "25.0"
+        ]
+       },
+       {
+        "a": "33.33"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    df = pd.DataFrame({\"grade\": [1, 1, 1, 1, 1, 2, 2, 2, 2],\n                       \"science\": [70, None, 85, 64, 92, 90, None, 60, 75]})\n    df[\"absent\"] = df[\"science\"].isna()\n    g = df.groupby(\"grade\")\n    r1 = g[\"absent\"].sum() / g[\"absent\"].count() * 100\n    r2 = g[\"absent\"].sum() / g[\"science\"].count() * 100\n    return [f(r1[1]), f(r2[1]), f(r1[2]), f(r2[2]), f(r1.max()), f(r2.max())]",
+     "explain": "분모에서 결시생이 빠지면 비율이 실제보다 커져요. 문제에서 원하는 값은 왼쪽 열이에요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "틀린 코드의 7번 줄에서 분모로 쓴 `df.groupby(\"grade\")[\"science\"].count()`는 학년마다 무엇을 셀까요?",
+     "options": [
+      "과학 점수가 있는(결시하지 않은) 학생 수",
+      "전체 학생 수",
+      "결시생 수",
+      "과학 점수의 합"
+     ],
+     "answer": 0,
+     "explain": "count()는 결측치를 빼고 세요. science 열은 결시생 칸이 NaN이라 결시생이 분모에서 빠져요. 위 표의 오른쪽 열처럼 비율이 커져요(예시 데이터에서 6.13).",
+     "code": "start"
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "7번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "rate = n_absent / df.groupby(\"grade\")[\"absent\"].sum() * 100",
+      "rate = n_absent / df[\"science\"].count() * 100",
+      "rate = n_absent / df.groupby(\"grade\")[\"absent\"].count() * 100",
+      "rate = n_absent / df.groupby(\"grade\")[\"science\"].sum() * 100"
+     ],
+     "answer": 2,
+     "explain": "absent 열은 모든 학생이 True/False 값을 가지고 있어(결측치가 없어) count()가 학년의 전체 학생 수를 세요. absent의 sum()은 결시생 수, df[\"science\"].count()는 학년 구분 없는 응시생 수, science의 sum()은 점수 합이에요.",
+     "code": "start"
+    }
+   ],
+   "explain": "count()는 결측치를 빼고 세기 때문에, 결측치가 있는 science 열로 세면 결시생이 분모에서 빠져요. 결측치가 없는 열(absent)의 count()나 groupby(...).size()로 전체 학생 수를 세야 해요. `df.groupby(\"grade\")[\"absent\"].mean() * 100`처럼 True/False의 평균으로 비율을 바로 구해도 같아요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "학생 9명(NaN = 결시)",
+     "alt": "학생 9명의 grade와 science 표. 1학년 5명 중 1명, 2학년 4명 중 1명의 science가 NaN이다.",
+     "head": [
+      "",
+      "grade",
+      "science"
+     ],
+     "rows": [
+      [
+       0,
+       1,
+       70
+      ],
+      [
+       1,
+       1,
+       "NaN"
+      ],
+      [
+       2,
+       1,
+       85
+      ],
+      [
+       3,
+       1,
+       64
+      ],
+      [
+       4,
+       1,
+       92
+      ],
+      [
+       5,
+       2,
+       90
+      ],
+      [
+       6,
+       2,
+       "NaN"
+      ],
+      [
+       7,
+       2,
+       60
+      ],
+      [
+       8,
+       2,
+       75
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t09-adv3",
+   "version": 1,
+   "title": "측정을 놓친 날이 가장 많은 도시",
+   "statement": "도시별 날씨 데이터에서 강수량(`rain_mm`)과 풍속(`wind_speed`)은 측정 장비가 값을 재지 못한 날에 칸이 비어 있습니다(결측치).\n\n강수량과 풍속 중 **하나라도** 측정하지 못한 날을 '측정 누락일'이라고 합니다. 측정 누락일이 가장 많은 도시(`city`)의 이름을 구하려고 다음 코드를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"weather_daily.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 도시 이름(문자열)으로 반환하도록 하시오.",
+   "answerFormat": "Incheon",
+   "data": {
+    "files": [
+     "weather_daily.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"weather_daily.csv\")\n\nmissed = df[\"rain_mm\"].isna() & df[\"wind_speed\"].isna()\ndf_missed = df.loc[missed, ]\n\ndef solution():\n    answer = df_missed[\"city\"].value_counts().idxmax()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 5,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"weather_daily.csv\")\n\nmissed = df[\"rain_mm\"].isna() | df[\"wind_speed\"].isna()\ndf_missed = df.loc[missed, ]\n\ndef solution():\n    answer = df_missed[\"city\"].value_counts().idxmax()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": "Busan"
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": "Busan"
+    },
+    {
+     "data": 2,
+     "expected": "Seoul"
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "다음 중 '측정 누락일'이 **아닌** 날은 어느 것일까요?",
+     "options": [
+      "강수량만 NaN인 날",
+      "강수량과 풍속을 모두 잰 날",
+      "풍속만 NaN인 날",
+      "강수량과 풍속이 모두 NaN인 날"
+     ],
+     "answer": 1,
+     "explain": "둘 중 하나라도 NaN(결측치)이면 측정 누락일이에요. 강수량과 풍속에 모두 값이 있는 날만 측정 누락일이 아니에요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "True/False 묶음 두 개를 잇는 `&`와 `|`의 뜻으로 옳은 것은?",
+     "options": [
+      "&는 하나라도 True이면 True, |는 둘 다 True일 때 True",
+      "&는 둘 다 True일 때 True, |는 하나라도 True이면 True",
+      "둘 다 '둘 다 True일 때만 True'라는 뜻이다",
+      "&는 True의 개수를 더하고, |는 빼는 기호다"
+     ],
+     "answer": 1,
+     "explain": "&는 '그리고(and)', |는 '또는(or)'이에요. pandas에서 조건 두 개를 이을 때는 and·or 대신 &·|를 써요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "하루씩 따라가기",
+     "prompt": "어느 도시의 5일 기록이 아래와 같아요. 날마다 `rain_mm.isna()`와 `wind_speed.isna()`를 생각한 뒤, 두 결과를 `&`로 이은 값과 `|`로 이은 값을 채워 보세요.",
+     "columns": [
+      "날",
+      "rain_mm",
+      "wind_speed",
+      "&로 이은 결과",
+      "|로 이은 결과"
+     ],
+     "rows": [
+      [
+       "1",
+       "0.0",
+       "3.1",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2",
+       "NaN",
+       "2.4",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "3",
+       "5.5",
+       "NaN",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "4",
+       "NaN",
+       "NaN",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "5",
+       "1.2",
+       "4.0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"rain_mm\": [0.0, None, 5.5, None, 1.2], \"wind_speed\": [3.1, 2.4, None, None, 4.0]})\n    a = df[\"rain_mm\"].isna() & df[\"wind_speed\"].isna()\n    o = df[\"rain_mm\"].isna() | df[\"wind_speed\"].isna()\n    out = []\n    for x, y in zip(a, o):\n        out += [bool(x), bool(y)]\n    return out",
+     "explain": "측정 누락일(하나라도 NaN)은 |로 이은 결과가 True인 날 2·3·4예요. &는 둘 다 NaN인 날 4만 골라요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "도시별로 세기",
+     "prompt": "세 도시의 기록을 요약하면 아래와 같아요. 도시마다 두 조건으로 고른 날 수를 채우고, 마지막 줄에는 고른 날이 가장 많은 도시를 적어 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "city",
+      "&로 고른 날 수",
+      "|로 고른 날 수"
+     ],
+     "rows": [
+      [
+       "A",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "5",
+        "alts": [
+         "5.0"
+        ]
+       }
+      ],
+      [
+       "B",
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       },
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       }
+      ],
+      [
+       "C",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "6",
+        "alts": [
+         "6.0"
+        ]
+       }
+      ],
+      [
+       "가장 많은 도시",
+       {
+        "a": "B",
+        "alts": [
+         "b"
+        ]
+       },
+       {
+        "a": "C",
+        "alts": [
+         "c"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [(\"A\", 3, 2, 0), (\"B\", 1, 1, 1), (\"C\", 2, 4, 0)]\n    band = {c: both for c, r, w, both in rows}\n    bor = {c: r + w + both for c, r, w, both in rows}\n    out = []\n    for c, r, w, both in rows:\n        out += [band[c], bor[c]]\n    return out + [max(band, key=band.get), max(bor, key=bor.get)]",
+     "explain": "&로 고르면 둘 다 빈 날만 세어 B가 가장 많아 보여요. 하지만 측정 누락일(하나라도 빈 날)은 C가 6일로 가장 많아요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`df_missed[\"city\"].value_counts().idxmax()`는 무엇을 돌려줄까요?",
+     "options": [
+      "가장 많은 개수(숫자)",
+      "개수가 가장 많은 도시의 이름",
+      "가장 많은 도시의 첫 행 번호",
+      "알파벳 순으로 마지막 도시 이름"
+     ],
+     "answer": 1,
+     "explain": "value_counts()는 도시마다 개수를 세고, idxmax()는 가장 큰 값이 있는 자리의 이름(index)을 돌려줘요. 개수 자체가 필요하면 max()를 써요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "틀린 코드의 5번 줄 조건으로 고르면 예시 데이터에서 며칠이 골라질까요? (`print(len(df_missed))`로 확인해 보세요)",
+     "a": "1",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"weather_daily.csv\")\n    return [int((df[\"rain_mm\"].isna() & df[\"wind_speed\"].isna()).sum())]",
+     "explain": "강수량과 풍속이 '둘 다' 빈 날은 예시 데이터에 하루뿐이에요. 그래서 틀린 코드는 그 하루가 있는 도시를 답으로 내요.",
+     "code": "start"
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "5번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "missed = df[\"rain_mm\"].notna() & df[\"wind_speed\"].notna()",
+      "missed = df[\"rain_mm\"].isna() & df[\"wind_speed\"].notna()",
+      "missed = df[\"rain_mm\"].isna() | df[\"wind_speed\"].isna()",
+      "missed = ~(df[\"rain_mm\"].isna() & df[\"wind_speed\"].isna())"
+     ],
+     "answer": 2,
+     "explain": "|로 이어야 '하나라도 빈 날'이 돼요. 첫 번째 보기는 둘 다 측정한 날, 두 번째는 강수량만 빈 날, 네 번째는 '둘 다 빈 날이 아닌 날'이라 거의 모든 날이 골라져요.",
+     "code": "start"
+    }
+   ],
+   "explain": "두 열 중 '하나라도' 결측치인 행은 `isna()` 두 개를 `|`(또는)로 이어 골라요. `&`(그리고)로 이으면 두 열이 모두 빈 행만 골라져서 답이 달라져요. 고른 행을 value_counts()로 세고, 이름이 필요하면 idxmax(), 개수가 필요하면 max()를 써요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "도시별 빈 날 수 요약",
+     "alt": "도시 A, B, C마다 강수량만 빈 날, 풍속만 빈 날, 둘 다 빈 날의 수를 적은 표.",
+     "head": [
+      "city",
+      "강수량만 NaN인 날",
+      "풍속만 NaN인 날",
+      "둘 다 NaN인 날"
+     ],
+     "rows": [
+      [
+       "A",
+       3,
+       2,
+       0
+      ],
+      [
+       "B",
+       1,
+       1,
+       1
+      ],
+      [
+       "C",
+       2,
+       4,
+       0
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t09-adv4",
+   "version": 1,
+   "title": "연료 누락 비율이 가장 높은 제조사",
+   "statement": "중고차 매물 데이터의 `fuel` 열은 연료인데, 판매자가 연료를 적지 않은 매물은 칸이 비어 있습니다(결측치).\n\n제조사(`brand`)마다 연료 누락 비율 = (연료가 빈 매물 수) ÷ (그 제조사의 전체 매물 수)를 구해, 비율이 가장 높은 제조사의 이름을 구하려고 합니다. 단, 매물이 적은 제조사는 비율이 크게 흔들리므로 **매물이 120대 이상인 제조사만** 비교합니다. 다음 코드는 이 값을 구하도록 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 제조사 이름(문자열)으로 반환하도록 하시오.",
+   "answerFormat": "Audi",
+   "data": {
+    "files": [
+     "used_cars.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndf[\"no_fuel\"] = df[\"fuel\"].isna()\ncnt = df[\"brand\"].value_counts()\nbig = cnt[cnt >= 120].index\ndf_big = df.loc[df[\"brand\"].isin(big), ]\nrate = df_big.groupby(\"brand\")[\"no_fuel\"].sum()\n\ndef solution():\n    answer = rate.idxmax()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 9,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndf[\"no_fuel\"] = df[\"fuel\"].isna()\ncnt = df[\"brand\"].value_counts()\nbig = cnt[cnt >= 120].index\ndf_big = df.loc[df[\"brand\"].isin(big), ]\nrate = df_big.groupby(\"brand\")[\"no_fuel\"].mean()\n\ndef solution():\n    answer = rate.idxmax()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": "BMW"
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": "Hyundai"
+    },
+    {
+     "data": 2,
+     "expected": "BMW"
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "다음 중 '연료 누락 비율'의 뜻에 맞는 것은 어느 것일까요?",
+     "options": [
+      "연료가 빈 매물 수(개수 그대로)",
+      "연료가 빈 매물 수 ÷ 그 제조사의 전체 매물 수",
+      "연료가 빈 매물 수 ÷ 모든 제조사의 전체 매물 수",
+      "연료가 적힌 매물 수 ÷ 그 제조사의 전체 매물 수"
+     ],
+     "answer": 1,
+     "explain": "비율은 '그 제조사 안에서' 연료가 빈 매물이 차지하는 몫이에요. 개수만 비교하면 매물이 많은 제조사가 늘 앞서게 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "처음 코드의 6~8번 줄이 하는 일로 옳은 것은?",
+     "options": [
+      "가격이 120만 원 이상인 매물만 남긴다",
+      "연료가 빈 매물이 120대 이상인 제조사만 남긴다",
+      "제조사별 매물 수를 세고, 매물이 120대 이상인 제조사의 매물만 남긴다",
+      "매물 수가 많은 제조사 120곳을 고른다"
+     ],
+     "answer": 2,
+     "explain": "`cnt`는 제조사별 매물 수, `cnt[cnt >= 120].index`는 120대 이상인 제조사 이름 목록이에요. `isin(big)`은 brand가 그 목록에 들어 있는 행만 True로 만들어요.",
+     "code": "start"
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "예시 데이터에서 매물이 120대 이상이라 비교 대상이 되는 제조사는 몇 곳일까요? (7번 줄 다음에 `print(big)`으로 확인해 보세요)",
+     "a": "6",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"used_cars.csv\")\n    cnt = df[\"brand\"].value_counts()\n    return [int((cnt >= 120).sum())]",
+     "explain": "제조사 8곳 중 매물이 120대에 못 미치는 두 곳은 비교에서 빠지고 6곳만 남아요.",
+     "code": "start"
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "True/False 묶음 [True, False, False, True]에 `mean()`을 쓰면 무엇이 나올까요?",
+     "options": [
+      "True의 개수 2",
+      "전체 개수 4",
+      "True의 비율 0.5",
+      "True가 하나라도 있으면 True"
+     ],
+     "answer": 2,
+     "explain": "True는 1, False는 0으로 계산돼요. 합은 True의 개수(2), 평균은 (1+0+0+1) ÷ 4 = 0.5라서 True의 비율이에요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "제조사 세 곳의 매물이 아래와 같아요. 이 표에서는 매물이 **5대 이상**인 제조사만 비교한다고 해요. 제조사마다 값을 채워 보세요(비율은 반올림 둘째 자리).\n\n{{fig:f1}}",
+     "columns": [
+      "brand",
+      "전체 매물 수",
+      "비교 대상인가요?(O/X)",
+      "연료가 빈 매물 수",
+      "연료 누락 비율"
+     ],
+     "rows": [
+      [
+       "K",
+       {
+        "a": "10",
+        "alts": [
+         "10.0"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "4",
+        "alts": [
+         "4.0"
+        ]
+       },
+       {
+        "a": "0.4"
+       }
+      ],
+      [
+       "B",
+       {
+        "a": "6",
+        "alts": [
+         "6.0"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       },
+       {
+        "a": "0.5"
+       }
+      ],
+      [
+       "T",
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       },
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       },
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       },
+       {
+        "a": "0.67"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    data = {'K': ['gas', 'NaN', 'gas', 'diesel', 'NaN', 'gas', 'NaN', 'gas', 'NaN', 'diesel'], 'B': ['NaN', 'diesel', 'NaN', 'gas', 'NaN', 'hybrid'], 'T': ['NaN', 'gas', 'NaN']}\n    df = pd.DataFrame([(b, None if x == \"NaN\" else x) for b, xs in data.items() for x in xs], columns=[\"brand\", \"fuel\"])\n    df[\"no_fuel\"] = df[\"fuel\"].isna()\n    cnt = df[\"brand\"].value_counts()\n    big = cnt[cnt >= 5].index\n    df_big = df.loc[df[\"brand\"].isin(big)]\n    out = []\n    for b in [\"K\", \"B\", \"T\"]:\n        s = df.loc[df[\"brand\"] == b, \"no_fuel\"]\n        out += [len(s), \"O\" if b in big else \"X\", int(s.sum()), f(s.mean())]\n    return out",
+     "explain": "T는 비율이 가장 크지만 매물이 3대뿐이라 비교에서 빠져요. 비교 대상인 K와 B 가운데 비율은 B가 더 높아요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "틀린 코드와 원하는 결과 비교",
+     "prompt": "위 표로 세 가지 방법의 `idxmax()` 결과(제조사 이름)를 적어 보세요. 틀린 코드의 9번 줄은 비교 대상 제조사마다 `sum()`을 구해요.",
+     "columns": [
+      "방법",
+      "idxmax() 결과"
+     ],
+     "rows": [
+      [
+       "틀린 코드처럼 비교 대상의 sum()",
+       {
+        "a": "K",
+        "alts": [
+         "k"
+        ]
+       }
+      ],
+      [
+       "비교 대상의 연료 누락 비율",
+       {
+        "a": "B",
+        "alts": [
+         "b"
+        ]
+       }
+      ],
+      [
+       "규칙을 잊고 세 곳 모두의 비율",
+       {
+        "a": "T",
+        "alts": [
+         "t"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    data = {'K': ['gas', 'NaN', 'gas', 'diesel', 'NaN', 'gas', 'NaN', 'gas', 'NaN', 'diesel'], 'B': ['NaN', 'diesel', 'NaN', 'gas', 'NaN', 'hybrid'], 'T': ['NaN', 'gas', 'NaN']}\n    df = pd.DataFrame([(b, None if x == \"NaN\" else x) for b, xs in data.items() for x in xs], columns=[\"brand\", \"fuel\"])\n    df[\"no_fuel\"] = df[\"fuel\"].isna()\n    cnt = df[\"brand\"].value_counts()\n    big = cnt[cnt >= 5].index\n    df_big = df.loc[df[\"brand\"].isin(big)]\n    return [df_big.groupby(\"brand\")[\"no_fuel\"].sum().idxmax(), df_big.groupby(\"brand\")[\"no_fuel\"].mean().idxmax(), df.groupby(\"brand\")[\"no_fuel\"].mean().idxmax()]",
+     "explain": "개수(sum)로 비교하면 매물이 많은 K가, 비율로 비교하면 B가 나와요. 120대 규칙(여기서는 5대)을 빼먹으면 매물이 적은 T가 나와 버려요.",
+     "code": "start"
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "틀린 코드의 9번 줄 `df_big.groupby(\"brand\")[\"no_fuel\"].sum()`은 제조사마다 무엇을 구할까요?",
+     "options": [
+      "연료 누락 비율",
+      "전체 매물 수",
+      "연료가 빈 매물 수",
+      "연료가 적힌 매물 수"
+     ],
+     "answer": 2,
+     "explain": "no_fuel은 True/False라서 sum()은 True의 개수, 곧 연료가 빈 매물 수예요. 매물이 많은 제조사가 개수로 앞서서 틀린 답(예시 데이터에서 Kia)이 나와요.",
+     "code": "start"
+    },
+    {
+     "id": "s8",
+     "kind": "mcq",
+     "q": "9번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "rate = df_big.groupby(\"brand\")[\"no_fuel\"].mean()",
+      "rate = df_big.groupby(\"brand\")[\"no_fuel\"].count()",
+      "rate = df.groupby(\"brand\")[\"no_fuel\"].mean()",
+      "rate = df_big.groupby(\"brand\")[\"fuel\"].count()"
+     ],
+     "answer": 0,
+     "explain": "True/False의 평균이 True의 비율이라 mean()이 '연료가 빈 매물 수 ÷ 전체 매물 수'가 돼요. count()는 전체 매물 수, df로 바꾸면 120대 미만 제조사까지 비교하게 되고, fuel의 count()는 연료가 적힌 매물 수예요.",
+     "code": "start"
+    }
+   ],
+   "explain": "결측치 '비율'은 isna()로 만든 True/False 열의 mean()으로 구해요(True 개수 ÷ 전체 개수). sum()은 개수라서 매물이 많은 제조사가 늘 앞서요. 비교 대상을 120대 이상으로 먼저 거른 df_big에서 계산해야 매물이 적은 제조사가 끼어들지 않아요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "제조사 세 곳의 매물 연료(NaN = 적지 않음)",
+     "alt": "제조사 K는 매물 10대 중 4대, B는 6대 중 3대, T는 3대 중 2대의 연료가 NaN인 표.",
+     "head": [
+      "brand",
+      "매물별 fuel"
+     ],
+     "rows": [
+      [
+       "K",
+       "gas, NaN, gas, diesel, NaN, gas, NaN, gas, NaN, diesel"
+      ],
+      [
+       "B",
+       "NaN, diesel, NaN, gas, NaN, hybrid"
+      ],
+      [
+       "T",
+       "NaN, gas, NaN"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t09-adv5",
+   "version": 1,
+   "title": "정리한 날씨로 본 비 온 날 비율",
+   "statement": "도시별 날씨 데이터에서 강수량(`rain_mm`)과 풍속(`wind_speed`)은 측정하지 못한 날에 칸이 비어 있습니다(결측치). 이 데이터를 다음 규칙으로 정리하려고 합니다.\n- 풍속을 측정하지 못한 날은 분석에서 뺍니다.\n- 강수량만 측정하지 못한 날은 비가 오지 않은 날(0mm)로 보고 남겨 둡니다.\n\n정리한 데이터에서 도시(`city`)마다 비 온 날(강수량이 0mm보다 큰 날)의 비율(%)을 구한 뒤, 비율이 가장 높은 도시와 가장 낮은 도시의 비율 차이를 구하려고 다음 코드를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"weather_daily.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "weather_daily.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"weather_daily.csv\")\n\ndf_ok = df.dropna(subset=[\"rain_mm\", \"wind_speed\"]).copy()\ndf_ok[\"rain_mm\"] = df_ok[\"rain_mm\"].fillna(0)\ndf_ok[\"rainy\"] = df_ok[\"rain_mm\"] > 0\nrate = df_ok.groupby(\"city\")[\"rainy\"].mean() * 100\n\ndef solution():\n    answer = round(rate.max() - rate.min(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 5,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"weather_daily.csv\")\n\ndf_ok = df.dropna(subset=[\"wind_speed\"]).copy()\ndf_ok[\"rain_mm\"] = df_ok[\"rain_mm\"].fillna(0)\ndf_ok[\"rainy\"] = df_ok[\"rain_mm\"] > 0\nrate = df_ok.groupby(\"city\")[\"rainy\"].mean() * 100\n\ndef solution():\n    answer = round(rate.max() - rate.min(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 6.51
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 5.48
+    },
+    {
+     "data": 2,
+     "expected": 3.24
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "다음 날 중 정리한 데이터에 '비가 오지 않은 날'로 남는 날은 어느 것일까요?",
+     "options": [
+      "강수량은 4.5, 풍속은 NaN인 날",
+      "강수량과 풍속이 모두 NaN인 날",
+      "강수량은 6.0, 풍속은 2.1인 날",
+      "강수량은 NaN, 풍속은 3.2인 날"
+     ],
+     "answer": 3,
+     "explain": "풍속이 NaN인 날은 빼요. 강수량만 NaN인 날은 0mm(비 안 옴)로 채워 남겨요. 강수량 6.0인 날은 남지만 비 온 날이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`dropna(subset=[\"A\", \"B\"])`는 어떤 행을 지울까요?",
+     "options": [
+      "A와 B가 모두 결측치인 행만",
+      "A나 B 중 하나라도 결측치인 행",
+      "A가 결측치인 행만",
+      "A·B 열을 통째로 지운다"
+     ],
+     "answer": 1,
+     "explain": "subset에 적은 열 가운데 하나라도 NaN이면 그 행을 지워요. 둘 다 NaN일 때만 지우려면 how=\"all\"을 더 써야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "하루씩 따라가기",
+     "prompt": "어느 도시의 6일 기록이 아래와 같아요. 문제의 규칙대로 정리했을 때 남는 날과, 틀린 코드의 5번 줄 뒤에 남는 날을 O·X로 표시해 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "날",
+      "문제의 규칙대로 남나요?",
+      "틀린 코드의 5번 줄 뒤 남나요?"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       },
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"rain_mm\": [0.0, None, 4.0, None, 2.5, 0.0], \"wind_speed\": [3.1, 2.5, None, 1.8, 4.2, 2.2]})\n    keep = df.dropna(subset=[\"wind_speed\"]).index\n    wrong = df.dropna(subset=[\"rain_mm\", \"wind_speed\"]).index\n    out = []\n    for i in df.index:\n        out += [\"O\" if i in keep else \"X\", \"O\" if i in wrong else \"X\"]\n    return out",
+     "explain": "규칙대로라면 풍속이 빈 날 3만 빠져요. 틀린 코드는 강수량이 빈 날 2·4까지 지워서, 0mm로 채워 남겨야 할 날이 사라져요.",
+     "code": "start"
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "비 온 날 비율 비교",
+     "prompt": "위 6일로 두 경우의 남은 날 수, 비 온 날 수, 비 온 날 비율(%)을 구해 보세요(반올림 둘째 자리).",
+     "columns": [
+      "구분",
+      "남은 날 수",
+      "비 온 날 수",
+      "비 온 날 비율(%)"
+     ],
+     "rows": [
+      [
+       "문제의 규칙",
+       {
+        "a": "5",
+        "alts": [
+         "5.0"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       },
+       {
+        "a": "20",
+        "alts": [
+         "20.0"
+        ]
+       }
+      ],
+      [
+       "틀린 코드",
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       },
+       {
+        "a": "33.33"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    df = pd.DataFrame({\"rain_mm\": [0.0, None, 4.0, None, 2.5, 0.0], \"wind_speed\": [3.1, 2.5, None, 1.8, 4.2, 2.2]})\n    out = []\n    for sub in [[\"wind_speed\"], [\"rain_mm\", \"wind_speed\"]]:\n        d = df.dropna(subset=sub).copy()\n        d[\"rain_mm\"] = d[\"rain_mm\"].fillna(0)\n        r = d[\"rain_mm\"] > 0\n        out += [len(d), int(r.sum()), f(r.mean() * 100)]\n    return out",
+     "explain": "비 온 날 수는 같아도, 비가 오지 않은 날이 지워져 분모(남은 날 수)가 줄면 비율이 커져요.",
+     "code": "start"
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "틀린 코드에서 6번 줄 `df_ok[\"rain_mm\"].fillna(0)`은 어떤 일을 할까요?",
+     "options": [
+      "강수량이 빈 날을 0mm로 바꿔 비가 오지 않은 날로 남긴다",
+      "채울 NaN이 남아 있지 않아 아무것도 바뀌지 않는다",
+      "풍속이 빈 날을 0으로 채운다",
+      "비 온 날을 모두 0mm로 바꾼다"
+     ],
+     "answer": 1,
+     "explain": "5번 줄에서 강수량이 NaN인 날까지 이미 지웠기 때문에 6번 줄이 채울 칸이 하나도 없어요. 지우기(dropna)와 채우기(fillna)의 대상과 순서를 함께 따져야 해요.",
+     "code": "start"
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "예시 데이터에서 세어 보기",
+     "prompt": "예시 데이터에서 두 값을 구해 보세요. `isna().sum()`과 `|`를 써서 직접 print해 보면 돼요.",
+     "columns": [
+      "구하는 것",
+      "값"
+     ],
+     "rows": [
+      [
+       "풍속을 측정하지 못한 날 수(규칙대로 빼야 하는 날)",
+       {
+        "a": "33",
+        "alts": [
+         "33.0"
+        ]
+       }
+      ],
+      [
+       "강수량이나 풍속 중 하나라도 빈 날 수(틀린 코드가 지우는 날)",
+       {
+        "a": "90",
+        "alts": [
+         "90.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"weather_daily.csv\")\n    return [int(df[\"wind_speed\"].isna().sum()), int((df[\"rain_mm\"].isna() | df[\"wind_speed\"].isna()).sum())]",
+     "explain": "틀린 코드는 빼야 할 33일보다 훨씬 많은 90일을 지워요. 그 차이는 0mm로 채워 남겨야 했던 '강수량만 빈 날'이에요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "5번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "df_ok = df.dropna(subset=[\"rain_mm\"]).copy()",
+      "df_ok = df.dropna(subset=[\"rain_mm\", \"wind_speed\"], how=\"all\").copy()",
+      "df_ok = df.dropna(subset=[\"wind_speed\"]).copy()",
+      "df_ok = df.fillna(0).copy()"
+     ],
+     "answer": 2,
+     "explain": "풍속만 기준으로 지워야 강수량이 빈 날이 남아 6번 줄에서 0mm로 채워져요. rain_mm 기준은 거꾸로 된 규칙이고, how=\"all\"은 둘 다 빈 날만 지워서 풍속이 빈 날이 남아요. fillna(0)은 아무 날도 지우지 않아요.",
+     "code": "start"
+    },
+    {
+     "id": "s8",
+     "kind": "mcq",
+     "q": "고친 코드의 흐름을 순서대로 바르게 적은 것은?",
+     "options": [
+      "풍속이 빈 날 지우기 → 강수량 빈 칸 0으로 채우기 → 비 온 날 표시 → 도시별 비율 → 가장 높은 비율 − 가장 낮은 비율",
+      "강수량이 빈 날 지우기 → 풍속 빈 칸 0으로 채우기 → 비 온 날 표시 → 도시별 비율 → 가장 높은 비율 − 가장 낮은 비율",
+      "도시별 비율 → 풍속이 빈 날 지우기 → 강수량 빈 칸 0으로 채우기 → 가장 높은 비율 − 가장 낮은 비율",
+      "비 온 날 표시 → 모든 빈 칸 0으로 채우기 → 도시별 비율 → 가장 높은 비율 − 가장 낮은 비율"
+     ],
+     "answer": 0,
+     "explain": "먼저 뺄 날(풍속이 빈 날)을 지우고, 남은 날의 빈 강수량을 0mm로 채운 다음 비 온 날을 True/False로 표시해요. 그 평균 × 100이 도시별 비 온 날 비율이고, max() − min()이 답이에요."
+    }
+   ],
+   "explain": "`dropna(subset=[…])`는 적은 열 가운데 하나라도 결측치인 행을 지워요. 강수량까지 기준에 넣으면 0mm로 채워야 할 날이 먼저 지워져서, 6번 줄의 fillna(0)은 채울 칸이 없고 비 온 날 비율의 분모(날 수)가 줄어요. 지울 열(풍속)과 채울 열(강수량)을 나눠서, 지우기는 풍속 기준으로만 해야 해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "한 도시의 6일 기록(NaN = 측정 못 함)",
+     "alt": "날 1~6의 rain_mm과 wind_speed 표. 날 2·4는 강수량이 NaN, 날 3은 풍속이 NaN이고 비가 온 날은 날 3과 날 5이다.",
+     "head": [
+      "날",
+      "rain_mm",
+      "wind_speed"
+     ],
+     "rows": [
+      [
+       1,
+       0.0,
+       3.1
+      ],
+      [
+       2,
+       "NaN",
+       2.5
+      ],
+      [
+       3,
+       4.0,
+       "NaN"
+      ],
+      [
+       4,
+       "NaN",
+       1.8
+      ],
+      [
+       5,
+       2.5,
+       4.2
+      ],
+      [
+       6,
+       0.0,
+       2.2
+      ]
+     ]
+    }
+   ]
+  }
+ ]
+}

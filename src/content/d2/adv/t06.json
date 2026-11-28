@@ -1,0 +1,1552 @@
+{
+ "course": "d2",
+ "type": 6,
+ "typeTitle": "가장 많은 값 찾기",
+ "kind": "blank",
+ "skills": [
+  "value_counts",
+  "idxmax·idxmin",
+  "조건 필터·& 두 조건",
+  "결측치(isna·notna·count)",
+  "loc[이름표, 열]"
+ ],
+ "intro": "가장 적은 값(idxmin), 조건으로 먼저 고른 뒤 세기, 가장 많은 값을 두 번 찾기, 결측치 규칙, 행 이름표(idxmax)로 다른 열 꺼내기까지 연습해요. 1→5로 고르는 조건과 찾는 단계가 늘어나요.",
+ "problems": [
+  {
+   "id": "d2-t06-adv1",
+   "version": 1,
+   "title": "가장 적게 주문된 메뉴의 별점 수",
+   "statement": "카페 주문 데이터에서 주문 건수가 **가장 적은** 메뉴(menu)를 찾고, 그 메뉴의 주문 가운데 별점(rating)을 남긴 주문이 몇 건인지 구하려고 합니다. 별점을 남기지 않은 주문은 rating 칸이 비어 있습니다(결측치).\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "figures": [
+    {
+     "id": "vc",
+     "kind": "table",
+     "alt": "value_counts 결과: Latte 5, Mocha 3, Tea 2",
+     "head": [
+      "이름표(menu)",
+      "값(개수)"
+     ],
+     "rows": [
+      [
+       "Latte",
+       5
+      ],
+      [
+       "Mocha",
+       3
+      ],
+      [
+       "Tea",
+       2
+      ]
+     ]
+    },
+    {
+     "id": "low",
+     "kind": "table",
+     "alt": "가장 적게 주문된 메뉴 Tea의 주문 5건: rating은 4, 빈 값, 5, 빈 값, 3",
+     "head": [
+      "행",
+      "menu",
+      "rating"
+     ],
+     "rows": [
+      [
+       0,
+       "Tea",
+       4.0
+      ],
+      [
+       1,
+       "Tea",
+       "NaN"
+      ],
+      [
+       2,
+       "Tea",
+       5.0
+      ],
+      [
+       3,
+       "Tea",
+       "NaN"
+      ],
+      [
+       4,
+       "Tea",
+       3.0
+      ]
+     ]
+    }
+   ],
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    low_menu = df[\"menu\"].⟦1⟧().⟦2⟧()\n    df_low = df.loc[df[\"menu\"] ⟦3⟧ low_menu, ]\n    answer = df_low[\"rating\"].⟦4⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "value_counts"
+    },
+    {
+     "answer": "idxmin"
+    },
+    {
+     "answer": "=="
+    },
+    {
+     "answer": "count",
+     "alts": [
+      "notna().sum"
+     ]
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    low_menu = df[\"menu\"].value_counts().idxmin()\n    df_low = df.loc[df[\"menu\"] == low_menu, ]\n    answer = df_low[\"rating\"].count()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 56
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 45
+    },
+    {
+     "data": 2,
+     "expected": 52
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "데이터에서 값이 비어 있는 칸을 **결측치**라고 해요. 별점을 남기지 않은 주문의 rating은 pandas에서 어떻게 보일까요?",
+     "options": [
+      "NaN (빈 값)",
+      "0",
+      "1",
+      "'없음'이라는 글자"
+     ],
+     "answer": 0,
+     "explain": "pandas는 빈 칸을 NaN(Not a Number)으로 보여 줘요. 0점과는 다른 값이라서, 별점을 남긴 주문만 세려면 NaN을 빼고 세야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "idxmin과 min 구별하기",
+     "prompt": "어떤 작은 표에서 `vc = mini[\"menu\"].value_counts()`의 결과가 다음과 같아요.\n{{fig:vc}}\n각 코드의 결과를 채워 보세요(이름은 따옴표 없이 써도 돼요).",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "vc.idxmax()",
+       {
+        "a": "Latte",
+        "alts": [
+         "'Latte'"
+        ]
+       }
+      ],
+      [
+       "vc.max()",
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "vc.idxmin()",
+       {
+        "a": "Tea",
+        "alts": [
+         "'Tea'"
+        ]
+       }
+      ],
+      [
+       "vc.min()",
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nvc = pd.Series([5, 3, 2], index=[\"Latte\", \"Mocha\", \"Tea\"])\ndef answers():\n    return [vc.idxmax(), int(vc.max()), vc.idxmin(), int(vc.min())]",
+     "explain": "idxmin()은 가장 작은 값이 붙은 이름표를 돌려줘요. 이 문제는 가장 적게 주문된 메뉴의 '이름'이 필요하니 min()이 아니라 idxmin()을 써요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "주문 건수가 가장 적은 메뉴의 이름을 얻는 코드는 무엇일까요?",
+     "options": [
+      "df[\"menu\"].value_counts().idxmin()",
+      "df[\"menu\"].value_counts().min()",
+      "df[\"menu\"].value_counts().idxmax()",
+      "df[\"menu\"].min()"
+     ],
+     "answer": 0,
+     "explain": "value_counts().min()은 가장 작은 개수(숫자)를, idxmax()는 가장 많은 메뉴를 줘요. `df[\"menu\"].min()`은 개수를 세지 않고 메뉴 이름을 알파벳순으로 비교해 가장 앞선 이름을 줘요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(cafe_orders.csv)에서 주문 건수가 가장 적은 메뉴는 무엇일까요? 코드에서 print()로 확인해 보세요.",
+     "a": "Espresso",
+     "alts": [
+      "'Espresso'"
+     ],
+     "check": "import pandas as pd\ndef answers():\n    df = pd.read_csv(\"cafe_orders.csv\")\n    return [df[\"menu\"].value_counts().idxmin()]",
+     "explain": "`print(df[\"menu\"].value_counts())`를 해 보면 Espresso가 84건으로 가장 적어요. 숨은 데이터에서는 다른 메뉴가 가장 적을 수 있으니 메뉴 이름을 코드에 직접 쓰면 안 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "빈 칸까지 셀까, 뺄까",
+     "prompt": "가장 적게 주문된 메뉴의 주문만 고른 작은 표 `df_low`예요(NaN은 빈 칸).\n{{fig:low}}\n각 코드의 결과를 채워 보세요. `isna()`는 칸마다 비어 있으면 True를 줘요.",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "len(df_low)",
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "df_low[\"rating\"].count()",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "df_low[\"rating\"].isna().sum()",
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\ndf_low = pd.DataFrame({'menu': ['Tea', 'Tea', 'Tea', 'Tea', 'Tea'], 'rating': [4.0, float(\"nan\"), 5.0, float(\"nan\"), 3.0]})\ndef answers():\n    return [len(df_low), int(df_low[\"rating\"].count()), int(df_low[\"rating\"].isna().sum())]",
+     "explain": "len()은 행의 수라 NaN인 주문까지 세요. count()는 값이 있는 칸만 세므로 별점을 남긴 주문 수(3)가 돼요. isna().sum()은 True를 1로 더해 빈 칸의 수(2)를 줘요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "code": "start",
+     "q": "마지막 줄을 `answer = len(df_low)`로 쓰면 어떻게 될까요?",
+     "options": [
+      "별점을 남기지 않은 주문까지 세어, 답보다 크거나 같은 값이 나온다",
+      "답과 언제나 같은 값이 나온다",
+      "오류가 나서 실행되지 않는다",
+      "별점의 합계가 나온다"
+     ],
+     "answer": 0,
+     "explain": "len(df_low)는 그 메뉴의 주문 건수 전체예요. 예시 데이터의 Espresso 주문 84건에는 별점이 빈 주문도 섞여 있어서, 값이 있는 칸만 세는 count()와 결과가 달라요."
+    }
+   ],
+   "explain": "`value_counts().idxmin()`으로 주문 건수가 가장 적은 메뉴 이름을 찾고, 그 메뉴의 행만 고른 뒤 rating의 `count()`로 값이 있는 칸만 세요. `len()`은 비어 있는 칸(NaN)이 있는 행까지 세므로 별점을 남긴 주문 수가 아니에요."
+  },
+  {
+   "id": "d2-t06-adv2",
+   "version": 1,
+   "title": "무사고 매물이 많은 제조사의 평균가",
+   "statement": "중고차 매물 데이터에서 사고 이력이 없는(accident가 \"N\") 매물만 놓고 매물이 가장 많은 제조사(brand)를 찾습니다. 그다음 그 제조사의 사고 이력이 없는 매물들의 평균 가격(price, 만 원)을 구하려고 합니다.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
+   "answerFormat": "1234.56",
+   "data": {
+    "files": [
+     "used_cars.csv"
+    ]
+   },
+   "figures": [
+    {
+     "id": "mini",
+     "kind": "table",
+     "alt": "매물 8개짜리 작은 표 mini: 행 번호, brand, accident, price",
+     "head": [
+      "행",
+      "brand",
+      "accident",
+      "price"
+     ],
+     "rows": [
+      [
+       0,
+       "Kia",
+       "Y",
+       900
+      ],
+      [
+       1,
+       "Hyundai",
+       "N",
+       1250
+      ],
+      [
+       2,
+       "Kia",
+       "Y",
+       700
+      ],
+      [
+       3,
+       "Hyundai",
+       "N",
+       980
+      ],
+      [
+       4,
+       "Kia",
+       "N",
+       1100
+      ],
+      [
+       5,
+       "BMW",
+       "N",
+       2300
+      ],
+      [
+       6,
+       "Kia",
+       "Y",
+       650
+      ],
+      [
+       7,
+       "Hyundai",
+       "N",
+       1431
+      ]
+     ]
+    }
+   ],
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    df_ok = df.loc[df[\"accident\"] == ⟦1⟧, ]\n    top_brand = df_ok[\"brand\"].⟦2⟧().⟦3⟧()\n    df_top = df.loc[(df[\"accident\"] == \"N\") ⟦4⟧ (df[\"brand\"] == top_brand), ]\n    answer = round(df_top[\"price\"].⟦5⟧(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"N\"",
+     "alts": [
+      "'N'"
+     ]
+    },
+    {
+     "answer": "value_counts"
+    },
+    {
+     "answer": "idxmax"
+    },
+    {
+     "answer": "&"
+    },
+    {
+     "answer": "mean"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    df_ok = df.loc[df[\"accident\"] == \"N\", ]\n    top_brand = df_ok[\"brand\"].value_counts().idxmax()\n    df_top = df.loc[(df[\"accident\"] == \"N\") & (df[\"brand\"] == top_brand), ]\n    answer = round(df_top[\"price\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 1104.14
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 1100.37
+    },
+    {
+     "data": 2,
+     "expected": 1080.6
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제에서 일을 하는 순서로 알맞은 것은?",
+     "options": [
+      "사고 없는 매물만 고른다 → 그 안에서 제조사를 센다 → 사고 없는 그 제조사 매물의 가격 평균을 구한다",
+      "전체에서 제조사를 센다 → 사고 없는 매물만 고른다 → 그 제조사 매물의 가격 평균을 구한다",
+      "전체에서 제조사를 센다 → 그 제조사의 모든 매물로 가격 평균을 구한다",
+      "사고 있는 매물만 고른다 → 그 안에서 제조사를 센다 → 가격 평균을 구한다"
+     ],
+     "answer": 0,
+     "explain": "'사고 이력이 없는 매물만 놓고' 세라고 했으니 고르기가 먼저예요. 평균도 사고 없는 매물로만 구해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "어디서 세느냐에 따라",
+     "prompt": "매물 8개짜리 작은 표 `mini`예요.\n{{fig:mini}}\n제조사마다 전체에서 센 개수와, accident가 N인 매물만 센 개수를 채워 보세요.",
+     "columns": [
+      "brand",
+      "전체에서 센 개수",
+      "accident가 N인 매물에서 센 개수"
+     ],
+     "rows": [
+      [
+       "Kia",
+       {
+        "a": "4"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "Hyundai",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "BMW",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'brand': ['Kia', 'Hyundai', 'Kia', 'Hyundai', 'Kia', 'BMW', 'Kia', 'Hyundai'], 'accident': ['Y', 'N', 'Y', 'N', 'N', 'N', 'Y', 'N'], 'price': [900, 1250, 700, 980, 1100, 2300, 650, 1431]})\ndef answers():\n    a = mini[\"brand\"].value_counts()\n    b = mini.loc[mini[\"accident\"] == \"N\", ][\"brand\"].value_counts()\n    out = []\n    for k in [\"Kia\", \"Hyundai\", \"BMW\"]:\n        out += [int(a.get(k, 0)), int(b.get(k, 0))]\n    return out",
+     "explain": "전체에서 세면 Kia(4개)가 가장 많지만, 사고 없는 매물만 세면 Hyundai(3개)가 가장 많아요. 어디서 세느냐에 따라 \"가장 많은 값\"이 달라져요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "예시 데이터 전체에서 brand를 세면 Kia와 Hyundai가 똑같이 435개라 1등을 정할 수 없어요. accident가 N인 매물만 세면 가장 많은 제조사는 무엇일까요? print()로 확인해 보세요.",
+     "a": "Hyundai",
+     "alts": [
+      "'Hyundai'"
+     ],
+     "check": "import pandas as pd\ndef answers():\n    df = pd.read_csv(\"used_cars.csv\")\n    df_ok = df.loc[df[\"accident\"] == \"N\", ]\n    return [df_ok[\"brand\"].value_counts().idxmax()]",
+     "explain": "사고 없는 매물만 세면 Hyundai가 350개, Kia가 339개라 Hyundai가 1등이에요. 문제의 조건대로 먼저 고르고 세야 1등이 분명해져요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "두 조건 모두 만족(&)",
+     "prompt": "두 조건을 **모두** 만족하는 행을 고를 때는 `&`를 써요. 줄마다 두 값을 `&`로 묶은 결과를 채워 보세요.",
+     "columns": [
+      "accident == \"N\"",
+      "brand == \"Hyundai\"",
+      "두 값을 &로 묶은 결과"
+     ],
+     "rows": [
+      [
+       "True",
+       "True",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "True",
+       "False",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "False",
+       "True",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "False",
+       "False",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "import pandas as pd\ndef answers():\n    a = pd.Series([True, True, False, False])\n    b = pd.Series([True, False, True, False])\n    return [bool(x) for x in (a & b)]",
+     "explain": "&는 두 값이 모두 True일 때만 True예요. 하나라도 False이면 False라서 \"사고 없고 Hyundai인\" 매물만 남아요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "top_brand에 \"Hyundai\"가 들어 있을 때, 사고 없는 Hyundai 매물만 고르는 조건으로 알맞은 것은?",
+     "options": [
+      "(df[\"accident\"] == \"N\") & (df[\"brand\"] == top_brand)",
+      "df[\"accident\"] == \"N\" & df[\"brand\"] == top_brand",
+      "(df[\"accident\"] == \"N\") and (df[\"brand\"] == top_brand)",
+      "(df[\"accident\"] == \"N\") | (df[\"brand\"] == top_brand)"
+     ],
+     "answer": 0,
+     "explain": "&는 ==보다 먼저 계산돼서 괄호가 없으면 오류가 나요. and는 여러 값이 든 Series끼리 쓸 수 없어 오류가 나고, |는 \"또는\"이라 사고 난 Hyundai나 사고 없는 다른 제조사까지 골라요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "작은 표 `mini`에서 사고 없는 Hyundai 매물의 가격은 1250, 980, 1431이에요. 이 가격들의 평균을 `round(평균, 2)`로 반올림하면 얼마일까요?",
+     "a": "1220.33",
+     "check": "import pandas as pd\nmini = pd.DataFrame({'brand': ['Kia', 'Hyundai', 'Kia', 'Hyundai', 'Kia', 'BMW', 'Kia', 'Hyundai'], 'accident': ['Y', 'N', 'Y', 'N', 'N', 'N', 'Y', 'N'], 'price': [900, 1250, 700, 980, 1100, 2300, 650, 1431]})\ndef answers():\n    df_ok = mini.loc[mini[\"accident\"] == \"N\", ]\n    top = df_ok[\"brand\"].value_counts().idxmax()\n    df_top = mini.loc[(mini[\"accident\"] == \"N\") & (mini[\"brand\"] == top), ]\n    return [float(round(df_top[\"price\"].mean(), 2))]",
+     "explain": "(1250 + 980 + 1431) ÷ 3 = 1220.333…이고 소수점 둘째 자리까지 반올림하면 1220.33이에요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "code": "start",
+     "q": "`df_top`을 고를 때 accident 조건을 빼고 `df.loc[df[\"brand\"] == top_brand, ]`만 쓰면 어떻게 될까요?",
+     "options": [
+      "사고 난 그 제조사 매물까지 평균에 들어가 답이 달라질 수 있다",
+      "언제나 답이 그대로다",
+      "오류가 나서 실행되지 않는다",
+      "전체에서 가장 많은 제조사의 평균이 나온다"
+     ],
+     "answer": 0,
+     "explain": "작은 표에는 사고 난 Hyundai가 없어 같지만, 예시 데이터에는 사고 난 Hyundai 매물도 있어서 두 가지로 print()해 보면 평균이 달라요. 셀 때와 평균을 낼 때 모두 같은 조건으로 골라야 해요."
+    }
+   ],
+   "explain": "먼저 `df.loc[df[\"accident\"] == \"N\", ]`으로 사고 없는 매물만 고르고, 그 안에서 `value_counts().idxmax()`로 가장 많은 제조사를 찾아요. 평균을 낼 때도 두 조건을 `&`로 묶어(조건마다 괄호) 사고 없는 그 제조사 매물만 골라야 해요. 고르기 전 전체에서 세면 1등이 바뀌거나 동점이 될 수 있어요."
+  },
+  {
+   "id": "d2-t06-adv3",
+   "version": 1,
+   "title": "가장 붐비는 시각의 인기 정류소",
+   "statement": "공공 자전거 대여 데이터에서 대여가 가장 많은 대여 시각(hour)을 먼저 찾습니다. 그다음 그 시각에 빌린 대여만 놓고 대여가 가장 많은 정류소(station)를 찾아, 그 시각에 그 정류소에서 빌린 대여 가운데 가장 긴 이용 시간(minutes, 분)을 구하려고 합니다.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "bike_rentals.csv"
+    ]
+   },
+   "figures": [
+    {
+     "id": "mini",
+     "kind": "table",
+     "alt": "대여 9건짜리 작은 표 mini: 행 번호, hour, station, minutes",
+     "head": [
+      "행",
+      "hour",
+      "station",
+      "minutes"
+     ],
+     "rows": [
+      [
+       0,
+       8,
+       "Sinsa",
+       12
+      ],
+      [
+       1,
+       18,
+       "Mangwon",
+       30
+      ],
+      [
+       2,
+       8,
+       "Gongdeok",
+       25
+      ],
+      [
+       3,
+       8,
+       "Gongdeok",
+       40
+      ],
+      [
+       4,
+       12,
+       "Mangwon",
+       15
+      ],
+      [
+       5,
+       8,
+       "Mangwon",
+       9
+      ],
+      [
+       6,
+       18,
+       "Mangwon",
+       22
+      ],
+      [
+       7,
+       8,
+       "Gongdeok",
+       18
+      ],
+      [
+       8,
+       18,
+       "Sinsa",
+       50
+      ]
+     ]
+    }
+   ],
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    top_hour = df[\"hour\"].⟦1⟧().⟦2⟧()\n    df_hour = df.loc[df[\"hour\"] == top_hour, ]\n    top_station = ⟦3⟧[\"station\"].value_counts().idxmax()\n    df_both = df_hour.loc[df_hour[\"station\"] ⟦4⟧ top_station, ]\n    answer = df_both[⟦5⟧].⟦6⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "value_counts"
+    },
+    {
+     "answer": "idxmax"
+    },
+    {
+     "answer": "df_hour"
+    },
+    {
+     "answer": "=="
+    },
+    {
+     "answer": "\"minutes\"",
+     "alts": [
+      "'minutes'"
+     ]
+    },
+    {
+     "answer": "max"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    top_hour = df[\"hour\"].value_counts().idxmax()\n    df_hour = df.loc[df[\"hour\"] == top_hour, ]\n    top_station = df_hour[\"station\"].value_counts().idxmax()\n    df_both = df_hour.loc[df_hour[\"station\"] == top_station, ]\n    answer = df_both[\"minutes\"].max()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 56
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 114
+    },
+    {
+     "data": 2,
+     "expected": 61
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제를 작은 일로 나눈 순서로 알맞은 것은?",
+     "options": [
+      "가장 많은 hour 찾기 → 그 시각 행 고르기 → 고른 행에서 가장 많은 station 찾기 → 그 정류소 행 고르기 → minutes 최댓값",
+      "가장 많은 hour 찾기 → 전체에서 가장 많은 station 찾기 → 두 조건으로 행 고르기 → minutes 최댓값",
+      "가장 많은 station 찾기 → 그 정류소 행 고르기 → 가장 많은 hour 찾기 → minutes 최댓값",
+      "minutes 최댓값 찾기 → 그 행의 hour와 station 읽기"
+     ],
+     "answer": 0,
+     "explain": "정류소는 '그 시각에 빌린 대여만 놓고' 세라고 했으니, 시각으로 먼저 고른 표에서 세야 해요. '가장 많은 값 찾기 → 고르기'를 두 번 하는 셈이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "short",
+     "q": "대여 9건짜리 작은 표 `mini`예요.\n{{fig:mini}}\n`mini[\"hour\"].value_counts().idxmax()`의 결과는 무엇일까요?",
+     "a": "8",
+     "check": "import pandas as pd\nmini = pd.DataFrame({'hour': [8, 18, 8, 8, 12, 8, 18, 8, 18], 'station': ['Sinsa', 'Mangwon', 'Gongdeok', 'Gongdeok', 'Mangwon', 'Mangwon', 'Mangwon', 'Gongdeok', 'Sinsa'], 'minutes': [12, 30, 25, 40, 15, 9, 22, 18, 50]})\ndef answers():\n    return [int(mini[\"hour\"].value_counts().idxmax())]",
+     "explain": "hour 8은 0·2·3·5·7행으로 5번, 18은 3번, 12는 1번 나와서 8이 가장 많아요. 시각이 숫자라도 같은 값끼리 세는 방법은 똑같아요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "어느 표에서 세느냐",
+     "prompt": "작은 표 `mini`에서 정류소마다 전체에서 센 개수와, hour가 8인 행(`df_hour`)에서만 센 개수를 채워 보세요.\n{{fig:mini}}",
+     "columns": [
+      "station",
+      "mini에서 센 개수",
+      "hour가 8인 행에서 센 개수"
+     ],
+     "rows": [
+      [
+       "Gongdeok",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "Mangwon",
+       {
+        "a": "4"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "Sinsa",
+       {
+        "a": "2"
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'hour': [8, 18, 8, 8, 12, 8, 18, 8, 18], 'station': ['Sinsa', 'Mangwon', 'Gongdeok', 'Gongdeok', 'Mangwon', 'Mangwon', 'Mangwon', 'Gongdeok', 'Sinsa'], 'minutes': [12, 30, 25, 40, 15, 9, 22, 18, 50]})\ndef answers():\n    a = mini[\"station\"].value_counts()\n    b = mini.loc[mini[\"hour\"] == 8, ][\"station\"].value_counts()\n    out = []\n    for k in [\"Gongdeok\", \"Mangwon\", \"Sinsa\"]:\n        out += [int(a.get(k, 0)), int(b.get(k, 0))]\n    return out",
+     "explain": "전체에서 세면 Mangwon(4번)이 가장 많지만, 8시 대여만 세면 Gongdeok(3번)이 가장 많아요. 그래서 station을 셀 때는 df가 아니라 df_hour를 써야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "가장 붐비는 시각의 대여만 담은 `df_hour`가 있을 때, 그 시각에 대여가 가장 많은 정류소를 찾는 코드는 무엇일까요?",
+     "options": [
+      "df_hour[\"station\"].value_counts().idxmax()",
+      "df[\"station\"].value_counts().idxmax()",
+      "df_hour[\"station\"].value_counts().max()",
+      "df_hour[\"hour\"].value_counts().idxmax()"
+     ],
+     "answer": 0,
+     "explain": "df로 세면 모든 시각의 대여를 세게 돼요. max()는 이름이 아니라 개수만 주고, hour 열을 세면 다시 시각이 나와요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "두 번째 고르기",
+     "prompt": "top_hour가 8, top_station이 Gongdeok일 때 `df_hour`(hour가 8인 행)의 행마다 `station == \"Gongdeok\"`의 값을 채워 보세요.",
+     "columns": [
+      "행",
+      "station",
+      "minutes",
+      "station == \"Gongdeok\""
+     ],
+     "rows": [
+      [
+       "0",
+       "Sinsa",
+       "12",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2",
+       "Gongdeok",
+       "25",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "3",
+       "Gongdeok",
+       "40",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "5",
+       "Mangwon",
+       "9",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "7",
+       "Gongdeok",
+       "18",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'hour': [8, 18, 8, 8, 12, 8, 18, 8, 18], 'station': ['Sinsa', 'Mangwon', 'Gongdeok', 'Gongdeok', 'Mangwon', 'Mangwon', 'Mangwon', 'Gongdeok', 'Sinsa'], 'minutes': [12, 30, 25, 40, 15, 9, 22, 18, 50]})\ndef answers():\n    df_hour = mini.loc[mini[\"hour\"] == mini[\"hour\"].value_counts().idxmax(), ]\n    top = df_hour[\"station\"].value_counts().idxmax()\n    return [bool(x) for x in (df_hour[\"station\"] == top)]",
+     "explain": "df_hour에는 0·2·3·5·7행만 있고, 그중 Gongdeok인 2·3·7행이 df_both로 남아요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "작은 표 `mini`에서 이 문제의 답(8시에 Gongdeok에서 빌린 대여의 가장 긴 이용 시간)은 얼마일까요?",
+     "a": "40",
+     "check": "import pandas as pd\nmini = pd.DataFrame({'hour': [8, 18, 8, 8, 12, 8, 18, 8, 18], 'station': ['Sinsa', 'Mangwon', 'Gongdeok', 'Gongdeok', 'Mangwon', 'Mangwon', 'Mangwon', 'Gongdeok', 'Sinsa'], 'minutes': [12, 30, 25, 40, 15, 9, 22, 18, 50]})\ndef answers():\n    df_hour = mini.loc[mini[\"hour\"] == mini[\"hour\"].value_counts().idxmax(), ]\n    top = df_hour[\"station\"].value_counts().idxmax()\n    return [int(df_hour.loc[df_hour[\"station\"] == top, ][\"minutes\"].max())]",
+     "explain": "Gongdeok의 8시 대여는 25, 40, 18분이라 가장 긴 값은 40이에요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "정류소를 셀 때 실수로 `df[\"station\"]`(전체)에서 세면, 작은 표 `mini`에서는 top_station이 Mangwon이 돼요. 그러면 `df_hour`에서 Mangwon 행의 minutes 최댓값은 얼마가 나올까요?",
+     "a": "9",
+     "check": "import pandas as pd\nmini = pd.DataFrame({'hour': [8, 18, 8, 8, 12, 8, 18, 8, 18], 'station': ['Sinsa', 'Mangwon', 'Gongdeok', 'Gongdeok', 'Mangwon', 'Mangwon', 'Mangwon', 'Gongdeok', 'Sinsa'], 'minutes': [12, 30, 25, 40, 15, 9, 22, 18, 50]})\ndef answers():\n    df_hour = mini.loc[mini[\"hour\"] == mini[\"hour\"].value_counts().idxmax(), ]\n    wrong = mini[\"station\"].value_counts().idxmax()\n    return [int(df_hour.loc[df_hour[\"station\"] == wrong, ][\"minutes\"].max())]",
+     "explain": "8시 대여 중 Mangwon은 5행 하나뿐이라 9가 나와요. 답 40과 달라지니, 두 번째 value_counts()는 꼭 고른 표(df_hour)에서 해야 해요."
+    }
+   ],
+   "explain": "`value_counts().idxmax()`를 두 번 써요. 전체에서 가장 많은 시각을 찾고, 그 시각의 행만 고른 df_hour에서 다시 가장 많은 정류소를 찾아요. 두 번째로 셀 때 df를 쓰면 다른 시각의 대여까지 세어져 정류소가 바뀔 수 있어요. 마지막으로 df_hour에서 그 정류소 행만 골라 minutes의 max()를 구해요."
+  },
+  {
+   "id": "d2-t06-adv4",
+   "version": 1,
+   "title": "인원이 가장 많은 동아리의 과학 평균",
+   "statement": "학생 성적 데이터에서 동아리(club)에 든 학생만 놓고 인원이 가장 많은 동아리를 찾고, 그 동아리 학생들의 과학 점수(science) 평균을 구하려고 합니다. 동아리가 없는 학생은 club 칸이, 과학 시험을 보지 않은(결시) 학생은 science 칸이 비어 있습니다(결측치).\n- 동아리가 없는 학생은 동아리 인원으로 세지 않습니다.\n- 결시한 학생은 평균에서 뺍니다.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
+   "answerFormat": "12.34",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "figures": [
+    {
+     "id": "mini",
+     "kind": "table",
+     "alt": "학생 11명짜리 작은 표 mini: 행 번호, club(빈 값 5개), science(빈 값 1개)",
+     "head": [
+      "행",
+      "club",
+      "science"
+     ],
+     "rows": [
+      [
+       0,
+       "NaN",
+       70.0
+      ],
+      [
+       1,
+       "art",
+       85.0
+      ],
+      [
+       2,
+       "NaN",
+       60.0
+      ],
+      [
+       3,
+       "art",
+       "NaN"
+      ],
+      [
+       4,
+       "music",
+       90.0
+      ],
+      [
+       5,
+       "NaN",
+       55.0
+      ],
+      [
+       6,
+       "art",
+       64.0
+      ],
+      [
+       7,
+       "NaN",
+       48.0
+      ],
+      [
+       8,
+       "music",
+       78.0
+      ],
+      [
+       9,
+       "art",
+       71.0
+      ],
+      [
+       10,
+       "NaN",
+       66.0
+      ]
+     ]
+    }
+   ],
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    df_club = df.loc[df[\"club\"].⟦1⟧(), ]\n    top_club = df_club[\"club\"].⟦2⟧().⟦3⟧()\n    df_top = df_club.loc[df_club[\"club\"] ⟦4⟧ top_club, ]\n    answer = round(df_top[⟦5⟧].⟦6⟧(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "notna",
+     "alts": [
+      "notnull"
+     ]
+    },
+    {
+     "answer": "value_counts"
+    },
+    {
+     "answer": "idxmax"
+    },
+    {
+     "answer": "=="
+    },
+    {
+     "answer": "\"science\"",
+     "alts": [
+      "'science'"
+     ]
+    },
+    {
+     "answer": "mean"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    df_club = df.loc[df[\"club\"].notna(), ]\n    top_club = df_club[\"club\"].value_counts().idxmax()\n    df_top = df_club.loc[df_club[\"club\"] == top_club, ]\n    answer = round(df_top[\"science\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 63.87
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 64.7
+    },
+    {
+     "data": 2,
+     "expected": 64.42
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "club 칸이 비어 있는(NaN) 학생은 이 문제에서 어떻게 다룰까요?",
+     "options": [
+      "동아리가 없는 학생이라 인원을 셀 때 뺀다",
+      "'NaN'이라는 동아리 하나로 센다",
+      "인원이 가장 많은 동아리에 넣어 센다",
+      "과학 점수를 0점으로 바꾼다"
+     ],
+     "answer": 0,
+     "explain": "문제에서 동아리가 없는 학생은 동아리 인원으로 세지 않는다고 했어요. 비어 있는 칸(결측치)은 동아리 이름이 아니에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "결측치 세어 보기",
+     "prompt": "학생 11명짜리 작은 표 `mini`예요(NaN은 빈 칸).\n{{fig:mini}}\n각 코드의 결과를 채워 보세요. `isna()`는 칸마다 비어 있으면 True, `notna()`는 반대로 값이 있으면 True를 줘요.",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "mini[\"club\"].isna().sum()",
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "mini[\"club\"].notna().sum()",
+       {
+        "a": "6"
+       }
+      ],
+      [
+       "len(mini)",
+       {
+        "a": "11"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'club': [float(\"nan\"), 'art', float(\"nan\"), 'art', 'music', float(\"nan\"), 'art', float(\"nan\"), 'music', 'art', float(\"nan\")], 'science': [70.0, 85.0, 60.0, float(\"nan\"), 90.0, 55.0, 64.0, 48.0, 78.0, 71.0, 66.0]})\ndef answers():\n    return [int(mini[\"club\"].isna().sum()), int(mini[\"club\"].notna().sum()), len(mini)]",
+     "explain": "True를 sum()하면 True가 1로 세어져요. 그래서 isna().sum()은 빈 칸의 수(5), notna().sum()은 값이 있는 칸의 수(6)예요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "NaN도 셀까, 뺄까",
+     "prompt": "`value_counts()`는 기본으로 NaN을 세지 않아요. `value_counts(dropna=False)`라고 쓰면 NaN도 하나의 값처럼 세요. 작은 표 `mini`의 club 열에서 각 결과를 채워 보세요.\n{{fig:mini}}",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "mini[\"club\"].value_counts().idxmax()",
+       {
+        "a": "art",
+        "alts": [
+         "'art'"
+        ]
+       }
+      ],
+      [
+       "mini[\"club\"].value_counts().max()",
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "mini[\"club\"].value_counts(dropna=False).max()",
+       {
+        "a": "5"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'club': [float(\"nan\"), 'art', float(\"nan\"), 'art', 'music', float(\"nan\"), 'art', float(\"nan\"), 'music', 'art', float(\"nan\")], 'science': [70.0, 85.0, 60.0, float(\"nan\"), 90.0, 55.0, 64.0, 48.0, 78.0, 71.0, 66.0]})\ndef answers():\n    vc = mini[\"club\"].value_counts()\n    return [vc.idxmax(), int(vc.max()), int(mini[\"club\"].value_counts(dropna=False).max())]",
+     "explain": "NaN을 빼고 세면 art가 4명으로 1등이에요. NaN까지 세면 빈 칸 5개가 가장 많은 \"값\"이 되어 버려요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "동아리에 든 학생만 고르는 코드로 알맞은 것은?",
+     "options": [
+      "df.loc[df[\"club\"].notna(), ]",
+      "df.loc[df[\"club\"].isna(), ]",
+      "df.loc[df[\"club\"] != \"\", ]",
+      "df.loc[df[\"club\"] == \"NaN\", ]"
+     ],
+     "answer": 0,
+     "explain": "notna()는 값이 있는 칸에서 True예요. isna()는 반대로 동아리 없는 학생만 골라요. 빈 칸은 빈 문자열(\"\")도, \"NaN\"이라는 글자도 아니라서 그렇게 비교하면 제대로 골라지지 않아요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "예시 데이터(student_scores.csv)에서 동아리에 든 학생 중 인원이 가장 많은 동아리는 무엇일까요? print()로 확인해 보세요.",
+     "a": "sports",
+     "alts": [
+      "'sports'"
+     ],
+     "check": "import pandas as pd\ndef answers():\n    df = pd.read_csv(\"student_scores.csv\")\n    df_club = df.loc[df[\"club\"].notna(), ]\n    return [df_club[\"club\"].value_counts().idxmax()]",
+     "explain": "`print(df_club[\"club\"].value_counts())`로 확인하면 sports가 가장 많아요. 숨은 데이터에서는 1등이 다를 수 있으니 이름을 직접 쓰지 말고 idxmax()로 찾아요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "결시한 학생과 평균",
+     "prompt": "작은 표 `mini`에서 가장 많은 동아리 art의 학생만 고른 표를 `art`라 할게요. `art[\"science\"]`는 85, NaN, 64, 71이에요. 각 코드의 결과를 채워 보세요. `fillna(0)`은 빈 칸을 0으로 채워요.",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "art[\"science\"].count()",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "round(art[\"science\"].mean(), 2)",
+       {
+        "a": "73.33"
+       }
+      ],
+      [
+       "round(art[\"science\"].fillna(0).mean(), 2)",
+       {
+        "a": "55.0",
+        "alts": [
+         "55",
+         "55.00"
+        ]
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'club': [float(\"nan\"), 'art', float(\"nan\"), 'art', 'music', float(\"nan\"), 'art', float(\"nan\"), 'music', 'art', float(\"nan\")], 'science': [70.0, 85.0, 60.0, float(\"nan\"), 90.0, 55.0, 64.0, 48.0, 78.0, 71.0, 66.0]})\ndef answers():\n    art = mini.loc[mini[\"club\"] == \"art\", ]\n    return [int(art[\"science\"].count()), float(round(art[\"science\"].mean(), 2)), float(round(art[\"science\"].fillna(0).mean(), 2))]",
+     "explain": "mean()은 NaN을 빼고 값이 있는 3명으로 평균을 내요((85 + 64 + 71) ÷ 3 = 73.33…). fillna(0)으로 채우면 결시한 학생이 0점으로 들어가 평균이 55.0으로 낮아져요. 문제는 결시한 학생을 뺀다고 했으니 mean()을 그대로 써요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "작은 표 `mini`에서 notna()로 고르지 않고 `mini[\"club\"].value_counts(dropna=False).idxmax()`로 동아리를 찾으면 결과는 무엇일까요? (빈 값은 nan이라고 써요)",
+     "a": "nan",
+     "alts": [
+      "NaN"
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'club': [float(\"nan\"), 'art', float(\"nan\"), 'art', 'music', float(\"nan\"), 'art', float(\"nan\"), 'music', 'art', float(\"nan\")], 'science': [70.0, 85.0, 60.0, float(\"nan\"), 90.0, 55.0, 64.0, 48.0, 78.0, 71.0, 66.0]})\ndef answers():\n    return [mini[\"club\"].value_counts(dropna=False).idxmax()]",
+     "explain": "NaN이 5번으로 art(4번)보다 많아서 \"동아리 없음\"이 1등이 돼요. 동아리 이름이 아니니 그다음 고르기가 엉뚱해져요. 동아리 없는 학생이 어느 동아리보다 많은 데이터에서도 맞으려면 동아리가 있는 학생만 놓고 세야 해요."
+    },
+    {
+     "id": "s8",
+     "kind": "mcq",
+     "code": "start",
+     "q": "notna()로 고르는 줄을 빼고 `df[\"club\"].value_counts().idxmax()`(dropna를 쓰지 않음)로 동아리를 찾으면, 동아리 없는 학생이 가장 많은 데이터에서는 어떻게 될까요?",
+     "options": [
+      "기본 value_counts()는 NaN을 세지 않아서 여전히 알맞은 동아리를 찾는다",
+      "NaN이 1등이 되어 답이 틀린다",
+      "오류가 나서 실행되지 않는다",
+      "동아리 없는 학생 수가 답이 된다"
+     ],
+     "answer": 0,
+     "explain": "value_counts()는 dropna=True가 기본이라 NaN을 빼고 세요. 그래도 notna()로 먼저 골라 두면 \"동아리에 든 학생만\"이라는 뜻이 코드에 분명히 드러나고, dropna=False 같은 실수도 막을 수 있어요."
+    }
+   ],
+   "explain": "먼저 `df[\"club\"].notna()`로 동아리가 있는 학생만 고르고, `value_counts().idxmax()`로 인원이 가장 많은 동아리를 찾아요. 그 동아리 학생의 science에 `mean()`을 쓰면 결측치(결시)는 저절로 빠져요. `fillna(0)`이나 `dropna=False`를 쓰면 결측치가 섞여 답이 달라져요."
+  },
+  {
+   "id": "d2-t06-adv5",
+   "version": 1,
+   "title": "평점 있는 최근 영화의 최고 흥행작",
+   "statement": "영화 정보 데이터에서 2010년 이후(2010년 포함)에 개봉했고 평점(rating)이 있는 영화만 놓고, 영화가 가장 많은 장르(genre)를 찾습니다. 그다음 같은 조건의 그 장르 영화 가운데 관객 수(audience)가 가장 많은 영화의 제목(title)을 구하려고 합니다. 평점이 없는 영화는 rating 칸이 비어 있습니다.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 영화 제목(문자열) 그대로 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
+   "answerFormat": "Silver Moon",
+   "data": {
+    "files": [
+     "movies.csv"
+    ]
+   },
+   "figures": [
+    {
+     "id": "mini",
+     "kind": "table",
+     "alt": "영화 9편짜리 작은 표 mini: 행 번호, title, genre, release_year, rating(2행은 빈 값), audience",
+     "head": [
+      "행",
+      "title",
+      "genre",
+      "release_year",
+      "rating",
+      "audience"
+     ],
+     "rows": [
+      [
+       0,
+       "Red Sky",
+       "drama",
+       2012,
+       7.5,
+       820000
+      ],
+      [
+       1,
+       "Blue Road",
+       "action",
+       2008,
+       8.1,
+       1500000
+      ],
+      [
+       2,
+       "Old Town",
+       "drama",
+       2015,
+       "NaN",
+       2400000
+      ],
+      [
+       3,
+       "Night Bus",
+       "action",
+       2016,
+       6.9,
+       950000
+      ],
+      [
+       4,
+       "Gold Coin",
+       "drama",
+       2019,
+       8.4,
+       1300000
+      ],
+      [
+       5,
+       "Big Wave",
+       "comedy",
+       2011,
+       7.2,
+       600000
+      ],
+      [
+       6,
+       "Lost Key",
+       "drama",
+       2005,
+       9.0,
+       3100000
+      ],
+      [
+       7,
+       "Cold Rain",
+       "action",
+       2013,
+       7.8,
+       1100000
+      ],
+      [
+       8,
+       "Last Song",
+       "drama",
+       2020,
+       6.5,
+       1250000
+      ]
+     ]
+    },
+    {
+     "id": "drama",
+     "kind": "table",
+     "alt": "조건에 맞는 drama 영화만 고른 df_genre: 0행 Red Sky 820000, 4행 Gold Coin 1300000, 8행 Last Song 1250000",
+     "head": [
+      "행(이름표)",
+      "title",
+      "audience"
+     ],
+     "rows": [
+      [
+       0,
+       "Red Sky",
+       820000
+      ],
+      [
+       4,
+       "Gold Coin",
+       1300000
+      ],
+      [
+       8,
+       "Last Song",
+       1250000
+      ]
+     ]
+    }
+   ],
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    cond = (df[\"release_year\"] ⟦1⟧ 2010) ⟦2⟧ (df[\"rating\"].⟦3⟧())\n    df_new = df.loc[cond, ]\n    top_genre = df_new[\"genre\"].⟦4⟧().⟦5⟧()\n    df_genre = df_new.loc[df_new[\"genre\"] ⟦6⟧ top_genre, ]\n    best_row = df_genre[\"audience\"].⟦7⟧()\n    answer = df_genre.loc[best_row, ⟦8⟧]\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": ">="
+    },
+    {
+     "answer": "&"
+    },
+    {
+     "answer": "notna",
+     "alts": [
+      "notnull"
+     ]
+    },
+    {
+     "answer": "value_counts"
+    },
+    {
+     "answer": "idxmax"
+    },
+    {
+     "answer": "=="
+    },
+    {
+     "answer": "idxmax"
+    },
+    {
+     "answer": "\"title\"",
+     "alts": [
+      "'title'"
+     ]
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    cond = (df[\"release_year\"] >= 2010) & (df[\"rating\"].notna())\n    df_new = df.loc[cond, ]\n    top_genre = df_new[\"genre\"].value_counts().idxmax()\n    df_genre = df_new.loc[df_new[\"genre\"] == top_genre, ]\n    best_row = df_genre[\"audience\"].idxmax()\n    answer = df_genre.loc[best_row, \"title\"]\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": "Bright Garden"
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": "Blue River"
+    },
+    {
+     "data": 2,
+     "expected": "Broken Garden"
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "다음 중 이 문제에서 **고르지 않는** 영화는?",
+     "options": [
+      "2009년에 개봉했고 평점이 8.0인 영화",
+      "2010년에 개봉했고 평점이 6.5인 영화",
+      "2018년에 개봉했고 평점이 9.1인 영화",
+      "2023년에 개봉했고 평점이 7.0인 영화"
+     ],
+     "answer": 0,
+     "explain": "'2010년 이후(2010년 포함)'이니 2010년은 고르고 2009년은 빼요. 2010을 포함하려면 '크거나 같다'로 비교해야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "두 조건으로 고르기",
+     "prompt": "영화 9편짜리 작은 표 `mini`예요(NaN은 빈 칸).\n{{fig:mini}}\n행마다 \"2010년 이후 개봉\"과 \"평점 있음\"을 **모두** 만족하는지 True/False로 채워 보세요.",
+     "columns": [
+      "행",
+      "release_year",
+      "rating",
+      "두 조건 모두 만족?"
+     ],
+     "rows": [
+      [
+       "0",
+       "2012",
+       "7.5",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "1",
+       "2008",
+       "8.1",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2",
+       "2015",
+       "NaN",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "3",
+       "2016",
+       "6.9",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "4",
+       "2019",
+       "8.4",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "5",
+       "2011",
+       "7.2",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "6",
+       "2005",
+       "9.0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "7",
+       "2013",
+       "7.8",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "8",
+       "2020",
+       "6.5",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'title': ['Red Sky', 'Blue Road', 'Old Town', 'Night Bus', 'Gold Coin', 'Big Wave', 'Lost Key', 'Cold Rain', 'Last Song'], 'genre': ['drama', 'action', 'drama', 'action', 'drama', 'comedy', 'drama', 'action', 'drama'], 'release_year': [2012, 2008, 2015, 2016, 2019, 2011, 2005, 2013, 2020], 'rating': [7.5, 8.1, float(\"nan\"), 6.9, 8.4, 7.2, 9.0, 7.8, 6.5], 'audience': [820000, 1500000, 2400000, 950000, 1300000, 600000, 3100000, 1100000, 1250000]})\ndef answers():\n    cond = (mini[\"release_year\"] >= 2010) & (mini[\"rating\"].notna())\n    return [bool(x) for x in cond]",
+     "explain": "1행은 2008년, 6행은 2005년이라 빠지고, 2행은 평점이 비어 있어(NaN) 빠져요. 남은 0·3·4·5·7·8행이 df_new가 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "두 조건을 함께 쓰는 식으로 알맞은 것은?",
+     "options": [
+      "(df[\"release_year\"] >= 2010) & (df[\"rating\"].notna())",
+      "(df[\"release_year\"] > 2010) & (df[\"rating\"].notna())",
+      "(df[\"release_year\"] >= 2010) | (df[\"rating\"].notna())",
+      "(df[\"release_year\"] >= 2010) & (df[\"rating\"].isna())"
+     ],
+     "answer": 0,
+     "explain": "> 2010은 2010년을 빼 버려요. |는 \"또는\"이라 한 조건만 맞아도 골라지고, isna()는 평점이 없는 영화만 골라요. 두 조건은 각각 괄호로 감싼 뒤 &로 묶어요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "고른 표에서 장르 세기",
+     "prompt": "앞 단계에서 고른 `df_new`(0·3·4·5·7·8행)의 genre를 세어 보세요. 비교를 위해 고르기 전 `mini` 전체에서 센 개수도 채워요.\n{{fig:mini}}",
+     "columns": [
+      "genre",
+      "mini에서 센 개수",
+      "df_new에서 센 개수"
+     ],
+     "rows": [
+      [
+       "drama",
+       {
+        "a": "5"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "action",
+       {
+        "a": "3"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "comedy",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'title': ['Red Sky', 'Blue Road', 'Old Town', 'Night Bus', 'Gold Coin', 'Big Wave', 'Lost Key', 'Cold Rain', 'Last Song'], 'genre': ['drama', 'action', 'drama', 'action', 'drama', 'comedy', 'drama', 'action', 'drama'], 'release_year': [2012, 2008, 2015, 2016, 2019, 2011, 2005, 2013, 2020], 'rating': [7.5, 8.1, float(\"nan\"), 6.9, 8.4, 7.2, 9.0, 7.8, 6.5], 'audience': [820000, 1500000, 2400000, 950000, 1300000, 600000, 3100000, 1100000, 1250000]})\ndef answers():\n    df_new = mini.loc[(mini[\"release_year\"] >= 2010) & (mini[\"rating\"].notna()), ]\n    a = mini[\"genre\"].value_counts()\n    b = df_new[\"genre\"].value_counts()\n    out = []\n    for k in [\"drama\", \"action\", \"comedy\"]:\n        out += [int(a.get(k, 0)), int(b.get(k, 0))]\n    return out",
+     "explain": "두 표 모두 drama가 가장 많지만 개수가 달라요. 데이터에 따라서는 고르기 전과 후의 1등이 바뀔 수 있으니, 장르는 꼭 고른 표(df_new)에서 세요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "max와 idxmax",
+     "prompt": "조건에 맞는 drama 영화만 고른 `df_genre`예요. 행 번호(이름표)는 고르기 전 표의 번호를 그대로 가져요.\n{{fig:drama}}\n각 코드의 결과를 채워 보세요.",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "df_genre[\"audience\"].max()",
+       {
+        "a": "1300000"
+       }
+      ],
+      [
+       "df_genre[\"audience\"].idxmax()",
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "df_genre.loc[4, \"title\"]",
+       {
+        "a": "Gold Coin",
+        "alts": [
+         "'Gold Coin'"
+        ]
+       }
+      ]
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'title': ['Red Sky', 'Blue Road', 'Old Town', 'Night Bus', 'Gold Coin', 'Big Wave', 'Lost Key', 'Cold Rain', 'Last Song'], 'genre': ['drama', 'action', 'drama', 'action', 'drama', 'comedy', 'drama', 'action', 'drama'], 'release_year': [2012, 2008, 2015, 2016, 2019, 2011, 2005, 2013, 2020], 'rating': [7.5, 8.1, float(\"nan\"), 6.9, 8.4, 7.2, 9.0, 7.8, 6.5], 'audience': [820000, 1500000, 2400000, 950000, 1300000, 600000, 3100000, 1100000, 1250000]})\ndef answers():\n    df_new = mini.loc[(mini[\"release_year\"] >= 2010) & (mini[\"rating\"].notna()), ]\n    g = df_new.loc[df_new[\"genre\"] == \"drama\", ]\n    return [int(g[\"audience\"].max()), int(g[\"audience\"].idxmax()), g.loc[4, \"title\"]]",
+     "explain": "max()는 가장 큰 관객 수 자체를, idxmax()는 그 값이 있는 행의 이름표(4)를 돌려줘요. 그 이름표와 열 이름을 loc[행, 열]에 넣으면 그 칸의 값, 곧 제목을 꺼낼 수 있어요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "`best_row = df_genre[\"audience\"].idxmax()`로 행 이름표를 얻었어요. 그 영화의 제목을 꺼내는 코드로 알맞은 것은?",
+     "options": [
+      "df_genre.loc[best_row, \"title\"]",
+      "df_genre.iloc[best_row, \"title\"]",
+      "df_genre[\"title\"].max()",
+      "df_genre.loc[\"title\", best_row]"
+     ],
+     "answer": 0,
+     "explain": "loc은 [행 이름표, 열 이름] 순서로 칸을 찾아요. iloc은 0부터 센 위치를 쓰는데, 고른 표에는 위치 0~2만 있어 4가 없고 열도 이름으로 쓸 수 없어요. title의 max()는 알파벳순으로 가장 뒤인 제목이라 관객 수와 관계없어요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "예시 데이터(movies.csv)에서 두 조건으로 고른 영화는 몇 편일까요? `print(len(df_new))`로 확인해 보세요.",
+     "a": "826",
+     "check": "import pandas as pd\ndef answers():\n    df = pd.read_csv(\"movies.csv\")\n    df_new = df.loc[(df[\"release_year\"] >= 2010) & (df[\"rating\"].notna()), ]\n    return [len(df_new)]",
+     "explain": "1,500편 가운데 2010년 이후에 개봉했고 평점이 있는 영화만 남아요. 중간에 행 수를 찍어 보면 조건이 제대로 걸렸는지 확인할 수 있어요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "작은 표 `mini`에서 2010년 조건을 빼고 \"평점 있음\" 조건만으로 고르면, 같은 방법으로 찾은 제목은 무엇이 될까요?",
+     "a": "Lost Key",
+     "alts": [
+      "'Lost Key'"
+     ],
+     "check": "import pandas as pd\nmini = pd.DataFrame({'title': ['Red Sky', 'Blue Road', 'Old Town', 'Night Bus', 'Gold Coin', 'Big Wave', 'Lost Key', 'Cold Rain', 'Last Song'], 'genre': ['drama', 'action', 'drama', 'action', 'drama', 'comedy', 'drama', 'action', 'drama'], 'release_year': [2012, 2008, 2015, 2016, 2019, 2011, 2005, 2013, 2020], 'rating': [7.5, 8.1, float(\"nan\"), 6.9, 8.4, 7.2, 9.0, 7.8, 6.5], 'audience': [820000, 1500000, 2400000, 950000, 1300000, 600000, 3100000, 1100000, 1250000]})\ndef answers():\n    df_new = mini.loc[mini[\"rating\"].notna(), ]\n    top = df_new[\"genre\"].value_counts().idxmax()\n    g = df_new.loc[df_new[\"genre\"] == top, ]\n    return [g.loc[g[\"audience\"].idxmax(), \"title\"]]",
+     "explain": "6행 Lost Key(2005년, 관객 310만 명)가 남아서 drama 가운데 관객 수가 가장 많아져요. 조건 하나를 빠뜨리면 답이 바뀌어요."
+    },
+    {
+     "id": "s9",
+     "kind": "mcq",
+     "q": "코드의 흐름을 바르게 늘어놓은 것은?",
+     "options": [
+      "두 조건으로 고르기 → 장르 세어 1등 찾기 → 그 장르 고르기 → 관객 수가 가장 큰 행 찾기 → 그 행의 title 꺼내기",
+      "장르 세어 1등 찾기 → 두 조건으로 고르기 → 관객 수가 가장 큰 행 찾기 → 그 행의 title 꺼내기",
+      "두 조건으로 고르기 → 관객 수가 가장 큰 행 찾기 → 그 행의 genre 꺼내기 → title 꺼내기",
+      "관객 수가 가장 큰 행 찾기 → 두 조건 확인하기 → 장르 세기 → title 꺼내기"
+     ],
+     "answer": 0,
+     "explain": "조건으로 고른 표에서 장르를 세고, 그 장르로 다시 고른 표에서 관객 수가 가장 큰 행을 찾아요. idxmax()가 두 번 나오지만 하나는 '가장 많이 나온 값', 다른 하나는 '가장 큰 값이 있는 행'을 찾는 데 써요."
+    }
+   ],
+   "explain": "두 조건을 각각 괄호로 감싸 `&`로 묶어 고른 뒤, `value_counts().idxmax()`로 가장 많은 장르를 찾아요. 그 장르 행만 고른 표에서 `[\"audience\"].idxmax()`로 관객 수가 가장 많은 행의 이름표를 얻고, `loc[이름표, \"title\"]`로 제목을 꺼내요. `max()`는 값, `idxmax()`는 이름표를 준다는 차이가 핵심이에요."
+  }
+ ]
+}

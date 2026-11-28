@@ -1,0 +1,1173 @@
+{
+ "course": "d2",
+ "type": 9,
+ "typeTitle": "결측치 다루기",
+ "kind": "fix",
+ "skills": [
+  "결측치(NaN)",
+  "isna·notna·~",
+  "결측치 수(sum)와 값 수(count)",
+  "dropna(subset)",
+  "결측 비율",
+  "value_counts·max"
+ ],
+ "intro": "빈 칸(결측치, NaN)이 있는 데이터를 다루는 코드에서 잘못된 한 줄을 고쳐요. isna와 notna, 결측치 수를 세는 sum과 값이 있는 칸을 세는 count, dropna의 기준 열, 결측 비율의 분모처럼 헷갈리기 쉬운 곳을 연습해요.",
+ "problems": [
+  {
+   "id": "d2-t09-a",
+   "version": 1,
+   "title": "별점을 남기지 않은 주문 수",
+   "statement": "카페 주문 데이터의 `rating` 열에는 손님이 남긴 별점(1~5)이 들어 있습니다. 손님이 별점을 남기지 않은 주문은 `rating` 칸이 비어 있습니다. 이렇게 값이 빠진 칸을 **결측치**라고 합니다.\n\n별점을 남기지 않은 주문이 모두 몇 건인지 구하려고 다음 코드를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\nno_rating = df[\"rating\"].isna()\n\ndef solution():\n    answer = no_rating.count()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 8,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\nno_rating = df[\"rating\"].isna()\n\ndef solution():\n    answer = no_rating.sum()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 783
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 742
+    },
+    {
+     "data": 2,
+     "expected": 735
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "별점을 남기지 않은 주문의 `rating` 칸을 pandas로 읽으면 어떤 값이 될까요?",
+     "options": [
+      "NaN",
+      "0",
+      "빈 문자열(\"\")",
+      "그 주문의 행이 통째로 빠진다"
+     ],
+     "answer": 0,
+     "explain": "pandas는 CSV의 빈 칸을 NaN(Not a Number, '값이 없음' 표시)으로 읽어요. 이렇게 값이 빠진 칸이 결측치예요. 0은 '0점을 줬다'는 값이 있는 것이라 결측치와 달라요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "isna()로 결측치 찾기",
+     "prompt": "`isna()`는 칸마다 결측치(NaN)이면 True, 값이 있으면 False를 돌려줘요. 주문 6건의 rating이 아래와 같을 때 `isna()` 결과를 채워 보세요.",
+     "columns": [
+      "주문",
+      "rating",
+      "isna() 결과"
+     ],
+     "rows": [
+      [
+       "1",
+       "4.0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "2",
+       "NaN",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "3",
+       "5.0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "4",
+       "NaN",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "5",
+       "NaN",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "6",
+       "3.0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([4.0, None, 5.0, None, None, 3.0])\n    return [bool(x) for x in s.isna()]",
+     "explain": "NaN인 칸만 True가 돼요. isna는 'is NA(결측인가?)'라는 뜻이에요. 반대로 값이 있는 칸이 True가 되는 함수는 notna()예요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "True의 개수와 count()",
+     "prompt": "위 6건의 `isna()` 결과(True/False 6개)로 두 값을 구해 보세요. `count()`는 결측치가 **아닌** 칸의 개수를 세는 함수예요. True와 False도 값이 들어 있는 칸이에요.",
+     "columns": [
+      "구하는 것",
+      "값"
+     ],
+     "rows": [
+      [
+       "True의 개수(별점을 남기지 않은 주문 수)",
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       }
+      ],
+      [
+       "isna() 결과에 count()를 쓴 값",
+       {
+        "a": "6",
+        "alts": [
+         "6.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([4.0, None, 5.0, None, None, 3.0]).isna()\n    return [int((s == True).sum()), int(s.count())]",
+     "explain": "True/False는 모두 값이 있는 칸이라 count()는 6칸을 다 세요. 우리가 원하는 것은 그중 True(결측치)의 개수 3이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "틀린 코드는 예시 데이터(주문 2,500건)에서 어떤 값을 반환할까요?",
+     "options": [
+      "2500(전체 주문 수)",
+      "별점을 남긴 주문 수",
+      "별점을 남기지 않은 주문 수",
+      "오류가 나서 멈춘다"
+     ],
+     "answer": 0,
+     "explain": "`no_rating`에는 주문마다 True/False가 하나씩, 모두 2,500개 들어 있어요. count()는 그 2,500칸을 모두 세므로 전체 주문 수가 나와요.",
+     "code": "start"
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "8번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "answer = no_rating.sum()",
+      "answer = no_rating.max()",
+      "answer = no_rating.mean()",
+      "answer = len(no_rating)"
+     ],
+     "answer": 0,
+     "explain": "sum()으로 더하면 True는 1, False는 0으로 계산되어 True의 개수가 나와요. max()는 True 하나, mean()은 True의 비율, len()은 전체 개수예요.",
+     "code": "start"
+    }
+   ],
+   "explain": "`isna()`는 결측치인 칸을 True로 바꿔 주고, True/False를 sum()으로 더하면 True의 개수(결측치 수)가 나와요. count()는 결측치가 아닌 칸의 개수를 세는 함수라서 True/False 묶음에 쓰면 전체 행 수가 나와요. '결측치 수'는 isna().sum(), '값이 있는 칸 수'는 count()로 기억해 두세요."
+  },
+  {
+   "id": "d2-t09-b",
+   "version": 1,
+   "title": "나이대를 모르는 대여가 많은 정류소",
+   "statement": "공공 자전거 대여 데이터의 `age_group` 열에는 이용자의 나이대(10s~60s)가 들어 있습니다. 이용자가 나이대를 알려 주지 않은 대여는 `age_group` 칸이 비어 있습니다(결측치).\n\n나이대가 결측치인 대여만 골라 대여 정류소(`station`)별로 대여 수를 세었을 때, 대여 수가 가장 많은 정류소의 대여 수를 구하려고 다음 코드를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "bike_rentals.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndf_na = df.loc[df[\"age_group\"].notna(), ]\n\ndef solution():\n    answer = df_na[\"station\"].value_counts().max()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 5,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndf_na = df.loc[df[\"age_group\"].isna(), ]\n\ndef solution():\n    answer = df_na[\"station\"].value_counts().max()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 33
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 27
+    },
+    {
+     "data": 2,
+     "expected": 29
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제에서 골라서 세야 하는 대여는 어느 것일까요?",
+     "options": [
+      "age_group 칸이 비어 있는(NaN) 대여",
+      "age_group 칸에 나이대가 적힌 대여",
+      "모든 대여",
+      "age_group이 10s인 대여"
+     ],
+     "answer": 0,
+     "explain": "나이대를 알려 주지 않은 대여는 age_group 칸이 NaN(값이 빠진 칸, 결측치)이에요. 이 대여들만 골라 정류소별로 세요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`isna()`와 `notna()`에 대한 설명으로 옳은 것은?",
+     "options": [
+      "isna()는 결측치인 칸이 True, notna()는 값이 있는 칸이 True",
+      "isna()는 값이 있는 칸이 True, notna()는 결측치인 칸이 True",
+      "둘 다 결측치인 칸이 True",
+      "isna()는 결측치를 지우고, notna()는 결측치를 채운다"
+     ],
+     "answer": 0,
+     "explain": "isna는 'is NA(결측인가?)', notna는 'not NA(결측이 아닌가?)'라는 뜻이라 True/False가 서로 정반대예요. 칸을 지우거나 채우지는 않고 True/False만 알려 줘요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 표로 세어 보기",
+     "prompt": "대여 8건이 아래와 같아요. 정류소마다 나이대가 결측치인 대여 수와 값이 있는 대여 수를 세고, 마지막 줄에는 각 열의 가장 큰 값(max)을 적어 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "station",
+      "age_group이 결측치인 대여 수",
+      "age_group에 값이 있는 대여 수"
+     ],
+     "rows": [
+      [
+       "Mangwon",
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       }
+      ],
+      [
+       "Jamsil",
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       }
+      ],
+      [
+       "Sinsa",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       }
+      ],
+      [
+       "가장 큰 값(max)",
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       },
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"station\": [\"Mangwon\", \"Jamsil\", \"Mangwon\", \"Mangwon\", \"Jamsil\", \"Sinsa\", \"Sinsa\", \"Sinsa\"],\n                       \"age_group\": [None, \"20s\", \"30s\", None, None, \"40s\", \"20s\", \"50s\"]})\n    st = [\"Mangwon\", \"Jamsil\", \"Sinsa\"]\n    na = df.loc[df[\"age_group\"].isna(), \"station\"].value_counts().reindex(st, fill_value=0)\n    ok = df.loc[df[\"age_group\"].notna(), \"station\"].value_counts().reindex(st, fill_value=0)\n    out = []\n    for s in st:\n        out += [int(na[s]), int(ok[s])]\n    return out + [int(na.max()), int(ok.max())]",
+     "explain": "문제에서 원하는 것은 왼쪽 열(결측치인 대여)의 가장 큰 값 2예요. 값이 있는 대여를 세면 Sinsa가 3으로 가장 많아져 전혀 다른 답이 나와요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "틀린 코드의 5번 줄은 어떤 대여를 `df_na`에 담을까요?",
+     "options": [
+      "나이대가 적힌 대여",
+      "나이대가 비어 있는 대여",
+      "모든 대여",
+      "아무 대여도 담지 않는다"
+     ],
+     "answer": 0,
+     "explain": "notna()는 값이 있는 칸이 True라서, 나이대를 알려 준 대여만 남아요. 위 표의 오른쪽 열을 세는 셈이라 예시 데이터에서 290이라는 큰 값이 나와요.",
+     "code": "start"
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "5번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "df_na = df.loc[df[\"age_group\"].isna(), ]",
+      "df_na = df.loc[df[\"age_group\"] == \"NaN\", ]",
+      "df_na = df.loc[df[\"station\"].isna(), ]",
+      "df_na = df.dropna()"
+     ],
+     "answer": 0,
+     "explain": "결측치인 칸을 True로 만드는 isna()로 바꿔야 해요. NaN은 \"NaN\"이라는 글자가 아니라서 == \"NaN\"으로는 찾을 수 없고, station 열에는 결측치가 없어요. dropna()는 오히려 결측치가 있는 행을 지워요.",
+     "code": "start"
+    }
+   ],
+   "explain": "`df.loc[조건, ]`은 조건이 True인 행만 골라요. 결측치인 행을 고를 때는 isna(), 값이 있는 행을 고를 때는 notna()를 써요. 고른 뒤 value_counts()로 정류소별 개수를 세고 max()로 가장 큰 개수를 구해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "대여 8건(NaN = 나이대를 알려 주지 않음)",
+     "alt": "대여 8건의 station과 age_group 표. 0번·3번·4번 대여의 age_group이 NaN이다.",
+     "head": [
+      "",
+      "station",
+      "age_group"
+     ],
+     "rows": [
+      [
+       0,
+       "Mangwon",
+       "NaN"
+      ],
+      [
+       1,
+       "Jamsil",
+       "20s"
+      ],
+      [
+       2,
+       "Mangwon",
+       "30s"
+      ],
+      [
+       3,
+       "Mangwon",
+       "NaN"
+      ],
+      [
+       4,
+       "Jamsil",
+       "NaN"
+      ],
+      [
+       5,
+       "Sinsa",
+       "40s"
+      ],
+      [
+       6,
+       "Sinsa",
+       "20s"
+      ],
+      [
+       7,
+       "Sinsa",
+       "50s"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t09-c",
+   "version": 1,
+   "title": "과학 시험을 본 학생의 수학 평균",
+   "statement": "학생 성적 데이터에서 `science` 열은 과학 점수인데, 과학 시험에 결시한 학생은 칸이 비어 있습니다. `club` 열은 동아리 이름인데, 동아리가 없는 학생은 칸이 비어 있습니다. 두 열 모두 빈 칸은 결측치(NaN)로 읽힙니다.\n\n과학 시험을 본 학생(과학 점수가 결측치가 아닌 학생)의 수학 점수(`math`) 평균을 구하려고 합니다. 동아리가 없더라도 과학 시험을 봤다면 계산에 넣습니다. 다음 코드는 이 값을 구하도록 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf_sci = df.dropna()\n\ndef solution():\n    answer = round(df_sci[\"math\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 5,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf_sci = df.dropna(subset=[\"science\"])\n\ndef solution():\n    answer = round(df_sci[\"math\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 65.96
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 65.44
+    },
+    {
+     "data": 2,
+     "expected": 66.46
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "다음 학생 중 수학 평균 계산에 넣어야 하는 학생은 누구일까요?",
+     "options": [
+      "동아리는 없고(club이 NaN) 과학 점수가 72점인 학생",
+      "동아리는 coding이고 과학 시험에 결시한(science가 NaN) 학생",
+      "동아리도 없고 과학 시험에도 결시한 학생"
+     ],
+     "answer": 0,
+     "explain": "기준은 과학 점수 하나예요. 과학 점수가 있으면(결측치가 아니면) 동아리가 없어도 넣고, 과학 점수가 NaN이면 동아리가 있어도 빼요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`df.dropna()`처럼 괄호 안에 아무것도 넣지 않으면 어떤 행을 지울까요?",
+     "options": [
+      "어느 열이든 결측치가 하나라도 있는 행",
+      "모든 열이 결측치인 행만",
+      "science 열이 결측치인 행만",
+      "결측치 칸만 비우고 행은 그대로 둔다"
+     ],
+     "answer": 0,
+     "explain": "dropna()는 결측치(NaN)가 있는 행을 지우는 함수예요. 기준 열을 정해 주지 않으면 어느 열이든 NaN이 하나만 있어도 그 행을 지워요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "틀린 코드와 원하는 결과 비교",
+     "prompt": "학생 6명이 아래와 같아요. 틀린 코드의 `df.dropna()` 뒤에 남는 학생과, 문제에서 원하는 계산에 들어가는 학생을 O·X로 표시해 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "학생",
+      "df.dropna() 뒤에 남나요?",
+      "원하는 계산에 들어가나요?"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       },
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       },
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       }
+      ],
+      [
+       "5",
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       }
+      ],
+      [
+       "6",
+       {
+        "a": "X",
+        "alts": [
+         "x",
+         "×"
+        ]
+       },
+       {
+        "a": "O",
+        "alts": [
+         "o",
+         "○"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"club\": [\"art\", None, \"music\", None, \"coding\", None],\n                       \"science\": [80, 72, None, None, 65, 90],\n                       \"math\": [70, 90, 40, 55, 60, 80]})\n    kept = df.dropna().index\n    want = df.loc[df[\"science\"].notna()].index\n    out = []\n    for i in df.index:\n        out += [\"O\" if i in kept else \"X\", \"O\" if i in want else \"X\"]\n    return out",
+     "explain": "dropna()는 club이 NaN인 2번·6번 학생까지 지워요. 하지만 이 둘은 과학 시험을 봤으니 계산에 들어가야 해요.",
+     "code": "start"
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "수학 평균 비교",
+     "prompt": "위 6명으로 두 경우의 학생 수와 수학 평균을 구해 보세요.",
+     "columns": [
+      "구분",
+      "남은 학생 수",
+      "수학 평균"
+     ],
+     "rows": [
+      [
+       "틀린 코드(dropna())",
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       },
+       {
+        "a": "65",
+        "alts": [
+         "65.0"
+        ]
+       }
+      ],
+      [
+       "문제에서 원하는 것",
+       {
+        "a": "4",
+        "alts": [
+         "4.0"
+        ]
+       },
+       {
+        "a": "75",
+        "alts": [
+         "75.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    df = pd.DataFrame({\"club\": [\"art\", None, \"music\", None, \"coding\", None],\n                       \"science\": [80, 72, None, None, 65, 90],\n                       \"math\": [70, 90, 40, 55, 60, 80]})\n    a = df.dropna()\n    b = df.loc[df[\"science\"].notna()]\n    return [len(a), f(a[\"math\"].mean()), len(b), f(b[\"math\"].mean())]",
+     "explain": "동아리가 없는 학생이 빠지면 평균이 달라져요. 그래서 틀린 코드는 예시 데이터에서도 다른 값(66.04)을 내요.",
+     "code": "start"
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "5번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "df_sci = df.dropna(subset=[\"science\"])",
+      "df_sci = df.dropna(subset=[\"club\"])",
+      "df_sci = df.fillna(0)",
+      "df_sci = df.dropna(how=\"all\")"
+     ],
+     "answer": 0,
+     "explain": "subset=[\"science\"]로 기준 열을 정하면 science가 NaN인 행만 지워요. fillna(0)은 결시생을 0점으로 바꿔 남기고, how=\"all\"은 모든 열이 NaN인 행만 지워서 둘 다 틀려요.",
+     "code": "start"
+    }
+   ],
+   "explain": "`dropna()`는 기준 열을 정하지 않으면 어느 열이든 결측치가 있는 행을 모두 지워요. 이 데이터는 club에도 결측치가 있어서 과학 시험을 본 학생까지 지워졌어요. `dropna(subset=[\"science\"])`처럼 기준 열을 정하거나 `df.loc[df[\"science\"].notna(), ]`로 골라야 해요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "학생 6명(NaN = 빈 칸)",
+     "alt": "학생 6명의 club, science, math 표. 2·4·6번은 club이 NaN, 3·4번은 science가 NaN이다.",
+     "head": [
+      "학생",
+      "club",
+      "science",
+      "math"
+     ],
+     "rows": [
+      [
+       1,
+       "art",
+       80,
+       70
+      ],
+      [
+       2,
+       "NaN",
+       72,
+       90
+      ],
+      [
+       3,
+       "music",
+       "NaN",
+       40
+      ],
+      [
+       4,
+       "NaN",
+       "NaN",
+       55
+      ],
+      [
+       5,
+       "coding",
+       65,
+       60
+      ],
+      [
+       6,
+       "NaN",
+       90,
+       80
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t09-d",
+   "version": 1,
+   "title": "연료가 적힌 무사고 매물의 평균 가격",
+   "statement": "중고차 매물 데이터의 `fuel` 열은 연료(gasoline·diesel·hybrid·electric)인데, 판매자가 연료를 적지 않은 매물은 칸이 비어 있습니다(결측치). `accident` 열은 사고 이력(Y·N)입니다.\n\n연료가 적혀 있고(`fuel`이 결측치가 아님) 사고 이력이 없는(`accident`가 N) 매물만 골라 제조사(`brand`)별 평균 가격(`price`, 만 원)을 구했을 때, 가장 높은 평균 가격을 구하려고 다음 코드를 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "used_cars.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ncars = df.loc[df[\"fuel\"].isna() & (df[\"accident\"] == \"N\"), ]\n\ndef solution():\n    answer = round(cars.groupby(\"brand\")[\"price\"].mean().max(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 5,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ncars = df.loc[~df[\"fuel\"].isna() & (df[\"accident\"] == \"N\"), ]\n\ndef solution():\n    answer = round(cars.groupby(\"brand\")[\"price\"].mean().max(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 2477.76
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 2405.76
+    },
+    {
+     "data": 2,
+     "expected": 2606.76
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "다음 매물 중 이 계산에 들어가는 매물은 어느 것일까요?",
+     "options": [
+      "fuel이 NaN, accident가 N인 매물",
+      "fuel이 hybrid, accident가 Y인 매물",
+      "fuel이 diesel, accident가 N인 매물",
+      "fuel이 NaN, accident가 Y인 매물"
+     ],
+     "answer": 2,
+     "explain": "연료가 적혀 있고(결측치가 아니고) 사고 이력이 N이라는 두 조건을 모두 만족해야 해요. NaN은 값이 빠진 칸(결측치)이라 '연료가 적힌' 매물이 아니에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "~로 True/False 뒤집기",
+     "prompt": "`~`는 True/False 묶음 앞에 붙여 True와 False를 서로 바꾸는 기호예요(파이썬의 not과 같은 뜻). fuel 칸 5개에 대해 `isna()` 결과와, 그 앞에 `~`를 붙인 결과를 채워 보세요.",
+     "columns": [
+      "fuel",
+      "isna()",
+      "~를 붙인 결과"
+     ],
+     "rows": [
+      [
+       "gasoline",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "NaN",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "diesel",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "NaN",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "electric",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([\"gasoline\", None, \"diesel\", None, \"electric\"]).isna()\n    out = []\n    for a, b in zip(s, ~s):\n        out += [bool(a), bool(b)]\n    return out",
+     "explain": "~를 붙이면 결측치인 칸은 False, 값이 있는 칸은 True가 돼요. 그래서 '결측치가 아닌가?'를 묻는 notna()와 같은 결과예요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "틀린 코드와 원하는 결과 비교",
+     "prompt": "매물 6대가 아래와 같아요. 틀린 코드의 5번 줄 조건으로 고른 매물과, 문제에서 원하는 매물로 각각 제조사별 평균 가격을 구해 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "구분",
+      "고른 매물 수",
+      "Kia 평균",
+      "BMW 평균",
+      "가장 높은 평균"
+     ],
+     "rows": [
+      [
+       "틀린 코드",
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       },
+       {
+        "a": "900",
+        "alts": [
+         "900.0"
+        ]
+       },
+       {
+        "a": "2000",
+        "alts": [
+         "2000.0"
+        ]
+       },
+       {
+        "a": "2000",
+        "alts": [
+         "2000.0"
+        ]
+       }
+      ],
+      [
+       "문제에서 원하는 것",
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       },
+       {
+        "a": "1300",
+        "alts": [
+         "1300.0"
+        ]
+       },
+       {
+        "a": "3000",
+        "alts": [
+         "3000.0"
+        ]
+       },
+       {
+        "a": "3000",
+        "alts": [
+         "3000.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    df = pd.DataFrame({\"brand\": [\"Kia\", \"Kia\", \"BMW\", \"BMW\", \"BMW\", \"Kia\"],\n                       \"fuel\": [\"gasoline\", None, \"diesel\", None, \"hybrid\", \"diesel\"],\n                       \"accident\": [\"N\", \"N\", \"N\", \"N\", \"Y\", \"N\"],\n                       \"price\": [1200, 900, 3000, 2000, 2600, 1400]})\n    out = []\n    for cond in [df[\"fuel\"].isna() & (df[\"accident\"] == \"N\"), df[\"fuel\"].notna() & (df[\"accident\"] == \"N\")]:\n        c = df.loc[cond]\n        g = c.groupby(\"brand\")[\"price\"].mean()\n        out += [len(c), f(g[\"Kia\"]), f(g[\"BMW\"]), f(g.max())]\n    return out",
+     "explain": "틀린 코드는 연료가 빈 1번·3번 매물을 골라요. 문제에서 원하는 매물은 연료가 적힌 무사고 매물인 0번·2번·5번이에요.",
+     "code": "start"
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "5번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "cars = df.loc[df[\"fuel\"].isna() | (df[\"accident\"] == \"N\"), ]",
+      "cars = df.loc[~(df[\"fuel\"].isna() & (df[\"accident\"] == \"N\")), ]",
+      "cars = df.loc[df[\"fuel\"].isna() & ~(df[\"accident\"] == \"N\"), ]",
+      "cars = df.loc[~df[\"fuel\"].isna() & (df[\"accident\"] == \"N\"), ]"
+     ],
+     "answer": 3,
+     "explain": "`~`를 fuel의 isna() 앞에만 붙여야 '연료가 적힌' 조건이 돼요. 괄호 전체에 ~를 붙이면 '두 조건을 동시에 만족하지는 않는 매물'이 되고, |는 둘 중 하나만 맞아도 골라요. `df[\"fuel\"].notna()`로 바꿔도 같은 뜻이에요.",
+     "code": "start"
+    }
+   ],
+   "explain": "`~`는 True/False를 뒤집어서 `~df[\"fuel\"].isna()`는 `df[\"fuel\"].notna()`와 같은 뜻이 돼요. 조건이 둘일 때는 `&`(그리고)로 잇고 각 조건을 괄호로 묶어요. ~를 빠뜨리면 정반대인 '연료가 빈 매물'을 고르게 돼요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "매물 6대(NaN = 연료를 적지 않음)",
+     "alt": "매물 6대의 brand, fuel, accident, price 표. 1번·3번 매물의 fuel이 NaN이고 4번 매물만 accident가 Y이다.",
+     "head": [
+      "",
+      "brand",
+      "fuel",
+      "accident",
+      "price"
+     ],
+     "rows": [
+      [
+       0,
+       "Kia",
+       "gasoline",
+       "N",
+       1200
+      ],
+      [
+       1,
+       "Kia",
+       "NaN",
+       "N",
+       900
+      ],
+      [
+       2,
+       "BMW",
+       "diesel",
+       "N",
+       3000
+      ],
+      [
+       3,
+       "BMW",
+       "NaN",
+       "N",
+       2000
+      ],
+      [
+       4,
+       "BMW",
+       "hybrid",
+       "Y",
+       2600
+      ],
+      [
+       5,
+       "Kia",
+       "diesel",
+       "N",
+       1400
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t09-e",
+   "version": 1,
+   "title": "평점이 없는 한국 영화의 비율",
+   "statement": "영화 정보 데이터의 `rating` 열은 평점(0~10)인데, 아직 평점이 매겨지지 않은 영화는 칸이 비어 있습니다(결측치). `country` 열은 제작 국가입니다.\n\n제작 국가가 KR인 영화 중에서 평점이 없는 영화의 비율(%)을 구하려고 합니다. 비율은 (평점이 없는 KR 영화 수) ÷ (KR 영화 전체 수) × 100으로 계산합니다. 다음 코드는 이 값을 구하도록 작성했습니다. 그러나 코드 일부분이 잘못되어 있어 올바른 값이 나오지 않습니다. 코드에서 한 줄만 변경해서 올바른 값을 반환하도록 해 주세요.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "movies.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\nkr = df.loc[df[\"country\"] == \"KR\", ]\nn_missing = kr[\"rating\"].isna().sum()\n\ndef solution():\n    answer = round(n_missing / kr[\"rating\"].count() * 100, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "bugLine": 9,
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\nkr = df.loc[df[\"country\"] == \"KR\", ]\nn_missing = kr[\"rating\"].isna().sum()\n\ndef solution():\n    answer = round(n_missing / len(kr) * 100, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 5.95
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 4.19
+    },
+    {
+     "data": 2,
+     "expected": 5.03
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 비율의 분모(나누는 수)는 무엇일까요?",
+     "options": [
+      "평점이 있는 KR 영화 수",
+      "전체 영화 수(모든 국가)",
+      "KR 영화 전체 수(평점이 없는 영화도 포함)",
+      "평점이 없는 KR 영화 수"
+     ],
+     "answer": 2,
+     "explain": "비율 = 부분 ÷ 전체예요. 여기서 '전체'는 KR 영화 모두라서 평점이 없는(결측치인) 영화도 분모에 들어가야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`kr[\"rating\"].count()`는 무엇을 셀까요?",
+     "options": [
+      "rating에 값이 있는(결측치가 아닌) KR 영화 수",
+      "KR 영화 전체 수",
+      "rating이 결측치인 KR 영화 수",
+      "rating 값의 합계"
+     ],
+     "answer": 0,
+     "explain": "count()는 결측치(NaN)를 빼고 값이 있는 칸만 세요. 그래서 평점이 없는 영화는 세지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 표로 비율 구하기",
+     "prompt": "KR 영화 8편의 rating이 아래와 같아요. 개수를 세고, 두 가지 분모로 비율(%)을 구해 보세요(반올림 둘째 자리).\n\n{{fig:f1}}",
+     "columns": [
+      "구하는 것",
+      "값"
+     ],
+     "rows": [
+      [
+       "평점이 없는 영화 수",
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       }
+      ],
+      [
+       "KR 영화 전체 수",
+       {
+        "a": "8",
+        "alts": [
+         "8.0"
+        ]
+       }
+      ],
+      [
+       "count()의 값",
+       {
+        "a": "6",
+        "alts": [
+         "6.0"
+        ]
+       }
+      ],
+      [
+       "원하는 비율(%)",
+       {
+        "a": "25",
+        "alts": [
+         "25.0"
+        ]
+       }
+      ],
+      [
+       "count()를 분모로 쓴 비율(%)",
+       {
+        "a": "33.33"
+       }
+      ]
+     ],
+     "check": "def answers():\n    def f(x):\n        x = float(x)\n        return int(x) if x == int(x) else round(x, 2)\n    import pandas as pd\n    s = pd.Series([7.5, None, 6.8, 8.1, None, 5.9, 7.0, 6.4])\n    n = int(s.isna().sum())\n    return [n, len(s), int(s.count()), f(n / len(s) * 100), f(n / s.count() * 100)]",
+     "explain": "분모에 count()를 쓰면 평점이 없는 영화가 분모에서 빠져서 비율이 실제(25%)보다 커져요(33.33%)."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "9번 줄을 어떻게 고쳐야 할까요?",
+     "options": [
+      "answer = round(n_missing / len(df) * 100, 2)",
+      "answer = round(n_missing / len(kr) * 100, 2)",
+      "answer = round(n_missing / kr[\"rating\"].sum() * 100, 2)",
+      "answer = round(kr[\"rating\"].count() / len(kr) * 100, 2)"
+     ],
+     "answer": 1,
+     "explain": "len(kr)은 KR 영화의 행 수(결측치 포함)예요. len(df)는 모든 국가의 영화 수, rating의 sum()은 평점의 합계, 마지막 보기는 평점이 '있는' 영화의 비율이에요.",
+     "code": "start"
+    }
+   ],
+   "explain": "비율은 '부분 ÷ 전체'이고, 결측치 비율의 전체는 결측치를 포함한 행 수(len)예요. count()는 결측치를 빼고 세기 때문에 분모로 쓰면 비율이 커져요. `kr[\"rating\"].isna().mean() * 100`처럼 True/False의 평균으로 구해도 같아요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "KR 영화 8편(NaN = 평점 없음)",
+     "alt": "KR 영화 A~H 8편의 rating 표. B와 E의 rating이 NaN이고 나머지 6편은 평점이 있다.",
+     "head": [
+      "영화",
+      "country",
+      "rating"
+     ],
+     "rows": [
+      [
+       "A",
+       "KR",
+       7.5
+      ],
+      [
+       "B",
+       "KR",
+       "NaN"
+      ],
+      [
+       "C",
+       "KR",
+       6.8
+      ],
+      [
+       "D",
+       "KR",
+       8.1
+      ],
+      [
+       "E",
+       "KR",
+       "NaN"
+      ],
+      [
+       "F",
+       "KR",
+       5.9
+      ],
+      [
+       "G",
+       "KR",
+       7.0
+      ],
+      [
+       "H",
+       "KR",
+       6.4
+      ]
+     ]
+    }
+   ]
+  }
+ ]
+}

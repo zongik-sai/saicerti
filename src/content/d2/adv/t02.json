@@ -1,0 +1,1152 @@
+{
+ "course": "d2",
+ "type": 2,
+ "typeTitle": "기초 통계와 분포",
+ "kind": "choice",
+ "skills": [
+  "백분위수·사분위수 위치",
+  "IQR 울타리와 수염",
+  "왜도·첨도 비교",
+  "표준점수(z)",
+  "극단치 제거·대체"
+ ],
+ "intro": "백분위수 위치 계산, 상자수염그림의 수염 규칙, 왜도·첨도 비교, 표준점수와 IQR 규칙의 차이, 극단치를 지우거나 바꾼 뒤 다시 계산하기까지 다뤄요. 옳은 것을 모두 고르는 문제처럼 여러 개념을 한꺼번에 판단해요.",
+ "problems": [
+  {
+   "id": "d2-t02-adv1",
+   "version": 1,
+   "title": "백분위수로 읽는 판매량",
+   "statement": "편의점 13곳의 하루 컵라면 판매량(개)을 조사했습니다.\n\n`25, 18, 31, 12, 40, 23, 18, 35, 21, 28, 31, 15, 26`\n\n백분위수는 pandas `quantile()`의 기본 방식으로 구합니다. 자료 n개를 크기순으로 늘어놓았을 때 제(100 × p)백분위수는 작은 쪽부터 (n − 1) × p + 1번째 값입니다(예: p = 0.25이면 제25백분위수).\n\n이 자료에 대한 설명으로 **옳은** 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "제75백분위수는 35개이다.",
+     "사분위범위(IQR)는 28개이다.",
+     "판매량이 제25백분위수 이하인 편의점은 전체의 약 절반이다.",
+     "제50백분위수는 중앙값과 같은 25개이다."
+    ],
+    "answer": 3,
+    "why": [
+     "제75백분위수는 (13 − 1) × 0.75 + 1 = 10번째 값인 31개예요. 35개는 12번째 값이에요.",
+     "IQR은 Q3 − Q1 = 31 − 18 = 13개예요. 28개는 최댓값 − 최솟값(범위)이에요.",
+     "제25백분위수(18개) 이하인 편의점은 13곳 중 4곳뿐이라 절반보다 훨씬 적어요.",
+     "제50백분위수는 7번째 값 25개이고, 크기순 한가운데 값이니 바로 중앙값이에요(정답)."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "**백분위수**는 자료를 크기순으로 늘어놓고 100등분했을 때의 위치를 나타내는 값이에요. **제25백분위수**는 어떤 값일까요?",
+     "options": [
+      "그 값 이하에 자료의 약 25%가 있는 값",
+      "모든 값을 더한 합의 25%",
+      "큰 쪽부터 25번째 값",
+      "평균의 25%"
+     ],
+     "answer": 0,
+     "explain": "제25백분위수 아래에는 자료의 약 25%, 위에는 약 75%가 있어요. 제90백분위수라면 그 아래에 약 90%가 있어요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "사분위수 Q1, Q2(중앙값), Q3는 각각 몇 백분위수와 같을까요?",
+     "options": [
+      "제25·제50·제75백분위수",
+      "제10·제50·제90백분위수",
+      "제25·제50·제100백분위수",
+      "제33·제66·제99백분위수"
+     ],
+     "answer": 0,
+     "explain": "사분위수는 자료를 4등분하는 값이라 25%, 50%, 75% 위치예요. 그래서 제50백분위수가 곧 중앙값이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "몇 번째 값일까?",
+     "prompt": "13개 자료를 크기순으로 늘어놓으면 `12, 15, 18, 18, 21, 23, 25, 26, 28, 31, 31, 35, 40`이에요. 작은 쪽부터 (n − 1) × p + 1번째 값을 찾아 채워 보세요.",
+     "columns": [
+      "백분위수",
+      "p",
+      "몇 번째 값",
+      "값(개)"
+     ],
+     "rows": [
+      [
+       "제25백분위수(Q1)",
+       "0.25",
+       {
+        "a": "4",
+        "alts": [
+         "4.0"
+        ]
+       },
+       {
+        "a": "18",
+        "alts": [
+         "18.0"
+        ]
+       }
+      ],
+      [
+       "제50백분위수(중앙값)",
+       "0.5",
+       {
+        "a": "7",
+        "alts": [
+         "7.0"
+        ]
+       },
+       {
+        "a": "25",
+        "alts": [
+         "25.0"
+        ]
+       }
+      ],
+      [
+       "제75백분위수(Q3)",
+       "0.75",
+       {
+        "a": "10",
+        "alts": [
+         "10.0"
+        ]
+       },
+       {
+        "a": "31",
+        "alts": [
+         "31.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([25, 18, 31, 12, 40, 23, 18, 35, 21, 28, 31, 15, 26])\n    out = []\n    for p in [0.25, 0.5, 0.75]:\n        out += [_f((len(s) - 1) * p + 1), _f(s.quantile(p))]\n    return out",
+     "explain": "12 × 0.25 + 1 = 4, 12 × 0.5 + 1 = 7, 12 × 0.75 + 1 = 10이에요. pandas `quantile(0.25)`처럼 구해도 18, 25, 31이 나와요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "퍼진 정도 두 가지",
+     "prompt": "사분위범위(IQR)와 범위를 구해 보세요.",
+     "columns": [
+      "이름",
+      "구하는 식",
+      "값(개)"
+     ],
+     "rows": [
+      [
+       "사분위범위(IQR)",
+       "Q3 − Q1",
+       {
+        "a": "13",
+        "alts": [
+         "13.0"
+        ]
+       }
+      ],
+      [
+       "범위",
+       "최댓값 − 최솟값",
+       {
+        "a": "28",
+        "alts": [
+         "28.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([25, 18, 31, 12, 40, 23, 18, 35, 21, 28, 31, 15, 26])\n    return [_f(s.quantile(0.75) - s.quantile(0.25)), _f(s.max() - s.min())]",
+     "explain": "IQR은 가운데 50% 자료의 너비, 범위는 전체 자료의 너비예요. 이름이 비슷해 헷갈리기 쉬우니 식으로 기억해요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "판매량이 제25백분위수(18개) **이하**인 편의점은 몇 곳일까요?",
+     "a": "4",
+     "alts": [
+      "4곳",
+      "4.0"
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    d = [25, 18, 31, 12, 40, 23, 18, 35, 21, 28, 31, 15, 26]\n    return [sum(1 for x in d if x <= 18)]",
+     "explain": "12, 15, 18, 18로 4곳이에요. 13곳 중 4곳(약 31%)이라 절반에는 한참 못 미쳐요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "판매량이 제75백분위수(31개)보다 **많은** 편의점은 몇 곳일까요?",
+     "a": "2",
+     "alts": [
+      "2곳",
+      "2.0"
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    d = [25, 18, 31, 12, 40, 23, 18, 35, 21, 28, 31, 15, 26]\n    return [sum(1 for x in d if x > 31)]",
+     "explain": "31개를 판 두 곳은 \"보다 많은\"에 들어가지 않아요. 35개와 40개를 판 2곳이에요."
+    }
+   ],
+   "explain": "13개 자료에서 제25·50·75백분위수는 크기순 4·7·10번째 값인 18, 25, 31개예요. 제50백분위수는 한가운데 값이라 중앙값과 같아요. IQR(31 − 18 = 13)과 범위(40 − 12 = 28)를 헷갈리지 않아야 해요."
+  },
+  {
+   "id": "d2-t02-adv2",
+   "version": 1,
+   "title": "수염은 어디까지 그릴까",
+   "statement": "역 앞 택시 승강장에서 손님 11명이 택시를 기다린 시간(분)입니다.\n\n`15, 4, 20, 12, 41, 9, 17, 23, 12, 20, 14`\n\n이 자료로 상자수염그림을 그리려고 합니다.\n- 사분위수는 pandas `quantile()`의 기본 방식으로 구합니다.\n- matplotlib `boxplot()`의 기본 방식처럼, Q1 − 1.5 × IQR과 Q3 + 1.5 × IQR(울타리) 밖의 값은 극단치로 보고 점으로 따로 그립니다.\n\n이 상자수염그림에 대한 설명으로 **옳은** 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "오른쪽 수염은 위 울타리 값인 32분까지 그린다.",
+     "41분은 오른쪽 수염 밖에 점으로 따로 그린다.",
+     "상자 안의 선은 평균인 17분을 나타낸다.",
+     "상자의 가로 길이는 최댓값 − 최솟값인 37분이다."
+    ],
+    "answer": 1,
+    "why": [
+     "수염은 울타리 안에 있는 실제 값 중 가장 큰 값(23분)까지만 그려요. 울타리 값 32분은 그림에 나타나지 않아요.",
+     "41분은 위 울타리 20 + 1.5 × 8 = 32분보다 커서 극단치이므로 점으로 따로 그려요(정답).",
+     "평균은 187 ÷ 11 = 17분이 맞지만, 상자 안의 선은 중앙값 15분이에요.",
+     "상자의 가로 길이는 IQR = 20 − 12 = 8분이에요. 37분은 범위예요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "상자수염그림에서 상자 안에 그은 선이 나타내는 값은 무엇일까요?",
+     "options": [
+      "중앙값(Q2)",
+      "산술평균",
+      "최빈값",
+      "최댓값과 최솟값의 한가운데 값"
+     ],
+     "answer": 0,
+     "explain": "상자 안의 선은 중앙값이에요. 상자수염그림은 크기순 위치로 정한 값(사분위수)으로 그려서 평균은 기본으로 나타나지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "사분위수 구하기",
+     "prompt": "크기순 자료 `4, 9, 12, 12, 14, 15, 17, 20, 20, 23, 41`(11개)에서 pandas 기본 방식은 작은 쪽부터 (11 − 1) × p + 1번째 값을 써요. 3.5번째처럼 두 자리 사이에 걸리면 두 값의 한가운데 값이에요.",
+     "columns": [
+      "",
+      "Q1 (p = 0.25)",
+      "중앙값 (p = 0.5)",
+      "Q3 (p = 0.75)"
+     ],
+     "rows": [
+      [
+       "몇 번째",
+       {
+        "a": "3.5"
+       },
+       {
+        "a": "6",
+        "alts": [
+         "6.0"
+        ]
+       },
+       {
+        "a": "8.5"
+       }
+      ],
+      [
+       "값(분)",
+       {
+        "a": "12",
+        "alts": [
+         "12.0"
+        ]
+       },
+       {
+        "a": "15",
+        "alts": [
+         "15.0"
+        ]
+       },
+       {
+        "a": "20",
+        "alts": [
+         "20.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([15, 4, 20, 12, 41, 9, 17, 23, 12, 20, 14])\n    ps = [0.25, 0.5, 0.75]\n    return [_f((len(s) - 1) * p + 1) for p in ps] + [_f(s.quantile(p)) for p in ps]",
+     "explain": "3.5번째는 3번째(12)와 4번째(12)의 한가운데라 12, 8.5번째는 8번째(20)와 9번째(20)의 한가운데라 20이에요. 이웃한 두 값이 같아서 다른 계산법으로 해도 같은 값이 나와요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "울타리 구하기",
+     "prompt": "IQR = Q3 − Q1을 이용해 울타리를 구해 보세요.",
+     "columns": [
+      "IQR",
+      "1.5 × IQR",
+      "아래 울타리",
+      "위 울타리"
+     ],
+     "rows": [
+      [
+       {
+        "a": "8",
+        "alts": [
+         "8.0"
+        ]
+       },
+       {
+        "a": "12",
+        "alts": [
+         "12.0"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "32",
+        "alts": [
+         "32.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([15, 4, 20, 12, 41, 9, 17, 23, 12, 20, 14])\n    q1, q3 = s.quantile(0.25), s.quantile(0.75)\n    iqr = q3 - q1\n    return [_f(iqr), _f(1.5 * iqr), _f(q1 - 1.5 * iqr), _f(q3 + 1.5 * iqr)]",
+     "explain": "아래 울타리는 12 − 12 = 0분, 위 울타리는 20 + 12 = 32분이에요. 이 밖에 있는 값이 극단치예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "극단치를 점으로 따로 그리는 상자수염그림에서 오른쪽 수염은 어디까지 그릴까요?",
+     "options": [
+      "위 울타리 안에 있는 실제 값 중 가장 큰 값까지",
+      "위 울타리 값까지",
+      "극단치를 포함한 가장 큰 값까지",
+      "Q3의 두 배까지"
+     ],
+     "answer": 0,
+     "explain": "수염은 울타리 안의 실제 자료 중 가장 먼 값에서 멈춰요. 울타리는 극단치를 가르는 기준선일 뿐 그림에 그려지지 않아요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "수염 끝과 점",
+     "prompt": "울타리(0분, 32분)를 기준으로 그림의 각 부분에 해당하는 값을 채워 보세요.",
+     "columns": [
+      "그림의 부분",
+      "값(분)"
+     ],
+     "rows": [
+      [
+       "왼쪽 수염의 끝",
+       {
+        "a": "4",
+        "alts": [
+         "4.0"
+        ]
+       }
+      ],
+      [
+       "오른쪽 수염의 끝",
+       {
+        "a": "23",
+        "alts": [
+         "23.0"
+        ]
+       }
+      ],
+      [
+       "따로 그리는 점",
+       {
+        "a": "41",
+        "alts": [
+         "41.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    d = sorted([15, 4, 20, 12, 41, 9, 17, 23, 12, 20, 14])\n    lo, hi = 0, 32\n    inside = [x for x in d if lo <= x <= hi]\n    out = [x for x in d if x < lo or x > hi]\n    return [min(inside), max(inside)] + out",
+     "explain": "4분은 아래 울타리 0분 안이라 왼쪽 수염이 4분까지 가요. 23분은 32분 안에서 가장 큰 값이고, 41분은 울타리 밖이라 점으로 그려요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "이 자료의 산술평균은 몇 분일까요?",
+     "a": "17",
+     "alts": [
+      "17.0",
+      "17분"
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    d = [15, 4, 20, 12, 41, 9, 17, 23, 12, 20, 14]\n    return [_f(sum(d) / len(d))]",
+     "explain": "합 187 ÷ 11 = 17분이에요. 중앙값 15분과 달라요 — 큰 값 41분이 평균을 끌어올렸어요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "상자수염그림에서 상자의 가로 길이가 나타내는 것은 무엇일까요?",
+     "options": [
+      "사분위범위(IQR = Q3 − Q1)",
+      "범위(최댓값 − 최솟값)",
+      "표준편차",
+      "평균 − 중앙값"
+     ],
+     "answer": 0,
+     "explain": "상자는 Q1에서 Q3까지라 가로 길이가 IQR이에요. 가운데 50% 자료가 이 안에 있어요."
+    }
+   ],
+   "explain": "Q1 = 12분, 중앙값 = 15분, Q3 = 20분이라 울타리는 0분과 32분이에요. 오른쪽 수염은 울타리 안의 가장 큰 실제 값 23분까지 그리고, 울타리 밖의 41분은 점으로 따로 그려요. 상자 안의 선은 평균이 아니라 중앙값, 상자 길이는 범위가 아니라 IQR이에요."
+  },
+  {
+   "id": "d2-t02-adv3",
+   "version": 1,
+   "title": "세 히스토그램의 왜도와 첨도",
+   "statement": "세 학교에서 학생을 100명씩 뽑아 하루 걸음 수(백 걸음)를 조사하고 히스토그램 A, B, C로 나타냈습니다. 세 그림의 가로축 구간과 세로 비율은 같고, 세로축 눈금은 생략했습니다.\n\n{{fig:f1}}\n\n<보기>\nㄱ. A는 평균이 중앙값보다 크다.\nㄴ. B와 C는 왜도가 0에 가깝다.\nㄷ. C가 B보다 첨도가 크다.\n\n<보기>에서 **옳은** 것을 모두 고른 것은 무엇입니까?",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "svg",
+     "alt": "같은 가로축(0부터 80까지, 10 간격 구간 8개, 단위 백 걸음)과 같은 세로 비율로 그린 히스토그램 3개. 세로축 눈금 숫자는 없다. A의 구간별 학생 수: 0~10 20명, 10~20 32명, 20~30 18명, 30~40 10명, 40~50 8명, 50~60 6명, 60~70 4명, 70~80 2명으로, 왼쪽에 높은 막대가 있고 오른쪽으로 낮게 길게 이어진다. B: 1, 3, 8, 38, 38, 8, 3, 1명으로 가운데 두 막대가 아주 높게 솟고 양 끝으로 갈수록 낮게 이어지는 좌우 대칭 모양이다. C: 11, 12, 13, 14, 14, 13, 12, 11명으로 막대 높이가 거의 고른 납작한 좌우 대칭 모양이다.",
+     "svg": "<svg viewBox='0 0 600 215' xmlns='http://www.w3.org/2000/svg' font-size='12'><text x='98.7' y='18' text-anchor='middle' font-size='15' font-weight='bold'>A</text><rect x='10' y='96.1' width='22.2' height='68.9' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='32.2' y='54.7' width='22.2' height='110.3' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='54.3' y='102.9' width='22.2' height='62.1' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='76.5' y='130.5' width='22.2' height='34.5' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='98.7' y='137.4' width='22.2' height='27.6' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='120.8' y='144.3' width='22.2' height='20.7' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='143' y='151.2' width='22.2' height='13.8' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='165.2' y='158.1' width='22.2' height='6.9' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><line x1='10' y1='165' x2='187.3' y2='165' stroke='currentColor' stroke-width='1.2'/><line x1='10' y1='165' x2='10' y2='28' stroke='currentColor' stroke-width='1.2'/><line x1='10' y1='165' x2='10' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='10' y='184' text-anchor='middle'>0</text><line x1='32.2' y1='165' x2='32.2' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='54.3' y1='165' x2='54.3' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='76.5' y1='165' x2='76.5' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='98.7' y1='165' x2='98.7' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='98.7' y='184' text-anchor='middle'>40</text><line x1='120.8' y1='165' x2='120.8' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='143' y1='165' x2='143' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='165.2' y1='165' x2='165.2' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='187.3' y1='165' x2='187.3' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='187.3' y='184' text-anchor='middle'>80</text><text x='300' y='18' text-anchor='middle' font-size='15' font-weight='bold'>B</text><rect x='211.3' y='161.6' width='22.2' height='3.4' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='233.5' y='154.7' width='22.2' height='10.3' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='255.7' y='137.4' width='22.2' height='27.6' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='277.8' y='34' width='22.2' height='131' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='300' y='34' width='22.2' height='131' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='322.2' y='137.4' width='22.2' height='27.6' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='344.3' y='154.7' width='22.2' height='10.3' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='366.5' y='161.6' width='22.2' height='3.4' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><line x1='211.3' y1='165' x2='388.7' y2='165' stroke='currentColor' stroke-width='1.2'/><line x1='211.3' y1='165' x2='211.3' y2='28' stroke='currentColor' stroke-width='1.2'/><line x1='211.3' y1='165' x2='211.3' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='211.3' y='184' text-anchor='middle'>0</text><line x1='233.5' y1='165' x2='233.5' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='255.7' y1='165' x2='255.7' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='277.8' y1='165' x2='277.8' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='300' y1='165' x2='300' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='300' y='184' text-anchor='middle'>40</text><line x1='322.2' y1='165' x2='322.2' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='344.3' y1='165' x2='344.3' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='366.5' y1='165' x2='366.5' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='388.7' y1='165' x2='388.7' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='388.7' y='184' text-anchor='middle'>80</text><text x='501.3' y='18' text-anchor='middle' font-size='15' font-weight='bold'>C</text><rect x='412.7' y='127.1' width='22.2' height='37.9' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='434.8' y='123.6' width='22.2' height='41.4' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='457' y='120.2' width='22.2' height='44.8' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='479.2' y='116.7' width='22.2' height='48.3' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='501.3' y='116.7' width='22.2' height='48.3' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='523.5' y='120.2' width='22.2' height='44.8' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='545.7' y='123.6' width='22.2' height='41.4' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><rect x='567.8' y='127.1' width='22.2' height='37.9' fill='currentColor' fill-opacity='0.16' stroke='currentColor' stroke-width='1.2'/><line x1='412.7' y1='165' x2='590' y2='165' stroke='currentColor' stroke-width='1.2'/><line x1='412.7' y1='165' x2='412.7' y2='28' stroke='currentColor' stroke-width='1.2'/><line x1='412.7' y1='165' x2='412.7' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='412.7' y='184' text-anchor='middle'>0</text><line x1='434.8' y1='165' x2='434.8' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='457' y1='165' x2='457' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='479.2' y1='165' x2='479.2' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='501.3' y1='165' x2='501.3' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='501.3' y='184' text-anchor='middle'>40</text><line x1='523.5' y1='165' x2='523.5' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='545.7' y1='165' x2='545.7' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='567.8' y1='165' x2='567.8' y2='170' stroke='currentColor' stroke-width='1.1'/><line x1='590' y1='165' x2='590' y2='170' stroke='currentColor' stroke-width='1.1'/><text x='590' y='184' text-anchor='middle'>80</text><text x='300' y='209' text-anchor='middle'>steps (x100)</text></svg>"
+    }
+   ],
+   "choice": {
+    "options": [
+     "ㄱ, ㄴ",
+     "ㄱ, ㄷ",
+     "ㄴ, ㄷ",
+     "ㄱ, ㄴ, ㄷ"
+    ],
+    "answer": 0,
+    "why": [
+     "A는 오른쪽으로 꼬리가 길어 평균이 중앙값보다 크고(ㄱ), B와 C는 좌우 대칭이라 왜도가 0에 가까워요(ㄴ)(정답).",
+     "ㄴ도 옳고 ㄷ은 틀려요. 가운데가 뾰족하게 솟은 B가 납작한 C보다 첨도가 커요.",
+     "ㄱ도 옳고 ㄷ은 틀려요. A는 꼬리 쪽 큰 값들이 평균을 끌어올려 평균이 중앙값보다 커요.",
+     "ㄷ이 틀려요. 첨도는 가운데가 뾰족하게 몰릴수록 커서 B가 C보다 커요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "**왜도**(skewness)는 무엇을 나타낼까요?",
+     "options": [
+      "분포가 좌우 대칭에서 한쪽으로 치우친 방향과 정도",
+      "분포의 가운데가 얼마나 뾰족한지",
+      "자료의 개수",
+      "가장 큰 값과 가장 작은 값의 차이"
+     ],
+     "answer": 0,
+     "explain": "왜도는 치우침이에요. 오른쪽으로 꼬리가 길면 양수, 왼쪽으로 꼬리가 길면 음수, 좌우 대칭이면 0에 가까워요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "**첨도**(kurtosis)는 무엇을 나타낼까요?",
+     "options": [
+      "분포가 가운데에 얼마나 뾰족하게 몰려 있는지(꼬리가 얼마나 두꺼운지)",
+      "분포가 한쪽으로 치우친 방향",
+      "평균과 중앙값의 차이",
+      "히스토그램 막대의 개수"
+     ],
+     "answer": 0,
+     "explain": "첨도가 클수록 가운데가 뾰족하게 솟고 양 끝 꼬리에도 드문 값이 이어져요. 고르게 납작한 분포는 첨도가 작아요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "A의 누적 개수",
+     "prompt": "{{fig:f1}}\n\nA의 앞쪽 네 구간 학생 수는 20, 32, 18, 10명이에요. 앞 구간부터 학생 수를 차례로 더해 가며(누적 개수) 채워 보세요.",
+     "columns": [
+      "구간(백 걸음)",
+      "학생 수",
+      "누적 개수"
+     ],
+     "rows": [
+      [
+       "0~10",
+       "20",
+       {
+        "a": "20",
+        "alts": [
+         "20.0"
+        ]
+       }
+      ],
+      [
+       "10~20",
+       "32",
+       {
+        "a": "52",
+        "alts": [
+         "52.0"
+        ]
+       }
+      ],
+      [
+       "20~30",
+       "18",
+       {
+        "a": "70",
+        "alts": [
+         "70.0"
+        ]
+       }
+      ],
+      [
+       "30~40",
+       "10",
+       {
+        "a": "80",
+        "alts": [
+         "80.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    from itertools import accumulate\n    return list(accumulate([20, 32, 18, 10]))",
+     "explain": "누적 개수는 그 구간까지 학생이 모두 몇 명인지예요. 20, 52, 70, 80명으로 늘어나요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "100명의 중앙값은 크기순 50번째와 51번째 값의 평균이에요. A의 중앙값은 어느 구간에 있을까요?",
+     "options": [
+      "10~20",
+      "0~10",
+      "20~30",
+      "30~40"
+     ],
+     "answer": 0,
+     "explain": "누적 개수가 20명에서 52명으로 넘어가는 10~20 구간에 21~52번째 학생이 있어요. 그래서 50번째와 51번째도 이 구간이에요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "A의 평균 어림하기",
+     "prompt": "구간마다 가운데 값을 그 구간 학생들의 값으로 보고 A의 평균을 어림해요. 입력 칸을 채워 보세요.",
+     "columns": [
+      "구간 가운데 값",
+      "학생 수",
+      "가운데 값 × 학생 수"
+     ],
+     "rows": [
+      [
+       "5",
+       "20",
+       "100"
+      ],
+      [
+       "15",
+       "32",
+       "480"
+      ],
+      [
+       "25",
+       "18",
+       "450"
+      ],
+      [
+       "35",
+       "10",
+       "350"
+      ],
+      [
+       "45",
+       "8",
+       "360"
+      ],
+      [
+       "55",
+       "6",
+       {
+        "a": "330",
+        "alts": [
+         "330.0"
+        ]
+       }
+      ],
+      [
+       "65",
+       "4",
+       {
+        "a": "260",
+        "alts": [
+         "260.0"
+        ]
+       }
+      ],
+      [
+       "75",
+       "2",
+       {
+        "a": "150",
+        "alts": [
+         "150.0"
+        ]
+       }
+      ],
+      [
+       "합계",
+       "100",
+       {
+        "a": "2480",
+        "alts": [
+         "2480.0"
+        ]
+       }
+      ],
+      [
+       "평균(합계 ÷ 100)",
+       "",
+       {
+        "a": "24.8"
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    mids = [5, 15, 25, 35, 45, 55, 65, 75]\n    cnt = [20, 32, 18, 10, 8, 6, 4, 2]\n    prod = [m * n for m, n in zip(mids, cnt)]\n    return prod[5:] + [sum(prod), _f(sum(prod) / sum(cnt))]",
+     "explain": "어림한 평균은 약 24.8(백 걸음)로 20~30 구간에 있어요. 중앙값이 있는 10~20 구간보다 오른쪽이라 평균이 중앙값보다 커요. 오른쪽 꼬리의 큰 값들이 평균을 끌어올린 거예요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "B와 C처럼 가운데를 기준으로 왼쪽과 오른쪽 막대 높이가 똑같은(좌우 대칭) 히스토그램의 왜도는 어떨까요?",
+     "options": [
+      "0에 가깝다",
+      "0보다 훨씬 크다",
+      "0보다 훨씬 작다",
+      "첨도와 늘 같다"
+     ],
+     "answer": 0,
+     "explain": "좌우가 똑같으면 어느 쪽으로도 치우치지 않아서 왜도가 0에 가까워요. 이때는 평균과 중앙값도 거의 같아요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "B와 C 중 첨도가 더 큰 것은 무엇일까요?",
+     "options": [
+      "B — 가운데가 뾰족하게 솟고 양 끝으로 낮게 이어진다",
+      "C — 막대 높이가 고르게 납작하다",
+      "둘 다 좌우 대칭이라 첨도도 같다",
+      "히스토그램으로는 짐작할 수 없다"
+     ],
+     "answer": 0,
+     "explain": "B처럼 가운데에 뾰족하게 몰리면 첨도가 크고, C처럼 고르게 납작하면 첨도가 작아요. 대칭인지(왜도)와 뾰족한지(첨도)는 서로 다른 성질이에요."
+    }
+   ],
+   "explain": "A는 오른쪽으로 꼬리가 길어 왜도가 양수이고, 꼬리 쪽 큰 값들 때문에 평균(약 24.8)이 중앙값(10~20 구간)보다 커요. B와 C는 좌우 대칭이라 왜도가 0에 가깝지만, 가운데가 뾰족한 B가 납작한 C보다 첨도가 커요. 왜도는 치우침, 첨도는 뾰족함으로 서로 다른 성질이에요."
+  },
+  {
+   "id": "d2-t02-adv4",
+   "version": 1,
+   "title": "두 규칙으로 찾는 극단치",
+   "statement": "배달 로봇 9대가 하루 동안 배달한 건수입니다.\n\n`53, 50, 80, 59, 46, 56, 50, 59, 51`\n\n이 자료의 평균은 56건, 표준편차(pandas `std()`로 구한 값)는 10건입니다. 사분위수는 pandas `quantile()`의 기본 방식(9개 자료면 크기순으로 작은 쪽부터 3번째 값이 Q1, 7번째 값이 Q3)으로 구합니다.\n\n<보기>\nㄱ. IQR 규칙(Q1 − 1.5 × IQR보다 작거나 Q3 + 1.5 × IQR보다 큰 값)으로 보면 80건은 극단치이다.\nㄴ. 표준점수 규칙(표준점수의 절댓값이 3보다 큰 값)으로 보면 80건은 극단치이다.\nㄷ. 80건을 이 자료의 중앙값으로 바꾸면(대체) 평균은 줄어들고 중앙값은 그대로이다.\n\n<보기>에서 **옳은** 것을 모두 고른 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "ㄱ",
+     "ㄴ",
+     "ㄱ, ㄷ",
+     "ㄱ, ㄴ, ㄷ"
+    ],
+    "answer": 2,
+    "why": [
+     "ㄷ도 옳아요. 80건을 중앙값 53건으로 바꾸면 평균은 56건에서 53건으로 줄고 중앙값은 53건 그대로예요.",
+     "80건의 표준점수는 (80 − 56) ÷ 10 = 2.4라서 |z| > 3 규칙으로는 극단치가 아니에요.",
+     "80건은 위 울타리 59 + 1.5 × 9 = 72.5보다 커서 IQR 규칙으로 극단치이고(ㄱ), 중앙값으로 바꾸면 평균만 53건으로 줄어요(ㄷ)(정답).",
+     "ㄴ이 틀려요. 80건의 표준점수는 2.4로 3보다 작아요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "**표준점수**(z)는 z = (값 − 평균) ÷ 표준편차예요. z = 2는 무슨 뜻일까요?",
+     "options": [
+      "평균보다 표준편차 2개만큼 크다",
+      "평균의 2배이다",
+      "중앙값보다 2만큼 크다",
+      "자료에서 2번째로 큰 값이다"
+     ],
+     "answer": 0,
+     "explain": "표준점수는 평균에서 표준편차 몇 개만큼 떨어졌는지예요. 절댓값이 크면(흔히 2나 3보다 크면) 극단치로 의심해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "사분위수와 울타리",
+     "prompt": "크기순 자료 `46, 50, 50, 51, 53, 56, 59, 59, 80`으로 채워 보세요.",
+     "columns": [
+      "Q1",
+      "중앙값",
+      "Q3",
+      "IQR",
+      "아래 울타리",
+      "위 울타리"
+     ],
+     "rows": [
+      [
+       {
+        "a": "50",
+        "alts": [
+         "50.0"
+        ]
+       },
+       {
+        "a": "53",
+        "alts": [
+         "53.0"
+        ]
+       },
+       {
+        "a": "59",
+        "alts": [
+         "59.0"
+        ]
+       },
+       {
+        "a": "9",
+        "alts": [
+         "9.0"
+        ]
+       },
+       {
+        "a": "36.5"
+       },
+       {
+        "a": "72.5"
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([53, 50, 80, 59, 46, 56, 50, 59, 51])\n    q1, md, q3 = s.quantile(0.25), s.median(), s.quantile(0.75)\n    iqr = q3 - q1\n    return [_f(q1), _f(md), _f(q3), _f(iqr), _f(q1 - 1.5 * iqr), _f(q3 + 1.5 * iqr)]",
+     "explain": "IQR = 59 − 50 = 9이고 1.5 × 9 = 13.5라서 울타리는 50 − 13.5 = 36.5와 59 + 13.5 = 72.5예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "IQR 규칙으로 보면 80건은 어떨까요?",
+     "options": [
+      "극단치이다 — 위 울타리 72.5보다 크다",
+      "극단치가 아니다 — 위 울타리 72.5보다 작다",
+      "극단치가 아니다 — 가장 큰 값은 늘 수염의 끝이다",
+      "알 수 없다 — 평균을 알아야 한다"
+     ],
+     "answer": 0,
+     "explain": "80은 위 울타리 72.5보다 커서 IQR 규칙으로 극단치예요. 가장 작은 46은 아래 울타리 36.5보다 커서 극단치가 아니에요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "표준점수 구하기",
+     "prompt": "평균 56건, 표준편차 10건으로 몇 개 값의 표준점수를 구해 보세요.",
+     "columns": [
+      "배달 건수",
+      "값 − 평균",
+      "표준점수 z"
+     ],
+     "rows": [
+      [
+       "80",
+       {
+        "a": "24",
+        "alts": [
+         "24.0"
+        ]
+       },
+       {
+        "a": "2.4"
+       }
+      ],
+      [
+       "46",
+       {
+        "a": "-10",
+        "alts": [
+         "-10.0"
+        ]
+       },
+       {
+        "a": "-1",
+        "alts": [
+         "-1.0"
+        ]
+       }
+      ],
+      [
+       "59",
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       },
+       {
+        "a": "0.3"
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([53, 50, 80, 59, 46, 56, 50, 59, 51])\n    m, sd = s.mean(), s.std()\n    out = []\n    for x in [80, 46, 59]:\n        out += [_f(x - m), _f((x - m) / sd)]\n    return out",
+     "explain": "80건은 평균보다 표준편차 2.4개만큼 커요. 46건은 표준편차 1개만큼 작아서 z = −1이에요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "표준점수 규칙(|z| > 3)으로 보면 80건은 어떨까요?",
+     "options": [
+      "극단치가 아니다 — |z| = 2.4로 3보다 작다",
+      "극단치이다 — 가장 큰 값이다",
+      "극단치이다 — z가 양수이다",
+      "극단치가 아니다 — z가 음수이다"
+     ],
+     "answer": 0,
+     "explain": "|z| = 2.4는 3보다 작아서 이 규칙으로는 극단치가 아니에요. z가 양수인 것은 평균보다 크다는 뜻일 뿐이에요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "같은 80건인데 IQR 규칙으로는 극단치, 표준점수 규칙으로는 극단치가 아니에요. 이런 차이가 생기는 까닭은 무엇일까요?",
+     "options": [
+      "평균과 표준편차는 80건 자신 때문에 커지지만, 사분위수는 그 영향을 거의 받지 않아서",
+      "IQR 규칙은 늘 계산이 틀리기 쉬워서",
+      "표준점수는 중앙값으로 구해서",
+      "두 규칙은 결과가 늘 같아야 하니 계산이 틀렸다"
+     ],
+     "answer": 0,
+     "explain": "80건이 평균을 끌어올리고 표준편차도 키워서 80건 자신의 z가 작아져요. 사분위수는 크기순 위치로 정해서 극단치의 영향을 덜 받아요. 자료가 적을수록 이런 차이가 커요."
+    },
+    {
+     "id": "s7",
+     "kind": "table",
+     "title": "중앙값으로 바꾸기(대체)",
+     "prompt": "80건을 중앙값 53건으로 바꾼 9개 자료 `46, 50, 50, 51, 53, 53, 56, 59, 59`로 채워 보세요.",
+     "columns": [
+      "",
+      "합계",
+      "평균",
+      "중앙값"
+     ],
+     "rows": [
+      [
+       "바꾸기 전",
+       "504",
+       "56",
+       {
+        "a": "53",
+        "alts": [
+         "53.0"
+        ]
+       }
+      ],
+      [
+       "바꾼 뒤",
+       {
+        "a": "477",
+        "alts": [
+         "477.0"
+        ]
+       },
+       {
+        "a": "53",
+        "alts": [
+         "53.0"
+        ]
+       },
+       {
+        "a": "53",
+        "alts": [
+         "53.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import statistics\n    d = [53, 50, 80, 59, 46, 56, 50, 59, 51]\n    md = statistics.median(d)\n    new = [md if x == 80 else x for x in d]\n    return [_f(md), _f(sum(new)), _f(statistics.mean(new)), _f(statistics.median(new))]",
+     "explain": "합계가 504 − 80 + 53 = 477로 줄어 평균은 53건이 돼요. 53이 하나 더 들어가도 크기순 5번째 값은 여전히 53건이에요."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "이번에는 80건을 **지우면**(제거) 남은 8개 자료의 중앙값은 몇 건일까요? (자료가 짝수 개면 가운데 두 값의 평균이에요.)",
+     "a": "52",
+     "alts": [
+      "52.0",
+      "52건"
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import statistics\n    d = [53, 50, 80, 59, 46, 56, 50, 59, 51]\n    return [_f(statistics.median([x for x in d if x != 80]))]",
+     "explain": "남은 `46, 50, 50, 51, 53, 56, 59, 59`의 4번째(51)와 5번째(53)의 평균 52건이에요. 같은 극단치라도 지우기(제거)와 바꾸기(대체)는 결과가 다를 수 있어요."
+    }
+   ],
+   "explain": "Q1 = 50, Q3 = 59라서 위 울타리는 72.5이고 80건은 IQR 규칙으로 극단치예요. 그런데 80건의 표준점수는 2.4라서 |z| > 3 규칙으로는 극단치가 아니에요 — 극단치가 평균과 표준편차를 키워 자기 z를 작게 만들기 때문이에요. 80건을 중앙값 53건으로 바꾸면 평균은 53건으로 줄고 중앙값은 그대로예요."
+  },
+  {
+   "id": "d2-t02-adv5",
+   "version": 1,
+   "title": "극단치를 지우기 전과 후",
+   "statement": "중고 거래 앱에 올라온 같은 모델 자전거 13대의 가격(만 원)입니다.\n\n`16, 12, 20, 4, 41, 13, 17, 20, 10, 24, 12, 14, 18`\n\n사분위수는 pandas `quantile()`의 기본 방식(n개 자료를 크기순으로 늘어놓았을 때 작은 쪽부터 (n − 1) × p + 1번째 값)으로 구하고, Q1 − 1.5 × IQR보다 작거나 Q3 + 1.5 × IQR보다 큰 값을 극단치로 봅니다.\n\n<보기>\nㄱ. 이 자료의 극단치는 1개이다.\nㄴ. 평균이 중앙값보다 크다.\nㄷ. 극단치를 지우고 다시 구하면 평균은 작아지지만 중앙값은 변하지 않는다.\nㄹ. 이 자료는 왜도가 0보다 작은(왼쪽으로 꼬리가 긴) 분포에 가깝다.\n\n<보기>에서 **옳은** 것을 모두 고른 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "ㄱ, ㄷ",
+     "ㄱ, ㄴ",
+     "ㄴ, ㄹ",
+     "ㄱ, ㄴ, ㄷ"
+    ],
+    "answer": 1,
+    "why": [
+     "ㄴ도 옳고 ㄷ은 틀려요. 극단치를 지우면 중앙값도 16만 원에서 15만 원으로 바뀌어요.",
+     "울타리(0만 원, 32만 원) 밖의 값은 41만 원 하나이고(ㄱ), 평균 17만 원이 중앙값 16만 원보다 커요(ㄴ)(정답).",
+     "ㄱ도 옳고 ㄹ은 틀려요. 큰 값 41만 원 쪽(오른쪽)으로 꼬리가 길어서 왜도는 0보다 커요.",
+     "ㄷ이 틀려요. 지운 뒤 12개 자료의 중앙값은 6번째와 7번째 값의 평균인 15만 원으로 바뀌어요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "<보기>의 네 문장을 판단하려고 해요. 가장 먼저 할 일은 무엇일까요?",
+     "options": [
+      "가격을 크기순으로 늘어놓는다",
+      "가장 큰 값을 바로 지운다",
+      "평균보다 큰 값을 모두 극단치로 표시한다",
+      "최빈값을 구한다"
+     ],
+     "answer": 0,
+     "explain": "사분위수, 중앙값, 울타리 모두 크기순 위치로 정해져요. 그래서 크기순으로 늘어놓는 것이 첫 단계예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "사분위수 위치",
+     "prompt": "크기순 자료 `4, 10, 12, 12, 13, 14, 16, 17, 18, 20, 20, 24, 41`(13개)에서 (13 − 1) × p + 1번째 값을 찾아 채워 보세요.",
+     "columns": [
+      "",
+      "Q1 (p = 0.25)",
+      "중앙값 (p = 0.5)",
+      "Q3 (p = 0.75)"
+     ],
+     "rows": [
+      [
+       "몇 번째",
+       {
+        "a": "4",
+        "alts": [
+         "4.0"
+        ]
+       },
+       {
+        "a": "7",
+        "alts": [
+         "7.0"
+        ]
+       },
+       {
+        "a": "10",
+        "alts": [
+         "10.0"
+        ]
+       }
+      ],
+      [
+       "값(만 원)",
+       {
+        "a": "12",
+        "alts": [
+         "12.0"
+        ]
+       },
+       {
+        "a": "16",
+        "alts": [
+         "16.0"
+        ]
+       },
+       {
+        "a": "20",
+        "alts": [
+         "20.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([16, 12, 20, 4, 41, 13, 17, 20, 10, 24, 12, 14, 18])\n    ps = [0.25, 0.5, 0.75]\n    return [_f((len(s) - 1) * p + 1) for p in ps] + [_f(s.quantile(p)) for p in ps]",
+     "explain": "12 × 0.25 + 1 = 4번째, 12 × 0.5 + 1 = 7번째, 12 × 0.75 + 1 = 10번째 값이에요. Q1 = 12만 원, 중앙값 = 16만 원, Q3 = 20만 원이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "울타리와 극단치",
+     "prompt": "앞에서 구한 Q1, Q3로 채워 보세요.",
+     "columns": [
+      "IQR",
+      "아래 울타리",
+      "위 울타리",
+      "극단치 개수"
+     ],
+     "rows": [
+      [
+       {
+        "a": "8",
+        "alts": [
+         "8.0"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "32",
+        "alts": [
+         "32.0"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([16, 12, 20, 4, 41, 13, 17, 20, 10, 24, 12, 14, 18])\n    q1, q3 = s.quantile(0.25), s.quantile(0.75)\n    iqr = q3 - q1\n    lo, hi = q1 - 1.5 * iqr, q3 + 1.5 * iqr\n    return [_f(iqr), _f(lo), _f(hi), int(((s < lo) | (s > hi)).sum())]",
+     "explain": "IQR = 20 − 12 = 8, 1.5 × 8 = 12라서 울타리는 0만 원과 32만 원이에요. 그 밖에 있는 값은 41만 원 하나예요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "평균과 중앙값",
+     "prompt": "13개 자료 전체의 합계, 평균, 중앙값을 채워 보세요.",
+     "columns": [
+      "합계",
+      "평균",
+      "중앙값"
+     ],
+     "rows": [
+      [
+       {
+        "a": "221",
+        "alts": [
+         "221.0"
+        ]
+       },
+       {
+        "a": "17",
+        "alts": [
+         "17.0"
+        ]
+       },
+       {
+        "a": "16",
+        "alts": [
+         "16.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([16, 12, 20, 4, 41, 13, 17, 20, 10, 24, 12, 14, 18])\n    return [int(s.sum()), _f(s.mean()), _f(s.median())]",
+     "explain": "221 ÷ 13 = 17만 원으로, 중앙값 16만 원보다 커요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "평균이 중앙값보다 크고, 큰 값 쪽에 동떨어진 값(41만 원)이 있어요. 이 분포의 왜도는 어떨까요?",
+     "options": [
+      "0보다 크다(오른쪽으로 꼬리가 길다)",
+      "0보다 작다(왼쪽으로 꼬리가 길다)",
+      "0이다(좌우 대칭)",
+      "평균과 중앙값으로는 짐작할 수 없다"
+     ],
+     "answer": 0,
+     "explain": "큰 값 쪽 꼬리가 평균을 끌어올려 평균이 중앙값보다 커졌어요. 이런 분포는 왜도가 양수예요(pandas `skew()`로 구하면 약 1.62)."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "41만 원을 지우면 자료가 12개(짝수 개)가 돼요. 이때 중앙값은 무엇일까요?",
+     "options": [
+      "크기순 6번째와 7번째 값의 평균",
+      "크기순 6번째 값",
+      "크기순 7번째 값",
+      "Q1과 Q3의 평균"
+     ],
+     "answer": 0,
+     "explain": "짝수 개면 한가운데 값이 하나로 정해지지 않아서 가운데 두 값(12개면 6번째와 7번째)의 평균을 중앙값으로 써요."
+    },
+    {
+     "id": "s7",
+     "kind": "table",
+     "title": "지운 뒤 다시 구하기",
+     "prompt": "41만 원을 지운 12개 자료 `4, 10, 12, 12, 13, 14, 16, 17, 18, 20, 20, 24`로 채워 보세요.",
+     "columns": [
+      "",
+      "개수",
+      "합계",
+      "평균",
+      "중앙값"
+     ],
+     "rows": [
+      [
+       "지우기 전",
+       "13",
+       "221",
+       "17",
+       "16"
+      ],
+      [
+       "지운 뒤",
+       {
+        "a": "12",
+        "alts": [
+         "12.0"
+        ]
+       },
+       {
+        "a": "180",
+        "alts": [
+         "180.0"
+        ]
+       },
+       {
+        "a": "15",
+        "alts": [
+         "15.0"
+        ]
+       },
+       {
+        "a": "15",
+        "alts": [
+         "15.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import pandas as pd\n    s = pd.Series([16, 12, 20, 4, 41, 13, 17, 20, 10, 24, 12, 14, 18])\n    r = s[s != 41]\n    return [len(r), int(r.sum()), _f(r.mean()), _f(r.median())]",
+     "explain": "평균은 17 → 15만 원으로 2만 원 줄었고, 중앙값도 16 → 15만 원으로 1만 원 바뀌었어요(6번째 14와 7번째 16의 평균)."
+    },
+    {
+     "id": "s8",
+     "kind": "short",
+     "q": "이번에는 지우지 않고, 41만 원이 100만 원으로 잘못 올라왔다고 해 봐요(극단치가 더 커짐). 13개 자료의 중앙값은 몇 만 원일까요?",
+     "a": "16",
+     "alts": [
+      "16.0",
+      "16만 원"
+     ],
+     "check": "def _f(x):\n    x = float(x)\n    return int(x) if x.is_integer() else round(x, 2)\ndef answers():\n    import statistics\n    d = [16, 12, 20, 4, 41, 13, 17, 20, 10, 24, 12, 14, 18]\n    return [_f(statistics.median([100 if x == 41 else x for x in d]))]",
+     "explain": "가장 큰 값이 더 커져도 크기순 7번째 값은 16만 원 그대로예요. 하지만 평균은 (221 − 41 + 100) ÷ 13 ≈ 21.5만 원으로 크게 바뀌어요."
+    },
+    {
+     "id": "s9",
+     "kind": "mcq",
+     "q": "'중앙값은 극단치의 영향을 덜 받는다'는 말의 뜻으로 알맞은 것은 무엇일까요?",
+     "options": [
+      "극단치 값이 아무리 커져도 중앙값은 그대로지만, 값을 지워 개수가 바뀌면 중앙값도 조금 바뀔 수 있다",
+      "극단치를 지우거나 바꿔도 중앙값은 절대 변하지 않는다",
+      "극단치가 있으면 중앙값은 구할 수 없다",
+      "중앙값은 늘 평균보다 크다"
+     ],
+     "answer": 0,
+     "explain": "극단치가 41만 원에서 100만 원이 되어도 중앙값은 16만 원 그대로였어요. 하지만 하나를 지우면 한가운데 위치가 바뀌어 16 → 15만 원처럼 조금 변해요. 평균은 그보다 훨씬 크게 흔들려요."
+    }
+   ],
+   "explain": "Q1 = 12, Q3 = 20이라 울타리는 0과 32만 원이고 극단치는 41만 원 하나예요(ㄱ). 평균 17만 원이 중앙값 16만 원보다 크고 오른쪽으로 꼬리가 길어 왜도는 양수예요(ㄴ 옳음, ㄹ 틀림). 극단치를 지우면 평균(17 → 15)뿐 아니라 자료 개수가 바뀌어 중앙값(16 → 15)도 바뀌므로 ㄷ은 틀려요."
+  }
+ ]
+}

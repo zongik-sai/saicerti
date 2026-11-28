@@ -1,0 +1,1002 @@
+{
+ "course": "d2",
+ "type": 8,
+ "typeTitle": "파생 변수와 평균",
+ "kind": "blank",
+ "skills": [
+  "조건으로 행 고르기(loc)",
+  "열끼리 계산해 새 열 만들기",
+  "연산 순서와 괄호",
+  "mean·round"
+ ],
+ "intro": "조건으로 행을 고른 뒤, 열끼리 계산한 새 열(파생 변수)을 만들고 그 평균을 반올림해 돌려주는 연습을 해요. 문제에 적힌 공식을 열 이름과 연산자로 정확히 옮기는 것이 핵심이에요.",
+ "problems": [
+  {
+   "id": "d2-t08-a",
+   "version": 1,
+   "title": "홍대점 주문 금액의 평균",
+   "statement": "카페 주문 데이터에서 홍대점(store가 Hongdae)의 주문만 골라, 주문마다 **주문 금액**을 새 변수로 만든 뒤 주문 금액의 평균을 구하려고 합니다. 주문 금액은 다음 공식으로 계산합니다.\n\n- 주문 금액 = 1개 가격(price) × 수량(qty)\n\n빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 주문 금액은 \"amount\" 변수로 만드시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "1234.56",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.loc[df[\"store\"] == ⟦1⟧, ].copy()\ndf_sub[\"amount\"] = df_sub[\"price\"] ⟦2⟧ df_sub[\"qty\"]\n\ndef solution():\n    answer = round(df_sub[\"amount\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"Hongdae\"",
+     "alts": [
+      "'Hongdae'"
+     ]
+    },
+    {
+     "answer": "*"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.loc[df[\"store\"] == \"Hongdae\", ].copy()\ndf_sub[\"amount\"] = df_sub[\"price\"] * df_sub[\"qty\"]\n\ndef solution():\n    answer = round(df_sub[\"amount\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 7000.83
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 6904.57
+    },
+    {
+     "data": 2,
+     "expected": 7171.13
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제에서 마지막에 평균을 내는 값은 무엇인가요?",
+     "options": [
+      "홍대점 주문들의 1개 가격(price)",
+      "홍대점 주문들의 주문 금액(price × qty)",
+      "모든 매장 주문들의 주문 금액",
+      "홍대점 주문들의 수량(qty)"
+     ],
+     "answer": 1,
+     "explain": "먼저 홍대점 주문만 고르고, 고른 주문마다 price × qty로 주문 금액을 계산한 뒤 평균을 내요. 이렇게 있는 열로 계산해 새로 만든 열을 파생 변수라고 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "주문 6개가 있어요. 행마다 `df[\"store\"] == \"Hongdae\"`가 True인지 False인지 쓰고, price × qty도 계산해 보세요.",
+     "columns": [
+      "store",
+      "price",
+      "qty",
+      "store == \"Hongdae\"",
+      "price × qty"
+     ],
+     "rows": [
+      [
+       "Hongdae",
+       "4500",
+       "2",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "9000",
+        "alts": [
+         "9000.0"
+        ]
+       }
+      ],
+      [
+       "Gangnam",
+       "5000",
+       "1",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "5000",
+        "alts": [
+         "5000.0"
+        ]
+       }
+      ],
+      [
+       "Hongdae",
+       "6000",
+       "1",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "6000",
+        "alts": [
+         "6000.0"
+        ]
+       }
+      ],
+      [
+       "Jamsil",
+       "4000",
+       "3",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "12000",
+        "alts": [
+         "12000.0"
+        ]
+       }
+      ],
+      [
+       "Hongdae",
+       "5000",
+       "3",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "15000",
+        "alts": [
+         "15000.0"
+        ]
+       }
+      ],
+      [
+       "Pangyo",
+       "5500",
+       "2",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "11000",
+        "alts": [
+         "11000.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"store\": [\"Hongdae\", \"Gangnam\", \"Hongdae\", \"Jamsil\", \"Hongdae\", \"Pangyo\"],\n                      \"price\": [4500, 5000, 6000, 4000, 5000, 5500], \"qty\": [2, 1, 1, 3, 3, 2]})\n    t[\"amount\"] = t[\"price\"] * t[\"qty\"]\n    out = []\n    for ok, a in zip(t[\"store\"] == \"Hongdae\", t[\"amount\"]):\n        out += [bool(ok), int(a)]\n    return out",
+     "explain": "== 는 두 값이 같은지 비교해서 True/False를 돌려줘요. True인 행(홍대점 주문 3개)만 골라지고, 주문 금액은 같은 행의 가격과 수량을 곱해요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 표에서 홍대점 주문만 골랐을 때 amount의 평균은 얼마인가요?",
+     "a": "10000",
+     "alts": [
+      "10000.0"
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"store\": [\"Hongdae\", \"Gangnam\", \"Hongdae\", \"Jamsil\", \"Hongdae\", \"Pangyo\"],\n                      \"price\": [4500, 5000, 6000, 4000, 5000, 5500], \"qty\": [2, 1, 1, 3, 3, 2]})\n    sub = t.loc[t[\"store\"] == \"Hongdae\", ].copy()\n    sub[\"amount\"] = sub[\"price\"] * sub[\"qty\"]\n    m = sub[\"amount\"].mean()\n    return [int(m) if m == int(m) else round(m, 2)]",
+     "explain": "홍대점 주문 금액은 9000, 6000, 15000원이에요. 평균은 30000 ÷ 3 = 10000원이고, 다른 매장 주문은 평균에 들어가지 않아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "조건식을 `df[\"store\"] == Hongdae`처럼 따옴표 없이 쓰면 어떻게 될까요?",
+     "options": [
+      "홍대점 주문을 똑같이 잘 골라요",
+      "모든 행을 골라요",
+      "Hongdae를 변수 이름으로 읽어서 NameError가 나요",
+      "아무 행도 고르지 않아 빈 표가 돼요"
+     ],
+     "answer": 2,
+     "explain": "열 안의 글자 값과 비교할 때는 \"Hongdae\"처럼 따옴표로 감싸야 문자열이 돼요. 따옴표가 없으면 파이썬은 Hongdae라는 이름의 변수를 찾다가 NameError(그런 이름이 없다는 오류)를 내요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`df_sub[\"price\"] ? df_sub[\"qty\"]`로 주문 금액을 만들 때 ? 자리에 알맞은 연산자는 무엇일까요?",
+     "options": [
+      "+",
+      "x",
+      "**",
+      "*"
+     ],
+     "answer": 3,
+     "explain": "파이썬의 곱하기는 * 예요. x는 연산자가 아니고, ** 는 거듭제곱이에요. 열끼리 * 를 하면 같은 행의 값끼리 곱해져요."
+    }
+   ],
+   "explain": "조건으로 행을 고른 뒤(.copy()로 따로 떼어 두기), 열끼리 계산해 새 열을 만들고 mean()으로 평균을 내는 것이 이 유형의 기본 흐름이에요. 글자 값은 따옴표로 감싸고, 열끼리 곱하면 같은 행끼리 곱해진다는 점을 기억해요."
+  },
+  {
+   "id": "d2-t08-b",
+   "version": 1,
+   "title": "부산의 평균 일교차",
+   "statement": "도시별 날씨 데이터에서 부산(city가 Busan)의 날만 골라, 날마다 **일교차**를 새 변수로 만든 뒤 일교차의 평균을 구하려고 합니다. 일교차는 다음 공식으로 계산합니다.\n\n- 일교차 = 최고 기온(temp_max) − 최저 기온(temp_min)\n\n빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"weather_daily.csv\"를 사용하시오.\n※ 일교차는 \"temp_gap\" 변수로 만드시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "weather_daily.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"weather_daily.csv\")\n\ndf_sub = df.loc[df[\"city\"] == \"Busan\", ].copy()\ndf_sub[\"temp_gap\"] = df_sub[⟦1⟧] - df_sub[⟦2⟧]\n\ndef solution():\n    answer = round(df_sub[\"temp_gap\"].⟦3⟧(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"temp_max\"",
+     "alts": [
+      "'temp_max'"
+     ]
+    },
+    {
+     "answer": "\"temp_min\"",
+     "alts": [
+      "'temp_min'"
+     ]
+    },
+    {
+     "answer": "mean"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"weather_daily.csv\")\n\ndf_sub = df.loc[df[\"city\"] == \"Busan\", ].copy()\ndf_sub[\"temp_gap\"] = df_sub[\"temp_max\"] - df_sub[\"temp_min\"]\n\ndef solution():\n    answer = round(df_sub[\"temp_gap\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 7.69
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 7.39
+    },
+    {
+     "data": 2,
+     "expected": 7.44
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "일교차는 무엇을 뜻할까요?",
+     "options": [
+      "오늘과 어제 최고 기온의 차이",
+      "하루 최고 기온과 최저 기온의 평균",
+      "하루 최고 기온과 최저 기온의 차이",
+      "두 도시의 기온 차이"
+     ],
+     "answer": 2,
+     "explain": "일교차는 하루 동안 가장 높은 기온과 가장 낮은 기온의 차이예요. 그래서 같은 행(같은 날)의 temp_max에서 temp_min을 빼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "일교차 계산해 보기",
+     "prompt": "부산의 5일치 기온이에요. 날마다 temp_max − temp_min을 소수 첫째 자리까지 계산해 보세요. 최저 기온이 영하(음수)인 날을 조심하세요.",
+     "columns": [
+      "date",
+      "temp_max",
+      "temp_min",
+      "temp_gap"
+     ],
+     "rows": [
+      [
+       "01-05",
+       "8.5",
+       "-1.5",
+       {
+        "a": "10.0",
+        "alts": [
+         "10"
+        ]
+       }
+      ],
+      [
+       "03-12",
+       "14.2",
+       "6.9",
+       {
+        "a": "7.3",
+        "alts": [
+         "7.30"
+        ]
+       }
+      ],
+      [
+       "05-20",
+       "22.6",
+       "15.1",
+       {
+        "a": "7.5",
+        "alts": [
+         "7.50"
+        ]
+       }
+      ],
+      [
+       "08-03",
+       "31.4",
+       "25.8",
+       {
+        "a": "5.6",
+        "alts": [
+         "5.60"
+        ]
+       }
+      ],
+      [
+       "12-28",
+       "5.3",
+       "-4.4",
+       {
+        "a": "9.7",
+        "alts": [
+         "9.70"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"temp_max\": [8.5, 14.2, 22.6, 31.4, 5.3], \"temp_min\": [-1.5, 6.9, 15.1, 25.8, -4.4]})\n    t[\"temp_gap\"] = t[\"temp_max\"] - t[\"temp_min\"]\n    return [round(x, 1) for x in t[\"temp_gap\"]]",
+     "explain": "음수를 빼면 더하는 것과 같아요. 8.5 − (−1.5) = 10.0이고, 5.3 − (−4.4) = 9.7이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 5일의 temp_gap 평균은 얼마인가요? 소수 둘째 자리까지 써 보세요.",
+     "a": "8.02",
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"temp_max\": [8.5, 14.2, 22.6, 31.4, 5.3], \"temp_min\": [-1.5, 6.9, 15.1, 25.8, -4.4]})\n    t[\"temp_gap\"] = t[\"temp_max\"] - t[\"temp_min\"]\n    return [round(t[\"temp_gap\"].mean(), 2)]",
+     "explain": "(10.0 + 7.3 + 7.5 + 5.6 + 9.7) ÷ 5 = 40.1 ÷ 5 = 8.02예요. 코드에서는 새 열에 mean()을 붙이면 이 계산을 한 번에 해 줘요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`df_sub[\"temp_min\"] - df_sub[\"temp_max\"]`처럼 빼는 순서를 바꾸면 평균은 어떻게 될까요?",
+     "options": [
+      "크기는 같고 부호만 반대인 음수가 나와요",
+      "똑같은 값이 나와요",
+      "0이 나와요",
+      "오류가 나요"
+     ],
+     "answer": 0,
+     "explain": "최저 기온은 최고 기온보다 작아서 순서를 바꾸면 모든 날의 값이 음수가 돼요. 공식의 순서(최고 − 최저)대로 열 이름을 써야 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "만든 temp_gap 열의 평균을 구하는 함수는 무엇일까요?",
+     "options": [
+      "sum()",
+      "mean()",
+      "count()",
+      "max()"
+     ],
+     "answer": 1,
+     "explain": "mean()은 평균, sum()은 합계, count()는 값이 있는 칸의 개수, max()는 가장 큰 값이에요. 문제는 평균을 원하므로 mean()이에요."
+    }
+   ],
+   "explain": "공식에 나온 두 열을 순서대로 빼서 새 열을 만들고 mean()으로 평균을 내요. 빼기는 순서가 바뀌면 부호가 바뀌므로 공식의 순서(최고 기온 − 최저 기온)를 지키는 것이 핵심이에요."
+  },
+  {
+   "id": "d2-t08-c",
+   "version": 1,
+   "title": "코딩 동아리의 세 과목 평균",
+   "statement": "학생 성적 데이터에서 코딩 동아리(club이 coding) 학생만 골라, 학생마다 **세 과목 평균**을 새 변수로 만든 뒤 그 값의 평균을 구하려고 합니다. 세 과목 평균은 다음 공식으로 계산합니다.\n\n- 세 과목 평균 = (수학(math) + 국어(korean) + 영어(english)) ÷ 3\n\n빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 동아리가 없는 학생은 club이 빈 값(결측)입니다.\n※ 세 과목 평균은 \"avg3\" 변수로 만드시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf_sub = df.loc[df[\"club\"] == ⟦1⟧, ].copy()\ndf_sub[\"avg3\"] = (df_sub[\"math\"] + df_sub[\"korean\"] + df_sub[⟦2⟧]) ⟦3⟧ 3\n\ndef solution():\n    answer = round(df_sub[\"avg3\"].⟦4⟧(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"coding\"",
+     "alts": [
+      "'coding'"
+     ]
+    },
+    {
+     "answer": "\"english\"",
+     "alts": [
+      "'english'"
+     ]
+    },
+    {
+     "answer": "/"
+    },
+    {
+     "answer": "mean"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf_sub = df.loc[df[\"club\"] == \"coding\", ].copy()\ndf_sub[\"avg3\"] = (df_sub[\"math\"] + df_sub[\"korean\"] + df_sub[\"english\"]) / 3\n\ndef solution():\n    answer = round(df_sub[\"avg3\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 67.99
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 68.38
+    },
+    {
+     "data": 2,
+     "expected": 67.71
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제의 계산 순서로 알맞은 것은?",
+     "options": [
+      "학생마다 세 과목 평균 → 가장 높은 학생 고르기 → 그 점수",
+      "코딩 동아리 학생 고르기 → 수학 점수만 평균",
+      "모든 학생의 세 과목 합계 → 3으로 나누기",
+      "코딩 동아리 학생 고르기 → 학생마다 세 과목 평균 → 그 값들의 평균"
+     ],
+     "answer": 3,
+     "explain": "먼저 행을 고르고(코딩 동아리), 고른 학생마다 새 열 avg3을 만든 뒤, 그 열의 평균을 내요. 학생 한 명의 세 과목 평균을 먼저 구하고, 그 학생들의 평균을 한 번 더 구하는 셈이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "학생 5명의 점수예요. club 칸의 NaN은 동아리가 없어 비어 있는 값(결측)이에요. 행마다 `club == \"coding\"`이 True인지 쓰고, 세 과목 평균 avg3을 계산해 보세요.",
+     "columns": [
+      "club",
+      "math",
+      "korean",
+      "english",
+      "club == \"coding\"",
+      "avg3"
+     ],
+     "rows": [
+      [
+       "coding",
+       "70",
+       "80",
+       "90",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "80",
+        "alts": [
+         "80.0"
+        ]
+       }
+      ],
+      [
+       "art",
+       "85",
+       "75",
+       "95",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "85",
+        "alts": [
+         "85.0"
+        ]
+       }
+      ],
+      [
+       "NaN",
+       "60",
+       "70",
+       "80",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "70",
+        "alts": [
+         "70.0"
+        ]
+       }
+      ],
+      [
+       "coding",
+       "65",
+       "72",
+       "85",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "74",
+        "alts": [
+         "74.0"
+        ]
+       }
+      ],
+      [
+       "coding",
+       "88",
+       "91",
+       "79",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "86",
+        "alts": [
+         "86.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    import numpy as np\n    t = pd.DataFrame({\"club\": [\"coding\", \"art\", np.nan, \"coding\", \"coding\"], \"math\": [70, 85, 60, 65, 88],\n                      \"korean\": [80, 75, 70, 72, 91], \"english\": [90, 95, 80, 85, 79]})\n    t[\"avg3\"] = (t[\"math\"] + t[\"korean\"] + t[\"english\"]) / 3\n    out = []\n    for ok, a in zip(t[\"club\"] == \"coding\", t[\"avg3\"]):\n        out += [bool(ok), int(a) if a == int(a) else round(a, 2)]\n    return out",
+     "explain": "NaN(빈 값)은 어떤 글자와 비교해도 False라서 동아리가 없는 학생은 골라지지 않아요. avg3은 세 점수를 모두 더한 뒤 3으로 나눠요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 표에서 골라낸 학생들(club이 coding)의 avg3 평균은 얼마인가요?",
+     "a": "80",
+     "alts": [
+      "80.0"
+     ],
+     "check": "def answers():\n    import pandas as pd\n    import numpy as np\n    t = pd.DataFrame({\"club\": [\"coding\", \"art\", np.nan, \"coding\", \"coding\"], \"math\": [70, 85, 60, 65, 88],\n                      \"korean\": [80, 75, 70, 72, 91], \"english\": [90, 95, 80, 85, 79]})\n    sub = t.loc[t[\"club\"] == \"coding\", ].copy()\n    sub[\"avg3\"] = (sub[\"math\"] + sub[\"korean\"] + sub[\"english\"]) / 3\n    m = sub[\"avg3\"].mean()\n    return [int(m) if m == int(m) else round(m, 2)]",
+     "explain": "코딩 동아리 학생의 avg3은 80, 74, 86이에요. 평균은 (80 + 74 + 86) ÷ 3 = 80이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "괄호 없이 `df_sub[\"math\"] + df_sub[\"korean\"] + df_sub[\"english\"] / 3`이라고 쓰면, math 70, korean 80, english 90인 학생의 값은 얼마일까요?",
+     "options": [
+      "80",
+      "180",
+      "240",
+      "30"
+     ],
+     "answer": 1,
+     "explain": "나누기(/)는 더하기(+)보다 먼저 계산돼요. 그래서 english만 3으로 나뉘어 70 + 80 + 30 = 180이 돼요. 세 점수를 괄호로 묶어 먼저 더한 뒤 3으로 나눠야 해요."
+    }
+   ],
+   "explain": "조건으로 고른 학생마다 세 열을 더해 3으로 나눈 새 열을 만들고, 그 열의 평균을 구해요. 나누기가 더하기보다 먼저 계산되므로 세 열의 합을 괄호로 묶는 것을 잊지 않아야 해요."
+  },
+  {
+   "id": "d2-t08-d",
+   "version": 1,
+   "title": "사고 차량의 1만 km당 가격",
+   "statement": "중고차 매물 데이터에서 사고 이력이 있는(accident가 Y) 차만 골라, 차마다 **1만 km당 가격**을 새 변수로 만든 뒤 그 평균을 구하려고 합니다. 1만 km당 가격은 다음 공식으로 계산합니다.\n\n- 1만 km당 가격(만 원) = 가격(price) ÷ (주행 거리(mileage_km) ÷ 10000)\n\n빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 가격(price)의 단위는 만 원입니다.\n※ 1만 km당 가격은 \"price_10k\" 변수로 만드시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "used_cars.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndf_sub = df.loc[df[⟦1⟧] == ⟦2⟧, ].copy()\ndf_sub[\"price_10k\"] = df_sub[⟦3⟧] / (df_sub[\"mileage_km\"] ⟦4⟧ 10000)\n\ndef solution():\n    answer = round(df_sub[\"price_10k\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"accident\"",
+     "alts": [
+      "'accident'"
+     ]
+    },
+    {
+     "answer": "\"Y\"",
+     "alts": [
+      "'Y'"
+     ]
+    },
+    {
+     "answer": "\"price\"",
+     "alts": [
+      "'price'"
+     ]
+    },
+    {
+     "answer": "/"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndf_sub = df.loc[df[\"accident\"] == \"Y\", ].copy()\ndf_sub[\"price_10k\"] = df_sub[\"price\"] / (df_sub[\"mileage_km\"] / 10000)\n\ndef solution():\n    answer = round(df_sub[\"price_10k\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 319.49
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 345.55
+    },
+    {
+     "data": 2,
+     "expected": 342.12
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "short",
+     "q": "주행 거리 60000km는 몇 만 km인가요?",
+     "a": "6",
+     "alts": [
+      "6.0"
+     ],
+     "check": "def answers():\n    return [int(60000 / 10000)]",
+     "explain": "만 km 단위로 바꾸려면 10000으로 나눠요. 60000 ÷ 10000 = 6이므로 6만 km예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "1만 km당 가격 계산",
+     "prompt": "차 5대의 정보예요. 주행 거리를 만 km 단위로 바꾸고(mileage_km ÷ 10000), 가격을 그 값으로 나눠 price_10k를 계산해 보세요.",
+     "columns": [
+      "accident",
+      "price",
+      "mileage_km",
+      "mileage_km ÷ 10000",
+      "price_10k"
+     ],
+     "rows": [
+      [
+       "Y",
+       "900",
+       "60000",
+       {
+        "a": "6",
+        "alts": [
+         "6.0"
+        ]
+       },
+       {
+        "a": "150",
+        "alts": [
+         "150.0"
+        ]
+       }
+      ],
+      [
+       "N",
+       "1500",
+       "30000",
+       {
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       },
+       {
+        "a": "500",
+        "alts": [
+         "500.0"
+        ]
+       }
+      ],
+      [
+       "Y",
+       "1200",
+       "80000",
+       {
+        "a": "8",
+        "alts": [
+         "8.0"
+        ]
+       },
+       {
+        "a": "150",
+        "alts": [
+         "150.0"
+        ]
+       }
+      ],
+      [
+       "Y",
+       "640",
+       "160000",
+       {
+        "a": "16",
+        "alts": [
+         "16.0"
+        ]
+       },
+       {
+        "a": "40",
+        "alts": [
+         "40.0"
+        ]
+       }
+      ],
+      [
+       "N",
+       "2000",
+       "50000",
+       {
+        "a": "5",
+        "alts": [
+         "5.0"
+        ]
+       },
+       {
+        "a": "400",
+        "alts": [
+         "400.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"price\": [900, 1500, 1200, 640, 2000], \"mileage_km\": [60000, 30000, 80000, 160000, 50000]})\n    t[\"man_km\"] = t[\"mileage_km\"] / 10000\n    t[\"price_10k\"] = t[\"price\"] / t[\"man_km\"]\n    out = []\n    for m, p in zip(t[\"man_km\"], t[\"price_10k\"]):\n        out += [int(m), int(p)]\n    return out",
+     "explain": "주행 거리가 길수록 1만 km당 가격이 작아져요. 예를 들어 640만 원, 16만 km인 차는 640 ÷ 16 = 40이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 표에서 사고 이력이 있는 차(accident가 Y)만의 price_10k 평균은 얼마인가요? 소수 둘째 자리까지 써 보세요.",
+     "a": "113.33",
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"accident\": [\"Y\", \"N\", \"Y\", \"Y\", \"N\"], \"price\": [900, 1500, 1200, 640, 2000], \"mileage_km\": [60000, 30000, 80000, 160000, 50000]})\n    sub = t.loc[t[\"accident\"] == \"Y\", ].copy()\n    sub[\"price_10k\"] = sub[\"price\"] / (sub[\"mileage_km\"] / 10000)\n    return [round(sub[\"price_10k\"].mean(), 2)]",
+     "explain": "사고 차량의 price_10k는 150, 150, 40이에요. 평균은 340 ÷ 3 = 113.333…이고 반올림하면 113.33이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "사고 이력이 있는 차만 고르는 조건식으로 알맞은 것은?",
+     "options": [
+      "df[\"Y\"] == \"accident\"",
+      "df[\"accident\"] == \"Y\"",
+      "df[\"accident\"] = \"Y\"",
+      "df[\"accident\"] == Y"
+     ],
+     "answer": 1,
+     "explain": "대괄호 안에는 열 이름(accident), == 오른쪽에는 비교할 값(\"Y\")을 써요. = 하나는 값을 넣는(대입) 기호라 조건이 될 수 없고, 따옴표 없는 Y는 변수 이름으로 읽혀 오류가 나요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`price / (mileage_km / 10000)`과 항상 같은 값이 되는 식은 무엇일까요?",
+     "options": [
+      "price / mileage_km / 10000",
+      "price / 10000 / mileage_km",
+      "price * 10000 / mileage_km",
+      "mileage_km / 10000 / price"
+     ],
+     "answer": 2,
+     "explain": "어떤 수를 (a ÷ 10000)으로 나누는 것은 10000을 곱하고 a로 나누는 것과 같아요. 괄호를 빼고 price / mileage_km / 10000으로 쓰면 10000으로 한 번 더 나누게 되어 값이 아주 작아져요."
+    }
+   ],
+   "explain": "조건의 열 이름과 값을 정확히 쓰고, 주행 거리를 만 km 단위로 바꾼 값(÷ 10000)으로 가격을 나눠 새 열을 만들어요. 괄호 안을 먼저 계산해야 하므로 괄호의 위치가 중요해요."
+  },
+  {
+   "id": "d2-t08-e",
+   "version": 1,
+   "title": "비회원 대여의 평균 속력",
+   "statement": "공공 자전거 대여 데이터에서 비회원(user_type이 guest)의 대여만 골라, 대여마다 **속력**을 새 변수로 만든 뒤 그 평균을 구하려고 합니다. 이용 시간은 분 단위이므로 시간 단위로 바꾸어 다음 공식으로 계산합니다.\n\n- 속력(km/h) = 이동 거리(distance_km) ÷ (이용 시간(minutes) ÷ 60)\n\n빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 속력은 \"speed\" 변수로 만드시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "bike_rentals.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndf_sub = df.loc[df[\"user_type\"] == ⟦1⟧, ].copy()\ndf_sub[\"speed\"] = df_sub[⟦2⟧] / (df_sub[⟦3⟧] ⟦4⟧ 60)\n\ndef solution():\n    answer = round(df_sub[\"speed\"].⟦5⟧(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"guest\"",
+     "alts": [
+      "'guest'"
+     ]
+    },
+    {
+     "answer": "\"distance_km\"",
+     "alts": [
+      "'distance_km'"
+     ]
+    },
+    {
+     "answer": "\"minutes\"",
+     "alts": [
+      "'minutes'"
+     ]
+    },
+    {
+     "answer": "/"
+    },
+    {
+     "answer": "mean"
+    }
+   ],
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndf_sub = df.loc[df[\"user_type\"] == \"guest\", ].copy()\ndf_sub[\"speed\"] = df_sub[\"distance_km\"] / (df_sub[\"minutes\"] / 60)\n\ndef solution():\n    answer = round(df_sub[\"speed\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 11.05
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 11.16
+    },
+    {
+     "data": 2,
+     "expected": 11.06
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이용 시간 45분은 몇 시간일까요?",
+     "options": [
+      "0.45시간",
+      "0.75시간",
+      "1.5시간",
+      "2700시간"
+     ],
+     "answer": 1,
+     "explain": "1시간은 60분이므로 분을 60으로 나누면 시간이 돼요. 45 ÷ 60 = 0.75시간이에요. 60을 곱하면(2700) 엉뚱한 값이 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "속력 따라가기",
+     "prompt": "대여 5건이에요. 이용 시간을 시간 단위(minutes ÷ 60)로 바꾼 뒤, 이동 거리를 그 값으로 나눠 speed를 계산해 보세요.",
+     "columns": [
+      "user_type",
+      "minutes",
+      "distance_km",
+      "minutes ÷ 60",
+      "speed"
+     ],
+     "rows": [
+      [
+       "guest",
+       "30",
+       "5.5",
+       {
+        "a": "0.5",
+        "alts": [
+         "0.50"
+        ]
+       },
+       {
+        "a": "11",
+        "alts": [
+         "11.0"
+        ]
+       }
+      ],
+      [
+       "member",
+       "15",
+       "4.0",
+       {
+        "a": "0.25"
+       },
+       {
+        "a": "16",
+        "alts": [
+         "16.0"
+        ]
+       }
+      ],
+      [
+       "guest",
+       "45",
+       "6.0",
+       {
+        "a": "0.75"
+       },
+       {
+        "a": "8",
+        "alts": [
+         "8.0"
+        ]
+       }
+      ],
+      [
+       "guest",
+       "12",
+       "3.0",
+       {
+        "a": "0.2",
+        "alts": [
+         "0.20"
+        ]
+       },
+       {
+        "a": "15",
+        "alts": [
+         "15.0"
+        ]
+       }
+      ],
+      [
+       "guest",
+       "90",
+       "18.0",
+       {
+        "a": "1.5",
+        "alts": [
+         "1.50"
+        ]
+       },
+       {
+        "a": "12",
+        "alts": [
+         "12.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"minutes\": [30, 15, 45, 12, 90], \"distance_km\": [5.5, 4.0, 6.0, 3.0, 18.0]})\n    t[\"hours\"] = t[\"minutes\"] / 60\n    t[\"speed\"] = t[\"distance_km\"] / t[\"hours\"]\n    out = []\n    for h, v in zip(t[\"hours\"], t[\"speed\"]):\n        v = round(v, 2)\n        out += [round(h, 2), int(v) if v == int(v) else v]\n    return out",
+     "explain": "30분은 0.5시간이고 5.5km를 갔으니 5.5 ÷ 0.5 = 11km/h예요. 시간 단위로 바꾼 값으로 나눠야 km/h가 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 표에서 비회원(guest) 대여만의 speed 평균은 얼마인가요?",
+     "a": "11.5",
+     "alts": [
+      "11.50"
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"user_type\": [\"guest\", \"member\", \"guest\", \"guest\", \"guest\"], \"minutes\": [30, 15, 45, 12, 90], \"distance_km\": [5.5, 4.0, 6.0, 3.0, 18.0]})\n    sub = t.loc[t[\"user_type\"] == \"guest\", ].copy()\n    sub[\"speed\"] = sub[\"distance_km\"] / (sub[\"minutes\"] / 60)\n    return [round(sub[\"speed\"].mean(), 2)]",
+     "explain": "비회원 대여의 속력은 11, 8, 15, 12예요. 평균은 46 ÷ 4 = 11.5이고, 회원(member) 대여의 16은 들어가지 않아요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "괄호를 빼고 `df_sub[\"distance_km\"] / df_sub[\"minutes\"] / 60`으로 쓰면, 30분에 5.5km를 간 대여의 값은 얼마쯤일까요?",
+     "options": [
+      "11",
+      "약 0.18",
+      "330",
+      "약 0.003"
+     ],
+     "answer": 3,
+     "explain": "나누기는 왼쪽부터 차례로 계산되어 5.5 ÷ 30 ÷ 60 ≈ 0.003이 돼요. (minutes ÷ 60)을 괄호로 묶어 먼저 시간으로 바꾼 뒤 나눠야 11km/h가 나와요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "비회원 대여만 고를 때 `df[\"user_type\"] ==` 오른쪽에 쓸 값은 무엇일까요?",
+     "options": [
+      "\"member\"",
+      "\"guest\"",
+      "guest",
+      "\"비회원\""
+     ],
+     "answer": 1,
+     "explain": "user_type 열에는 member와 guest 두 값이 들어 있어요(데이터 개요 참고). 비회원은 guest이고, 글자 값이므로 따옴표로 감싸요."
+    }
+   ],
+   "explain": "분 단위 이용 시간을 60으로 나눠 시간 단위로 바꾼 뒤, 이동 거리를 그 값으로 나눠 속력 열을 만들어요. 나누기가 두 번 나오므로 (minutes ÷ 60)을 괄호로 묶어야 공식과 같은 값이 나와요."
+  }
+ ]
+}

@@ -1,0 +1,816 @@
+{
+ "course": "d2",
+ "type": 10,
+ "typeTitle": "검정과 군집 분석",
+ "kind": "blank",
+ "skills": [
+  "ttest_ind(t 통계량·p-value)",
+  "귀무가설·유의수준",
+  "notna·dropna로 결측 제외",
+  "KMeans(n_clusters·random_state·n_init)",
+  "labels_·value_counts"
+ ],
+ "intro": "두 집단의 평균이 정말 다른지 독립 2표본 t-검정(ttest_ind)으로 확인하고, k-means로 비슷한 고객끼리 무리를 지어 군집의 크기를 구해요. p-value와 t 통계량을 읽는 법, 군집 번호 대신 크기로 답하는 법을 연습해요.",
+ "problems": [
+  {
+   "id": "d2-t10-a",
+   "version": 1,
+   "title": "남녀 학생의 수학 점수 비교",
+   "statement": "학생 성적 데이터에서 남학생(gender가 M)과 여학생(gender가 F)의 수학 점수(math) 평균에 차이가 있는지 독립 2표본 t-검정으로 알아보려고 합니다. 남학생의 수학 점수를 첫 번째 집단, 여학생의 수학 점수를 두 번째 집단으로 하여 검정했을 때의 p-value를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 넷째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.1234",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\nmale = df.loc[df[\"gender\"] == ⟦1⟧, \"math\"]\nfemale = df.loc[df[\"gender\"] == \"F\", \"math\"]\n\ndef solution():\n    stat, p = ⟦2⟧(male, female)\n    answer = round(p, ⟦3⟧)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"M\"",
+     "alts": [
+      "'M'"
+     ]
+    },
+    {
+     "answer": "ttest_ind"
+    },
+    {
+     "answer": "4"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\nmale = df.loc[df[\"gender\"] == \"M\", \"math\"]\nfemale = df.loc[df[\"gender\"] == \"F\", \"math\"]\n\ndef solution():\n    stat, p = ttest_ind(male, female)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.6061
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.2491
+    },
+    {
+     "data": 2,
+     "expected": 0.8842
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "남학생과 여학생의 수학 점수 평균이 정말 다른지, 아니면 우연히 조금 다르게 나온 것인지 확인하려고 해요. 알맞은 방법은?",
+     "options": [
+      "독립 2표본 t-검정(ttest_ind)",
+      "k-means 군집 분석",
+      "value_counts()로 학생 수 세기",
+      "수학 점수를 오름차순으로 정렬하기"
+     ],
+     "answer": 0,
+     "explain": "서로 다른 두 집단(남학생·여학생)의 평균을 비교해 그 차이가 우연인지 따지는 방법이 독립 2표본 t-검정이에요. scipy.stats의 ttest_ind 함수로 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "t-검정은 먼저 귀무가설을 세워요. 귀무가설은 '차이가 없다'는 기본 가정이에요. 이 문제의 귀무가설로 알맞은 것은?",
+     "options": [
+      "남학생의 수학 점수 평균이 더 높다",
+      "여학생의 수학 점수 평균이 더 높다",
+      "남학생과 여학생의 수학 점수 평균은 같다",
+      "남학생과 여학생의 수가 같다"
+     ],
+     "answer": 2,
+     "explain": "귀무가설은 '두 평균은 같다(차이가 없다)'예요. 데이터가 이 가정과 많이 어긋나면 귀무가설을 버리고 '차이가 있다'고 판단해요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 수로 평균 비교",
+     "prompt": "남학생 3명의 수학 점수가 70, 80, 90이고, 여학생 3명의 점수가 60, 75, 75라고 해요. 집단마다 평균을 구하고 평균의 차를 채워 보세요.",
+     "columns": [
+      "집단",
+      "점수",
+      "평균"
+     ],
+     "rows": [
+      [
+       "남학생",
+       "70, 80, 90",
+       {
+        "a": "80",
+        "alts": [
+         "80.0"
+        ]
+       }
+      ],
+      [
+       "여학생",
+       "60, 75, 75",
+       {
+        "a": "70",
+        "alts": [
+         "70.0"
+        ]
+       }
+      ],
+      [
+       "평균의 차(남 − 여)",
+       "-",
+       {
+        "a": "10",
+        "alts": [
+         "10.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    m = [70, 80, 90]\n    f = [60, 75, 75]\n    mm = sum(m) // len(m)\n    fm = sum(f) // len(f)\n    return [mm, fm, mm - fm]",
+     "explain": "평균이 10점 차이 나도 학생 수가 적고 점수가 많이 흩어져 있으면 우연일 수 있어요. t-검정은 평균의 차를 점수가 흩어진 정도와 학생 수까지 함께 따져서 판단해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어떤 t-검정에서 p-value가 0.32로 나왔어요. 유의수준 0.05에서 알맞은 판단은?",
+     "options": [
+      "0.32는 0.05보다 크므로 두 평균에 차이가 있다",
+      "p-value가 0보다 크면 언제나 차이가 있다",
+      "두 평균이 정확히 같다는 것이 증명되었다",
+      "0.32는 0.05보다 크므로 두 평균에 차이가 있다고 말할 수 없다"
+     ],
+     "answer": 3,
+     "explain": "p-value는 '정말 차이가 없다면 지금만큼 큰 차이가 우연히 나올 확률'이에요. 유의수준(판단 기준, 보통 0.05)보다 작을 때만 '차이가 있다'고 하고, 크면 차이가 있다고 말할 수 없을 뿐 같다고 증명한 것은 아니에요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "`stat, p = ttest_ind(male, female)`이라고 쓰면 p에 p-value가 들어가요. p가 0.123456이라면 소수점 넷째 자리까지 반올림한 값은?",
+     "a": "0.1235",
+     "alts": [],
+     "check": "def answers():\n    return [round(0.123456, 4)]",
+     "explain": "넷째 자리까지 남기고 다섯째 자리에서 반올림해요. round(값, 자리 수)의 두 번째 값이 남길 소수 자리 수예요."
+    }
+   ],
+   "explain": "df.loc[조건, \"math\"]로 두 집단의 수학 점수를 고른 뒤 stat, p = ttest_ind(첫 번째, 두 번째)로 검정해요. 돌려받는 두 값 중 두 번째가 p-value이고, round(p, 4)로 넷째 자리까지 반올림해요. p-value가 0.05보다 크면 두 평균에 차이가 있다고 말할 수 없어요."
+  },
+  {
+   "id": "d2-t10-b",
+   "version": 1,
+   "title": "2010년 전후 영화의 평점",
+   "statement": "영화 정보 데이터에서 평점(rating)이 결측이 아닌 영화만 고른 뒤, 개봉 연도(release_year)가 2010년 미만인 영화와 2010년 이상인 영화의 평점 평균에 차이가 있는지 독립 2표본 t-검정으로 알아보려고 합니다. 2010년 미만 영화의 평점을 첫 번째 집단, 2010년 이상 영화의 평점을 두 번째 집단으로 하여 검정했을 때의 p-value를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 넷째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.1234",
+   "data": {
+    "files": [
+     "movies.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ndf_sub = df.loc[df[\"rating\"].⟦1⟧(), ]\nbefore = df_sub.loc[df_sub[\"release_year\"] ⟦2⟧ 2010, \"rating\"]\nafter = df_sub.loc[df_sub[\"release_year\"] >= 2010, \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(before, after)\n    answer = round(⟦3⟧, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "notna"
+    },
+    {
+     "answer": "<"
+    },
+    {
+     "answer": "p"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ndf_sub = df.loc[df[\"rating\"].notna(), ]\nbefore = df_sub.loc[df_sub[\"release_year\"] < 2010, \"rating\"]\nafter = df_sub.loc[df_sub[\"release_year\"] >= 2010, \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(before, after)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.9621
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.6024
+    },
+    {
+     "data": 2,
+     "expected": 0.3993
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "평점이 빈 값(NaN, 결측)인 영화가 섞인 채로 ttest_ind를 하면 어떻게 될까요?",
+     "options": [
+      "빈 값을 0점으로 여기고 계산한다",
+      "결과가 nan(숫자 아님)으로 나와 p-value를 얻을 수 없다",
+      "빈 값이 있는 집단은 통째로 빼고 계산한다",
+      "빈 값만 저절로 빼고 계산한다"
+     ],
+     "answer": 1,
+     "explain": "ttest_ind는 기본 설정에서 빈 값이 하나라도 있으면 결과를 nan으로 돌려줘요. 그래서 먼저 notna()로 평점이 있는 영화만 골라 두어야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "영화 6편의 개봉 연도와 평점이에요(NaN은 빈 값). rating.notna()의 값과 들어가는 집단(before: 2010년 미만, after: 2010년 이상, 제외: 평점 없음)을 채워 보세요.",
+     "columns": [
+      "release_year",
+      "rating",
+      "rating.notna()",
+      "집단"
+     ],
+     "rows": [
+      [
+       "2005",
+       "7.2",
+       {
+        "a": "True"
+       },
+       {
+        "a": "before"
+       }
+      ],
+      [
+       "2012",
+       "NaN",
+       {
+        "a": "False"
+       },
+       {
+        "a": "제외"
+       }
+      ],
+      [
+       "2010",
+       "6.5",
+       {
+        "a": "True"
+       },
+       {
+        "a": "after"
+       }
+      ],
+      [
+       "2008",
+       "NaN",
+       {
+        "a": "False"
+       },
+       {
+        "a": "제외"
+       }
+      ],
+      [
+       "2019",
+       "8.1",
+       {
+        "a": "True"
+       },
+       {
+        "a": "after"
+       }
+      ],
+      [
+       "2009",
+       "5.9",
+       {
+        "a": "True"
+       },
+       {
+        "a": "before"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import numpy as np\n    import pandas as pd\n    t = pd.DataFrame({\"release_year\": [2005, 2012, 2010, 2008, 2019, 2009], \"rating\": [7.2, np.nan, 6.5, np.nan, 8.1, 5.9]})\n    out = []\n    for y, ok in zip(t[\"release_year\"], t[\"rating\"].notna()):\n        g = (\"before\" if y < 2010 else \"after\") if ok else \"제외\"\n        out += [bool(ok), g]\n    return out",
+     "explain": "평점이 없는 영화는 어느 집단에도 넣지 않아요. 2010년 영화는 '2010년 이상'이므로 after에 들어가요. 미만은 <, 이상은 >=예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "ttest_ind(a, b)는 값 두 개를 돌려줘요. 돌려주는 차례대로 바르게 쓴 것은?",
+     "options": [
+      "t 통계량, p-value",
+      "p-value, t 통계량",
+      "a의 평균, b의 평균",
+      "평균의 차, 표준편차"
+     ],
+     "answer": 0,
+     "explain": "stat, p = ttest_ind(a, b)라고 쓰면 첫 번째 값(t 통계량)은 stat에, 두 번째 값(p-value)은 p에 들어가요. 이 문제는 p-value를 반올림해 돌려줘요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(movies.csv)에서 평점이 결측이 아닌 영화는 모두 몇 편일까요?",
+     "a": "1410",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [int(df[\"rating\"].notna().sum())]",
+     "explain": "df[\"rating\"].notna().sum()으로 셀 수 있어요. True를 1로 세어 더하기 때문이에요. 이 영화들만 두 집단으로 나누어 검정해요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "검정 결과 p-value가 0.05보다 크게 나왔다면, 결과를 바르게 말한 것은?",
+     "options": [
+      "2010년 이후 영화의 평점이 더 높다",
+      "2010년 이전 영화의 평점이 더 높다",
+      "두 집단의 영화 수가 같다",
+      "2010년 전후 영화의 평점 평균에 차이가 있다고 말할 수 없다"
+     ],
+     "answer": 3,
+     "explain": "p-value가 유의수준 0.05보다 크면 귀무가설(평균이 같다)을 버리지 못해요. 그래서 '차이가 있다고 말할 수 없다'고 판단해요."
+    }
+   ],
+   "explain": "먼저 df[\"rating\"].notna()로 평점이 있는 영화만 남겨야 ttest_ind가 nan을 내지 않아요. 2010년 미만은 <, 이상은 >=로 나누고, stat, p 중 p를 round(p, 4)로 반올림해요. 결측을 빼지 않으면 p-value가 nan이 되는 것이 흔한 실수예요."
+  },
+  {
+   "id": "d2-t10-c",
+   "version": 1,
+   "title": "회원과 비회원의 별점 t 통계량",
+   "statement": "카페 주문 데이터에서 별점(rating)이 결측인 주문을 빼고, 회원(member가 Y) 주문과 비회원(member가 Y가 아닌) 주문의 별점 평균을 독립 2표본 t-검정으로 비교하려고 합니다. 회원의 별점을 첫 번째 집단, 비회원의 별점을 두 번째 집단으로 하여 검정했을 때의 t 통계량(검정 통계량)을 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 별점이 결측인 행은 dropna 함수로 제외하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "1.23",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.⟦1⟧(subset=[\"rating\"])\nmember = df_sub.loc[df_sub[\"member\"] == \"Y\", \"rating\"]\nguest = df_sub.loc[df_sub[\"member\"] ⟦2⟧ \"Y\", \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(⟦3⟧, guest)\n    answer = round(⟦4⟧, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "dropna"
+    },
+    {
+     "answer": "!="
+    },
+    {
+     "answer": "member"
+    },
+    {
+     "answer": "stat"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.dropna(subset=[\"rating\"])\nmember = df_sub.loc[df_sub[\"member\"] == \"Y\", \"rating\"]\nguest = df_sub.loc[df_sub[\"member\"] != \"Y\", \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(member, guest)\n    answer = round(stat, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 9.77
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 8.4
+    },
+    {
+     "data": 2,
+     "expected": 7.05
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`df.dropna(subset=[\"rating\"])`는 어떤 일을 할까요?",
+     "options": [
+      "어느 열이든 빈 값이 하나라도 있는 행을 모두 지운다",
+      "rating 열을 통째로 지운다",
+      "rating 열이 빈 행만 지운다",
+      "빈 별점을 0으로 바꾼다"
+     ],
+     "answer": 2,
+     "explain": "subset에 적은 열만 보고, 그 열이 빈 행을 지운 새 표를 돌려줘요. df.loc[df[\"rating\"].notna(), ]로 고른 것과 결과가 같아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 평균 비교",
+     "prompt": "주문 7건의 (member, rating)이 (Y, 5), (N, 3), (Y, 빈 값), (N, 4), (Y, 4), (N, 빈 값), (N, 2)예요. 빈 별점을 뺀 뒤 집단마다 주문 수와 별점 평균을 채우고, 평균의 차를 구해 보세요.",
+     "columns": [
+      "집단",
+      "주문 수",
+      "별점 평균"
+     ],
+     "rows": [
+      [
+       "회원(Y)",
+       {
+        "a": "2"
+       },
+       {
+        "a": "4.5"
+       }
+      ],
+      [
+       "비회원(N)",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3.0",
+        "alts": [
+         "3"
+        ]
+       }
+      ],
+      [
+       "평균의 차(회원 − 비회원)",
+       "-",
+       {
+        "a": "1.5"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import numpy as np\n    import pandas as pd\n    t = pd.DataFrame({\"member\": [\"Y\", \"N\", \"Y\", \"N\", \"Y\", \"N\", \"N\"], \"rating\": [5, 3, np.nan, 4, 4, np.nan, 2]})\n    t = t.dropna(subset=[\"rating\"])\n    m = t.loc[t[\"member\"] == \"Y\", \"rating\"]\n    g = t.loc[t[\"member\"] != \"Y\", \"rating\"]\n    return [len(m), float(m.mean()), len(g), float(g.mean()), float(m.mean() - g.mean())]",
+     "explain": "빈 별점 2건을 빼면 회원 2건(5, 4), 비회원 3건(3, 4, 2)이 남아요. 회원 평균이 1.5점 더 높으니, 회원을 첫 번째로 넣으면 t 통계량은 양수가 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "ttest_ind(회원 별점, 비회원 별점)의 t 통계량(stat)이 양수(+)라면 무엇을 뜻할까요?",
+     "options": [
+      "비회원의 별점 평균이 회원보다 높다",
+      "회원의 별점 평균이 비회원보다 높다",
+      "p-value가 0.05보다 작다",
+      "두 집단의 주문 수가 같다"
+     ],
+     "answer": 1,
+     "explain": "t 통계량은 (첫 번째 집단 평균 − 두 번째 집단 평균)을 흩어진 정도로 나눈 값이에요. 첫 번째 집단의 평균이 크면 양수, 작으면 음수가 되고, 0에서 멀수록 차이가 뚜렷해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "문제에서 말한 부호대로 t 통계량을 얻으려면 ttest_ind에 두 집단을 어떤 차례로 넣어야 할까요?",
+     "options": [
+      "비회원 별점을 먼저, 회원 별점을 나중에",
+      "차례는 상관없다(부호도 늘 같다)",
+      "두 집단을 합친 별점 하나만 넣는다",
+      "회원 별점을 먼저, 비회원 별점을 나중에"
+     ],
+     "answer": 3,
+     "explain": "문제에서 회원을 첫 번째 집단으로 정했어요. 차례를 바꾸면 p-value는 같지만 t 통계량의 부호가 반대로 나와요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "예시 데이터(cafe_orders.csv)에서 별점이 결측이 아닌 비회원 주문(member가 Y가 아님)은 몇 건일까요?",
+     "a": "1033",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"cafe_orders.csv\")\n    return [int(((df[\"rating\"].notna()) & (df[\"member\"] != \"Y\")).sum())]",
+     "explain": "비회원은 member가 Y가 아닌 주문이라 != \"Y\"로 골라요. 조건 두 개를 &로 묶어 세면 돼요."
+    }
+   ],
+   "explain": "dropna(subset=[\"rating\"])로 별점이 빈 주문을 먼저 빼요. 비회원은 member != \"Y\"로 고르고, ttest_ind(member, guest)처럼 회원을 첫 번째로 넣어야 t 통계량의 부호가 문제와 맞아요. 이번에는 p가 아니라 stat을 round(stat, 2)로 돌려줘요."
+  },
+  {
+   "id": "d2-t10-d",
+   "version": 1,
+   "title": "앱 사용 고객의 가장 작은 군집",
+   "statement": "쇼핑몰 고객 데이터에서 앱 사용자(app_user가 Y)만 골라, 1년 구매 금액(annual_spend) 한 열로 k-means 군집 분석을 하려고 합니다. 군집을 3개로 나누었을 때 가장 작은 군집에 속한 고객 수를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 annual_spend 열만 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "customers.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_app = df.loc[df[\"app_user\"] == \"Y\", ]\n\ndef solution():\n    km = ⟦1⟧(n_clusters=⟦2⟧, random_state=123, n_init=10).fit(df_app[⟦3⟧])\n    answer = pd.Series(km.⟦4⟧).value_counts().⟦5⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "KMeans"
+    },
+    {
+     "answer": "3"
+    },
+    {
+     "answer": "[\"annual_spend\"]",
+     "alts": [
+      "['annual_spend']"
+     ]
+    },
+    {
+     "answer": "labels_"
+    },
+    {
+     "answer": "min"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_app = df.loc[df[\"app_user\"] == \"Y\", ]\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_app[[\"annual_spend\"]])\n    answer = pd.Series(km.labels_).value_counts().min()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 143
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 133
+    },
+    {
+     "data": 2,
+     "expected": 124
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "군집 분석(clustering)은 어떤 일을 할까요?",
+     "options": [
+      "정답이 있는 데이터로 배워 새 데이터의 정답을 예측한다",
+      "두 집단의 평균 차이를 검정한다",
+      "정답(라벨) 없이 서로 비슷한 데이터끼리 무리(군집)를 짓는다",
+      "데이터를 큰 값부터 차례로 정렬한다"
+     ],
+     "answer": 2,
+     "explain": "군집 분석은 정답 없이 가까운 데이터끼리 묶는 비지도학습이에요. k-means는 무리의 중심을 k개 두고, 데이터마다 가장 가까운 중심의 무리에 넣어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "가까운 중심 고르기",
+     "prompt": "세 무리의 중심이 50, 200, 500(만 원)이에요. 구매 금액이 60, 130, 420인 고객이 각 중심과 얼마나 떨어져 있는지(차이의 절댓값) 채우고, 가장 가까운 중심을 골라 보세요.",
+     "columns": [
+      "annual_spend",
+      "50과 거리",
+      "200과 거리",
+      "500과 거리",
+      "가장 가까운 중심"
+     ],
+     "rows": [
+      [
+       "60",
+       {
+        "a": "10"
+       },
+       {
+        "a": "140"
+       },
+       {
+        "a": "440"
+       },
+       {
+        "a": "50"
+       }
+      ],
+      [
+       "130",
+       {
+        "a": "80"
+       },
+       {
+        "a": "70"
+       },
+       {
+        "a": "370"
+       },
+       {
+        "a": "200"
+       }
+      ],
+      [
+       "420",
+       {
+        "a": "370"
+       },
+       {
+        "a": "220"
+       },
+       {
+        "a": "80"
+       },
+       {
+        "a": "500"
+       }
+      ]
+     ],
+     "check": "def answers():\n    cs = [50, 200, 500]\n    out = []\n    for x in [60, 130, 420]:\n        ds = [abs(x - c) for c in cs]\n        out += ds + [cs[ds.index(min(ds))]]\n    return out",
+     "explain": "k-means는 이렇게 데이터마다 가장 가까운 중심의 무리에 넣고, 무리의 평균으로 중심을 옮기는 일을 더 바뀌지 않을 때까지 되풀이해요. 130처럼 두 중심 사이에 있어도 조금이라도 더 가까운 쪽으로 가요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`KMeans(n_clusters=3, random_state=123, n_init=10)`의 설정을 바르게 풀이한 것은?",
+     "options": [
+      "n_clusters=3은 3번 반복, random_state=123은 123번째 행부터, n_init=10은 군집 10개",
+      "n_clusters=3은 열 3개 사용, random_state=123은 고객 123명만, n_init=10은 10초 동안 실행",
+      "세 설정 모두 결과에 아무 영향을 주지 않는다",
+      "n_clusters=3은 군집 3개, random_state=123은 무작위 시작을 늘 똑같게, n_init=10은 시작 중심을 10번 바꿔 돌려 보고 가장 좋은 결과를 쓴다"
+     ],
+     "answer": 3,
+     "explain": "k-means는 처음 중심을 무작위로 골라서 시작에 따라 결과가 달라질 수 있어요. random_state로 무작위를 고정하고, n_init번 다시 시작해 무리 안 거리가 가장 작은 결과를 써요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "KMeans의 fit에 넣는 값으로 알맞은 것은?",
+     "options": [
+      "df_app[\"annual_spend\"] — Series",
+      "df_app[[\"annual_spend\"]] — 열 하나짜리 표(DataFrame)",
+      "\"annual_spend\" — 열 이름 글자",
+      "df_app[\"annual_spend\"].mean() — 평균 값 하나"
+     ],
+     "answer": 1,
+     "explain": "fit은 행 × 열 모양(2차원)의 데이터를 받아요. 대괄호를 두 번 써서 열 하나짜리 표로 넣어야 해요. Series를 넣으면 2차원이 아니라는 오류가 나요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "군집 결과 km.labels_가 [0, 2, 2, 1, 2, 0, 2]라면 `pd.Series(km.labels_).value_counts().min()`의 값은?",
+     "a": "1",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    return [int(pd.Series([0, 2, 2, 1, 2, 0, 2]).value_counts().min())]",
+     "explain": "labels_는 행마다 몇 번 군집에 들어갔는지 적은 번호예요. 군집마다 세면 2번 4명, 0번 2명, 1번 1명이니 가장 작은 군집의 크기는 1이에요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "예시 데이터(customers.csv)에서 앱 사용자(app_user가 Y)는 몇 명일까요?",
+     "a": "605",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"customers.csv\")\n    return [int((df[\"app_user\"] == \"Y\").sum())]",
+     "explain": "이 고객들을 세 무리로 나누므로 세 군집의 크기를 모두 더하면 이 수가 돼요. 가장 작은 군집의 크기는 이 수를 3으로 나눈 값보다 클 수 없어요."
+    }
+   ],
+   "explain": "KMeans(n_clusters=3, random_state=123, n_init=10).fit(표)로 군집을 만들고, 행마다 붙은 군집 번호 km.labels_를 pd.Series로 바꿔 value_counts()로 세요. 가장 작은 군집의 크기는 .min()이에요. fit에 df_app[\"annual_spend\"]처럼 Series를 넣으면 오류가 나니 대괄호를 두 번 써요."
+  },
+  {
+   "id": "d2-t10-e",
+   "version": 1,
+   "title": "남성 고객의 월 구매 금액 군집",
+   "kind": "write",
+   "statement": "쇼핑몰 고객 데이터에서 남성 고객(gender가 M)만 고른 뒤, 한 달 평균 구매 금액을 1년 구매 금액(annual_spend) ÷ 12로 계산하여 새 변수로 만듭니다. 이 한 달 평균 구매 금액 한 열로 k-means 군집 분석을 하여 군집을 3개로 나누었을 때, 가장 큰 군집에 속한 고객 수를 구합니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 한 달 평균 구매 금액은 \"monthly_spend\" 변수로 만드시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 monthly_spend 열만 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "customers.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_m = df.loc[df[\"gender\"] == \"M\", ].copy()\ndf_m[\"monthly_spend\"] = df_m[\"annual_spend\"] / 12\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_m[[\"monthly_spend\"]])\n    answer = int(pd.Series(km.labels_).value_counts().max())\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 295
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 290
+    },
+    {
+     "data": 2,
+     "expected": 330
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제를 푸는 순서로 알맞은 것은?",
+     "options": [
+      "KMeans로 fit → 남성 고객 고르기 → monthly_spend 열 만들기 → 가장 큰 개수",
+      "monthly_spend 열 만들기 → KMeans로 fit → 가장 큰 monthly_spend 값",
+      "남성 고객 고르기 → monthly_spend 평균 구하기 → 평균보다 큰 고객 수",
+      "남성 고객 고르기 → monthly_spend 열 만들기 → KMeans로 fit → labels_를 세어 가장 큰 개수"
+     ],
+     "answer": 3,
+     "explain": "군집에 쓸 고객과 열을 먼저 준비한 뒤 fit해요. 답은 금액이 아니라 가장 큰 군집에 속한 고객 수예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "고객 5명의 성별과 1년 구매 금액이에요. gender == \"M\"의 값을 채우고, 남성 고객만 monthly_spend(= annual_spend / 12)를 채워 보세요.",
+     "columns": [
+      "gender",
+      "annual_spend",
+      "gender == \"M\"",
+      "monthly_spend"
+     ],
+     "rows": [
+      [
+       "M",
+       "60",
+       {
+        "a": "True"
+       },
+       {
+        "a": "5.0",
+        "alts": [
+         "5"
+        ]
+       }
+      ],
+      [
+       "F",
+       "240",
+       {
+        "a": "False"
+       },
+       "-"
+      ],
+      [
+       "M",
+       "300",
+       {
+        "a": "True"
+       },
+       {
+        "a": "25.0",
+        "alts": [
+         "25"
+        ]
+       }
+      ],
+      [
+       "F",
+       "48",
+       {
+        "a": "False"
+       },
+       "-"
+      ],
+      [
+       "M",
+       "36",
+       {
+        "a": "True"
+       },
+       {
+        "a": "3.0",
+        "alts": [
+         "3"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"gender\": [\"M\", \"F\", \"M\", \"F\", \"M\"], \"annual_spend\": [60, 240, 300, 48, 36]})\n    out = []\n    for g, s in zip(t[\"gender\"], t[\"annual_spend\"]):\n        out.append(g == \"M\")\n        if g == \"M\":\n            out.append(s / 12)\n    return out",
+     "explain": "남성 고객만 남긴 표에 df_m[\"monthly_spend\"] = df_m[\"annual_spend\"] / 12처럼 열 연산으로 새 열을 만들어요. 고른 표에 열을 더할 때는 .copy()로 따로 떼어 두면 경고가 나지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "군집 크기 세기",
+     "prompt": "남성 고객 7명을 군집했더니 km.labels_가 [1, 0, 1, 2, 1, 0, 1]로 나왔어요. 군집마다 고객 수를 세고, 가장 큰 군집의 크기를 채워 보세요.",
+     "columns": [
+      "군집 번호",
+      "고객 수"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "가장 큰 군집의 크기",
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    vc = pd.Series([1, 0, 1, 2, 1, 0, 1]).value_counts()\n    return [int(vc[0]), int(vc[1]), int(vc[2]), int(vc.max())]",
+     "explain": "pd.Series(km.labels_).value_counts()가 군집 번호마다 개수를 세어 주고, .max()가 그중 가장 큰 개수예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`n_init=10`의 뜻으로 알맞은 것은?",
+     "options": [
+      "군집을 10개 만든다",
+      "10번째 행부터 군집에 쓴다",
+      "시작 중심을 10번 다르게 골라 돌려 보고, 무리 안의 거리가 가장 작은 결과를 쓴다",
+      "중심을 옮기는 반복을 10번에서 멈춘다"
+     ],
+     "answer": 2,
+     "explain": "k-means는 처음 중심을 어디에 두느냐에 따라 결과가 달라질 수 있어요. 그래서 여러 번 시작해 보고 가장 잘 묶인 결과를 써요. random_state=123은 그 무작위를 늘 똑같게 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "답으로 군집 번호(0·1·2)가 아니라 '가장 큰 군집의 크기'를 묻는 까닭은?",
+     "options": [
+      "번호가 큰 군집일수록 고객이 많아서",
+      "군집 번호는 무리에 붙인 이름일 뿐이라, 데이터나 설정이 바뀌면 같은 무리라도 번호가 달라질 수 있어서",
+      "군집 번호는 언제나 0이라서",
+      "군집 번호는 글자라서 셀 수 없어서"
+     ],
+     "answer": 1,
+     "explain": "k-means는 무리를 나눈 뒤 번호를 정해진 차례 없이 붙여요. 그래서 크기·평균처럼 번호와 상관없는 값을 답으로 써요."
+    }
+   ],
+   "explain": "df.loc[df[\"gender\"] == \"M\", ].copy()로 남성 고객을 고르고 monthly_spend = annual_spend / 12 열을 만들어요. KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_m[[\"monthly_spend\"]]) 뒤 pd.Series(km.labels_).value_counts().max()가 가장 큰 군집의 크기예요. 정수로 돌려주려면 int()로 감싸요."
+  }
+ ]
+}

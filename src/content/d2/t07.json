@@ -1,0 +1,900 @@
+{
+ "course": "d2",
+ "type": 7,
+ "typeTitle": "비율·구성비 구하기",
+ "kind": "write",
+ "skills": [
+  "value_counts·슬라이싱([:n])",
+  "len(df)로 전체 행 수",
+  "isin으로 여러 범주 고르기",
+  "True/False의 mean()으로 비율",
+  "round"
+ ],
+ "intro": "전체 또는 고른 행 가운데 어떤 범주나 조건이 차지하는 비율(구성비)을 구합니다. value_counts()로 상위 몇 개 범주를 잘라 더하거나, isin으로 고른 행 안에서 조건을 만족하는 행의 비율을 구하며, 무엇이 분모인지 정확히 가리는 연습을 합니다.",
+ "problems": [
+  {
+   "id": "d2-t07-a",
+   "version": 1,
+   "title": "인기 메뉴 두 개의 주문 비율",
+   "statement": "카페 주문 데이터는 주문 한 건이 한 행으로 기록되어 있고, `menu` 열에 주문한 메뉴 이름이 들어 있습니다. 주문 건수가 가장 많은 메뉴 2개를 골라, 이 두 메뉴의 주문 건수가 **전체 주문 건수**에서 차지하는 비율을 구하려고 합니다. 주문 수량(`qty`)은 생각하지 않고 행의 개수로 셉니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 비율의 분모는 전체 주문 건수(전체 행의 수)로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    cnt = df[\"menu\"].value_counts()\n    answer = round(cnt[:2].sum() / len(df), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.35
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.4
+    },
+    {
+     "data": 2,
+     "expected": 0.39
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제의 비율은 분자 ÷ 분모로 구해요. 분자와 분모로 알맞은 것은?",
+     "options": [
+      "분자: 상위 2개 메뉴의 qty 합 / 분모: 전체 qty 합",
+      "분자: 상위 2개 메뉴의 주문 건수 합 / 분모: 전체 주문 건수",
+      "분자: 상위 2개 메뉴의 주문 건수 합 / 분모: 메뉴 종류의 수",
+      "분자: 가장 많은 메뉴의 주문 건수 / 분모: 둘째로 많은 메뉴의 주문 건수"
+     ],
+     "answer": 1,
+     "explain": "비율(구성비)은 전체 중 일부가 차지하는 몫이라 부분 ÷ 전체로 구해요. 이 문제는 주문 한 건(한 행)을 하나로 세고 수량(qty)은 보지 않으니, 분모는 전체 행의 수예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "value_counts() 따라가기",
+     "prompt": "주문 10건의 menu가 차례로 Americano, Cafe Latte, Green Tea, Americano, Cafe Latte, Americano, Croissant, Green Tea, Americano, Cafe Latte예요. `df[\"menu\"].value_counts()`는 값마다 몇 번 나왔는지 세어 **많은 것부터** 차례로 보여 줘요. 결과를 채워 보세요.",
+     "columns": [
+      "순서",
+      "메뉴",
+      "주문 건수"
+     ],
+     "rows": [
+      [
+       "1",
+       {
+        "a": "Americano"
+       },
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "Cafe Latte"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "Green Tea"
+       },
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "4",
+       {
+        "a": "Croissant"
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([\"Americano\", \"Cafe Latte\", \"Green Tea\", \"Americano\", \"Cafe Latte\", \"Americano\", \"Croissant\", \"Green Tea\", \"Americano\", \"Cafe Latte\"])\n    out = []\n    for name, n in s.value_counts().items():\n        out += [name, n]\n    return out",
+     "explain": "value_counts()의 결과는 메뉴 이름이 이름표(index)이고 주문 건수가 값인 Series예요. 많은 순으로 정렬되어 있어서 앞에서부터 잘라 내면 상위 몇 개를 바로 얻을 수 있어요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`cnt = df[\"menu\"].value_counts()`일 때, 상위 2개 메뉴의 주문 건수 합을 구하는 코드로 알맞은 것은?",
+     "options": [
+      "cnt.max()",
+      "cnt[:2].count()",
+      "cnt[:2].sum()",
+      "cnt.sum()"
+     ],
+     "answer": 2,
+     "explain": "cnt[:2]는 슬라이싱(앞에서부터 잘라 내기)으로 1·2위 메뉴를 꺼내고, sum()이 두 주문 건수를 더해요. count()는 값이 몇 개 있는지(여기서는 2)를 세고, cnt.max()는 1위 메뉴 하나, cnt.sum()은 전체 주문 건수예요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "앞의 주문 10건에서 상위 2개 메뉴(Americano, Cafe Latte)의 주문 비율은 얼마일까요? 소수로 답해 보세요.",
+     "a": "0.7",
+     "alts": [
+      "0.70",
+      ".7"
+     ],
+     "check": "def answers():\n    return [(4 + 3) / 10]",
+     "explain": "(4 + 3) ÷ 10 = 0.7이에요. 실제 데이터에서는 분모가 len(df)(전체 행의 수)이고, 마지막에 round(값, 2)로 소수점 둘째 자리까지 반올림해요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "0.4682를 반올림하여 소수점 둘째 자리까지 나타내는 코드와 결과로 알맞은 것은?",
+     "options": [
+      "round(0.4682, 2) → 0.47",
+      "round(0.4682, 2) → 0.46",
+      "round(0.4682) → 0.47",
+      "round(0.4682, 3) → 0.47"
+     ],
+     "answer": 0,
+     "explain": "round(값, 자릿수)는 소수점 아래 자릿수까지 반올림해요. 셋째 자리 8이 5 이상이라 올려서 0.47이 돼요. 자릿수를 빼면 정수로 반올림해 0이 되고, 3을 넣으면 0.468이에요."
+    }
+   ],
+   "explain": "value_counts()는 많은 순으로 정렬된 개수를 돌려주므로 [:2]로 상위 2개를 잘라 sum()으로 더하면 분자가 돼요. 분모는 전체 주문 건수 len(df)예요. 수량(qty)을 더하거나 메뉴 종류 수로 나누지 않도록 주의해요."
+  },
+  {
+   "id": "d2-t07-b",
+   "version": 1,
+   "title": "많이 만든 장르 세 개의 비중",
+   "statement": "영화 데이터는 영화 한 편이 한 행이며, `genre` 열에 영화의 장르가 들어 있습니다. 영화 수가 많은 장르부터 차례로 3개를 골랐을 때, 이 3개 장르에 속한 영화가 **전체 영화**에서 차지하는 구성비를 구하려고 합니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 구성비의 분모는 전체 영화 수(전체 행의 수)로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "movies.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    cnt = df[\"genre\"].value_counts()\n    answer = round(cnt[:3].sum() / len(df), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.57
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.56
+    },
+    {
+     "data": 2,
+     "expected": 0.56
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "상위 3개 장르의 구성비가 0.6이라는 말의 뜻으로 알맞은 것은?",
+     "options": [
+      "상위 3개 장르가 전체 장르 수의 60%이다",
+      "상위 3개 장르의 영화가 모두 합쳐 0.6편이다",
+      "전체 영화 중 60%가 상위 3개 장르에 속한다",
+      "상위 3개 장르의 영화가 나머지 장르보다 0.6배 많다"
+     ],
+     "answer": 2,
+     "explain": "구성비는 전체를 1(100%)로 볼 때 어떤 부분이 차지하는 몫이에요. 0.6이면 영화 100편 중 60편 꼴로 상위 3개 장르라는 뜻이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 구성비 구하기",
+     "prompt": "영화 20편을 장르별로 센 `value_counts()` 결과가 drama 6, action 5, comedy 4, horror 3, sf 2예요(많은 순). 빈칸을 채워 보세요.",
+     "columns": [
+      "계산",
+      "값"
+     ],
+     "rows": [
+      [
+       "상위 3개 장르의 영화 수 합",
+       {
+        "a": "15"
+       }
+      ],
+      [
+       "전체 영화 수",
+       {
+        "a": "20"
+       }
+      ],
+      [
+       "구성비(상위 3개 합 ÷ 전체)",
+       {
+        "a": "0.75",
+        "alts": [
+         ".75"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    cnt = pd.Series([6, 5, 4, 3, 2], index=[\"drama\", \"action\", \"comedy\", \"horror\", \"sf\"])\n    top = cnt[:3].sum()\n    total = cnt.sum()\n    return [top, total, top / total]",
+     "explain": "상위 3개는 drama, action, comedy로 6 + 5 + 4 = 15편이에요. 전체는 20편이라 구성비는 15 ÷ 20 = 0.75예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`cnt = df[\"genre\"].value_counts()`일 때, `cnt[:3]`과 같은 결과를 내는 코드는?",
+     "options": [
+      "cnt.tail(3)",
+      "cnt.head(3)",
+      "cnt.sort_index()[:3]",
+      "cnt.iloc[3]"
+     ],
+     "answer": 1,
+     "explain": "head(3)은 앞에서 3개를 꺼내요. tail(3)은 뒤의 3개(가장 적은 장르들)이고, sort_index()는 장르 이름의 알파벳 순으로 다시 정렬해 버리며, iloc[3]은 넷째 장르 하나의 개수예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "전체 영화 수(행의 수)를 구하는 코드로 알맞지 **않은** 것은?",
+     "options": [
+      "len(df)",
+      "df.shape[0]",
+      "len(df.columns)",
+      "len(df.index)"
+     ],
+     "answer": 2,
+     "explain": "df.shape는 (행 수, 열 수)라서 shape[0]이 행 수예요. len(df)와 len(df.index)도 행 수지만, len(df.columns)는 열(변수)의 개수예요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "예시 데이터(movies.csv)에서 영화 수가 가장 많은 장르는 무엇일까요? print로 확인해 보세요.",
+     "a": "drama",
+     "alts": [
+      "'drama'"
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [df[\"genre\"].value_counts().index[0]]",
+     "explain": "value_counts()의 맨 앞(index[0])이 가장 많은 장르예요. 숨은 데이터에서는 순위가 달라질 수 있으니 장르 이름을 직접 쓰지 말고 [:3]으로 잘라 써요."
+    }
+   ],
+   "explain": "value_counts()로 장르별 영화 수를 많은 순으로 센 뒤, [:3]으로 상위 3개를 잘라 sum()으로 더해요. 이것을 전체 영화 수 len(df)로 나누고 round(…, 2)로 반올림하면 돼요. 상위 장르의 이름은 데이터마다 달라질 수 있으니 직접 쓰지 않는 것이 안전해요."
+  },
+  {
+   "id": "d2-t07-c",
+   "version": 1,
+   "title": "두 구의 비회원 대여 비율",
+   "statement": "공공 자전거 대여 데이터는 대여 한 건이 한 행이며, `district` 열에 대여한 구, `user_type` 열에 이용자 종류(member: 회원, guest: 비회원)가 들어 있습니다. `district`가 Gangnam 또는 Songpa인 대여만 골랐을 때, 그중 `user_type`이 guest인 대여의 비율을 구하려고 합니다. 참고로 예시 데이터에서 `district`가 Mapo 또는 Jongno인 대여 중 guest의 비율은 0.352입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 비율의 분모는 district가 Gangnam 또는 Songpa인 대여 건수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "bike_rentals.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    sub = df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]\n    answer = round((sub[\"user_type\"] == \"guest\").mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.36
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.37
+    },
+    {
+     "data": 2,
+     "expected": 0.36
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 비율의 분모로 알맞은 것은?",
+     "options": [
+      "전체 대여 건수",
+      "guest의 대여 건수",
+      "district가 Gangnam 또는 Songpa인 대여 건수",
+      "Gangnam·Songpa의 guest 대여 건수"
+     ],
+     "answer": 2,
+     "explain": "'~인 대여 중'이라는 말은 고른 행만 전체로 본다는 뜻이에요. 그래서 분모는 두 구의 대여 건수이고, 분자는 그중 guest인 대여 건수예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "대여 7건이 아래와 같아요. 두 구(Gangnam·Songpa)에 속해 분모에 들어가는지, 두 구에 속하면서 guest라서 분자에 들어가는지 True/False로 채워 보세요.",
+     "columns": [
+      "district",
+      "user_type",
+      "분모에 들어가나요?",
+      "분자에 들어가나요?"
+     ],
+     "rows": [
+      [
+       "Gangnam",
+       "guest",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "Mapo",
+       "guest",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Songpa",
+       "member",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Gangnam",
+       "member",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Jongno",
+       "guest",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Songpa",
+       "guest",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "Gangnam",
+       "member",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('Gangnam', 'guest'), ('Mapo', 'guest'), ('Songpa', 'member'), ('Gangnam', 'member'), ('Jongno', 'guest'), ('Songpa', 'guest'), ('Gangnam', 'member')]\n    out = []\n    for d, u in rows:\n        pick = d in [\"Gangnam\", \"Songpa\"]\n        out += [pick, pick and u == \"guest\"]\n    return out",
+     "explain": "Mapo·Jongno의 guest는 guest이지만 두 구가 아니라서 분자에도 분모에도 들어가지 않아요. 두 구에 속하는 5건 중 guest는 2건이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 7건에서 구하는 비율은 얼마일까요? 소수로 답해 보세요.",
+     "a": "0.4",
+     "alts": [
+      "0.40",
+      ".4"
+     ],
+     "check": "def answers():\n    return [2 / 5]",
+     "explain": "분모는 두 구의 5건, 분자는 그중 guest 2건이라 2 ÷ 5 = 0.4예요. 7건 전체로 나누면(2 ÷ 7) 분모가 틀려요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`district`가 Gangnam 또는 Songpa인 행만 고르는 코드로 알맞은 것은?",
+     "options": [
+      "df[df[\"district\"] == \"Gangnam\" and \"Songpa\"]",
+      "df[df[\"district\"].isin(\"Gangnam\", \"Songpa\")]",
+      "df[df[\"user_type\"].isin([\"Gangnam\", \"Songpa\"])]",
+      "df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]"
+     ],
+     "answer": 3,
+     "explain": "isin(목록)은 값이 목록 안에 있으면 True를 돌려줘서 여러 범주를 한 번에 고를 수 있어요. 목록은 대괄호 [ ]로 묶어 하나로 넘겨야 하고, 구 이름은 user_type이 아니라 district 열에 있어요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`sub = df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]`일 때, guest의 비율을 구하는 식으로 알맞은 것은?",
+     "options": [
+      "(sub[\"user_type\"] == \"guest\").sum()",
+      "(sub[\"user_type\"] == \"guest\").mean()",
+      "(df[\"user_type\"] == \"guest\").mean()",
+      "len(sub) / len(df)"
+     ],
+     "answer": 1,
+     "explain": "비교식은 행마다 True/False를 만들고, 계산할 때 True는 1·False는 0이에요. 그래서 mean()은 True의 비율이 돼요. sum()은 guest의 건수, df를 쓰면 전체 대여의 비율, len(sub) / len(df)는 두 구가 전체에서 차지하는 비율이에요."
+    }
+   ],
+   "explain": "isin으로 두 구의 대여만 골라 sub를 만든 뒤, sub 안에서 guest인 비율을 구해요. True/False의 평균 mean()이 곧 비율이라 따로 나누지 않아도 돼요. 분모를 전체 대여 건수로 하면 틀린 값이 나와요."
+  },
+  {
+   "id": "d2-t07-d",
+   "version": 1,
+   "title": "코딩·과학 동아리의 수학 우수 비율",
+   "statement": "학생 성적 데이터는 학생 한 명이 한 행이며, `club` 열에 학생의 동아리(동아리가 없는 학생은 비어 있음), `math` 열에 수학 점수가 들어 있습니다. `club`이 coding 또는 science인 학생들 가운데 수학 점수가 80점 이상인 학생의 비율을 구하려고 합니다. 참고로 예시 데이터에서 `club`이 sports 또는 music인 학생 중 수학 점수가 80점 이상인 학생의 비율은 0.175입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 비율의 분모는 club이 coding 또는 science인 학생 수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    sub = df[df[\"club\"].isin([\"coding\", \"science\"])]\n    answer = round((sub[\"math\"] >= 80).mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.26
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.29
+    },
+    {
+     "data": 2,
+     "expected": 0.3
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "수학 점수가 정확히 80점인 coding 동아리 학생은 어떻게 셀까요?",
+     "options": [
+      "분모에만 들어가요",
+      "분자와 분모에 모두 들어가요",
+      "분자와 분모 모두에서 빠져요"
+     ],
+     "answer": 1,
+     "explain": "'80점 이상'은 80을 포함해요. 그래서 비교식은 >= 80이고, 80점 학생은 분자에도 들어가요. 고른 동아리 학생은 모두 분모에 들어가요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "동아리가 없어 `club`이 비어 있는(결측, NaN) 학생에게 `df[\"club\"].isin([\"coding\", \"science\"])`를 계산하면 어떻게 될까요?",
+     "options": [
+      "True가 되어 함께 골라져요",
+      "오류가 나요",
+      "False가 되어 골라지지 않아요",
+      "NaN이 그대로 남아요"
+     ],
+     "answer": 2,
+     "explain": "결측(NaN)은 값이 비어 있다는 뜻이에요. 비어 있는 값은 목록 안의 어떤 값과도 같지 않으니 isin은 False를 돌려주고, 그 학생은 고르지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "학생 7명의 club과 math가 아래와 같아요(NaN은 동아리 없음). 분모(coding·science 학생)와 분자(그중 80점 이상)에 들어가는지 True/False로 채워 보세요.",
+     "columns": [
+      "club",
+      "math",
+      "분모에 들어가나요?",
+      "분자에 들어가나요?"
+     ],
+     "rows": [
+      [
+       "coding",
+       "85",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "NaN",
+       "92",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "science",
+       "80",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "sports",
+       "88",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "science",
+       "64",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "coding",
+       "79",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "science",
+       "95",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('coding', 85), (None, 92), ('science', 80), ('sports', 88), ('science', 64), ('coding', 79), ('science', 95)]\n    out = []\n    for c, m in rows:\n        pick = c in [\"coding\", \"science\"]\n        out += [pick, pick and m >= 80]\n    return out",
+     "explain": "분모는 coding·science 학생 5명이에요. 그중 80점 이상(85, 80, 95)인 3명이 분자예요. 92점·88점 학생은 점수가 높아도 두 동아리가 아니라서 세지 않아요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "위 7명에서 구하는 비율은 얼마일까요? 소수로 답해 보세요.",
+     "a": "0.6",
+     "alts": [
+      "0.60",
+      ".6"
+     ],
+     "check": "def answers():\n    return [3 / 5]",
+     "explain": "분자 3명 ÷ 분모 5명 = 0.6이에요. 7명 전체로 나누거나 79점 학생을 넣으면 값이 달라져요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`sub`가 coding·science 학생만 고른 표일 때, 비율을 구하는 식으로 알맞은 것은?",
+     "options": [
+      "(sub[\"math\"] >= 80).mean()",
+      "(sub[\"math\"] > 80).mean()",
+      "sub[\"math\"].mean() / 80",
+      "(df[\"math\"] >= 80).mean()"
+     ],
+     "answer": 0,
+     "explain": "(sub[\"math\"] >= 80)은 학생마다 True/False를 만들고, mean()이 True의 비율을 구해요. > 80은 80점 학생을 빼 버리고, 평균 점수를 80으로 나누는 것은 비율이 아니에요. df를 쓰면 모든 학생의 비율이 돼요."
+    }
+   ],
+   "explain": "isin으로 두 동아리 학생만 고른 뒤 그 안에서 (math >= 80)의 평균을 구하면 비율이에요. '이상'이라 >=를 쓰고, 동아리가 없는 학생(결측)은 isin에서 저절로 빠져요. 동아리 이름을 sports·music으로 바꿔 참고 값 0.175가 나오는지 확인해 볼 수 있어요."
+  },
+  {
+   "id": "d2-t07-e",
+   "version": 1,
+   "title": "매물 많은 두 제조사의 사고 차 비율",
+   "statement": "중고차 매물 데이터는 매물 한 대가 한 행이며, `brand` 열에 제조사, `accident` 열에 사고 이력(Y: 있음, N: 없음)이 들어 있습니다. 매물 수가 가장 많은 제조사 2곳을 찾아 이 두 제조사의 매물만 골랐을 때, 그중 사고 이력이 있는 매물의 비율을 구하려고 합니다. 참고로 예시 데이터에서 BMW와 Benz 두 제조사의 매물 중 사고 이력이 있는 매물의 비율은 0.185입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 비율의 분모는 매물 수가 가장 많은 제조사 2곳의 매물 수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "used_cars.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    top = df[\"brand\"].value_counts().index[:2]\n    sub = df[df[\"brand\"].isin(top)]\n    answer = round((sub[\"accident\"] == \"Y\").mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.21
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.19
+    },
+    {
+     "data": 2,
+     "expected": 0.19
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제를 푸는 순서로 알맞은 것은?",
+     "options": [
+      "전체 매물의 사고 비율 구하기 → 상위 2개 제조사 찾기 → 두 값을 곱하기",
+      "상위 2개 제조사 이름 찾기 → 두 제조사의 매물만 고르기 → 고른 매물 중 사고 이력(Y) 비율 구하기",
+      "사고 이력(Y) 매물만 고르기 → 그중 상위 2개 제조사의 매물 수 세기 → 전체 매물 수로 나누기",
+      "상위 2개 제조사 이름 찾기 → 전체 사고 매물 수 세기 → 전체 매물 수로 나누기"
+     ],
+     "answer": 1,
+     "explain": "분모가 상위 2개 제조사의 매물 수이므로 먼저 두 제조사를 찾아 그 매물을 골라야 해요. 전체 매물 수로 나누는 방법은 분모가 달라서 다른 값이 나와요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "매물 7대가 아래와 같아요. 매물 수는 Kia 3대, Hyundai 2대, BMW 1대, Benz 1대라서 상위 2개 제조사는 Kia와 Hyundai예요. 분모와 분자에 들어가는지 True/False로 채워 보세요.",
+     "columns": [
+      "brand",
+      "accident",
+      "분모에 들어가나요?",
+      "분자에 들어가나요?"
+     ],
+     "rows": [
+      [
+       "Kia",
+       "Y",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "BMW",
+       "Y",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Hyundai",
+       "N",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Kia",
+       "N",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Hyundai",
+       "Y",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "Kia",
+       "N",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Benz",
+       "Y",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    rows = [('Kia', 'Y'), ('BMW', 'Y'), ('Hyundai', 'N'), ('Kia', 'N'), ('Hyundai', 'Y'), ('Kia', 'N'), ('Benz', 'Y')]\n    top = list(pd.Series([b for b, a in rows]).value_counts().index[:2])\n    out = []\n    for b, a in rows:\n        pick = b in top\n        out += [pick, pick and a == \"Y\"]\n    return out",
+     "explain": "BMW와 Benz는 사고 이력이 있어도 상위 2개 제조사가 아니라서 세지 않아요. 분모 5대 중 사고 이력이 있는 매물은 2대라 비율은 0.4예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`cnt = df[\"brand\"].value_counts()`일 때, 매물 수 상위 2개 제조사의 **이름**을 꺼내는 코드로 알맞은 것은?",
+     "options": [
+      "cnt[:2]",
+      "cnt.values[:2]",
+      "cnt.index[:2]",
+      "df[\"brand\"][:2]"
+     ],
+     "answer": 2,
+     "explain": "value_counts()의 결과에서 제조사 이름은 index(이름표)에, 매물 수는 values(값)에 있어요. cnt[:2]를 isin에 넣으면 이름이 아니라 개수와 비교해 아무 매물도 골라지지 않고, df[\"brand\"][:2]는 데이터의 맨 앞 두 행일 뿐이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(used_cars.csv)에서 매물 수 상위 2개 제조사의 매물을 모두 합하면 몇 대일까요? print로 확인해 보세요.",
+     "a": "870",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"used_cars.csv\")\n    return [df[\"brand\"].value_counts()[:2].sum()]",
+     "explain": "예시 데이터에서는 Kia와 Hyundai가 435대씩으로 가장 많아요. 둘 다 상위 2개에 들어가니 순서가 바뀌어도 고르는 매물은 같고, 이 870대가 분모예요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`top`이 상위 2개 제조사의 이름일 때, 비율을 구하는 코드로 알맞은 것은?",
+     "options": [
+      "(df[\"accident\"] == \"Y\").mean()",
+      "(df[df[\"brand\"].isin(top)][\"accident\"] == \"Y\").mean()",
+      "(df[df[\"brand\"].isin(top)][\"accident\"] == \"Y\").sum() / len(df)",
+      "df[df[\"brand\"].isin(top)][\"accident\"].count()"
+     ],
+     "answer": 1,
+     "explain": "isin(top)으로 두 제조사의 매물만 고르고 그 안에서 accident == \"Y\"의 평균을 구해야 분모가 두 제조사의 매물 수가 돼요. len(df)로 나누면 분모가 전체 매물이 되고, count()는 비어 있지 않은 값의 개수일 뿐이에요."
+    }
+   ],
+   "explain": "value_counts().index[:2]로 매물 수가 가장 많은 제조사 두 곳의 이름을 얻고, isin으로 그 매물만 골라요. 고른 매물에서 (accident == \"Y\")의 평균을 구하면 사고 이력 비율이에요. index를 빼먹고 cnt[:2]를 넣으면 개수와 비교하게 되어 아무 매물도 골라지지 않아요."
+  }
+ ]
+}
