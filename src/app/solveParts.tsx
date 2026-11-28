@@ -18,11 +18,11 @@ export function useEngine(lang: Lang = 'python'): EngineStatus {
   return s;
 }
 
-export const engineText = (engine: EngineStatus, lang: Lang = 'python') => {
-  const name = lang === 'c' ? 'C 채점기' : '파이썬';
+export const engineText = (engine: EngineStatus, lang: Lang = 'python', data = false) => {
+  const name = lang === 'c' ? 'C 채점기' : data ? '파이썬·pandas' : '파이썬';
   const obj = lang === 'c' ? 'C 채점기를' : '파이썬을';
   return engine === 'loading'
-    ? `${name} 준비 중… (처음 한 번은 약 10MB를 내려받아요)`
+    ? `${name} 준비 중… (처음 한 번은 약 ${data ? '15~40' : '10'}MB를 내려받아요)`
     : engine === 'error'
       ? `${obj} 불러오지 못했어요. 인터넷을 확인하고 실행을 다시 눌러 보세요.`
       : engine === 'ready'

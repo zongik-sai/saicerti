@@ -42,7 +42,7 @@ export function CourseHome({ course, learnerKey, remote, preview = false }: Prop
           <i style={{ width: `${ids.length ? (t.solved / ids.length) * 100 : 0}%` }} />
         </div>
         <p className="faint" style={{ margin: '0.5rem 0 0' }}>
-          유형마다 <b>[기본] 5문제</b>는 꼭 풀고, <b className="adv-ink">[심화] 5문제</b>는 원하면 도전해요(그 유형의 기본 5문제를 모두 풀면 열 수 있어요). 문제마다 <b>① 중간 점검</b>(표 채우기·객관식)을 푼 뒤 <b>② 코드 풀이</b>로 자동 채점을 받아요. 기본 {ids.length}문제를 모두 풀면 맨 아래 <b>모의고사</b>가 열려요.
+          유형마다 <b>[기본] 5문제</b>는 꼭 풀고, <b className="adv-ink">[심화] 5문제</b>는 원하면 도전해요(그 유형의 기본 5문제를 모두 풀면 열 수 있어요). 문제마다 <b>① 중간 점검</b>(표 채우기·객관식)을 푼 뒤 <b>② {course.id === 'd2' ? '답 고르기(이론)·코드 풀이(데이터)' : '코드 풀이'}</b>로 자동 채점을 받아요. 기본 {ids.length}문제를 모두 풀면 맨 아래 <b>모의고사</b>가 열려요.
         </p>
         {preview && (
           <p className="notice" style={{ margin: '0.5rem 0 0' }}>
@@ -63,7 +63,9 @@ export function CourseHome({ course, learnerKey, remote, preview = false }: Prop
 
       <h2 style={{ marginTop: '1.6rem' }}>모의고사</h2>
       <p className="faint" style={{ marginTop: 0 }}>
-        원본 기출 10문항과 같은 유형·같은 코드(예시만 다름) · 중간 점검 없이 실전처럼 · 결과는 시험을 끝낸 뒤 공개
+        {course.id === 'd2'
+          ? `원본 기출 ${course.mocks[0]?.items.length ?? 20}문항과 같은 구성(객관식 이론 + pandas 코드) · 데이터는 같은 열 구조로 새로 만든 연습용 · 중간 점검 없이 실전처럼 · 결과는 시험을 끝낸 뒤 공개`
+          : '원본 기출 10문항과 같은 유형·같은 코드(예시만 다름) · 중간 점검 없이 실전처럼 · 결과는 시험을 끝낸 뒤 공개'}
       </p>
       {basicLeft > 0 && !preview && (
         <p className="notice lock-note">

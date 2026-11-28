@@ -1,6 +1,7 @@
 # saicerti 프로젝트 규칙
 
-- 자격증 코딩 연습 사이트. 지금 과정: 프로그래밍 Python 기본(pyb, COS Pro 2급 Python 유형), 프로그래밍 Python 심화(pya, COS Pro 1급 Python 유형), 프로그래밍 C 기본(cb, COS Pro 2급 C 유형). C 심화(ca)·Data 과정은 나중에.
+- 자격증 코딩 연습 사이트. 지금 과정: 프로그래밍 Python 기본(pyb, COS Pro 2급 Python 유형), 프로그래밍 Python 심화(pya, COS Pro 1급 Python 유형), 프로그래밍 C 기본(cb, COS Pro 2급 C 유형), Data 분석 2급(d2, YBM DAT 2급 Python, 선생님 요청 2026-11-28). C 심화(ca)·Data 1급(d1)은 나중에.
+- Data 2급(d2): 유형 t01~t04는 객관식 이론(`kind: choice`, 보기 4개·보기별 풀이), t05~t10은 pandas 데이터 코드 문제. 데이터는 지어낸 연습용 CSV(`tools/gen_d2_data.py` → `public/data/d2/`, 예시 데이터 + 같은 모양의 숨은 데이터 2개)이고 원본 시험 데이터는 쓰지 않는다(spyder·shop_products는 모의고사 전용). 채점은 같은 워커의 Pyodide(pandas·matplotlib·scipy·scikit-learn, 사이트에 직접 올림)로 `solution()`의 반환값·그래프를 비교한다. 검수는 `tools/validate.py`가 `tools/validate_d2.py` → `tools/pyodide_runner.mjs`(브라우저와 같은 Pyodide·harness.py)로 한다(`--fill`로 기댓값 채움, 먼저 `npm run runtime`). 문제 만들기: docs/D2_BRIEF.md. 모의고사는 `src/content/d2/mock/m1.json`(원본 20문항 순서, 문항 키 q01~q20).
 - 연습 문제는 원본 기출과 형식·난이도가 비슷하지만 똑같지 않게 만든다(문장·상황·수치를 새로). 모의고사(`src/content/<과정>/mock/`)는 선생님 요청(2026-11-23)대로 원본과 같은 상황·코드·조건에 예시·테스트만 다르게 하되, 원본 문장을 글자 그대로 옮기지 않고 같은 뜻으로 다시 쓴다. 구름(goorm) 콘텐츠는 옮기지 않는다.
 - 문제 데이터는 `src/content/<과정>/tNN.json`(형식: docs/CONTENT_SCHEMA.md). 문제 id(`pyb-t01-a`)는 진도 키라 바꾸지 않는다. 내용을 고치면 version을 올린다.
 - 유형마다 [기본] 1~5(`tNN.json`, 필수)와 [심화] 1~5(`adv/tNN.json`, id `pyb-t01-adv1`~`adv5`, 선택)를 둔다(선생님 요청 2026-11-27). 심화는 1→5로 점점 어렵고 중간 점검 6~9단계로 앞에서부터 디딤돌을 놓는다(만들기: docs/ADV_BRIEF.md). 심화는 주황색, 그 유형의 기본 5문제를 모두 푼 뒤 학생이 '심화 열기'를 눌러야 들어간다. 모의고사는 기본 문제를 모두 푼 뒤 열리고 과정 화면 맨 아래에 둔다(이미 시작한 회차 기록은 볼 수 있음). 선생님 계정은 잠금 없이 미리 본다.
@@ -10,7 +11,7 @@
 - 모의고사는 중간 점검 없이 풀고, 제출 결과는 시험을 끝낸 뒤 공개한다(시간 제한 없음, 걸린 시간 표시, 자동 제출 없음).
 - 문제마다 흐름: 문제 읽기 → 중간 점검(표 채우기·객관식·단답) → 코드 풀이(빈칸 채우기 / 한 줄 수정(정확히 한 줄만 바뀌어야 채점) / 함수 작성) → 예시 실행·전체 채점. 한 문제 안에서는 중간 점검 단계와 코드 풀이를 자유롭게 오간다(잠그지 않음, 선생님 요청 2026-11-26). 중간 점검 질문에는 빈칸 번호(⟦1⟧)를 쓰지 않고 질문만으로 풀리게 쓴다. 코드를 봐야 풀리는 중간 점검 단계는 `"code": "start"`로 질문 위에 처음 코드(틀린 코드)를 줄 번호와 함께 보여 주고, 한 줄 수정에서 고친 코드는 '어떻게 고칠까요?' 단계보다 먼저 알려 주지 않는다(선생님 요청 2026-11-27).
 - 배움 숲(saiedu)과 같은 사이트(zongik-sai.github.io)·같은 Supabase 프로젝트를 쓴다: localStorage 접두사 `saicerti:v1:`, 로그인 저장 키 `saicerti-auth`를 바꾸지 않는다(서로의 기록·로그인을 건드리지 않게).
-- 서버 표는 saiedu의 `course_progress`(과목 pyb·pya·cb)와 `save_course_progress`·`course_class_overview`·`am_i_teacher`를 쓴다. 교사 관리는 saiedu와 같은 `am_i_admin`·`account_list`·`set_teacher`·`set_admin`·`revoke_listed_email`·`role_audit_list`(권한 확인은 서버). 과목 목록 SQL은 saiedu 저장소 `supabase/migrations/20261026000000_courses.sql`이 기준이다.
+- 서버 표는 saiedu의 `course_progress`(과목 pyb·pya·cb·d2)와 `save_course_progress`·`course_class_overview`·`am_i_teacher`를 쓴다. 교사 관리는 saiedu와 같은 `am_i_admin`·`account_list`·`set_teacher`·`set_admin`·`revoke_listed_email`·`role_audit_list`(권한 확인은 서버). 과목 목록 SQL은 saiedu 저장소 `supabase/migrations/20261026000000_courses.sql`이 기준이다.
 - 클라이언트에 service_role/secret 키를 넣지 않는다. Google 로그인은 진짜 OAuth(루트 callback + HashRouter).
 - 로그인하지 않아도 과정·문제·모의고사에 들어가 풀 수 있다(선생님 요청 2026-11-27). 이때 기록·초안은 이 브라우저에만(`saicerti:v1:guest:`) 남고 서버·선생님 화면에 가지 않으며, 로그인해도 계정 기록과 합치지 않는다(같은 컴퓨터의 다른 학생 기록이 섞이지 않게). 반 현황·교사 관리는 로그인 필요.
 - 개발용 데모는 `npm run dev`에서만, 화면에 '개발용 데모'로 표시한다. 운영 빌드는 데모를 거부한다.

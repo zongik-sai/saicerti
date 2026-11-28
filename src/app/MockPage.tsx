@@ -1,13 +1,14 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { Course, MockItem, MockSet } from '../content/types';
-import { KIND_LABEL, KIND_TASK } from '../content/types';
+import type { Course, MockItem, MockSet, ProblemKind } from '../content/types';
+import { KIND_LABEL, KIND_TASK, kindOf } from '../content/types';
+import { ChoiceList, D2Statement, DataResults, WhyList } from './d2Parts';
 import { courseMeta } from '../content';
 import { inline } from '../components/Rich';
 import { BlankCode, countBlanks, fillBlanks } from '../components/BlankCode';
 import { CodeView } from '../components/pyHighlight';
 import { ResultsView, type Shown } from '../components/Results';
-import { py, type RunResult } from '../grader/client';
+import { dataPkgs, py, type RunResult } from '../grader/client';
 import { readDraft, useCourseProgress, writeDraft } from '../features/progress/store';
 import type { MockResult, MockState } from '../features/progress/model';
 import { changedLines, engineText, fixBlockReason, StatementBody, useEngine } from './solveParts';
@@ -15,6 +16,9 @@ import { changedLines, engineText, fixBlockReason, StatementBody, useEngine } fr
 const CodeEditor = lazy(() => import('../components/CodeEditor').then((m) => ({ default: m.CodeEditor })));
 
 const tkey = (type: number) => `t${String(type).padStart(2, '0')}`;
+/** 문항의 기록 키(Data 과정은 문항 번호 q01~) */
+const ik = (it: MockItem) => it.key ?? tkey(it.type.type);
+const ikind = (it: MockItem): ProblemKind => it.kind ?? kindOf(it.type, it.problem);
 
 function elapsedText(fromIso: string, toMs: number): string {
   const s = Math.max(0, Math.floor((toMs - Date.parse(fromIso)) / 1000));
@@ -65,10 +69,9 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
     prog.updateMock(set.key, (m) => (m ? { ...m, endedAt: m.endedAt ?? new Date().toISOString() } : m!));
     setConfirmEnd(false);
   };
-  const record = (type: number, r: Omit<MockResult, 'tries' | 'at'>) =>
+  const record = (k: string, r: Omit<MockResult, 'tries' | 'at'>) =>
     prog.updateMock(set.key, (m) => {
       const base = m!;
-      const k = tkey(type);
       const old = base.results[k];
       return { ...base, results: { ...base.results, [k]: { ...r, tries: (old?.tries ?? 0) + 1, at: new Date().toISOString() } } };
     });
@@ -100,7 +103,7 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
             <li>‘예시로 실행’으로 예시 결과는 바로 볼 수 있어요.</li>
             <li>‘제출하기’를 누르면 숨은 테스트까지 채점해 두고, 결과는 시험을 끝낸 뒤 한꺼번에 보여 줘요. 여러 번 제출하면 마지막 제출로 채점해요.</li>
             <li>
-              시간 제한은 없고 걸린 시간을 보여 줘요{meta.examMinutes ? `(실제 시험은 ${meta.examMinutes}분에 10문제)` : ''}. 다 풀면 ‘시험 끝내기’를 눌러요.
+              시간 제한은 없고 걸린 시간을 보여 줘요{meta.examMinutes ? `(실제 시험은 ${meta.examMinutes}분에 ${set.items.length}문제)` : ''}. 다 풀면 ‘시험 끝내기’를 눌러요.
             </li>
           </ul>
           <button className="btn primary" onClick={() => start(1)}>
@@ -113,7 +116,8 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
   if (ms.endedAt) return <MockResults course={course} set={set} ms={ms} crumb={crumb} confirmRetry={confirmRetry} setConfirmRetry={setConfirmRetry} onRetry={() => start(ms.round + 1)} />;
 
   const item = set.items[Math.min(idx, set.items.length - 1)];
-  const submitted = set.items.filter((it) => ms.results[tkey(it.type.type)]).length;
+  const submitted = set.items.filter((it) => ms.results[ik(it)]).length;
+  const kind = ikind(item);
   return (
     <div className="page">
       {crumb}
@@ -128,7 +132,7 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
         </span>
         <div className="mock-nav" role="tablist" aria-label="문항">
           {set.items.map((it, i) => (
-            <button key={it.problem.id} role="tab" aria-selected={i === idx} className={`${i === idx ? 'cur' : ''} ${ms.results[tkey(it.type.type)] ? 'done' : ''}`} onClick={() => setIdx(i)} title={`${i + 1}번${ms.results[tkey(it.type.type)] ? ' (제출함)' : ''}`}>
+            <button key={it.problem.id} role="tab" aria-selected={i === idx} className={`${i === idx ? 'cur' : ''} ${ms.results[ik(it)] ? 'done' : ''}`} onClick={() => setIdx(i)} title={`${i + 1}번${ms.results[ik(it)] ? ' (제출함)' : ''}`}>
               {i + 1}
             </button>
           ))}
@@ -152,25 +156,37 @@ export function MockPage({ course, set, learnerKey, remote }: Props) {
       <div className="solve">
         <section className="card statement" aria-label="문제">
           <div className="row" style={{ gap: '0.4rem' }}>
-            <span className={`badge ${item.type.kind}`}>{KIND_LABEL[item.type.kind]}</span>
+            <span className={`badge ${kind}`}>{KIND_LABEL[kind]}</span>
             <span className="faint">
               {idx + 1}번 / {set.items.length}
             </span>
-            {ms.results[tkey(item.type.type)] && <span className="badge">제출함</span>}
+            {ms.results[ik(item)] && <span className="badge">제출함</span>}
           </div>
           <h1 style={{ marginTop: '0.4rem' }}>{item.problem.title}</h1>
-          <StatementBody problem={item.problem} lang={item.type.lang ?? 'python'} />
+          {course.id === 'd2' ? <D2Statement problem={item.problem} kind={kind} /> : <StatementBody problem={item.problem} lang={item.type.lang ?? 'python'} />}
         </section>
         <section aria-label="풀이">
-          <MockCodePanel
-            key={`${item.problem.id}:${ms.round}`}
-            item={item}
-            round={ms.round}
-            learnerKey={learnerKey}
-            submittedTimes={ms.results[tkey(item.type.type)]?.tries ?? 0}
-            onSubmit={(r) => record(item.type.type, r)}
-            onNext={idx < set.items.length - 1 ? () => setIdx(idx + 1) : null}
-          />
+          {kind === 'choice' ? (
+            <MockChoicePanel
+              key={`${item.problem.id}:${ms.round}`}
+              item={item}
+              round={ms.round}
+              learnerKey={learnerKey}
+              submittedTimes={ms.results[ik(item)]?.tries ?? 0}
+              onSubmit={(r) => record(ik(item), r)}
+              onNext={idx < set.items.length - 1 ? () => setIdx(idx + 1) : null}
+            />
+          ) : (
+            <MockCodePanel
+              key={`${item.problem.id}:${ms.round}`}
+              item={item}
+              round={ms.round}
+              learnerKey={learnerKey}
+              submittedTimes={ms.results[ik(item)]?.tries ?? 0}
+              onSubmit={(r) => record(ik(item), r)}
+              onNext={idx < set.items.length - 1 ? () => setIdx(idx + 1) : null}
+            />
+          )}
           {prog.syncError && <p className="notice warn" style={{ marginTop: '0.75rem' }}>{prog.syncError}</p>}
         </section>
       </div>
@@ -189,9 +205,15 @@ interface CodeProps {
 
 function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNext }: CodeProps) {
   const { problem, type } = item;
-  const kind = type.kind;
+  const kind = ikind(item);
   const lang = type.lang ?? 'python';
   const engine = useEngine(lang);
+  useEffect(() => {
+    if (!problem.data) return;
+    void py()
+      .prepareData(dataPkgs(problem.code, !!problem.data.plot), problem.data.files.map((name) => ({ name, v: 0 })))
+      .catch(() => undefined);
+  }, [problem]);
   const dkey = `${problem.id}:r${round}`;
   const draft = useMemo(() => readDraft(learnerKey, dkey, problem.version), [learnerKey, dkey, problem.version]);
   const nBlanks = kind === 'blank' ? countBlanks(problem.code) : 0;
@@ -227,7 +249,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
     setSubmittedNote(null);
     if (block) return;
     setBusy('run');
-    const result = await py().run(fullCode, problem.funcName, problem.examples, problem.compare ?? 'exact', 5000, lang, problem.cspec);
+    const result = problem.data ? await py().runData(fullCode, problem, problem.examples, 20000) : await py().run(fullCode, problem.funcName, problem.examples, problem.compare ?? 'exact', 5000, lang, problem.cspec);
     setBusy(null);
     setShown({ mode: 'run', result, exampleCount: problem.examples.length });
   };
@@ -238,7 +260,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
     if (block) return;
     setBusy('submit');
     const cases = [...problem.examples, ...problem.tests];
-    const result: RunResult = await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', 9000, lang, problem.cspec);
+    const result: RunResult = problem.data ? await py().runData(fullCode, problem, cases, 40000) : await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', 9000, lang, problem.cspec);
     setBusy(null);
     if (result.kind === 'fail') {
       setNotice(`채점하지 못했어요: ${result.message} 다시 제출해 주세요.`);
@@ -303,7 +325,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
         )}
       </div>
       <p className="engine" aria-live="polite">
-        {engineText(engine, lang)}
+        {engineText(engine, lang, !!problem.data)}
       </p>
       {notice && (
         <p className="notice warn" role="alert">
@@ -322,7 +344,70 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
           )}
         </div>
       )}
-      {shown && <ResultsView shown={shown} problem={problem} lang={lang} submitLabel="제출하기" />}
+      {shown && (problem.data ? <DataResults mode={shown.mode} result={shown.result} problem={problem} hideExpected submitLabel="제출하기" /> : <ResultsView shown={shown} problem={problem} lang={lang} submitLabel="제출하기" />)}
+    </div>
+  );
+}
+
+/** 모의고사 객관식: 고르고 제출(결과는 시험을 끝낸 뒤 공개) */
+function MockChoicePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNext }: CodeProps) {
+  const { problem } = item;
+  const dkey = `${problem.id}:r${round}`;
+  const draft = useMemo(() => readDraft(learnerKey, dkey, problem.version), [learnerKey, dkey, problem.version]);
+  const [sel, setSel] = useState<number | null>(() => {
+    const n = Number(draft?.code);
+    return draft?.code !== undefined && Number.isInteger(n) && n >= 0 && n < (problem.choice?.options.length ?? 0) ? n : null;
+  });
+  const [note, setNote] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const submit = () => {
+    if (sel === null) {
+      setNotice('보기를 하나 골라 주세요.');
+      return;
+    }
+    setNotice(null);
+    const ok = sel === problem.choice!.answer;
+    onSubmit({ score: ok ? 100 : 0, solved: ok });
+    setNote(`제출했어요(${submittedTimes + 1}번째). 결과는 시험을 끝내면 보여요. 다시 제출하면 마지막 제출로 채점해요.`);
+  };
+  return (
+    <div className="card">
+      <div className="code-head">
+        <span className="badge choice">{KIND_LABEL.choice}</span>
+        <span className="task">{KIND_TASK.choice}</span>
+      </div>
+      <ChoiceList
+        problem={problem}
+        value={sel}
+        name={dkey}
+        onChange={(i) => {
+          setSel(i);
+          setNote(null);
+          writeDraft(learnerKey, dkey, { ver: problem.version, code: String(i) });
+        }}
+      />
+      <div className="actions">
+        <button className="btn primary" onClick={submit}>
+          제출하기
+        </button>
+      </div>
+      {notice && (
+        <p className="notice warn" role="alert">
+          {notice}
+        </p>
+      )}
+      {note && (
+        <div className="notice ok" role="status">
+          {note}
+          {onNext && (
+            <div style={{ marginTop: '0.4rem' }}>
+              <button className="btn small primary" onClick={onNext}>
+                다음 문항 →
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -330,7 +415,7 @@ function MockCodePanel({ item, round, learnerKey, submittedTimes, onSubmit, onNe
 function MockResults({ course, set, ms, crumb, confirmRetry, setConfirmRetry, onRetry }: { course: Course; set: MockSet; ms: MockState; crumb: React.ReactNode; confirmRetry: boolean; setConfirmRetry: (v: boolean) => void; onRetry: () => void }) {
   const meta = courseMeta(course.id)!;
   const [open, setOpen] = useState<string | null>(null);
-  const rows = set.items.map((it) => ({ it, r: ms.results[tkey(it.type.type)] }));
+  const rows = set.items.map((it) => ({ it, r: ms.results[ik(it)] }));
   const solved = rows.filter((x) => x.r?.solved).length;
   const avg = Math.round(rows.reduce((n, x) => n + (x.r?.score ?? 0), 0) / rows.length);
   return (
@@ -379,7 +464,7 @@ function MockResults({ course, set, ms, crumb, confirmRetry, setConfirmRetry, on
               <tr key={it.problem.id}>
                 <td>{i + 1}</td>
                 <td className="name">{it.type.typeTitle}</td>
-                <td>{KIND_LABEL[it.type.kind]}</td>
+                <td>{KIND_LABEL[ikind(it)]}</td>
                 <td>{r ? `${r.score}%` : '-'}</td>
                 <td>{!r ? <span className="faint">제출 안 함</span> : r.solved ? <span className="pass">해결</span> : <span className="fail">미해결</span>}</td>
                 <td>
@@ -399,8 +484,14 @@ function MockResults({ course, set, ms, crumb, confirmRetry, setConfirmRetry, on
               {i + 1}번 {it.problem.title}
             </h2>
             <p>{inline(it.problem.explain)}</p>
-            <h3 style={{ marginTop: '0.6rem' }}>모범 답안</h3>
-            <CodeView lang={it.type.lang ?? 'python'} code={it.problem.solution} />
+            {ikind(it) === 'choice' ? (
+              <WhyList problem={it.problem} />
+            ) : (
+              <>
+                <h3 style={{ marginTop: '0.6rem' }}>모범 답안</h3>
+                <CodeView lang={it.type.lang ?? 'python'} code={it.problem.solution} />
+              </>
+            )}
             <p style={{ marginTop: '0.6rem' }}>
               <Link to={`${meta.path}/${it.type.problems[0]?.id ?? ''}`.replace(/\/$/, '')} className="btn small">
                 이 유형 연습 문제 풀기 →

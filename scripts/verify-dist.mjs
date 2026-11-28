@@ -23,6 +23,14 @@ if (!process.exitCode) ok(`파이썬 워커·Pyodide·하네스 파일 존재 (w
 const rt = JSON.parse(readFileSync(join(dir, 'pyodide/runtime.json'), 'utf8'));
 if (!rt.pycparser || !existsSync(join(dir, 'pyodide', rt.pycparser))) fail('pycparser wheel 없음'); else ok(`C 채점: cinterp.py + ${rt.pycparser}`);
 if (readFileSync(join(dir, 'pyodide/cinterp.py'), 'utf8') !== readFileSync('src/grader/cinterp.py', 'utf8')) fail('배포된 cinterp.py가 src/grader/cinterp.py와 다름');
+// Data 과정: pandas·matplotlib·scipy·scikit-learn wheel(직접 호스팅)과 연습용 CSV
+const lock = JSON.parse(readFileSync(join(dir, 'pyodide/pyodide-lock.json'), 'utf8'));
+const wheels = ['pandas', 'numpy', 'matplotlib', 'scipy', 'scikit-learn'].map((k) => lock.packages[k]?.file_name);
+const missing = wheels.filter((f) => !f || !existsSync(join(dir, 'pyodide', f)));
+if (missing.length) fail(`Data 과정 패키지 없음: ${missing.join(', ')}`); else ok(`Data 과정 패키지(pandas 등) ${wheels.length}개 존재`);
+const csvs = existsSync(join(dir, 'data/d2')) ? readdirSync(join(dir, 'data/d2')).filter((f) => f.endsWith('.csv')) : [];
+if (csvs.length < 9) fail(`Data 과정 CSV ${csvs.length}개(9개 이상이어야 함)`); else ok(`Data 과정 CSV ${csvs.length}개`);
+if (!rt.data) fail('runtime.json에 data 해시 없음');
 const harness = readFileSync(join(dir, 'pyodide/harness.py'), 'utf8');
 if (harness !== readFileSync('src/grader/harness.py', 'utf8')) fail('배포된 harness.py가 src/grader/harness.py와 다름'); else ok('harness.py = src/grader/harness.py');
 

@@ -1,0 +1,947 @@
+{
+ "spyder.csv": {
+  "title": "거미 목록",
+  "rows": [
+   5000,
+   4700,
+   5300
+  ],
+  "columns": [
+   {
+    "name": "id",
+    "desc": "식별 번호"
+   },
+   {
+    "name": "category_1",
+    "desc": "1차 분류 기준(과)"
+   },
+   {
+    "name": "category_2",
+    "desc": "2차 분류 기준(속)"
+   },
+   {
+    "name": "category_3",
+    "desc": "3차 분류 기준(종)"
+   },
+   {
+    "name": "category_4",
+    "desc": "4차 분류 기준(아종)"
+   },
+   {
+    "name": "author",
+    "desc": "발견자"
+   },
+   {
+    "name": "year",
+    "desc": "발견 연도"
+   },
+   {
+    "name": "dist_1",
+    "desc": "주 서식지 1"
+   },
+   {
+    "name": "dist_2",
+    "desc": "주 서식지 2"
+   },
+   {
+    "name": "dist_3",
+    "desc": "주 서식지 3"
+   },
+   {
+    "name": "dist_4",
+    "desc": "주 서식지 4"
+   },
+   {
+    "name": "dist_5",
+    "desc": "주 서식지 5"
+   }
+  ],
+  "sample": [
+   [
+    "0",
+    "Lycosidae",
+    "Lycotyops",
+    "zobemaensis",
+    "NaN",
+    "Moreau",
+    "1935",
+    "Argentina",
+    "NaN",
+    "NaN",
+    "NaN",
+    "NaN"
+   ],
+   [
+    "1",
+    "Lycosidae",
+    "Lycotyops",
+    "tyfiteata",
+    "NaN",
+    "Lindqvist",
+    "1953",
+    "Turkey",
+    "NaN",
+    "NaN",
+    "NaN",
+    "NaN"
+   ],
+   [
+    "2",
+    "Gnaphosidae",
+    "Gnaptya",
+    "bepaviensis",
+    "NaN",
+    "Moreau",
+    "1925",
+    "Madagascar",
+    "NaN",
+    "NaN",
+    "NaN",
+    "NaN"
+   ],
+   [
+    "3",
+    "Zodariidae",
+    "Zodatyops",
+    "fimaviata",
+    "NaN",
+    "Reyes",
+    "2016",
+    "Ecuador",
+    "NaN",
+    "NaN",
+    "NaN",
+    "NaN"
+   ],
+   [
+    "4",
+    "Theridiidae",
+    "Therbeia",
+    "hutekois",
+    "NaN",
+    "Moller",
+    "2024",
+    "Madagascar",
+    "NaN",
+    "NaN",
+    "NaN",
+    "NaN"
+   ]
+  ]
+ },
+ "shop_products.csv": {
+  "title": "편집숍 상품",
+  "rows": [
+   4000,
+   3800,
+   4200
+  ],
+  "columns": [
+   {
+    "name": "Brand",
+    "desc": "브랜드"
+   },
+   {
+    "name": "category_1",
+    "desc": "1차 카테고리"
+   },
+   {
+    "name": "category_2",
+    "desc": "2차 카테고리"
+   },
+   {
+    "name": "category_3",
+    "desc": "3차 카테고리"
+   },
+   {
+    "name": "product_code",
+    "desc": "상품코드"
+   },
+   {
+    "name": "department",
+    "desc": "상품구분(men·women·kids)"
+   },
+   {
+    "name": "eur_full_price",
+    "desc": "상품 판매가(EUR)"
+   },
+   {
+    "name": "eur_disc_price",
+    "desc": "상품 할인가(EUR)"
+   }
+  ],
+  "sample": [
+   [
+    "BELLMORE",
+    "CLOTHING",
+    "T-SHIRTS & VESTS",
+    "VESTS",
+    "19406846",
+    "women",
+    "309.57",
+    "309.57"
+   ],
+   [
+    "VANTE",
+    "CLOTHING",
+    "TROUSERS",
+    "CHINOS",
+    "19083697",
+    "women",
+    "597.84",
+    "404.19"
+   ],
+   [
+    "CORVO",
+    "TEEN GIRL CLOTHING",
+    "TEEN TOPS",
+    "NaN",
+    "19068244",
+    "kids",
+    "257.27",
+    "188.84"
+   ],
+   [
+    "SOLENNE",
+    "CLOTHING",
+    "SHIRTS",
+    "FORMAL SHIRTS",
+    "19471137",
+    "men",
+    "650.29",
+    "650.29"
+   ],
+   [
+    "ELMIRA",
+    "BAGS",
+    "TOTE BAGS",
+    "CANVAS TOTES",
+    "19036040",
+    "women",
+    "1024.10",
+    "411.56"
+   ]
+  ]
+ },
+ "cafe_orders.csv": {
+  "title": "카페 주문",
+  "rows": [
+   2500,
+   2400,
+   2600
+  ],
+  "columns": [
+   {
+    "name": "order_id",
+    "desc": "주문 번호"
+   },
+   {
+    "name": "date",
+    "desc": "주문 날짜(YYYY-MM-DD)"
+   },
+   {
+    "name": "hour",
+    "desc": "주문 시각(시)"
+   },
+   {
+    "name": "store",
+    "desc": "매장"
+   },
+   {
+    "name": "menu",
+    "desc": "메뉴"
+   },
+   {
+    "name": "category",
+    "desc": "메뉴 종류(coffee·tea·dessert·juice)"
+   },
+   {
+    "name": "price",
+    "desc": "1개 가격(원)"
+   },
+   {
+    "name": "qty",
+    "desc": "수량"
+   },
+   {
+    "name": "member",
+    "desc": "회원 여부(Y·N)"
+   },
+   {
+    "name": "rating",
+    "desc": "별점(1~5, 남기지 않으면 빈 값)"
+   }
+  ],
+  "sample": [
+   [
+    "100001",
+    "2025-05-01",
+    "12",
+    "Hongdae",
+    "Croissant",
+    "dessert",
+    "4000",
+    "1",
+    "N",
+    "NaN"
+   ],
+   [
+    "100002",
+    "2025-05-27",
+    "13",
+    "Pangyo",
+    "Americano",
+    "coffee",
+    "4500",
+    "2",
+    "N",
+    "NaN"
+   ],
+   [
+    "100003",
+    "2025-05-13",
+    "12",
+    "Gangnam",
+    "Croissant",
+    "dessert",
+    "4000",
+    "1",
+    "N",
+    "NaN"
+   ],
+   [
+    "100004",
+    "2025-04-24",
+    "9",
+    "Gangnam",
+    "Cheesecake",
+    "dessert",
+    "6500",
+    "2",
+    "N",
+    "NaN"
+   ],
+   [
+    "100005",
+    "2025-03-31",
+    "18",
+    "Gangnam",
+    "Americano",
+    "coffee",
+    "4500",
+    "2",
+    "Y",
+    "3"
+   ]
+  ]
+ },
+ "bike_rentals.csv": {
+  "title": "공공 자전거 대여",
+  "rows": [
+   3000,
+   2900,
+   3100
+  ],
+  "columns": [
+   {
+    "name": "rent_id",
+    "desc": "대여 번호"
+   },
+   {
+    "name": "date",
+    "desc": "대여 날짜(YYYY-MM-DD)"
+   },
+   {
+    "name": "hour",
+    "desc": "대여 시각(시)"
+   },
+   {
+    "name": "station",
+    "desc": "대여 정류소"
+   },
+   {
+    "name": "district",
+    "desc": "구"
+   },
+   {
+    "name": "user_type",
+    "desc": "이용자 구분(member·guest)"
+   },
+   {
+    "name": "age_group",
+    "desc": "나이대(10s~60s, 모르면 빈 값)"
+   },
+   {
+    "name": "minutes",
+    "desc": "이용 시간(분)"
+   },
+   {
+    "name": "distance_km",
+    "desc": "이동 거리(km)"
+   }
+  ],
+  "sample": [
+   [
+    "500001",
+    "2025-05-25",
+    "1",
+    "Munjeong",
+    "Songpa",
+    "member",
+    "40s",
+    "21",
+    "4.77"
+   ],
+   [
+    "500002",
+    "2025-06-17",
+    "16",
+    "Garak",
+    "Songpa",
+    "guest",
+    "40s",
+    "21",
+    "2.67"
+   ],
+   [
+    "500003",
+    "2025-04-30",
+    "17",
+    "Mangwon",
+    "Mapo",
+    "member",
+    "NaN",
+    "17",
+    "2.83"
+   ],
+   [
+    "500004",
+    "2025-06-11",
+    "7",
+    "Munjeong",
+    "Songpa",
+    "member",
+    "20s",
+    "33",
+    "5.83"
+   ],
+   [
+    "500005",
+    "2025-05-12",
+    "8",
+    "Gongdeok",
+    "Mapo",
+    "member",
+    "40s",
+    "8",
+    "1.60"
+   ]
+  ]
+ },
+ "student_scores.csv": {
+  "title": "학생 성적",
+  "rows": [
+   900,
+   860,
+   940
+  ],
+  "columns": [
+   {
+    "name": "student_id",
+    "desc": "학생 번호"
+   },
+   {
+    "name": "grade",
+    "desc": "학년(1~3)"
+   },
+   {
+    "name": "class",
+    "desc": "반(1~6)"
+   },
+   {
+    "name": "gender",
+    "desc": "성별(M·F)"
+   },
+   {
+    "name": "club",
+    "desc": "동아리(없으면 빈 값)"
+   },
+   {
+    "name": "math",
+    "desc": "수학 점수"
+   },
+   {
+    "name": "korean",
+    "desc": "국어 점수"
+   },
+   {
+    "name": "english",
+    "desc": "영어 점수"
+   },
+   {
+    "name": "science",
+    "desc": "과학 점수(결시하면 빈 값)"
+   },
+   {
+    "name": "study_hours",
+    "desc": "주당 공부 시간(시간)"
+   },
+   {
+    "name": "absences",
+    "desc": "결석 일수"
+   }
+  ],
+  "sample": [
+   [
+    "20250001",
+    "3",
+    "3",
+    "M",
+    "sports",
+    "64",
+    "66",
+    "60",
+    "39",
+    "8.8",
+    "0"
+   ],
+   [
+    "20250002",
+    "1",
+    "4",
+    "F",
+    "reading",
+    "94",
+    "72",
+    "95",
+    "76",
+    "8.0",
+    "1"
+   ],
+   [
+    "20250003",
+    "3",
+    "5",
+    "F",
+    "art",
+    "84",
+    "74",
+    "73",
+    "70",
+    "11.7",
+    "1"
+   ],
+   [
+    "20250004",
+    "3",
+    "4",
+    "F",
+    "art",
+    "73",
+    "63",
+    "38",
+    "55",
+    "6.5",
+    "1"
+   ],
+   [
+    "20250005",
+    "3",
+    "5",
+    "F",
+    "sports",
+    "63",
+    "77",
+    "66",
+    "55",
+    "9.9",
+    "6"
+   ]
+  ]
+ },
+ "movies.csv": {
+  "title": "영화 정보",
+  "rows": [
+   1500,
+   1450,
+   1550
+  ],
+  "columns": [
+   {
+    "name": "movie_id",
+    "desc": "영화 번호"
+   },
+   {
+    "name": "title",
+    "desc": "제목"
+   },
+   {
+    "name": "genre",
+    "desc": "장르"
+   },
+   {
+    "name": "country",
+    "desc": "제작 국가(KR·US·JP·FR·UK·CN)"
+   },
+   {
+    "name": "release_year",
+    "desc": "개봉 연도"
+   },
+   {
+    "name": "running_time",
+    "desc": "상영 시간(분)"
+   },
+   {
+    "name": "audience",
+    "desc": "관객 수(명)"
+   },
+   {
+    "name": "rating",
+    "desc": "평점(0~10, 없으면 빈 값)"
+   },
+   {
+    "name": "director",
+    "desc": "감독"
+   }
+  ],
+  "sample": [
+   [
+    "1",
+    "Second City",
+    "horror",
+    "FR",
+    "2000",
+    "95",
+    "688800",
+    "8.1",
+    "G. Lim"
+   ],
+   [
+    "2",
+    "Lost Signal",
+    "drama",
+    "US",
+    "2004",
+    "113",
+    "642500",
+    "6.3",
+    "R. Hale"
+   ],
+   [
+    "3",
+    "Little Road",
+    "action",
+    "KR",
+    "2010",
+    "125",
+    "175100",
+    "5.8",
+    "D. Moon"
+   ],
+   [
+    "4",
+    "Second Harbor",
+    "romance",
+    "CN",
+    "2016",
+    "97",
+    "368200",
+    "4.8",
+    "R. Hale"
+   ],
+   [
+    "5",
+    "Silent Dream",
+    "comedy",
+    "KR",
+    "2001",
+    "103",
+    "1331600",
+    "NaN",
+    "J. Han"
+   ]
+  ]
+ },
+ "weather_daily.csv": {
+  "title": "도시별 날씨",
+  "rows": [
+   1830,
+   1825,
+   1825
+  ],
+  "columns": [
+   {
+    "name": "date",
+    "desc": "날짜(YYYY-MM-DD)"
+   },
+   {
+    "name": "city",
+    "desc": "도시"
+   },
+   {
+    "name": "temp_max",
+    "desc": "최고 기온(℃)"
+   },
+   {
+    "name": "temp_min",
+    "desc": "최저 기온(℃)"
+   },
+   {
+    "name": "rain_mm",
+    "desc": "강수량(mm, 측정 못 하면 빈 값)"
+   },
+   {
+    "name": "humidity",
+    "desc": "습도(%)"
+   },
+   {
+    "name": "wind_speed",
+    "desc": "풍속(m/s, 측정 못 하면 빈 값)"
+   }
+  ],
+  "sample": [
+   [
+    "2024-01-01",
+    "Seoul",
+    "4.2",
+    "-3.4",
+    "0.0",
+    "67",
+    "4.3"
+   ],
+   [
+    "2024-01-01",
+    "Busan",
+    "7.9",
+    "0.1",
+    "NaN",
+    "68",
+    "3.2"
+   ],
+   [
+    "2024-01-01",
+    "Daegu",
+    "6.2",
+    "-3.1",
+    "1.8",
+    "77",
+    "2.5"
+   ],
+   [
+    "2024-01-01",
+    "Gwangju",
+    "2.6",
+    "-6.1",
+    "0.0",
+    "65",
+    "2.0"
+   ],
+   [
+    "2024-01-01",
+    "Jeju",
+    "13.2",
+    "5.5",
+    "0.0",
+    "54",
+    "4.9"
+   ]
+  ]
+ },
+ "customers.csv": {
+  "title": "쇼핑몰 고객",
+  "rows": [
+   1200,
+   1150,
+   1250
+  ],
+  "columns": [
+   {
+    "name": "customer_id",
+    "desc": "고객 번호"
+   },
+   {
+    "name": "age",
+    "desc": "나이"
+   },
+   {
+    "name": "gender",
+    "desc": "성별(M·F)"
+   },
+   {
+    "name": "region",
+    "desc": "지역"
+   },
+   {
+    "name": "membership",
+    "desc": "회원 등급(basic·silver·gold)"
+   },
+   {
+    "name": "annual_spend",
+    "desc": "1년 구매 금액(만 원)"
+   },
+   {
+    "name": "visits_per_month",
+    "desc": "한 달 방문 횟수"
+   },
+   {
+    "name": "app_user",
+    "desc": "앱 사용 여부(Y·N)"
+   }
+  ],
+  "sample": [
+   [
+    "30001",
+    "27",
+    "M",
+    "Busan",
+    "basic",
+    "75",
+    "3",
+    "N"
+   ],
+   [
+    "30002",
+    "57",
+    "F",
+    "Gyeonggi",
+    "silver",
+    "205",
+    "5",
+    "Y"
+   ],
+   [
+    "30003",
+    "52",
+    "M",
+    "Seoul",
+    "silver",
+    "208",
+    "6",
+    "Y"
+   ],
+   [
+    "30004",
+    "42",
+    "M",
+    "Seoul",
+    "silver",
+    "173",
+    "8",
+    "Y"
+   ],
+   [
+    "30005",
+    "36",
+    "F",
+    "Seoul",
+    "silver",
+    "176",
+    "7",
+    "N"
+   ]
+  ]
+ },
+ "used_cars.csv": {
+  "title": "중고차 매물",
+  "rows": [
+   1600,
+   1550,
+   1650
+  ],
+  "columns": [
+   {
+    "name": "car_id",
+    "desc": "매물 번호"
+   },
+   {
+    "name": "brand",
+    "desc": "제조사"
+   },
+   {
+    "name": "model",
+    "desc": "모델"
+   },
+   {
+    "name": "year",
+    "desc": "연식(연도)"
+   },
+   {
+    "name": "mileage_km",
+    "desc": "주행 거리(km)"
+   },
+   {
+    "name": "fuel",
+    "desc": "연료(gasoline·diesel·hybrid·electric, 모르면 빈 값)"
+   },
+   {
+    "name": "transmission",
+    "desc": "변속기(auto·manual)"
+   },
+   {
+    "name": "price",
+    "desc": "가격(만 원)"
+   },
+   {
+    "name": "accident",
+    "desc": "사고 이력(Y·N)"
+   }
+  ],
+  "sample": [
+   [
+    "700001",
+    "Kia",
+    "KI-B8",
+    "2014",
+    "142600",
+    "NaN",
+    "auto",
+    "530",
+    "N"
+   ],
+   [
+    "700002",
+    "Genesis",
+    "GE-D1",
+    "2016",
+    "134200",
+    "gasoline",
+    "auto",
+    "1210",
+    "N"
+   ],
+   [
+    "700003",
+    "Hyundai",
+    "HY-B1",
+    "2017",
+    "83000",
+    "diesel",
+    "auto",
+    "860",
+    "N"
+   ],
+   [
+    "700004",
+    "Kia",
+    "KI-E1",
+    "2019",
+    "110500",
+    "gasoline",
+    "auto",
+    "900",
+    "N"
+   ],
+   [
+    "700005",
+    "Hyundai",
+    "HY-E1",
+    "2013",
+    "164100",
+    "gasoline",
+    "auto",
+    "400",
+    "N"
+   ]
+  ]
+ }
+}

@@ -44,7 +44,9 @@ jobs:
         run: npm test
       - name: 'C interpreter tests (브라우저 C 채점기 — gcc 결과와 대조)'
         run: python3 tools/test_cinterp.py
-      - name: 'Content check (문제 390개: 기본·심화·모의고사 — 정답·테스트·빈칸·한 줄 수정·중간 점검 정답, C는 gcc 대조)'
+      - name: 'Python runtime (Pyodide + Data 과정 패키지 wheel: 공식 배포처에서 받아 SHA-256 확인)'
+        run: npm run runtime
+      - name: 'Content check (기본·심화·모의고사 — 정답·테스트·빈칸·한 줄 수정·중간 점검 정답, C는 gcc 대조, Data는 브라우저와 같은 Pyodide로 실행)'
         run: python3 tools/validate.py
       - name: Configure Pages
         id: pages

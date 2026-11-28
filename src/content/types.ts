@@ -1,13 +1,16 @@
 /** 문제 데이터 형식(docs/CONTENT_SCHEMA.md). 검수: python3 tools/validate.py */
-export type CourseId = 'pyb' | 'pya' | 'cb';
+export type CourseId = 'pyb' | 'pya' | 'cb' | 'd2';
 export type Lang = 'python' | 'c';
-export type ProblemKind = 'blank' | 'fix' | 'write';
+/** choice: 객관식(Data 과정의 이론 문제) */
+export type ProblemKind = 'blank' | 'fix' | 'write' | 'choice';
 export type CompareMode = 'exact' | 'float';
 export type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
 
 export interface Case {
   args: Json[];
   expected: Json;
+  /** Data 과정: 데이터 변형 번호(0 = 예시 데이터, 1·2… = 숨은 데이터) */
+  data?: number;
 }
 export interface Example extends Case {
   explain?: string;
@@ -64,7 +67,18 @@ export interface Problem {
   explain: string;
   figures?: Figure[];
   cspec?: CSpec;
+  /** Data 과정: 유형과 다른 형식일 때만(예: 검정·군집 유형 안의 함수 작성 문제) */
+  kind?: ProblemKind;
+  /** 객관식: 보기 4개, 정답 번호(0부터), 보기마다 왜 맞고 틀린지 */
+  choice?: { options: string[]; answer: number; why: string[] };
+  /** Data 과정 코드 문제: 읽는 CSV 파일(public/data/d2/), plot이면 solution()이 그린 그래프로 채점 */
+  data?: { files: string[]; plot?: boolean };
+  /** Data 과정: 정답 예시(형식만, 예: "0.12") */
+  answerFormat?: string;
 }
+
+/** 문제의 형식(문제에 따로 적혀 있으면 그것, 아니면 유형의 형식) */
+export const kindOf = (type: { kind: ProblemKind }, p: { kind?: ProblemKind }): ProblemKind => p.kind ?? type.kind;
 
 /** 심화 문제 묶음(src/content/<과정>/adv/tNN.json, id <과정>-tNN-adv1~adv5). 필수가 아니고, 그 유형의 기본 5문제를 모두 풀면 열 수 있다 */
 export interface AdvSet {
@@ -92,6 +106,17 @@ export interface TypeFile {
 export interface MockItem {
   type: TypeFile;
   problem: Problem;
+  /** 기록 키(없으면 유형 키 tNN). Data 과정은 문항 번호 q01~q20 */
+  key?: string;
+  /** 문항 형식(없으면 문제·유형의 형식) */
+  kind?: ProblemKind;
+}
+
+/** Data 과정 모의고사 파일(src/content/d2/mock/mN.json): 시험지 순서대로 문항(유형 번호·형식·문제) */
+export interface MockFile {
+  course: CourseId;
+  mock: number;
+  items: { type: number; kind: ProblemKind; problem: Problem }[];
 }
 export interface MockSet {
   n: number;
@@ -112,10 +137,12 @@ export const KIND_LABEL: Record<ProblemKind, string> = {
   blank: '빈칸 채우기',
   fix: '한 줄 수정',
   write: '함수 작성',
+  choice: '객관식',
 };
 
 export const KIND_TASK: Record<ProblemKind, string> = {
   blank: '빈칸을 채워 코드를 완성해요.',
   fix: '틀린 한 줄만 고쳐요(두 줄 이상 바꾸면 채점하지 않아요).',
   write: 'solution 함수를 직접 작성해요.',
+  choice: '보기 중 알맞은 답을 하나 골라요.',
 };

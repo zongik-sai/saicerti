@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """saicerti 문제 검수 도구.
 
-사용: python3 tools/validate.py [파일 또는 폴더 ...]   (기본: src/content)
+사용: python3 tools/validate.py [--fill] [파일 또는 폴더 ...]   (기본: src/content)
+- Data 2급(src/content/d2/)은 tools/validate_d2.py가 검수한다(--fill: 데이터 문제의 expected를 정답 코드로 채움)
 - 형식(스키마) 검사
 - 정답 코드가 예시·숨은 테스트를 모두 통과하는지(브라우저와 같은 src/grader/harness.py로 실행)
 - 빈칸: 정답을 넣은 코드 == 정답 코드, 그리고 통과
@@ -420,7 +421,10 @@ def check_file(path, seen):
 
 
 def main():
-    targets = sys.argv[1:] or [os.path.join(ROOT, 'src', 'content')]
+    args = sys.argv[1:]
+    fill = '--fill' in args
+    args = [a for a in args if a != '--fill']
+    targets = args or [os.path.join(ROOT, 'src', 'content')]
     files = []
     for t in targets:
         if os.path.isdir(t):
@@ -431,7 +435,14 @@ def main():
     seen = set()
     n = 0
     for f in sorted(files):
-        n += check_file(os.path.abspath(f), seen)
+        f = os.path.abspath(f)
+        if re.search(r'[/\\]content[/\\]d2[/\\]', f):
+            # Data 2급: 객관식·데이터(CSV) 문제 — 브라우저와 같은 Pyodide로 검수(tools/validate_d2.py)
+            sys.path.insert(0, os.path.join(ROOT, 'tools'))
+            import validate_d2  # noqa: E402
+            n += validate_d2.check_file(sys.modules[__name__], f, seen, fill)
+        else:
+            n += check_file(f, seen)
     if ERRORS:
         print(f'✗ 오류 {len(ERRORS)}개 (문제 {n}개 검사)')
         for e in ERRORS:

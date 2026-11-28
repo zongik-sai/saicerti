@@ -1,0 +1,2501 @@
+order_id,date,hour,store,menu,category,price,qty,member,rating
+100001,2025-05-01,12,Hongdae,Croissant,dessert,4000,1,N,
+100002,2025-05-27,13,Pangyo,Americano,coffee,4500,2,N,
+100003,2025-05-13,12,Gangnam,Croissant,dessert,4000,1,N,
+100004,2025-04-24,9,Gangnam,Cheesecake,dessert,6500,2,N,
+100005,2025-03-31,18,Gangnam,Americano,coffee,4500,2,Y,3
+100006,2025-04-12,14,Gangnam,Vanilla Latte,coffee,5500,1,N,2
+100007,2025-03-01,19,Gangnam,Mango Smoothie,juice,6500,1,N,3
+100008,2025-05-06,11,Pangyo,Cafe Latte,coffee,5000,1,N,4
+100009,2025-03-20,12,Gangnam,Mango Smoothie,juice,6500,1,Y,
+100010,2025-04-20,9,Jamsil,Cafe Latte,coffee,5000,3,N,
+100011,2025-04-25,21,Gangnam,Cafe Latte,coffee,5000,1,Y,
+100012,2025-04-23,8,Jamsil,Cafe Latte,coffee,5000,3,N,3
+100013,2025-03-18,19,Hongdae,Cold Brew,coffee,5000,4,N,2
+100014,2025-05-07,10,Gangnam,Croissant,dessert,4000,1,N,
+100015,2025-05-07,14,Gangnam,Green Tea,tea,4500,1,Y,3
+100016,2025-03-28,17,Pangyo,Vanilla Latte,coffee,5500,2,Y,
+100017,2025-04-14,19,Gangnam,Americano,coffee,4500,1,N,3
+100018,2025-05-01,17,Hongdae,Vanilla Latte,coffee,5500,1,Y,4
+100019,2025-05-24,15,Jamsil,Vanilla Latte,coffee,5500,1,N,
+100020,2025-05-19,9,Gangnam,Americano,coffee,4500,1,Y,
+100021,2025-03-31,10,Gangnam,Mango Smoothie,juice,6500,1,N,
+100022,2025-03-21,13,Hongdae,Espresso,coffee,4000,1,Y,4
+100023,2025-04-09,12,Gangnam,Cheesecake,dessert,6500,1,N,4
+100024,2025-05-03,20,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+100025,2025-03-26,13,Jamsil,Cheesecake,dessert,6500,3,N,3
+100026,2025-03-09,12,Hongdae,Mango Smoothie,juice,6500,1,N,5
+100027,2025-04-18,13,Pangyo,Cold Brew,coffee,5000,1,Y,5
+100028,2025-04-24,17,Pangyo,Orange Juice,juice,6000,3,N,3
+100029,2025-05-29,11,Gangnam,Vanilla Latte,coffee,5500,2,Y,4
+100030,2025-05-16,9,Jamsil,Green Tea,tea,4500,1,N,4
+100031,2025-03-02,21,Jamsil,Mango Smoothie,juice,6500,1,N,2
+100032,2025-03-21,13,Pangyo,Mango Smoothie,juice,6500,1,N,3
+100033,2025-03-27,21,Gangnam,Mango Smoothie,juice,6500,4,N,4
+100034,2025-04-12,20,Gangnam,Cheesecake,dessert,6500,2,N,3
+100035,2025-04-13,21,Gangnam,Vanilla Latte,coffee,5500,1,N,5
+100036,2025-05-06,21,Hongdae,Cheesecake,dessert,6500,1,Y,5
+100037,2025-05-02,18,Pangyo,Orange Juice,juice,6000,1,N,
+100038,2025-03-03,18,Hongdae,Vanilla Latte,coffee,5500,1,N,5
+100039,2025-03-08,10,Hongdae,Orange Juice,juice,6000,2,Y,5
+100040,2025-05-25,8,Gangnam,Cafe Latte,coffee,5000,2,N,3
+100041,2025-05-29,18,Hongdae,Green Tea,tea,4500,1,N,4
+100042,2025-04-12,19,Gangnam,Green Tea,tea,4500,2,N,
+100043,2025-03-26,9,Gangnam,Green Tea,tea,4500,1,Y,4
+100044,2025-03-21,10,Gangnam,Green Tea,tea,4500,4,Y,4
+100045,2025-03-27,10,Gangnam,Brownie,dessert,5000,2,N,
+100046,2025-03-20,13,Jamsil,Mango Smoothie,juice,6500,1,N,3
+100047,2025-03-17,12,Jamsil,Americano,coffee,4500,1,N,4
+100048,2025-04-07,12,Gangnam,Americano,coffee,4500,2,N,5
+100049,2025-05-14,19,Hongdae,Croissant,dessert,4000,1,Y,4
+100050,2025-03-01,13,Hongdae,Americano,coffee,4500,1,Y,4
+100051,2025-05-12,14,Gangnam,Croissant,dessert,4000,1,N,3
+100052,2025-04-10,12,Gangnam,Americano,coffee,4500,1,N,4
+100053,2025-04-04,8,Gangnam,Cheesecake,dessert,6500,2,Y,2
+100054,2025-04-21,8,Pangyo,Cafe Latte,coffee,5000,1,N,
+100055,2025-03-25,12,Gangnam,Brownie,dessert,5000,2,N,
+100056,2025-05-19,10,Gangnam,Americano,coffee,4500,1,N,5
+100057,2025-03-26,17,Pangyo,Americano,coffee,4500,1,Y,
+100058,2025-04-25,16,Gangnam,Mango Smoothie,juice,6500,1,N,2
+100059,2025-03-20,16,Gangnam,Mango Smoothie,juice,6500,1,Y,4
+100060,2025-04-06,16,Gangnam,Cafe Latte,coffee,5000,1,N,3
+100061,2025-03-16,9,Jamsil,Americano,coffee,4500,1,Y,
+100062,2025-03-18,8,Pangyo,Cheesecake,dessert,6500,4,Y,5
+100063,2025-03-30,13,Hongdae,Cheesecake,dessert,6500,2,N,2
+100064,2025-03-09,21,Gangnam,Americano,coffee,4500,1,N,
+100065,2025-04-16,17,Gangnam,Cheesecake,dessert,6500,1,N,2
+100066,2025-04-18,21,Hongdae,Green Tea,tea,4500,4,Y,5
+100067,2025-03-31,8,Pangyo,Americano,coffee,4500,3,N,4
+100068,2025-04-16,15,Gangnam,Americano,coffee,4500,1,N,
+100069,2025-04-08,18,Hongdae,Cold Brew,coffee,5000,1,N,3
+100070,2025-03-08,9,Pangyo,Orange Juice,juice,6000,3,N,
+100071,2025-03-18,9,Pangyo,Cafe Latte,coffee,5000,2,N,
+100072,2025-05-11,8,Hongdae,Green Tea,tea,4500,1,Y,
+100073,2025-04-05,18,Jamsil,Croissant,dessert,4000,1,Y,3
+100074,2025-03-19,10,Pangyo,Croissant,dessert,4000,3,N,3
+100075,2025-05-08,13,Hongdae,Cold Brew,coffee,5000,2,Y,5
+100076,2025-03-24,9,Gangnam,Croissant,dessert,4000,1,N,4
+100077,2025-03-05,18,Pangyo,Green Tea,tea,4500,1,N,5
+100078,2025-05-12,11,Gangnam,Orange Juice,juice,6000,1,N,
+100079,2025-03-29,9,Gangnam,Espresso,coffee,4000,3,N,
+100080,2025-03-22,20,Gangnam,Espresso,coffee,4000,1,N,4
+100081,2025-05-10,13,Gangnam,Croissant,dessert,4000,2,Y,
+100082,2025-04-14,8,Jamsil,Orange Juice,juice,6000,1,Y,5
+100083,2025-05-10,11,Jamsil,Vanilla Latte,coffee,5500,1,N,
+100084,2025-03-17,9,Jamsil,Croissant,dessert,4000,1,N,5
+100085,2025-03-31,12,Gangnam,Americano,coffee,4500,3,N,
+100086,2025-05-10,14,Hongdae,Cold Brew,coffee,5000,1,N,
+100087,2025-05-03,8,Pangyo,Americano,coffee,4500,2,Y,3
+100088,2025-04-02,16,Hongdae,Americano,coffee,4500,4,Y,5
+100089,2025-05-15,8,Hongdae,Americano,coffee,4500,1,N,2
+100090,2025-05-29,19,Jamsil,Cafe Latte,coffee,5000,1,N,3
+100091,2025-04-11,20,Hongdae,Cafe Latte,coffee,5000,2,N,3
+100092,2025-05-17,13,Pangyo,Brownie,dessert,5000,1,N,
+100093,2025-05-20,18,Gangnam,Americano,coffee,4500,1,N,5
+100094,2025-05-09,9,Gangnam,Americano,coffee,4500,2,Y,4
+100095,2025-05-10,9,Gangnam,Cafe Latte,coffee,5000,1,N,
+100096,2025-03-06,12,Gangnam,Cold Brew,coffee,5000,2,N,
+100097,2025-04-14,13,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+100098,2025-03-22,9,Pangyo,Green Tea,tea,4500,1,N,4
+100099,2025-05-27,12,Hongdae,Brownie,dessert,5000,2,N,3
+100100,2025-04-06,13,Gangnam,Earl Grey,tea,4500,1,N,5
+100101,2025-05-23,12,Hongdae,Chamomile,tea,4500,1,N,
+100102,2025-03-19,17,Hongdae,Espresso,coffee,4000,2,Y,
+100103,2025-03-20,9,Hongdae,Brownie,dessert,5000,2,N,4
+100104,2025-04-14,8,Gangnam,Croissant,dessert,4000,2,N,
+100105,2025-05-16,11,Jamsil,Cold Brew,coffee,5000,2,Y,5
+100106,2025-05-03,19,Jamsil,Brownie,dessert,5000,1,Y,4
+100107,2025-03-14,12,Jamsil,Cheesecake,dessert,6500,1,N,
+100108,2025-05-25,19,Hongdae,Orange Juice,juice,6000,1,Y,5
+100109,2025-04-12,8,Jamsil,Americano,coffee,4500,1,N,4
+100110,2025-05-08,15,Hongdae,Cafe Latte,coffee,5000,1,Y,
+100111,2025-05-21,8,Gangnam,Cheesecake,dessert,6500,1,N,4
+100112,2025-05-25,21,Jamsil,Croissant,dessert,4000,1,Y,3
+100113,2025-03-12,9,Hongdae,Earl Grey,tea,4500,4,Y,4
+100114,2025-05-29,14,Pangyo,Americano,coffee,4500,1,N,4
+100115,2025-03-14,13,Hongdae,Croissant,dessert,4000,1,N,4
+100116,2025-03-14,8,Jamsil,Americano,coffee,4500,1,Y,4
+100117,2025-05-29,10,Gangnam,Chamomile,tea,4500,2,N,4
+100118,2025-05-24,10,Pangyo,Green Tea,tea,4500,1,Y,5
+100119,2025-04-01,12,Gangnam,Cafe Latte,coffee,5000,3,N,3
+100120,2025-04-29,8,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+100121,2025-03-14,13,Hongdae,Earl Grey,tea,4500,1,Y,3
+100122,2025-05-23,11,Gangnam,Cold Brew,coffee,5000,1,Y,
+100123,2025-04-27,19,Pangyo,Cafe Latte,coffee,5000,2,N,4
+100124,2025-04-09,11,Jamsil,Espresso,coffee,4000,1,N,
+100125,2025-03-08,9,Gangnam,Cafe Latte,coffee,5000,1,Y,
+100126,2025-03-18,9,Jamsil,Cold Brew,coffee,5000,1,N,4
+100127,2025-05-07,14,Jamsil,Americano,coffee,4500,4,N,5
+100128,2025-04-11,9,Jamsil,Croissant,dessert,4000,3,N,
+100129,2025-04-06,12,Gangnam,Cafe Latte,coffee,5000,2,N,
+100130,2025-03-27,18,Jamsil,Green Tea,tea,4500,2,N,
+100131,2025-05-10,8,Jamsil,Cafe Latte,coffee,5000,1,N,
+100132,2025-03-08,12,Pangyo,Mango Smoothie,juice,6500,3,N,4
+100133,2025-05-24,16,Gangnam,Cold Brew,coffee,5000,1,N,2
+100134,2025-03-17,8,Pangyo,Cafe Latte,coffee,5000,3,N,4
+100135,2025-03-17,16,Pangyo,Mango Smoothie,juice,6500,2,N,3
+100136,2025-03-24,16,Gangnam,Cheesecake,dessert,6500,3,N,4
+100137,2025-04-14,13,Jamsil,Mango Smoothie,juice,6500,1,N,2
+100138,2025-03-13,12,Hongdae,Chamomile,tea,4500,1,N,
+100139,2025-04-21,13,Gangnam,Cold Brew,coffee,5000,2,N,3
+100140,2025-05-14,17,Gangnam,Americano,coffee,4500,2,Y,4
+100141,2025-04-01,17,Pangyo,Americano,coffee,4500,1,N,
+100142,2025-03-13,12,Pangyo,Vanilla Latte,coffee,5500,1,N,4
+100143,2025-03-29,13,Gangnam,Americano,coffee,4500,1,N,4
+100144,2025-03-23,14,Gangnam,Croissant,dessert,4000,3,Y,5
+100145,2025-05-12,21,Gangnam,Green Tea,tea,4500,1,Y,
+100146,2025-05-12,10,Gangnam,Cafe Latte,coffee,5000,1,N,
+100147,2025-03-06,19,Gangnam,Chamomile,tea,4500,1,Y,5
+100148,2025-03-12,8,Gangnam,Brownie,dessert,5000,1,N,2
+100149,2025-03-09,13,Jamsil,Americano,coffee,4500,1,Y,5
+100150,2025-05-17,18,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+100151,2025-04-11,9,Jamsil,Mango Smoothie,juice,6500,1,N,1
+100152,2025-03-17,20,Jamsil,Orange Juice,juice,6000,1,Y,5
+100153,2025-04-20,17,Jamsil,Cafe Latte,coffee,5000,3,Y,4
+100154,2025-03-23,12,Hongdae,Americano,coffee,4500,1,Y,4
+100155,2025-04-05,8,Gangnam,Americano,coffee,4500,1,Y,5
+100156,2025-03-12,8,Jamsil,Green Tea,tea,4500,1,Y,
+100157,2025-04-29,9,Jamsil,Orange Juice,juice,6000,2,N,
+100158,2025-04-08,12,Gangnam,Cafe Latte,coffee,5000,1,N,
+100159,2025-04-18,8,Pangyo,Cafe Latte,coffee,5000,2,N,2
+100160,2025-03-09,14,Hongdae,Cafe Latte,coffee,5000,1,N,4
+100161,2025-04-11,15,Hongdae,Cold Brew,coffee,5000,1,N,
+100162,2025-04-20,8,Gangnam,Americano,coffee,4500,1,N,3
+100163,2025-05-19,9,Pangyo,Americano,coffee,4500,1,N,5
+100164,2025-03-10,21,Gangnam,Cheesecake,dessert,6500,1,N,3
+100165,2025-05-19,11,Gangnam,Cold Brew,coffee,5000,2,Y,4
+100166,2025-04-27,9,Jamsil,Vanilla Latte,coffee,5500,1,N,4
+100167,2025-03-26,12,Pangyo,Americano,coffee,4500,1,N,
+100168,2025-05-18,17,Jamsil,Americano,coffee,4500,2,N,3
+100169,2025-05-15,13,Hongdae,Earl Grey,tea,4500,1,Y,4
+100170,2025-03-18,18,Gangnam,Vanilla Latte,coffee,5500,2,N,5
+100171,2025-03-30,8,Gangnam,Cafe Latte,coffee,5000,1,N,
+100172,2025-05-02,10,Gangnam,Orange Juice,juice,6000,3,N,
+100173,2025-03-23,9,Hongdae,Vanilla Latte,coffee,5500,1,Y,3
+100174,2025-05-03,8,Gangnam,Brownie,dessert,5000,1,N,4
+100175,2025-03-09,18,Gangnam,Green Tea,tea,4500,2,Y,5
+100176,2025-03-02,19,Gangnam,Brownie,dessert,5000,3,Y,
+100177,2025-05-20,17,Hongdae,Cold Brew,coffee,5000,1,Y,
+100178,2025-04-19,8,Gangnam,Cold Brew,coffee,5000,1,N,4
+100179,2025-04-10,8,Gangnam,Cafe Latte,coffee,5000,2,N,3
+100180,2025-05-01,10,Hongdae,Cold Brew,coffee,5000,1,Y,4
+100181,2025-04-01,16,Gangnam,Americano,coffee,4500,1,Y,3
+100182,2025-04-23,8,Jamsil,Cafe Latte,coffee,5000,1,N,2
+100183,2025-05-17,8,Jamsil,Mango Smoothie,juice,6500,1,N,3
+100184,2025-05-01,8,Jamsil,Green Tea,tea,4500,4,Y,
+100185,2025-04-08,18,Jamsil,Cheesecake,dessert,6500,1,Y,4
+100186,2025-04-16,12,Hongdae,Cafe Latte,coffee,5000,1,N,3
+100187,2025-04-04,11,Gangnam,Americano,coffee,4500,2,N,4
+100188,2025-05-05,9,Jamsil,Brownie,dessert,5000,1,Y,3
+100189,2025-03-11,10,Jamsil,Croissant,dessert,4000,3,N,
+100190,2025-04-11,13,Gangnam,Green Tea,tea,4500,1,N,3
+100191,2025-03-19,13,Hongdae,Croissant,dessert,4000,1,N,
+100192,2025-05-10,13,Hongdae,Americano,coffee,4500,1,Y,4
+100193,2025-03-30,14,Jamsil,Americano,coffee,4500,1,N,3
+100194,2025-03-08,18,Jamsil,Chamomile,tea,4500,1,Y,
+100195,2025-05-10,18,Hongdae,Earl Grey,tea,4500,1,Y,
+100196,2025-03-30,8,Gangnam,Espresso,coffee,4000,1,N,
+100197,2025-03-18,20,Gangnam,Mango Smoothie,juice,6500,1,Y,4
+100198,2025-04-03,17,Jamsil,Croissant,dessert,4000,1,N,2
+100199,2025-03-29,8,Pangyo,Earl Grey,tea,4500,1,Y,3
+100200,2025-04-09,9,Hongdae,Orange Juice,juice,6000,2,Y,4
+100201,2025-04-08,12,Jamsil,Orange Juice,juice,6000,2,Y,4
+100202,2025-03-25,9,Hongdae,Americano,coffee,4500,3,Y,
+100203,2025-03-24,14,Jamsil,Chamomile,tea,4500,1,Y,5
+100204,2025-04-15,20,Jamsil,Chamomile,tea,4500,1,N,
+100205,2025-04-05,18,Hongdae,Americano,coffee,4500,1,Y,2
+100206,2025-05-17,20,Jamsil,Cheesecake,dessert,6500,1,Y,
+100207,2025-05-25,12,Gangnam,Americano,coffee,4500,2,N,5
+100208,2025-04-27,19,Gangnam,Americano,coffee,4500,1,Y,4
+100209,2025-03-20,18,Jamsil,Mango Smoothie,juice,6500,1,N,3
+100210,2025-04-18,9,Pangyo,Chamomile,tea,4500,2,N,3
+100211,2025-04-12,9,Pangyo,Vanilla Latte,coffee,5500,1,N,4
+100212,2025-05-21,13,Pangyo,Americano,coffee,4500,1,Y,5
+100213,2025-04-05,18,Gangnam,Cafe Latte,coffee,5000,1,N,1
+100214,2025-03-22,16,Pangyo,Vanilla Latte,coffee,5500,1,N,5
+100215,2025-05-02,10,Jamsil,Espresso,coffee,4000,1,N,4
+100216,2025-05-14,8,Pangyo,Americano,coffee,4500,1,N,5
+100217,2025-03-10,8,Hongdae,Cafe Latte,coffee,5000,1,N,
+100218,2025-04-13,9,Pangyo,Americano,coffee,4500,2,N,
+100219,2025-03-12,12,Hongdae,Americano,coffee,4500,3,Y,3
+100220,2025-04-15,16,Hongdae,Americano,coffee,4500,1,N,3
+100221,2025-03-24,14,Jamsil,Cafe Latte,coffee,5000,1,N,
+100222,2025-04-05,10,Pangyo,Cheesecake,dessert,6500,1,N,4
+100223,2025-05-29,15,Jamsil,Croissant,dessert,4000,1,N,5
+100224,2025-05-31,9,Jamsil,Green Tea,tea,4500,1,N,
+100225,2025-05-26,12,Gangnam,Cheesecake,dessert,6500,3,N,3
+100226,2025-03-03,18,Jamsil,Brownie,dessert,5000,1,Y,4
+100227,2025-04-22,18,Gangnam,Green Tea,tea,4500,1,N,
+100228,2025-05-11,9,Pangyo,Mango Smoothie,juice,6500,1,N,3
+100229,2025-03-29,18,Gangnam,Croissant,dessert,4000,1,N,4
+100230,2025-05-17,12,Jamsil,Espresso,coffee,4000,2,N,
+100231,2025-04-22,19,Hongdae,Cheesecake,dessert,6500,1,N,
+100232,2025-03-18,19,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+100233,2025-03-10,16,Gangnam,Brownie,dessert,5000,2,N,1
+100234,2025-03-16,15,Hongdae,Americano,coffee,4500,1,N,3
+100235,2025-03-09,8,Gangnam,Cheesecake,dessert,6500,2,N,4
+100236,2025-04-10,9,Gangnam,Cafe Latte,coffee,5000,2,Y,4
+100237,2025-05-08,18,Jamsil,Americano,coffee,4500,1,N,4
+100238,2025-03-18,8,Hongdae,Americano,coffee,4500,1,N,4
+100239,2025-03-12,21,Pangyo,Cheesecake,dessert,6500,1,N,3
+100240,2025-05-31,20,Jamsil,Espresso,coffee,4000,1,N,5
+100241,2025-05-08,18,Jamsil,Americano,coffee,4500,1,N,4
+100242,2025-03-18,8,Jamsil,Espresso,coffee,4000,2,N,3
+100243,2025-03-13,18,Jamsil,Brownie,dessert,5000,1,Y,4
+100244,2025-03-18,19,Pangyo,Americano,coffee,4500,1,N,
+100245,2025-05-23,14,Gangnam,Green Tea,tea,4500,2,Y,3
+100246,2025-03-01,18,Pangyo,Brownie,dessert,5000,2,Y,4
+100247,2025-04-15,19,Pangyo,Cheesecake,dessert,6500,1,N,3
+100248,2025-03-07,9,Gangnam,Green Tea,tea,4500,3,N,
+100249,2025-04-13,8,Pangyo,Americano,coffee,4500,1,Y,4
+100250,2025-03-16,9,Jamsil,Cafe Latte,coffee,5000,1,Y,
+100251,2025-03-06,9,Jamsil,Croissant,dessert,4000,1,N,4
+100252,2025-04-24,21,Hongdae,Vanilla Latte,coffee,5500,1,N,3
+100253,2025-03-11,15,Hongdae,Vanilla Latte,coffee,5500,1,N,4
+100254,2025-03-28,21,Hongdae,Cheesecake,dessert,6500,2,Y,4
+100255,2025-05-18,13,Hongdae,Brownie,dessert,5000,1,N,
+100256,2025-03-26,9,Gangnam,Americano,coffee,4500,2,N,3
+100257,2025-05-15,21,Gangnam,Croissant,dessert,4000,1,N,
+100258,2025-03-17,17,Hongdae,Espresso,coffee,4000,1,Y,
+100259,2025-04-18,8,Hongdae,Americano,coffee,4500,1,N,4
+100260,2025-04-09,8,Hongdae,Vanilla Latte,coffee,5500,1,N,1
+100261,2025-03-11,8,Pangyo,Cafe Latte,coffee,5000,1,N,3
+100262,2025-05-23,12,Jamsil,Americano,coffee,4500,3,N,3
+100263,2025-04-18,13,Gangnam,Green Tea,tea,4500,1,Y,
+100264,2025-03-16,12,Jamsil,Brownie,dessert,5000,2,N,4
+100265,2025-04-28,13,Gangnam,Green Tea,tea,4500,1,N,4
+100266,2025-04-27,12,Pangyo,Cheesecake,dessert,6500,1,Y,
+100267,2025-04-11,17,Hongdae,Cafe Latte,coffee,5000,1,N,
+100268,2025-05-07,18,Hongdae,Earl Grey,tea,4500,3,N,4
+100269,2025-05-30,9,Hongdae,Chamomile,tea,4500,1,N,5
+100270,2025-03-21,9,Pangyo,Americano,coffee,4500,1,N,
+100271,2025-03-31,12,Pangyo,Green Tea,tea,4500,1,N,3
+100272,2025-04-30,10,Gangnam,Cold Brew,coffee,5000,1,N,3
+100273,2025-04-29,12,Jamsil,Americano,coffee,4500,1,N,4
+100274,2025-04-10,15,Pangyo,Cafe Latte,coffee,5000,1,Y,5
+100275,2025-04-24,18,Pangyo,Mango Smoothie,juice,6500,2,Y,
+100276,2025-05-31,12,Gangnam,Mango Smoothie,juice,6500,1,N,
+100277,2025-03-30,21,Hongdae,Mango Smoothie,juice,6500,2,N,2
+100278,2025-04-02,9,Jamsil,Croissant,dessert,4000,3,Y,5
+100279,2025-03-12,20,Pangyo,Cheesecake,dessert,6500,3,Y,4
+100280,2025-04-10,8,Gangnam,Croissant,dessert,4000,1,Y,4
+100281,2025-05-14,9,Hongdae,Cold Brew,coffee,5000,1,N,3
+100282,2025-03-16,15,Pangyo,Green Tea,tea,4500,1,Y,4
+100283,2025-03-22,12,Pangyo,Mango Smoothie,juice,6500,2,N,3
+100284,2025-03-29,19,Pangyo,Cafe Latte,coffee,5000,1,N,
+100285,2025-04-06,13,Jamsil,Chamomile,tea,4500,2,Y,4
+100286,2025-03-25,13,Gangnam,Cafe Latte,coffee,5000,1,N,4
+100287,2025-04-29,12,Gangnam,Cold Brew,coffee,5000,1,N,3
+100288,2025-04-25,12,Gangnam,Mango Smoothie,juice,6500,3,N,3
+100289,2025-05-26,17,Gangnam,Green Tea,tea,4500,2,Y,5
+100290,2025-03-04,20,Gangnam,Cheesecake,dessert,6500,1,N,2
+100291,2025-05-31,21,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+100292,2025-05-24,10,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+100293,2025-04-02,12,Jamsil,Americano,coffee,4500,2,Y,5
+100294,2025-03-06,14,Hongdae,Brownie,dessert,5000,1,Y,3
+100295,2025-04-05,12,Jamsil,Orange Juice,juice,6000,2,N,4
+100296,2025-05-11,12,Jamsil,Brownie,dessert,5000,1,Y,
+100297,2025-03-10,13,Pangyo,Americano,coffee,4500,1,N,3
+100298,2025-04-03,8,Jamsil,Americano,coffee,4500,1,N,4
+100299,2025-04-02,18,Hongdae,Espresso,coffee,4000,1,N,3
+100300,2025-04-27,12,Gangnam,Chamomile,tea,4500,1,N,
+100301,2025-03-20,12,Gangnam,Cheesecake,dessert,6500,1,Y,5
+100302,2025-05-02,12,Jamsil,Americano,coffee,4500,2,N,4
+100303,2025-03-16,12,Pangyo,Cafe Latte,coffee,5000,1,N,3
+100304,2025-03-19,11,Gangnam,Cafe Latte,coffee,5000,1,N,
+100305,2025-03-20,20,Jamsil,Croissant,dessert,4000,1,Y,4
+100306,2025-04-29,11,Gangnam,Brownie,dessert,5000,1,Y,5
+100307,2025-05-24,21,Jamsil,Cheesecake,dessert,6500,1,Y,5
+100308,2025-03-31,12,Hongdae,Earl Grey,tea,4500,2,Y,5
+100309,2025-05-31,14,Jamsil,Green Tea,tea,4500,2,N,4
+100310,2025-03-02,13,Gangnam,Brownie,dessert,5000,1,N,4
+100311,2025-04-21,13,Pangyo,Americano,coffee,4500,1,N,3
+100312,2025-05-26,8,Pangyo,Earl Grey,tea,4500,1,N,5
+100313,2025-04-22,12,Gangnam,Green Tea,tea,4500,1,Y,5
+100314,2025-03-30,9,Hongdae,Americano,coffee,4500,1,N,5
+100315,2025-04-22,8,Jamsil,Cafe Latte,coffee,5000,2,N,
+100316,2025-05-14,15,Gangnam,Earl Grey,tea,4500,1,N,
+100317,2025-03-11,12,Gangnam,Cafe Latte,coffee,5000,1,N,4
+100318,2025-03-20,21,Pangyo,Americano,coffee,4500,1,Y,3
+100319,2025-03-26,17,Jamsil,Cafe Latte,coffee,5000,1,N,4
+100320,2025-03-01,17,Gangnam,Americano,coffee,4500,1,Y,3
+100321,2025-03-16,12,Pangyo,Croissant,dessert,4000,2,N,4
+100322,2025-05-28,12,Hongdae,Earl Grey,tea,4500,1,Y,3
+100323,2025-03-18,19,Hongdae,Green Tea,tea,4500,2,Y,4
+100324,2025-05-04,18,Hongdae,Green Tea,tea,4500,1,Y,4
+100325,2025-05-16,21,Gangnam,Espresso,coffee,4000,1,N,4
+100326,2025-03-07,19,Pangyo,Americano,coffee,4500,2,N,3
+100327,2025-03-06,20,Hongdae,Americano,coffee,4500,1,N,4
+100328,2025-04-30,17,Gangnam,Cheesecake,dessert,6500,3,Y,3
+100329,2025-03-01,18,Jamsil,Mango Smoothie,juice,6500,2,N,
+100330,2025-04-06,17,Gangnam,Orange Juice,juice,6000,2,N,
+100331,2025-04-08,8,Hongdae,Cold Brew,coffee,5000,1,Y,
+100332,2025-04-01,8,Gangnam,Vanilla Latte,coffee,5500,1,N,2
+100333,2025-05-06,8,Gangnam,Croissant,dessert,4000,2,N,3
+100334,2025-04-05,11,Jamsil,Cold Brew,coffee,5000,2,Y,4
+100335,2025-03-06,8,Jamsil,Brownie,dessert,5000,1,N,
+100336,2025-05-18,13,Jamsil,Cold Brew,coffee,5000,2,Y,4
+100337,2025-03-17,14,Jamsil,Cafe Latte,coffee,5000,1,Y,3
+100338,2025-04-14,19,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+100339,2025-05-28,9,Gangnam,Cheesecake,dessert,6500,1,Y,4
+100340,2025-05-12,13,Hongdae,Espresso,coffee,4000,2,Y,
+100341,2025-04-19,12,Jamsil,Cold Brew,coffee,5000,2,Y,3
+100342,2025-04-29,20,Pangyo,Vanilla Latte,coffee,5500,1,N,
+100343,2025-03-24,9,Jamsil,Americano,coffee,4500,1,N,4
+100344,2025-04-26,12,Hongdae,Mango Smoothie,juice,6500,1,N,4
+100345,2025-04-16,9,Hongdae,Americano,coffee,4500,1,Y,5
+100346,2025-04-07,17,Jamsil,Chamomile,tea,4500,2,N,4
+100347,2025-03-20,9,Jamsil,Brownie,dessert,5000,1,N,2
+100348,2025-04-16,12,Gangnam,Americano,coffee,4500,2,N,
+100349,2025-05-18,20,Hongdae,Espresso,coffee,4000,1,Y,
+100350,2025-03-06,13,Hongdae,Chamomile,tea,4500,2,N,
+100351,2025-03-11,10,Gangnam,Chamomile,tea,4500,2,Y,5
+100352,2025-03-21,12,Gangnam,Cold Brew,coffee,5000,1,N,3
+100353,2025-04-26,18,Pangyo,Earl Grey,tea,4500,1,N,4
+100354,2025-05-21,18,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+100355,2025-03-14,13,Jamsil,Mango Smoothie,juice,6500,3,Y,4
+100356,2025-04-25,16,Pangyo,Cafe Latte,coffee,5000,1,N,4
+100357,2025-05-04,9,Jamsil,Americano,coffee,4500,4,Y,
+100358,2025-04-11,8,Jamsil,Americano,coffee,4500,2,Y,
+100359,2025-05-04,12,Pangyo,Green Tea,tea,4500,1,Y,3
+100360,2025-05-25,14,Pangyo,Croissant,dessert,4000,3,Y,4
+100361,2025-03-22,13,Hongdae,Cheesecake,dessert,6500,2,Y,3
+100362,2025-03-25,15,Jamsil,Espresso,coffee,4000,3,Y,5
+100363,2025-04-22,14,Hongdae,Americano,coffee,4500,1,N,4
+100364,2025-05-23,12,Gangnam,Espresso,coffee,4000,1,N,4
+100365,2025-05-13,14,Gangnam,Vanilla Latte,coffee,5500,1,Y,5
+100366,2025-03-25,9,Jamsil,Espresso,coffee,4000,3,Y,5
+100367,2025-05-29,21,Jamsil,Brownie,dessert,5000,1,N,4
+100368,2025-05-26,20,Gangnam,Mango Smoothie,juice,6500,4,Y,
+100369,2025-04-10,16,Pangyo,Espresso,coffee,4000,1,Y,4
+100370,2025-04-26,18,Pangyo,Green Tea,tea,4500,1,N,4
+100371,2025-05-31,12,Hongdae,Cafe Latte,coffee,5000,1,N,
+100372,2025-05-12,10,Pangyo,Orange Juice,juice,6000,2,Y,4
+100373,2025-05-11,11,Hongdae,Americano,coffee,4500,1,N,4
+100374,2025-03-26,16,Hongdae,Cafe Latte,coffee,5000,1,N,5
+100375,2025-03-26,19,Hongdae,Chamomile,tea,4500,2,N,3
+100376,2025-03-22,8,Jamsil,Chamomile,tea,4500,1,Y,
+100377,2025-05-28,17,Hongdae,Green Tea,tea,4500,1,Y,4
+100378,2025-05-14,11,Pangyo,Orange Juice,juice,6000,1,Y,4
+100379,2025-04-27,21,Pangyo,Earl Grey,tea,4500,1,N,5
+100380,2025-05-23,13,Jamsil,Espresso,coffee,4000,2,N,5
+100381,2025-04-25,8,Jamsil,Chamomile,tea,4500,2,N,4
+100382,2025-04-24,8,Hongdae,Americano,coffee,4500,2,N,
+100383,2025-03-23,13,Gangnam,Cheesecake,dessert,6500,1,N,
+100384,2025-05-02,8,Pangyo,Brownie,dessert,5000,3,N,4
+100385,2025-05-22,19,Hongdae,Americano,coffee,4500,1,Y,4
+100386,2025-05-16,14,Jamsil,Cheesecake,dessert,6500,1,N,4
+100387,2025-04-07,8,Pangyo,Cafe Latte,coffee,5000,4,N,
+100388,2025-03-03,9,Jamsil,Vanilla Latte,coffee,5500,1,Y,3
+100389,2025-05-18,9,Pangyo,Green Tea,tea,4500,2,N,4
+100390,2025-04-01,15,Hongdae,Americano,coffee,4500,1,N,2
+100391,2025-04-03,13,Hongdae,Cheesecake,dessert,6500,2,N,
+100392,2025-04-07,21,Jamsil,Espresso,coffee,4000,1,Y,
+100393,2025-05-03,14,Hongdae,Croissant,dessert,4000,2,Y,
+100394,2025-04-13,21,Jamsil,Cafe Latte,coffee,5000,1,N,5
+100395,2025-05-18,20,Gangnam,Vanilla Latte,coffee,5500,1,Y,5
+100396,2025-04-20,11,Hongdae,Vanilla Latte,coffee,5500,1,Y,3
+100397,2025-04-19,8,Gangnam,Croissant,dessert,4000,1,N,
+100398,2025-03-15,12,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+100399,2025-04-06,18,Jamsil,Americano,coffee,4500,1,N,5
+100400,2025-05-08,8,Jamsil,Americano,coffee,4500,1,Y,4
+100401,2025-04-07,9,Gangnam,Mango Smoothie,juice,6500,1,N,5
+100402,2025-04-26,12,Pangyo,Americano,coffee,4500,1,Y,
+100403,2025-05-19,18,Pangyo,Vanilla Latte,coffee,5500,1,N,5
+100404,2025-03-23,9,Gangnam,Green Tea,tea,4500,4,N,4
+100405,2025-04-15,12,Hongdae,Cafe Latte,coffee,5000,1,N,4
+100406,2025-03-15,12,Hongdae,Espresso,coffee,4000,1,N,4
+100407,2025-03-28,20,Pangyo,Americano,coffee,4500,1,N,
+100408,2025-05-09,11,Gangnam,Cold Brew,coffee,5000,1,N,5
+100409,2025-04-26,12,Hongdae,Green Tea,tea,4500,1,Y,4
+100410,2025-04-02,21,Gangnam,Cold Brew,coffee,5000,1,Y,4
+100411,2025-04-15,13,Jamsil,Green Tea,tea,4500,2,N,4
+100412,2025-03-09,12,Jamsil,Orange Juice,juice,6000,2,Y,
+100413,2025-04-16,10,Hongdae,Orange Juice,juice,6000,2,Y,4
+100414,2025-05-07,18,Gangnam,Cafe Latte,coffee,5000,1,Y,5
+100415,2025-05-21,19,Gangnam,Croissant,dessert,4000,1,Y,
+100416,2025-05-17,12,Jamsil,Cheesecake,dessert,6500,2,N,4
+100417,2025-05-19,13,Gangnam,Brownie,dessert,5000,1,Y,4
+100418,2025-03-02,21,Hongdae,Green Tea,tea,4500,1,Y,5
+100419,2025-04-08,18,Hongdae,Americano,coffee,4500,1,Y,
+100420,2025-04-01,19,Pangyo,Cafe Latte,coffee,5000,1,N,5
+100421,2025-04-23,14,Pangyo,Cheesecake,dessert,6500,1,N,4
+100422,2025-03-27,12,Jamsil,Americano,coffee,4500,1,Y,5
+100423,2025-04-28,8,Hongdae,Earl Grey,tea,4500,1,N,4
+100424,2025-05-14,18,Gangnam,Cheesecake,dessert,6500,2,Y,3
+100425,2025-03-20,15,Gangnam,Green Tea,tea,4500,1,N,4
+100426,2025-04-29,13,Hongdae,Cold Brew,coffee,5000,2,N,4
+100427,2025-03-26,16,Jamsil,Chamomile,tea,4500,1,Y,3
+100428,2025-05-31,16,Gangnam,Mango Smoothie,juice,6500,1,N,
+100429,2025-05-06,12,Jamsil,Mango Smoothie,juice,6500,1,N,4
+100430,2025-04-30,13,Hongdae,Vanilla Latte,coffee,5500,2,N,4
+100431,2025-03-31,10,Gangnam,Cold Brew,coffee,5000,1,Y,
+100432,2025-05-03,13,Jamsil,Brownie,dessert,5000,1,N,4
+100433,2025-03-31,9,Jamsil,Cold Brew,coffee,5000,2,N,3
+100434,2025-03-09,19,Jamsil,Orange Juice,juice,6000,1,N,3
+100435,2025-05-07,8,Gangnam,Americano,coffee,4500,1,N,4
+100436,2025-04-08,14,Hongdae,Americano,coffee,4500,3,N,4
+100437,2025-03-27,19,Pangyo,Green Tea,tea,4500,2,N,4
+100438,2025-03-17,21,Jamsil,Vanilla Latte,coffee,5500,1,N,2
+100439,2025-03-14,13,Hongdae,Brownie,dessert,5000,1,N,
+100440,2025-04-24,10,Pangyo,Vanilla Latte,coffee,5500,2,N,4
+100441,2025-05-08,10,Pangyo,Cafe Latte,coffee,5000,1,N,4
+100442,2025-03-03,18,Jamsil,Orange Juice,juice,6000,2,Y,4
+100443,2025-03-07,13,Gangnam,Chamomile,tea,4500,1,Y,5
+100444,2025-03-29,11,Jamsil,Cafe Latte,coffee,5000,1,N,3
+100445,2025-03-19,18,Hongdae,Green Tea,tea,4500,1,N,4
+100446,2025-03-25,9,Hongdae,Vanilla Latte,coffee,5500,3,N,5
+100447,2025-03-16,12,Gangnam,Croissant,dessert,4000,1,Y,3
+100448,2025-04-05,11,Gangnam,Americano,coffee,4500,2,N,4
+100449,2025-03-18,17,Hongdae,Mango Smoothie,juice,6500,1,N,5
+100450,2025-05-10,15,Gangnam,Cold Brew,coffee,5000,1,Y,3
+100451,2025-05-17,9,Hongdae,Croissant,dessert,4000,1,Y,5
+100452,2025-04-05,12,Gangnam,Espresso,coffee,4000,1,N,2
+100453,2025-05-21,14,Jamsil,Brownie,dessert,5000,2,N,5
+100454,2025-05-06,9,Jamsil,Cold Brew,coffee,5000,1,Y,4
+100455,2025-05-16,19,Hongdae,Cafe Latte,coffee,5000,2,N,5
+100456,2025-05-08,18,Pangyo,Cold Brew,coffee,5000,1,Y,
+100457,2025-03-03,19,Gangnam,Earl Grey,tea,4500,1,Y,4
+100458,2025-04-17,9,Hongdae,Americano,coffee,4500,1,Y,5
+100459,2025-05-16,11,Pangyo,Earl Grey,tea,4500,3,N,4
+100460,2025-03-07,16,Hongdae,Croissant,dessert,4000,2,N,5
+100461,2025-05-25,8,Jamsil,Green Tea,tea,4500,1,Y,4
+100462,2025-04-30,18,Hongdae,Green Tea,tea,4500,2,Y,
+100463,2025-03-24,10,Hongdae,Earl Grey,tea,4500,2,Y,4
+100464,2025-05-04,19,Gangnam,Orange Juice,juice,6000,1,N,
+100465,2025-04-21,8,Gangnam,Cold Brew,coffee,5000,1,Y,4
+100466,2025-04-24,12,Gangnam,Croissant,dessert,4000,1,N,3
+100467,2025-04-02,18,Jamsil,Americano,coffee,4500,1,N,2
+100468,2025-05-24,18,Jamsil,Mango Smoothie,juice,6500,2,N,3
+100469,2025-03-09,13,Jamsil,Orange Juice,juice,6000,2,N,4
+100470,2025-04-03,9,Gangnam,Vanilla Latte,coffee,5500,1,N,3
+100471,2025-03-16,12,Jamsil,Mango Smoothie,juice,6500,1,Y,5
+100472,2025-04-07,20,Gangnam,Brownie,dessert,5000,1,N,3
+100473,2025-05-26,13,Hongdae,Cheesecake,dessert,6500,1,N,
+100474,2025-03-25,12,Jamsil,Mango Smoothie,juice,6500,1,N,
+100475,2025-04-06,18,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+100476,2025-03-17,21,Jamsil,Vanilla Latte,coffee,5500,1,N,
+100477,2025-05-31,13,Jamsil,Green Tea,tea,4500,1,Y,4
+100478,2025-04-29,16,Gangnam,Cafe Latte,coffee,5000,1,N,
+100479,2025-03-05,20,Gangnam,Cold Brew,coffee,5000,1,N,4
+100480,2025-05-19,12,Gangnam,Earl Grey,tea,4500,1,Y,
+100481,2025-03-14,21,Gangnam,Brownie,dessert,5000,1,Y,3
+100482,2025-05-03,13,Pangyo,Brownie,dessert,5000,1,Y,4
+100483,2025-04-05,14,Pangyo,Cheesecake,dessert,6500,1,Y,4
+100484,2025-05-04,11,Jamsil,Vanilla Latte,coffee,5500,1,N,3
+100485,2025-05-02,20,Gangnam,Croissant,dessert,4000,1,Y,
+100486,2025-04-12,9,Gangnam,Americano,coffee,4500,1,N,3
+100487,2025-05-14,11,Hongdae,Cafe Latte,coffee,5000,2,N,4
+100488,2025-03-15,12,Pangyo,Americano,coffee,4500,1,N,
+100489,2025-05-05,8,Hongdae,Cafe Latte,coffee,5000,1,N,3
+100490,2025-05-26,9,Jamsil,Americano,coffee,4500,2,N,3
+100491,2025-05-05,8,Gangnam,Vanilla Latte,coffee,5500,1,N,
+100492,2025-04-18,12,Jamsil,Cafe Latte,coffee,5000,2,Y,
+100493,2025-04-29,21,Hongdae,Mango Smoothie,juice,6500,1,N,4
+100494,2025-04-21,8,Jamsil,Americano,coffee,4500,2,N,3
+100495,2025-05-19,11,Gangnam,Orange Juice,juice,6000,2,N,4
+100496,2025-04-25,20,Gangnam,Americano,coffee,4500,1,Y,
+100497,2025-05-10,10,Pangyo,Earl Grey,tea,4500,1,N,4
+100498,2025-05-01,16,Pangyo,Americano,coffee,4500,1,Y,4
+100499,2025-03-16,21,Pangyo,Cafe Latte,coffee,5000,1,N,
+100500,2025-03-29,17,Pangyo,Cafe Latte,coffee,5000,1,Y,
+100501,2025-05-13,15,Jamsil,Cafe Latte,coffee,5000,1,Y,
+100502,2025-05-21,8,Jamsil,Vanilla Latte,coffee,5500,1,N,
+100503,2025-03-26,10,Jamsil,Orange Juice,juice,6000,1,N,4
+100504,2025-05-04,11,Pangyo,Cold Brew,coffee,5000,2,N,
+100505,2025-05-08,19,Hongdae,Cold Brew,coffee,5000,1,N,4
+100506,2025-03-14,8,Hongdae,Earl Grey,tea,4500,2,N,
+100507,2025-05-20,10,Gangnam,Americano,coffee,4500,1,N,4
+100508,2025-05-11,20,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+100509,2025-05-16,10,Jamsil,Orange Juice,juice,6000,2,N,3
+100510,2025-05-29,13,Pangyo,Cheesecake,dessert,6500,1,N,3
+100511,2025-05-07,12,Hongdae,Mango Smoothie,juice,6500,2,Y,4
+100512,2025-03-25,16,Gangnam,Americano,coffee,4500,1,N,5
+100513,2025-03-28,9,Hongdae,Croissant,dessert,4000,1,N,4
+100514,2025-03-30,10,Gangnam,Cheesecake,dessert,6500,4,N,
+100515,2025-04-30,12,Jamsil,Mango Smoothie,juice,6500,3,N,2
+100516,2025-05-13,19,Gangnam,Brownie,dessert,5000,1,N,3
+100517,2025-04-13,15,Gangnam,Mango Smoothie,juice,6500,1,Y,4
+100518,2025-05-11,19,Gangnam,Chamomile,tea,4500,1,N,3
+100519,2025-05-11,11,Gangnam,Croissant,dessert,4000,1,Y,3
+100520,2025-04-30,9,Gangnam,Cheesecake,dessert,6500,1,N,3
+100521,2025-05-30,15,Pangyo,Cheesecake,dessert,6500,1,N,4
+100522,2025-03-14,9,Gangnam,Americano,coffee,4500,1,N,
+100523,2025-04-09,19,Pangyo,Green Tea,tea,4500,1,N,5
+100524,2025-04-23,13,Pangyo,Orange Juice,juice,6000,1,Y,
+100525,2025-03-15,19,Pangyo,Earl Grey,tea,4500,1,Y,
+100526,2025-04-22,20,Jamsil,Cold Brew,coffee,5000,2,Y,5
+100527,2025-04-05,18,Gangnam,Americano,coffee,4500,1,N,5
+100528,2025-04-05,13,Pangyo,Americano,coffee,4500,4,N,
+100529,2025-03-03,18,Pangyo,Cheesecake,dessert,6500,1,Y,5
+100530,2025-05-02,20,Gangnam,Croissant,dessert,4000,2,Y,5
+100531,2025-05-05,9,Gangnam,Brownie,dessert,5000,1,N,5
+100532,2025-05-06,13,Pangyo,Americano,coffee,4500,1,Y,
+100533,2025-04-24,12,Jamsil,Chamomile,tea,4500,2,Y,
+100534,2025-03-31,9,Jamsil,Cafe Latte,coffee,5000,1,Y,
+100535,2025-04-19,18,Hongdae,Americano,coffee,4500,1,Y,3
+100536,2025-05-01,12,Pangyo,Mango Smoothie,juice,6500,3,Y,
+100537,2025-05-28,12,Pangyo,Americano,coffee,4500,1,Y,
+100538,2025-05-21,8,Pangyo,Americano,coffee,4500,4,N,
+100539,2025-04-18,17,Jamsil,Cafe Latte,coffee,5000,1,Y,
+100540,2025-03-02,16,Jamsil,Cafe Latte,coffee,5000,1,Y,
+100541,2025-05-16,10,Hongdae,Brownie,dessert,5000,2,N,
+100542,2025-04-09,9,Gangnam,Green Tea,tea,4500,1,N,5
+100543,2025-05-13,9,Hongdae,Cafe Latte,coffee,5000,1,N,
+100544,2025-03-02,12,Pangyo,Americano,coffee,4500,1,N,4
+100545,2025-05-08,18,Jamsil,Americano,coffee,4500,1,N,3
+100546,2025-04-10,10,Jamsil,Orange Juice,juice,6000,1,N,
+100547,2025-03-06,20,Jamsil,Croissant,dessert,4000,2,Y,
+100548,2025-04-05,15,Hongdae,Cafe Latte,coffee,5000,1,N,4
+100549,2025-05-05,17,Gangnam,Americano,coffee,4500,1,N,4
+100550,2025-04-14,21,Jamsil,Americano,coffee,4500,1,Y,
+100551,2025-05-29,13,Hongdae,Croissant,dessert,4000,2,N,4
+100552,2025-05-24,17,Jamsil,Cold Brew,coffee,5000,2,N,4
+100553,2025-05-04,10,Gangnam,Americano,coffee,4500,1,Y,4
+100554,2025-05-05,11,Jamsil,Mango Smoothie,juice,6500,1,N,4
+100555,2025-03-14,17,Pangyo,Cold Brew,coffee,5000,1,Y,
+100556,2025-03-17,8,Hongdae,Americano,coffee,4500,1,N,3
+100557,2025-03-06,9,Jamsil,Americano,coffee,4500,1,N,5
+100558,2025-05-20,19,Gangnam,Americano,coffee,4500,1,Y,3
+100559,2025-03-09,12,Pangyo,Americano,coffee,4500,1,Y,5
+100560,2025-05-30,12,Hongdae,Brownie,dessert,5000,1,N,4
+100561,2025-05-29,18,Pangyo,Americano,coffee,4500,1,N,
+100562,2025-04-20,12,Pangyo,Green Tea,tea,4500,1,N,3
+100563,2025-04-15,12,Hongdae,Croissant,dessert,4000,1,Y,2
+100564,2025-04-07,9,Pangyo,Green Tea,tea,4500,1,Y,5
+100565,2025-04-26,11,Jamsil,Brownie,dessert,5000,2,N,
+100566,2025-03-29,21,Jamsil,Mango Smoothie,juice,6500,2,Y,4
+100567,2025-05-08,15,Gangnam,Cheesecake,dessert,6500,1,N,
+100568,2025-04-08,8,Jamsil,Americano,coffee,4500,1,N,
+100569,2025-04-27,8,Jamsil,Brownie,dessert,5000,1,Y,4
+100570,2025-04-10,18,Jamsil,Orange Juice,juice,6000,1,Y,3
+100571,2025-03-14,12,Jamsil,Americano,coffee,4500,2,Y,3
+100572,2025-03-15,8,Jamsil,Vanilla Latte,coffee,5500,1,N,
+100573,2025-04-13,9,Pangyo,Cafe Latte,coffee,5000,1,N,
+100574,2025-03-10,12,Gangnam,Brownie,dessert,5000,1,N,
+100575,2025-05-25,18,Pangyo,Brownie,dessert,5000,1,Y,5
+100576,2025-04-09,9,Gangnam,Vanilla Latte,coffee,5500,1,N,3
+100577,2025-05-22,9,Jamsil,Cheesecake,dessert,6500,1,Y,5
+100578,2025-04-08,12,Gangnam,Green Tea,tea,4500,1,N,4
+100579,2025-03-03,15,Hongdae,Vanilla Latte,coffee,5500,4,N,3
+100580,2025-04-03,9,Hongdae,Americano,coffee,4500,1,Y,4
+100581,2025-05-05,13,Hongdae,Americano,coffee,4500,3,N,3
+100582,2025-03-27,18,Gangnam,Americano,coffee,4500,1,N,2
+100583,2025-03-08,9,Gangnam,Americano,coffee,4500,1,N,4
+100584,2025-03-30,12,Gangnam,Cheesecake,dessert,6500,1,N,
+100585,2025-03-29,12,Pangyo,Americano,coffee,4500,2,N,4
+100586,2025-03-23,16,Jamsil,Chamomile,tea,4500,1,N,3
+100587,2025-03-22,8,Gangnam,Chamomile,tea,4500,1,N,
+100588,2025-05-05,9,Pangyo,Americano,coffee,4500,1,N,
+100589,2025-04-15,8,Jamsil,Green Tea,tea,4500,1,Y,
+100590,2025-03-15,8,Gangnam,Americano,coffee,4500,1,Y,5
+100591,2025-04-17,9,Pangyo,Croissant,dessert,4000,4,N,4
+100592,2025-04-07,21,Gangnam,Cafe Latte,coffee,5000,1,N,3
+100593,2025-05-15,8,Pangyo,Cafe Latte,coffee,5000,1,Y,
+100594,2025-04-27,12,Gangnam,Cafe Latte,coffee,5000,1,N,2
+100595,2025-03-27,19,Hongdae,Americano,coffee,4500,2,N,
+100596,2025-04-21,18,Gangnam,Americano,coffee,4500,1,Y,3
+100597,2025-03-08,21,Hongdae,Cafe Latte,coffee,5000,1,N,
+100598,2025-04-16,11,Hongdae,Mango Smoothie,juice,6500,4,Y,
+100599,2025-05-28,14,Gangnam,Croissant,dessert,4000,2,N,
+100600,2025-04-13,12,Pangyo,Americano,coffee,4500,1,N,
+100601,2025-03-04,9,Jamsil,Cheesecake,dessert,6500,1,Y,
+100602,2025-04-04,9,Jamsil,Cheesecake,dessert,6500,1,N,
+100603,2025-05-17,10,Jamsil,Americano,coffee,4500,2,N,
+100604,2025-04-13,13,Gangnam,Cheesecake,dessert,6500,1,N,3
+100605,2025-03-15,9,Gangnam,Cafe Latte,coffee,5000,3,N,
+100606,2025-05-15,9,Jamsil,Cheesecake,dessert,6500,1,N,5
+100607,2025-03-31,20,Pangyo,Espresso,coffee,4000,2,N,4
+100608,2025-05-01,18,Gangnam,Cold Brew,coffee,5000,1,N,2
+100609,2025-03-25,17,Hongdae,Cold Brew,coffee,5000,1,N,4
+100610,2025-04-09,9,Gangnam,Croissant,dessert,4000,1,N,
+100611,2025-03-15,18,Jamsil,Cafe Latte,coffee,5000,1,N,
+100612,2025-05-07,13,Gangnam,Americano,coffee,4500,1,Y,5
+100613,2025-03-08,13,Hongdae,Cold Brew,coffee,5000,1,N,
+100614,2025-05-05,9,Pangyo,Green Tea,tea,4500,1,N,3
+100615,2025-05-02,17,Pangyo,Brownie,dessert,5000,1,N,4
+100616,2025-04-21,20,Gangnam,Vanilla Latte,coffee,5500,1,N,2
+100617,2025-04-25,9,Gangnam,Cheesecake,dessert,6500,3,Y,4
+100618,2025-05-01,13,Hongdae,Espresso,coffee,4000,1,N,5
+100619,2025-03-29,8,Hongdae,Croissant,dessert,4000,1,Y,3
+100620,2025-03-04,9,Pangyo,Americano,coffee,4500,1,Y,3
+100621,2025-04-04,19,Pangyo,Cafe Latte,coffee,5000,1,N,4
+100622,2025-04-25,12,Pangyo,Cafe Latte,coffee,5000,1,Y,5
+100623,2025-03-05,15,Jamsil,Americano,coffee,4500,2,Y,1
+100624,2025-03-15,21,Pangyo,Americano,coffee,4500,2,N,4
+100625,2025-05-31,13,Jamsil,Mango Smoothie,juice,6500,1,Y,5
+100626,2025-05-23,12,Pangyo,Earl Grey,tea,4500,1,N,5
+100627,2025-04-09,21,Jamsil,Espresso,coffee,4000,2,N,
+100628,2025-04-17,13,Gangnam,Cheesecake,dessert,6500,1,N,3
+100629,2025-04-11,17,Hongdae,Cafe Latte,coffee,5000,1,N,5
+100630,2025-04-22,17,Gangnam,Americano,coffee,4500,1,N,
+100631,2025-03-02,9,Gangnam,Cafe Latte,coffee,5000,1,N,4
+100632,2025-03-24,13,Hongdae,Americano,coffee,4500,2,N,5
+100633,2025-05-23,14,Pangyo,Cafe Latte,coffee,5000,1,N,
+100634,2025-05-06,11,Pangyo,Cafe Latte,coffee,5000,2,N,5
+100635,2025-03-25,19,Jamsil,Cold Brew,coffee,5000,1,N,
+100636,2025-04-04,8,Jamsil,Croissant,dessert,4000,1,N,2
+100637,2025-03-25,13,Gangnam,Cheesecake,dessert,6500,1,N,4
+100638,2025-03-23,18,Jamsil,Americano,coffee,4500,2,Y,4
+100639,2025-03-11,8,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+100640,2025-03-21,15,Gangnam,Cold Brew,coffee,5000,1,Y,4
+100641,2025-03-08,8,Pangyo,Cafe Latte,coffee,5000,2,N,
+100642,2025-03-28,13,Hongdae,Cold Brew,coffee,5000,1,N,5
+100643,2025-05-03,8,Gangnam,Cold Brew,coffee,5000,1,N,4
+100644,2025-03-31,8,Gangnam,Cheesecake,dessert,6500,1,Y,4
+100645,2025-05-21,8,Jamsil,Croissant,dessert,4000,1,N,5
+100646,2025-03-22,18,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+100647,2025-03-08,11,Jamsil,Croissant,dessert,4000,1,N,
+100648,2025-03-23,10,Gangnam,Americano,coffee,4500,1,N,
+100649,2025-05-03,13,Hongdae,Green Tea,tea,4500,1,Y,
+100650,2025-05-08,12,Jamsil,Cafe Latte,coffee,5000,4,Y,3
+100651,2025-04-13,8,Gangnam,Cheesecake,dessert,6500,2,Y,5
+100652,2025-03-11,15,Gangnam,Cold Brew,coffee,5000,1,Y,3
+100653,2025-04-18,12,Pangyo,Earl Grey,tea,4500,1,N,4
+100654,2025-03-15,14,Jamsil,Vanilla Latte,coffee,5500,2,Y,3
+100655,2025-04-12,8,Gangnam,Brownie,dessert,5000,1,N,
+100656,2025-04-23,8,Gangnam,Cafe Latte,coffee,5000,3,Y,3
+100657,2025-05-18,13,Hongdae,Orange Juice,juice,6000,2,N,
+100658,2025-03-03,9,Jamsil,Americano,coffee,4500,1,Y,
+100659,2025-03-06,8,Gangnam,Vanilla Latte,coffee,5500,1,N,
+100660,2025-03-31,18,Gangnam,Cafe Latte,coffee,5000,1,Y,
+100661,2025-04-19,17,Hongdae,Chamomile,tea,4500,2,N,
+100662,2025-03-19,12,Gangnam,Americano,coffee,4500,1,N,
+100663,2025-05-12,8,Pangyo,Cold Brew,coffee,5000,1,Y,3
+100664,2025-05-19,12,Jamsil,Cafe Latte,coffee,5000,1,N,
+100665,2025-05-23,21,Gangnam,Green Tea,tea,4500,1,N,4
+100666,2025-05-09,17,Jamsil,Mango Smoothie,juice,6500,1,N,5
+100667,2025-04-29,12,Jamsil,Croissant,dessert,4000,1,Y,4
+100668,2025-04-25,12,Hongdae,Cafe Latte,coffee,5000,1,Y,
+100669,2025-03-04,12,Jamsil,Croissant,dessert,4000,1,Y,3
+100670,2025-03-15,9,Jamsil,Vanilla Latte,coffee,5500,1,Y,
+100671,2025-05-05,8,Jamsil,Croissant,dessert,4000,2,Y,5
+100672,2025-05-06,21,Gangnam,Americano,coffee,4500,1,N,
+100673,2025-05-22,14,Pangyo,Cafe Latte,coffee,5000,1,N,4
+100674,2025-05-14,10,Gangnam,Cafe Latte,coffee,5000,2,N,3
+100675,2025-03-14,9,Hongdae,Espresso,coffee,4000,1,Y,
+100676,2025-04-25,9,Gangnam,Cold Brew,coffee,5000,3,Y,4
+100677,2025-03-17,16,Jamsil,Americano,coffee,4500,1,N,4
+100678,2025-03-27,16,Gangnam,Vanilla Latte,coffee,5500,1,Y,5
+100679,2025-03-27,21,Hongdae,Croissant,dessert,4000,1,Y,
+100680,2025-05-27,8,Gangnam,Chamomile,tea,4500,1,N,
+100681,2025-05-04,8,Hongdae,Cheesecake,dessert,6500,1,Y,
+100682,2025-05-02,11,Jamsil,Espresso,coffee,4000,2,N,3
+100683,2025-03-20,9,Gangnam,Espresso,coffee,4000,1,N,4
+100684,2025-03-03,9,Jamsil,Cheesecake,dessert,6500,3,N,5
+100685,2025-03-20,13,Hongdae,Cold Brew,coffee,5000,1,Y,5
+100686,2025-04-15,9,Hongdae,Mango Smoothie,juice,6500,2,N,4
+100687,2025-03-17,20,Pangyo,Vanilla Latte,coffee,5500,1,N,4
+100688,2025-03-10,17,Hongdae,Brownie,dessert,5000,1,N,3
+100689,2025-04-19,21,Pangyo,Americano,coffee,4500,1,N,
+100690,2025-05-13,18,Jamsil,Espresso,coffee,4000,2,N,
+100691,2025-04-15,21,Pangyo,Cafe Latte,coffee,5000,1,Y,4
+100692,2025-05-10,10,Jamsil,Cafe Latte,coffee,5000,2,N,3
+100693,2025-04-01,12,Hongdae,Cold Brew,coffee,5000,1,N,3
+100694,2025-03-28,13,Gangnam,Cheesecake,dessert,6500,1,Y,3
+100695,2025-03-11,12,Hongdae,Cold Brew,coffee,5000,3,N,3
+100696,2025-05-22,13,Gangnam,Cold Brew,coffee,5000,1,Y,3
+100697,2025-04-13,16,Jamsil,Cafe Latte,coffee,5000,1,Y,3
+100698,2025-05-30,18,Jamsil,Brownie,dessert,5000,2,N,
+100699,2025-03-23,9,Hongdae,Croissant,dessert,4000,1,Y,
+100700,2025-05-15,19,Hongdae,Chamomile,tea,4500,1,Y,4
+100701,2025-05-26,14,Jamsil,Cold Brew,coffee,5000,2,N,4
+100702,2025-03-13,14,Hongdae,Mango Smoothie,juice,6500,1,N,3
+100703,2025-03-10,15,Pangyo,Americano,coffee,4500,1,Y,
+100704,2025-03-16,12,Jamsil,Cafe Latte,coffee,5000,1,N,4
+100705,2025-05-26,17,Hongdae,Mango Smoothie,juice,6500,1,Y,4
+100706,2025-03-03,18,Pangyo,Croissant,dessert,4000,2,N,3
+100707,2025-04-10,13,Jamsil,Brownie,dessert,5000,2,Y,3
+100708,2025-03-15,12,Gangnam,Croissant,dessert,4000,2,N,3
+100709,2025-03-25,20,Jamsil,Green Tea,tea,4500,1,N,4
+100710,2025-03-15,13,Hongdae,Americano,coffee,4500,1,Y,3
+100711,2025-03-19,12,Pangyo,Chamomile,tea,4500,1,Y,4
+100712,2025-04-28,17,Pangyo,Americano,coffee,4500,2,N,3
+100713,2025-04-01,18,Gangnam,Espresso,coffee,4000,1,N,3
+100714,2025-03-12,10,Jamsil,Americano,coffee,4500,2,N,2
+100715,2025-04-14,12,Pangyo,Cheesecake,dessert,6500,1,Y,4
+100716,2025-03-31,11,Gangnam,Chamomile,tea,4500,2,N,3
+100717,2025-03-13,20,Gangnam,Orange Juice,juice,6000,1,N,2
+100718,2025-05-01,19,Gangnam,Earl Grey,tea,4500,1,Y,5
+100719,2025-05-11,9,Pangyo,Chamomile,tea,4500,1,N,3
+100720,2025-05-17,12,Pangyo,Cafe Latte,coffee,5000,1,Y,
+100721,2025-05-31,11,Pangyo,Cafe Latte,coffee,5000,1,Y,2
+100722,2025-03-20,8,Hongdae,Americano,coffee,4500,1,Y,3
+100723,2025-05-02,19,Hongdae,Croissant,dessert,4000,1,N,
+100724,2025-04-28,9,Gangnam,Chamomile,tea,4500,2,N,
+100725,2025-03-15,9,Jamsil,Cafe Latte,coffee,5000,2,Y,4
+100726,2025-05-31,12,Gangnam,Cafe Latte,coffee,5000,1,N,4
+100727,2025-04-20,18,Gangnam,Cafe Latte,coffee,5000,2,N,
+100728,2025-04-24,11,Hongdae,Vanilla Latte,coffee,5500,4,N,
+100729,2025-05-14,12,Gangnam,Americano,coffee,4500,1,Y,5
+100730,2025-03-30,13,Jamsil,Cafe Latte,coffee,5000,2,N,
+100731,2025-03-16,9,Gangnam,Earl Grey,tea,4500,2,N,5
+100732,2025-05-30,8,Jamsil,Americano,coffee,4500,4,N,4
+100733,2025-04-15,8,Gangnam,Americano,coffee,4500,1,N,4
+100734,2025-05-06,9,Jamsil,Cheesecake,dessert,6500,1,Y,3
+100735,2025-04-08,10,Jamsil,Cheesecake,dessert,6500,1,Y,4
+100736,2025-03-10,9,Pangyo,Cafe Latte,coffee,5000,1,N,4
+100737,2025-03-03,20,Gangnam,Americano,coffee,4500,1,Y,4
+100738,2025-03-06,18,Gangnam,Americano,coffee,4500,1,Y,5
+100739,2025-04-05,12,Gangnam,Chamomile,tea,4500,1,N,4
+100740,2025-04-29,9,Gangnam,Cafe Latte,coffee,5000,1,N,
+100741,2025-05-22,9,Hongdae,Americano,coffee,4500,1,Y,4
+100742,2025-04-15,8,Hongdae,Americano,coffee,4500,1,Y,3
+100743,2025-05-24,9,Pangyo,Croissant,dessert,4000,1,Y,
+100744,2025-05-30,15,Hongdae,Americano,coffee,4500,1,Y,4
+100745,2025-03-19,12,Jamsil,Americano,coffee,4500,1,Y,3
+100746,2025-05-01,15,Jamsil,Earl Grey,tea,4500,1,N,4
+100747,2025-05-30,8,Pangyo,Croissant,dessert,4000,1,Y,
+100748,2025-05-17,17,Pangyo,Vanilla Latte,coffee,5500,1,Y,4
+100749,2025-05-06,9,Gangnam,Orange Juice,juice,6000,1,Y,3
+100750,2025-03-15,13,Pangyo,Green Tea,tea,4500,1,N,5
+100751,2025-05-19,18,Hongdae,Green Tea,tea,4500,1,Y,4
+100752,2025-04-01,13,Gangnam,Vanilla Latte,coffee,5500,1,N,3
+100753,2025-04-05,17,Jamsil,Brownie,dessert,5000,1,Y,2
+100754,2025-03-13,15,Jamsil,Vanilla Latte,coffee,5500,1,N,3
+100755,2025-03-25,18,Gangnam,Green Tea,tea,4500,2,N,4
+100756,2025-03-24,21,Gangnam,Cheesecake,dessert,6500,4,Y,4
+100757,2025-04-01,9,Pangyo,Americano,coffee,4500,1,N,
+100758,2025-04-30,12,Jamsil,Vanilla Latte,coffee,5500,2,N,
+100759,2025-03-26,20,Pangyo,Cold Brew,coffee,5000,2,Y,5
+100760,2025-03-22,18,Hongdae,Cold Brew,coffee,5000,1,Y,
+100761,2025-05-13,8,Jamsil,Orange Juice,juice,6000,1,Y,4
+100762,2025-03-23,18,Gangnam,Americano,coffee,4500,2,Y,
+100763,2025-03-31,20,Gangnam,Americano,coffee,4500,1,N,2
+100764,2025-04-29,12,Gangnam,Americano,coffee,4500,1,Y,4
+100765,2025-04-08,20,Pangyo,Brownie,dessert,5000,1,Y,
+100766,2025-04-07,19,Hongdae,Cold Brew,coffee,5000,1,N,3
+100767,2025-04-09,21,Jamsil,Cafe Latte,coffee,5000,1,N,4
+100768,2025-05-25,17,Jamsil,Cafe Latte,coffee,5000,2,N,
+100769,2025-03-15,18,Jamsil,Mango Smoothie,juice,6500,3,N,3
+100770,2025-05-21,8,Gangnam,Espresso,coffee,4000,1,Y,3
+100771,2025-03-01,16,Pangyo,Cold Brew,coffee,5000,1,N,3
+100772,2025-05-15,8,Pangyo,Mango Smoothie,juice,6500,1,Y,5
+100773,2025-04-16,13,Jamsil,Mango Smoothie,juice,6500,1,N,3
+100774,2025-05-10,9,Hongdae,Orange Juice,juice,6000,1,Y,5
+100775,2025-03-13,9,Gangnam,Cold Brew,coffee,5000,1,N,
+100776,2025-05-10,19,Pangyo,Americano,coffee,4500,1,Y,
+100777,2025-05-26,20,Hongdae,Mango Smoothie,juice,6500,1,N,
+100778,2025-04-20,11,Gangnam,Cafe Latte,coffee,5000,1,N,3
+100779,2025-03-31,11,Pangyo,Cafe Latte,coffee,5000,1,N,3
+100780,2025-05-27,12,Gangnam,Cafe Latte,coffee,5000,1,N,2
+100781,2025-04-17,13,Hongdae,Green Tea,tea,4500,3,N,2
+100782,2025-04-28,16,Pangyo,Green Tea,tea,4500,1,N,
+100783,2025-05-12,20,Pangyo,Vanilla Latte,coffee,5500,1,Y,2
+100784,2025-03-24,21,Gangnam,Vanilla Latte,coffee,5500,1,Y,4
+100785,2025-03-04,17,Gangnam,Cold Brew,coffee,5000,1,N,
+100786,2025-03-16,13,Hongdae,Espresso,coffee,4000,2,N,3
+100787,2025-03-25,8,Pangyo,Americano,coffee,4500,1,N,3
+100788,2025-05-20,9,Jamsil,Vanilla Latte,coffee,5500,3,Y,4
+100789,2025-05-07,12,Gangnam,Americano,coffee,4500,1,N,2
+100790,2025-03-03,13,Hongdae,Cold Brew,coffee,5000,2,N,5
+100791,2025-05-01,8,Hongdae,Vanilla Latte,coffee,5500,4,Y,5
+100792,2025-05-21,17,Hongdae,Mango Smoothie,juice,6500,1,N,4
+100793,2025-03-23,13,Gangnam,Croissant,dessert,4000,1,Y,
+100794,2025-04-24,9,Jamsil,Americano,coffee,4500,1,Y,
+100795,2025-03-22,13,Pangyo,Cold Brew,coffee,5000,1,N,3
+100796,2025-04-03,10,Jamsil,Cheesecake,dessert,6500,4,Y,4
+100797,2025-04-08,16,Jamsil,Brownie,dessert,5000,1,N,3
+100798,2025-05-03,9,Hongdae,Croissant,dessert,4000,1,Y,
+100799,2025-05-28,13,Pangyo,Croissant,dessert,4000,2,Y,5
+100800,2025-04-05,12,Hongdae,Orange Juice,juice,6000,2,N,5
+100801,2025-05-06,9,Jamsil,Espresso,coffee,4000,1,Y,
+100802,2025-04-04,8,Hongdae,Americano,coffee,4500,2,N,3
+100803,2025-03-16,12,Gangnam,Americano,coffee,4500,1,Y,5
+100804,2025-03-31,8,Hongdae,Cafe Latte,coffee,5000,1,N,3
+100805,2025-05-22,21,Jamsil,Cafe Latte,coffee,5000,2,N,4
+100806,2025-05-06,16,Hongdae,Americano,coffee,4500,1,N,3
+100807,2025-05-24,8,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+100808,2025-04-09,12,Jamsil,Americano,coffee,4500,1,Y,
+100809,2025-05-13,16,Jamsil,Earl Grey,tea,4500,2,Y,3
+100810,2025-05-06,12,Gangnam,Americano,coffee,4500,1,Y,3
+100811,2025-05-02,18,Gangnam,Americano,coffee,4500,1,N,
+100812,2025-04-23,18,Jamsil,Cold Brew,coffee,5000,1,Y,5
+100813,2025-05-30,17,Gangnam,Brownie,dessert,5000,1,Y,4
+100814,2025-05-02,18,Hongdae,Cold Brew,coffee,5000,2,Y,4
+100815,2025-04-18,8,Jamsil,Green Tea,tea,4500,1,Y,3
+100816,2025-03-10,10,Hongdae,Chamomile,tea,4500,1,N,2
+100817,2025-04-15,12,Hongdae,Croissant,dessert,4000,2,N,5
+100818,2025-03-20,12,Pangyo,Americano,coffee,4500,1,Y,4
+100819,2025-03-19,14,Gangnam,Cafe Latte,coffee,5000,2,N,4
+100820,2025-03-14,11,Gangnam,Brownie,dessert,5000,1,N,4
+100821,2025-04-18,11,Pangyo,Mango Smoothie,juice,6500,1,N,3
+100822,2025-03-28,12,Hongdae,Croissant,dessert,4000,1,Y,
+100823,2025-04-05,8,Gangnam,Chamomile,tea,4500,2,N,5
+100824,2025-04-19,15,Jamsil,Earl Grey,tea,4500,1,Y,
+100825,2025-03-25,20,Jamsil,Mango Smoothie,juice,6500,1,N,4
+100826,2025-03-30,12,Jamsil,Vanilla Latte,coffee,5500,1,N,3
+100827,2025-05-28,9,Jamsil,Croissant,dessert,4000,1,N,
+100828,2025-03-16,12,Pangyo,Orange Juice,juice,6000,1,Y,4
+100829,2025-04-01,12,Gangnam,Cold Brew,coffee,5000,1,Y,
+100830,2025-04-24,8,Jamsil,Americano,coffee,4500,1,N,3
+100831,2025-03-26,8,Hongdae,Vanilla Latte,coffee,5500,1,Y,4
+100832,2025-03-22,17,Gangnam,Croissant,dessert,4000,1,Y,5
+100833,2025-03-01,12,Jamsil,Cafe Latte,coffee,5000,2,N,2
+100834,2025-04-29,21,Jamsil,Earl Grey,tea,4500,1,Y,3
+100835,2025-04-06,12,Gangnam,Cold Brew,coffee,5000,2,Y,
+100836,2025-05-15,8,Gangnam,Vanilla Latte,coffee,5500,2,N,5
+100837,2025-03-02,8,Jamsil,Americano,coffee,4500,1,Y,4
+100838,2025-04-07,15,Hongdae,Americano,coffee,4500,2,Y,
+100839,2025-03-04,19,Gangnam,Mango Smoothie,juice,6500,2,Y,4
+100840,2025-03-04,16,Jamsil,Americano,coffee,4500,1,N,5
+100841,2025-03-05,12,Jamsil,Cafe Latte,coffee,5000,2,N,
+100842,2025-03-07,10,Gangnam,Green Tea,tea,4500,2,N,
+100843,2025-05-29,17,Gangnam,Americano,coffee,4500,1,N,
+100844,2025-04-21,9,Jamsil,Americano,coffee,4500,2,Y,2
+100845,2025-05-26,10,Pangyo,Americano,coffee,4500,1,N,3
+100846,2025-04-21,14,Gangnam,Americano,coffee,4500,1,Y,5
+100847,2025-05-24,13,Gangnam,Cold Brew,coffee,5000,1,N,4
+100848,2025-03-19,8,Gangnam,Cafe Latte,coffee,5000,1,N,4
+100849,2025-04-10,12,Hongdae,Americano,coffee,4500,3,N,
+100850,2025-03-06,8,Jamsil,Americano,coffee,4500,2,N,5
+100851,2025-03-11,9,Gangnam,Cheesecake,dessert,6500,2,N,
+100852,2025-04-11,18,Hongdae,Americano,coffee,4500,1,N,4
+100853,2025-04-03,9,Jamsil,Mango Smoothie,juice,6500,1,Y,
+100854,2025-05-11,11,Pangyo,Cafe Latte,coffee,5000,1,N,
+100855,2025-03-16,8,Gangnam,Green Tea,tea,4500,2,Y,5
+100856,2025-04-14,13,Gangnam,Cheesecake,dessert,6500,2,N,
+100857,2025-05-29,21,Hongdae,Croissant,dessert,4000,1,N,2
+100858,2025-04-22,12,Jamsil,Green Tea,tea,4500,1,Y,
+100859,2025-05-30,10,Jamsil,Croissant,dessert,4000,2,N,3
+100860,2025-05-07,20,Gangnam,Americano,coffee,4500,1,N,
+100861,2025-03-13,12,Pangyo,Green Tea,tea,4500,1,N,4
+100862,2025-03-18,19,Jamsil,Orange Juice,juice,6000,1,N,5
+100863,2025-05-19,13,Pangyo,Croissant,dessert,4000,1,N,
+100864,2025-03-17,20,Pangyo,Green Tea,tea,4500,1,N,4
+100865,2025-03-08,12,Hongdae,Orange Juice,juice,6000,1,N,
+100866,2025-05-26,13,Hongdae,Cafe Latte,coffee,5000,1,N,4
+100867,2025-05-09,17,Pangyo,Brownie,dessert,5000,1,N,5
+100868,2025-04-27,8,Jamsil,Americano,coffee,4500,1,N,4
+100869,2025-04-30,18,Gangnam,Cafe Latte,coffee,5000,1,Y,5
+100870,2025-05-16,8,Gangnam,Croissant,dessert,4000,1,N,
+100871,2025-03-29,8,Pangyo,Orange Juice,juice,6000,1,Y,5
+100872,2025-03-13,9,Gangnam,Green Tea,tea,4500,1,N,4
+100873,2025-04-24,8,Pangyo,Cheesecake,dessert,6500,1,Y,
+100874,2025-05-21,18,Jamsil,Earl Grey,tea,4500,1,Y,4
+100875,2025-05-18,16,Jamsil,Americano,coffee,4500,1,N,4
+100876,2025-03-25,19,Jamsil,Cold Brew,coffee,5000,1,Y,3
+100877,2025-03-28,9,Hongdae,Mango Smoothie,juice,6500,1,Y,
+100878,2025-03-25,20,Pangyo,Americano,coffee,4500,1,Y,3
+100879,2025-03-06,20,Pangyo,Americano,coffee,4500,1,N,3
+100880,2025-05-28,13,Pangyo,Green Tea,tea,4500,1,N,4
+100881,2025-05-10,9,Pangyo,Green Tea,tea,4500,3,Y,5
+100882,2025-05-21,19,Gangnam,Brownie,dessert,5000,2,Y,5
+100883,2025-03-25,10,Hongdae,Cold Brew,coffee,5000,1,N,3
+100884,2025-03-29,8,Gangnam,Croissant,dessert,4000,4,N,
+100885,2025-04-15,8,Gangnam,Cold Brew,coffee,5000,1,N,
+100886,2025-04-25,12,Jamsil,Brownie,dessert,5000,1,N,
+100887,2025-04-02,21,Gangnam,Green Tea,tea,4500,1,Y,5
+100888,2025-04-02,14,Gangnam,Earl Grey,tea,4500,1,N,
+100889,2025-04-02,9,Gangnam,Mango Smoothie,juice,6500,1,Y,
+100890,2025-03-31,12,Jamsil,Croissant,dessert,4000,1,N,
+100891,2025-04-16,12,Pangyo,Green Tea,tea,4500,1,N,
+100892,2025-05-01,9,Pangyo,Brownie,dessert,5000,1,Y,4
+100893,2025-05-13,8,Pangyo,Green Tea,tea,4500,1,N,3
+100894,2025-03-30,8,Gangnam,Orange Juice,juice,6000,1,Y,5
+100895,2025-03-25,9,Pangyo,Cafe Latte,coffee,5000,1,Y,
+100896,2025-03-09,13,Pangyo,Cold Brew,coffee,5000,1,Y,4
+100897,2025-05-16,17,Pangyo,Croissant,dessert,4000,1,N,4
+100898,2025-03-11,9,Jamsil,Chamomile,tea,4500,1,N,4
+100899,2025-05-27,12,Jamsil,Earl Grey,tea,4500,1,Y,2
+100900,2025-03-25,19,Jamsil,Brownie,dessert,5000,4,N,5
+100901,2025-03-02,11,Gangnam,Cheesecake,dessert,6500,2,N,2
+100902,2025-05-13,8,Gangnam,Orange Juice,juice,6000,2,N,
+100903,2025-03-14,20,Pangyo,Earl Grey,tea,4500,2,N,3
+100904,2025-03-10,19,Hongdae,Cafe Latte,coffee,5000,1,N,3
+100905,2025-04-16,12,Gangnam,Mango Smoothie,juice,6500,1,N,3
+100906,2025-03-12,20,Jamsil,Cheesecake,dessert,6500,1,Y,
+100907,2025-04-21,20,Hongdae,Cold Brew,coffee,5000,1,N,5
+100908,2025-04-07,12,Gangnam,Orange Juice,juice,6000,1,Y,3
+100909,2025-04-25,19,Jamsil,Cold Brew,coffee,5000,1,Y,5
+100910,2025-05-09,11,Jamsil,Americano,coffee,4500,1,N,
+100911,2025-04-26,8,Pangyo,Cafe Latte,coffee,5000,1,Y,4
+100912,2025-03-22,13,Gangnam,Green Tea,tea,4500,1,N,
+100913,2025-04-28,9,Pangyo,Brownie,dessert,5000,2,N,3
+100914,2025-03-19,14,Gangnam,Vanilla Latte,coffee,5500,2,N,3
+100915,2025-04-29,12,Gangnam,Americano,coffee,4500,1,Y,5
+100916,2025-04-30,15,Gangnam,Brownie,dessert,5000,1,N,3
+100917,2025-03-08,13,Gangnam,Americano,coffee,4500,2,Y,4
+100918,2025-03-11,15,Jamsil,Cafe Latte,coffee,5000,1,N,4
+100919,2025-05-03,13,Gangnam,Vanilla Latte,coffee,5500,1,N,
+100920,2025-03-11,8,Hongdae,Americano,coffee,4500,1,N,3
+100921,2025-05-12,13,Jamsil,Espresso,coffee,4000,1,Y,4
+100922,2025-04-26,20,Pangyo,Cafe Latte,coffee,5000,1,N,5
+100923,2025-05-15,9,Jamsil,Espresso,coffee,4000,1,N,3
+100924,2025-03-12,13,Pangyo,Americano,coffee,4500,1,Y,3
+100925,2025-05-30,17,Gangnam,Chamomile,tea,4500,1,N,2
+100926,2025-03-18,13,Gangnam,Americano,coffee,4500,1,N,4
+100927,2025-05-13,17,Hongdae,Earl Grey,tea,4500,1,Y,
+100928,2025-03-02,9,Jamsil,Orange Juice,juice,6000,2,N,
+100929,2025-04-13,12,Pangyo,Americano,coffee,4500,3,N,4
+100930,2025-05-20,14,Gangnam,Brownie,dessert,5000,1,N,4
+100931,2025-03-03,13,Hongdae,Brownie,dessert,5000,2,Y,
+100932,2025-05-15,20,Hongdae,Cold Brew,coffee,5000,2,Y,
+100933,2025-03-06,13,Jamsil,Earl Grey,tea,4500,1,Y,5
+100934,2025-04-12,13,Gangnam,Vanilla Latte,coffee,5500,1,N,
+100935,2025-04-06,13,Hongdae,Orange Juice,juice,6000,1,Y,
+100936,2025-03-01,17,Hongdae,Chamomile,tea,4500,1,N,5
+100937,2025-04-08,18,Hongdae,Americano,coffee,4500,1,Y,5
+100938,2025-03-29,8,Pangyo,Cold Brew,coffee,5000,1,N,2
+100939,2025-05-18,9,Pangyo,Cafe Latte,coffee,5000,1,N,
+100940,2025-03-14,18,Gangnam,Croissant,dessert,4000,2,N,2
+100941,2025-03-03,10,Gangnam,Americano,coffee,4500,1,N,5
+100942,2025-03-24,13,Gangnam,Mango Smoothie,juice,6500,1,Y,3
+100943,2025-03-07,8,Hongdae,Americano,coffee,4500,1,N,4
+100944,2025-05-07,18,Pangyo,Croissant,dessert,4000,1,N,2
+100945,2025-04-02,18,Hongdae,Orange Juice,juice,6000,2,Y,
+100946,2025-05-03,20,Pangyo,Green Tea,tea,4500,1,Y,4
+100947,2025-04-25,8,Pangyo,Cold Brew,coffee,5000,1,N,3
+100948,2025-04-02,16,Pangyo,Cold Brew,coffee,5000,4,Y,3
+100949,2025-04-10,11,Hongdae,Americano,coffee,4500,1,Y,
+100950,2025-03-07,14,Jamsil,Green Tea,tea,4500,1,Y,3
+100951,2025-03-21,8,Hongdae,Espresso,coffee,4000,1,N,3
+100952,2025-05-03,18,Jamsil,Americano,coffee,4500,1,Y,5
+100953,2025-03-06,13,Hongdae,Earl Grey,tea,4500,1,N,4
+100954,2025-04-08,12,Hongdae,Green Tea,tea,4500,1,N,4
+100955,2025-03-28,18,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+100956,2025-03-14,13,Gangnam,Orange Juice,juice,6000,1,N,4
+100957,2025-05-29,15,Jamsil,Americano,coffee,4500,1,N,5
+100958,2025-04-12,11,Jamsil,Espresso,coffee,4000,1,N,3
+100959,2025-04-24,9,Gangnam,Green Tea,tea,4500,1,N,4
+100960,2025-04-29,8,Jamsil,Cafe Latte,coffee,5000,1,Y,3
+100961,2025-04-10,14,Jamsil,Cafe Latte,coffee,5000,2,N,2
+100962,2025-04-12,11,Hongdae,Cafe Latte,coffee,5000,2,N,5
+100963,2025-05-04,9,Hongdae,Americano,coffee,4500,2,Y,5
+100964,2025-04-12,10,Gangnam,Cold Brew,coffee,5000,3,N,4
+100965,2025-03-10,10,Gangnam,Chamomile,tea,4500,2,Y,4
+100966,2025-04-26,13,Pangyo,Cheesecake,dessert,6500,1,N,4
+100967,2025-05-26,20,Jamsil,Cafe Latte,coffee,5000,1,N,4
+100968,2025-03-16,13,Gangnam,Cafe Latte,coffee,5000,2,N,2
+100969,2025-03-10,9,Gangnam,Orange Juice,juice,6000,1,Y,
+100970,2025-03-23,19,Pangyo,Cold Brew,coffee,5000,2,N,4
+100971,2025-05-31,9,Jamsil,Americano,coffee,4500,1,N,
+100972,2025-03-14,8,Gangnam,Americano,coffee,4500,2,Y,
+100973,2025-05-31,8,Gangnam,Americano,coffee,4500,1,Y,5
+100974,2025-04-30,9,Jamsil,Orange Juice,juice,6000,1,Y,
+100975,2025-05-05,13,Gangnam,Croissant,dessert,4000,4,N,
+100976,2025-04-12,21,Pangyo,Vanilla Latte,coffee,5500,1,N,5
+100977,2025-04-30,11,Pangyo,Cheesecake,dessert,6500,1,N,2
+100978,2025-05-19,13,Gangnam,Americano,coffee,4500,1,Y,
+100979,2025-03-31,15,Gangnam,Chamomile,tea,4500,1,Y,5
+100980,2025-03-01,15,Pangyo,Vanilla Latte,coffee,5500,1,Y,4
+100981,2025-04-24,13,Jamsil,Cold Brew,coffee,5000,1,N,3
+100982,2025-04-13,16,Hongdae,Cold Brew,coffee,5000,1,Y,
+100983,2025-03-08,12,Gangnam,Cheesecake,dessert,6500,1,Y,
+100984,2025-03-12,11,Jamsil,Americano,coffee,4500,1,Y,
+100985,2025-05-21,8,Hongdae,Americano,coffee,4500,1,N,
+100986,2025-05-03,19,Pangyo,Brownie,dessert,5000,2,N,
+100987,2025-03-04,13,Gangnam,Cold Brew,coffee,5000,1,Y,
+100988,2025-03-30,19,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+100989,2025-05-21,9,Gangnam,Americano,coffee,4500,2,N,
+100990,2025-03-27,15,Hongdae,Cold Brew,coffee,5000,2,N,2
+100991,2025-04-15,12,Jamsil,Americano,coffee,4500,1,Y,
+100992,2025-05-25,11,Pangyo,Americano,coffee,4500,1,N,
+100993,2025-03-09,18,Hongdae,Earl Grey,tea,4500,2,N,1
+100994,2025-05-12,8,Pangyo,Chamomile,tea,4500,1,Y,2
+100995,2025-03-04,12,Hongdae,Cheesecake,dessert,6500,1,Y,5
+100996,2025-03-19,10,Jamsil,Cheesecake,dessert,6500,1,N,3
+100997,2025-03-19,14,Pangyo,Americano,coffee,4500,1,N,4
+100998,2025-05-06,20,Jamsil,Americano,coffee,4500,1,N,
+100999,2025-05-11,18,Jamsil,Croissant,dessert,4000,1,N,2
+101000,2025-03-23,16,Hongdae,Green Tea,tea,4500,1,N,4
+101001,2025-05-12,11,Jamsil,Cheesecake,dessert,6500,1,N,
+101002,2025-05-23,9,Jamsil,Croissant,dessert,4000,1,Y,3
+101003,2025-05-29,13,Pangyo,Croissant,dessert,4000,2,N,5
+101004,2025-03-16,18,Pangyo,Cold Brew,coffee,5000,2,N,4
+101005,2025-05-30,9,Hongdae,Croissant,dessert,4000,1,Y,
+101006,2025-05-05,12,Gangnam,Green Tea,tea,4500,2,N,3
+101007,2025-03-03,12,Hongdae,Americano,coffee,4500,1,N,
+101008,2025-03-30,17,Pangyo,Cafe Latte,coffee,5000,1,Y,4
+101009,2025-04-05,13,Gangnam,Mango Smoothie,juice,6500,1,Y,3
+101010,2025-03-04,10,Hongdae,Earl Grey,tea,4500,1,N,
+101011,2025-04-16,8,Pangyo,Mango Smoothie,juice,6500,1,Y,4
+101012,2025-05-03,20,Gangnam,Americano,coffee,4500,3,N,5
+101013,2025-04-02,10,Jamsil,Cheesecake,dessert,6500,1,Y,3
+101014,2025-05-14,9,Gangnam,Vanilla Latte,coffee,5500,3,N,
+101015,2025-05-08,8,Hongdae,Brownie,dessert,5000,4,Y,4
+101016,2025-04-15,13,Pangyo,Earl Grey,tea,4500,1,Y,
+101017,2025-04-24,12,Gangnam,Brownie,dessert,5000,1,Y,5
+101018,2025-04-08,12,Jamsil,Cafe Latte,coffee,5000,1,N,
+101019,2025-04-14,12,Jamsil,Cheesecake,dessert,6500,1,N,4
+101020,2025-04-22,9,Gangnam,Cheesecake,dessert,6500,1,N,
+101021,2025-05-24,18,Gangnam,Americano,coffee,4500,1,N,3
+101022,2025-03-05,18,Jamsil,Cafe Latte,coffee,5000,4,Y,
+101023,2025-04-10,12,Hongdae,Vanilla Latte,coffee,5500,1,Y,
+101024,2025-04-01,12,Pangyo,Brownie,dessert,5000,2,Y,4
+101025,2025-05-04,8,Hongdae,Americano,coffee,4500,1,N,3
+101026,2025-05-21,12,Gangnam,Earl Grey,tea,4500,1,Y,
+101027,2025-03-11,19,Pangyo,Brownie,dessert,5000,1,N,5
+101028,2025-05-11,8,Hongdae,Earl Grey,tea,4500,1,N,
+101029,2025-05-10,11,Jamsil,Mango Smoothie,juice,6500,1,N,4
+101030,2025-03-16,21,Gangnam,Green Tea,tea,4500,1,Y,4
+101031,2025-05-11,12,Jamsil,Green Tea,tea,4500,1,N,
+101032,2025-04-10,19,Hongdae,Brownie,dessert,5000,3,Y,5
+101033,2025-05-05,18,Pangyo,Vanilla Latte,coffee,5500,1,N,4
+101034,2025-04-13,11,Pangyo,Orange Juice,juice,6000,1,N,4
+101035,2025-04-09,11,Hongdae,Vanilla Latte,coffee,5500,1,N,3
+101036,2025-03-02,8,Hongdae,Cheesecake,dessert,6500,1,Y,4
+101037,2025-05-14,20,Jamsil,Green Tea,tea,4500,1,N,
+101038,2025-03-18,16,Gangnam,Americano,coffee,4500,2,Y,3
+101039,2025-05-02,14,Jamsil,Mango Smoothie,juice,6500,2,N,5
+101040,2025-03-29,21,Pangyo,Cheesecake,dessert,6500,1,N,
+101041,2025-04-28,10,Jamsil,Cafe Latte,coffee,5000,1,N,
+101042,2025-03-07,8,Pangyo,Espresso,coffee,4000,1,N,
+101043,2025-04-09,8,Pangyo,Vanilla Latte,coffee,5500,2,Y,5
+101044,2025-03-30,13,Gangnam,Americano,coffee,4500,1,Y,4
+101045,2025-03-11,10,Pangyo,Cheesecake,dessert,6500,1,Y,5
+101046,2025-05-19,17,Pangyo,Croissant,dessert,4000,2,N,3
+101047,2025-05-24,12,Hongdae,Croissant,dessert,4000,1,N,3
+101048,2025-03-28,14,Gangnam,Cheesecake,dessert,6500,1,Y,
+101049,2025-04-09,10,Gangnam,Cafe Latte,coffee,5000,2,N,
+101050,2025-05-03,12,Pangyo,Mango Smoothie,juice,6500,2,N,3
+101051,2025-04-27,13,Gangnam,Cold Brew,coffee,5000,2,N,3
+101052,2025-03-16,13,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+101053,2025-03-31,12,Pangyo,Americano,coffee,4500,1,N,3
+101054,2025-04-20,16,Gangnam,Americano,coffee,4500,1,N,2
+101055,2025-05-22,12,Hongdae,Croissant,dessert,4000,1,N,3
+101056,2025-05-26,18,Hongdae,Cheesecake,dessert,6500,2,Y,4
+101057,2025-05-04,17,Hongdae,Cheesecake,dessert,6500,1,Y,
+101058,2025-05-19,21,Jamsil,Croissant,dessert,4000,1,N,
+101059,2025-03-31,8,Hongdae,Green Tea,tea,4500,1,N,
+101060,2025-05-05,13,Pangyo,Green Tea,tea,4500,1,N,4
+101061,2025-03-29,8,Jamsil,Cheesecake,dessert,6500,2,Y,5
+101062,2025-04-24,12,Gangnam,Cold Brew,coffee,5000,4,N,
+101063,2025-05-26,9,Pangyo,Earl Grey,tea,4500,1,N,2
+101064,2025-03-29,18,Gangnam,Cafe Latte,coffee,5000,1,N,
+101065,2025-04-30,16,Jamsil,Cafe Latte,coffee,5000,1,N,
+101066,2025-04-23,17,Gangnam,Vanilla Latte,coffee,5500,1,N,
+101067,2025-04-09,8,Gangnam,Americano,coffee,4500,2,N,1
+101068,2025-03-09,16,Hongdae,Green Tea,tea,4500,3,N,
+101069,2025-03-14,12,Jamsil,Brownie,dessert,5000,1,Y,5
+101070,2025-03-28,20,Jamsil,Chamomile,tea,4500,1,Y,
+101071,2025-04-07,14,Hongdae,Vanilla Latte,coffee,5500,1,Y,4
+101072,2025-03-07,13,Jamsil,Cafe Latte,coffee,5000,4,N,4
+101073,2025-03-06,15,Jamsil,Americano,coffee,4500,1,N,
+101074,2025-04-27,9,Hongdae,Orange Juice,juice,6000,3,Y,3
+101075,2025-05-30,18,Pangyo,Cheesecake,dessert,6500,1,N,4
+101076,2025-05-03,8,Jamsil,Cafe Latte,coffee,5000,1,N,5
+101077,2025-04-16,8,Gangnam,Cold Brew,coffee,5000,1,Y,3
+101078,2025-05-23,20,Gangnam,Cafe Latte,coffee,5000,2,Y,4
+101079,2025-05-08,18,Gangnam,Espresso,coffee,4000,4,Y,4
+101080,2025-03-07,8,Jamsil,Croissant,dessert,4000,1,Y,5
+101081,2025-03-18,12,Hongdae,Cafe Latte,coffee,5000,1,Y,
+101082,2025-04-19,16,Pangyo,Americano,coffee,4500,2,N,2
+101083,2025-03-01,17,Jamsil,Earl Grey,tea,4500,3,Y,4
+101084,2025-05-27,21,Jamsil,Vanilla Latte,coffee,5500,1,Y,
+101085,2025-04-29,13,Gangnam,Brownie,dessert,5000,2,N,
+101086,2025-03-26,17,Pangyo,Cafe Latte,coffee,5000,2,N,
+101087,2025-03-31,13,Hongdae,Green Tea,tea,4500,1,Y,
+101088,2025-03-19,13,Hongdae,Cafe Latte,coffee,5000,1,N,
+101089,2025-03-28,17,Hongdae,Cold Brew,coffee,5000,3,Y,4
+101090,2025-03-28,9,Jamsil,Cold Brew,coffee,5000,1,N,4
+101091,2025-03-03,8,Hongdae,Cafe Latte,coffee,5000,1,Y,3
+101092,2025-05-28,21,Jamsil,Cafe Latte,coffee,5000,2,N,4
+101093,2025-03-01,12,Pangyo,Americano,coffee,4500,1,Y,3
+101094,2025-04-25,8,Pangyo,Americano,coffee,4500,1,N,
+101095,2025-05-09,16,Gangnam,Orange Juice,juice,6000,2,N,2
+101096,2025-05-16,8,Jamsil,Americano,coffee,4500,1,N,
+101097,2025-04-24,18,Hongdae,Mango Smoothie,juice,6500,2,Y,5
+101098,2025-03-27,12,Pangyo,Brownie,dessert,5000,1,N,4
+101099,2025-03-05,8,Gangnam,Brownie,dessert,5000,1,N,3
+101100,2025-05-06,14,Pangyo,Americano,coffee,4500,2,N,
+101101,2025-04-11,12,Gangnam,Cafe Latte,coffee,5000,1,N,4
+101102,2025-05-29,11,Hongdae,Cold Brew,coffee,5000,1,N,2
+101103,2025-05-30,12,Jamsil,Green Tea,tea,4500,2,N,
+101104,2025-04-01,8,Hongdae,Croissant,dessert,4000,2,N,5
+101105,2025-05-03,15,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+101106,2025-03-05,9,Jamsil,Americano,coffee,4500,1,N,4
+101107,2025-05-19,11,Pangyo,Cheesecake,dessert,6500,1,Y,
+101108,2025-03-30,9,Jamsil,Green Tea,tea,4500,2,N,5
+101109,2025-03-29,16,Pangyo,Orange Juice,juice,6000,1,Y,3
+101110,2025-04-22,10,Pangyo,Cafe Latte,coffee,5000,1,N,5
+101111,2025-05-12,18,Gangnam,Green Tea,tea,4500,1,N,
+101112,2025-03-03,9,Hongdae,Chamomile,tea,4500,1,Y,
+101113,2025-04-02,13,Gangnam,Croissant,dessert,4000,1,N,4
+101114,2025-04-26,9,Gangnam,Green Tea,tea,4500,1,N,
+101115,2025-03-05,19,Gangnam,Cafe Latte,coffee,5000,1,Y,
+101116,2025-04-04,8,Gangnam,Cold Brew,coffee,5000,3,N,
+101117,2025-04-18,20,Jamsil,Green Tea,tea,4500,1,N,
+101118,2025-05-29,14,Pangyo,Croissant,dessert,4000,2,Y,5
+101119,2025-04-27,12,Hongdae,Vanilla Latte,coffee,5500,1,N,
+101120,2025-04-15,10,Gangnam,Croissant,dessert,4000,1,N,
+101121,2025-05-30,9,Jamsil,Earl Grey,tea,4500,2,N,2
+101122,2025-05-11,16,Jamsil,Chamomile,tea,4500,3,Y,5
+101123,2025-04-09,14,Jamsil,Earl Grey,tea,4500,1,N,
+101124,2025-05-31,13,Pangyo,Mango Smoothie,juice,6500,1,Y,5
+101125,2025-04-07,18,Gangnam,Cheesecake,dessert,6500,3,N,
+101126,2025-05-10,13,Pangyo,Cafe Latte,coffee,5000,1,N,
+101127,2025-05-07,9,Hongdae,Croissant,dessert,4000,1,N,4
+101128,2025-04-20,11,Hongdae,Vanilla Latte,coffee,5500,2,N,2
+101129,2025-04-09,18,Hongdae,Americano,coffee,4500,1,N,4
+101130,2025-04-14,20,Gangnam,Green Tea,tea,4500,2,Y,5
+101131,2025-03-24,9,Hongdae,Vanilla Latte,coffee,5500,1,N,
+101132,2025-04-12,17,Hongdae,Cafe Latte,coffee,5000,3,Y,3
+101133,2025-03-24,9,Jamsil,Americano,coffee,4500,1,Y,
+101134,2025-05-12,8,Gangnam,Americano,coffee,4500,2,N,4
+101135,2025-03-22,8,Hongdae,Cheesecake,dessert,6500,1,N,
+101136,2025-04-25,21,Hongdae,Croissant,dessert,4000,4,Y,5
+101137,2025-04-12,15,Gangnam,Croissant,dessert,4000,1,N,3
+101138,2025-03-19,18,Pangyo,Vanilla Latte,coffee,5500,2,Y,
+101139,2025-04-18,13,Hongdae,Cafe Latte,coffee,5000,2,N,3
+101140,2025-05-26,19,Hongdae,Cheesecake,dessert,6500,4,N,
+101141,2025-05-15,9,Gangnam,Brownie,dessert,5000,2,Y,4
+101142,2025-03-23,12,Gangnam,Americano,coffee,4500,2,N,3
+101143,2025-04-07,10,Jamsil,Cold Brew,coffee,5000,2,N,4
+101144,2025-05-07,10,Pangyo,Americano,coffee,4500,2,Y,
+101145,2025-03-31,12,Gangnam,Americano,coffee,4500,1,N,
+101146,2025-04-14,9,Jamsil,Brownie,dessert,5000,1,N,
+101147,2025-03-20,9,Gangnam,Cold Brew,coffee,5000,1,N,4
+101148,2025-04-23,8,Gangnam,Espresso,coffee,4000,1,Y,5
+101149,2025-03-12,12,Hongdae,Orange Juice,juice,6000,1,N,4
+101150,2025-04-09,8,Hongdae,Americano,coffee,4500,1,N,
+101151,2025-04-08,17,Jamsil,Americano,coffee,4500,1,N,
+101152,2025-03-26,11,Gangnam,Mango Smoothie,juice,6500,1,N,
+101153,2025-05-18,15,Hongdae,Americano,coffee,4500,1,N,
+101154,2025-04-13,11,Gangnam,Espresso,coffee,4000,2,N,4
+101155,2025-03-22,11,Hongdae,Brownie,dessert,5000,1,N,
+101156,2025-05-07,12,Jamsil,Croissant,dessert,4000,1,N,
+101157,2025-03-20,11,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+101158,2025-03-14,13,Hongdae,Cold Brew,coffee,5000,1,N,
+101159,2025-04-24,12,Gangnam,Americano,coffee,4500,3,N,
+101160,2025-04-23,9,Gangnam,Earl Grey,tea,4500,1,N,3
+101161,2025-04-25,18,Hongdae,Espresso,coffee,4000,3,N,
+101162,2025-04-07,19,Jamsil,Americano,coffee,4500,1,Y,4
+101163,2025-03-24,18,Hongdae,Americano,coffee,4500,1,Y,4
+101164,2025-05-18,18,Pangyo,Americano,coffee,4500,2,Y,4
+101165,2025-03-09,19,Hongdae,Earl Grey,tea,4500,2,Y,4
+101166,2025-03-03,12,Hongdae,Americano,coffee,4500,2,Y,4
+101167,2025-04-07,10,Gangnam,Americano,coffee,4500,1,N,4
+101168,2025-05-17,9,Gangnam,Chamomile,tea,4500,1,N,4
+101169,2025-04-10,10,Pangyo,Espresso,coffee,4000,1,Y,3
+101170,2025-05-05,16,Pangyo,Americano,coffee,4500,1,Y,5
+101171,2025-05-19,13,Hongdae,Americano,coffee,4500,1,N,3
+101172,2025-03-11,14,Jamsil,Vanilla Latte,coffee,5500,3,N,5
+101173,2025-05-07,13,Pangyo,Chamomile,tea,4500,1,N,4
+101174,2025-05-27,18,Hongdae,Vanilla Latte,coffee,5500,1,N,
+101175,2025-03-13,19,Gangnam,Cold Brew,coffee,5000,1,N,4
+101176,2025-05-01,21,Jamsil,Cafe Latte,coffee,5000,1,N,4
+101177,2025-05-14,8,Pangyo,Cold Brew,coffee,5000,1,Y,5
+101178,2025-05-14,8,Jamsil,Orange Juice,juice,6000,4,N,3
+101179,2025-05-10,18,Jamsil,Cold Brew,coffee,5000,1,N,
+101180,2025-03-09,13,Pangyo,Earl Grey,tea,4500,3,N,4
+101181,2025-04-23,11,Gangnam,Cheesecake,dessert,6500,1,Y,
+101182,2025-05-24,18,Hongdae,Mango Smoothie,juice,6500,1,N,
+101183,2025-04-08,18,Gangnam,Mango Smoothie,juice,6500,1,N,4
+101184,2025-04-08,9,Jamsil,Cheesecake,dessert,6500,1,N,
+101185,2025-03-31,9,Hongdae,Americano,coffee,4500,2,Y,3
+101186,2025-03-14,12,Gangnam,Cold Brew,coffee,5000,1,N,3
+101187,2025-04-25,16,Pangyo,Chamomile,tea,4500,2,Y,5
+101188,2025-05-03,18,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+101189,2025-03-16,19,Gangnam,Cold Brew,coffee,5000,1,Y,4
+101190,2025-04-29,9,Gangnam,Cold Brew,coffee,5000,2,N,3
+101191,2025-03-10,11,Jamsil,Mango Smoothie,juice,6500,1,N,4
+101192,2025-05-08,12,Pangyo,Green Tea,tea,4500,1,N,3
+101193,2025-05-31,13,Pangyo,Orange Juice,juice,6000,4,N,4
+101194,2025-05-25,14,Gangnam,Americano,coffee,4500,1,N,
+101195,2025-03-30,11,Jamsil,Brownie,dessert,5000,1,N,3
+101196,2025-04-02,8,Jamsil,Americano,coffee,4500,1,N,4
+101197,2025-03-28,13,Pangyo,Chamomile,tea,4500,1,Y,
+101198,2025-03-03,17,Hongdae,Americano,coffee,4500,2,N,
+101199,2025-05-18,8,Gangnam,Mango Smoothie,juice,6500,1,N,4
+101200,2025-03-10,12,Gangnam,Cheesecake,dessert,6500,2,N,
+101201,2025-04-10,13,Pangyo,Earl Grey,tea,4500,1,Y,
+101202,2025-04-14,9,Pangyo,Chamomile,tea,4500,2,N,3
+101203,2025-05-14,18,Jamsil,Green Tea,tea,4500,1,N,3
+101204,2025-03-29,15,Hongdae,Cheesecake,dessert,6500,1,N,3
+101205,2025-05-23,15,Gangnam,Orange Juice,juice,6000,1,N,
+101206,2025-04-19,8,Gangnam,Orange Juice,juice,6000,1,N,3
+101207,2025-04-13,20,Pangyo,Cafe Latte,coffee,5000,1,Y,5
+101208,2025-04-19,11,Jamsil,Brownie,dessert,5000,1,Y,4
+101209,2025-04-20,11,Gangnam,Americano,coffee,4500,1,N,
+101210,2025-05-07,8,Pangyo,Cold Brew,coffee,5000,1,Y,3
+101211,2025-04-12,16,Hongdae,Cafe Latte,coffee,5000,1,Y,
+101212,2025-03-23,21,Hongdae,Cafe Latte,coffee,5000,1,N,3
+101213,2025-05-13,19,Pangyo,Cafe Latte,coffee,5000,2,Y,
+101214,2025-03-14,10,Pangyo,Americano,coffee,4500,1,N,2
+101215,2025-05-25,9,Jamsil,Green Tea,tea,4500,1,Y,3
+101216,2025-03-15,18,Pangyo,Cold Brew,coffee,5000,1,N,5
+101217,2025-04-27,13,Jamsil,Cafe Latte,coffee,5000,2,N,4
+101218,2025-03-17,14,Gangnam,Brownie,dessert,5000,2,N,3
+101219,2025-05-06,12,Hongdae,Orange Juice,juice,6000,1,N,5
+101220,2025-05-21,12,Pangyo,Cold Brew,coffee,5000,1,Y,
+101221,2025-04-03,12,Gangnam,Vanilla Latte,coffee,5500,1,N,5
+101222,2025-03-09,20,Gangnam,Croissant,dessert,4000,1,N,4
+101223,2025-05-29,20,Gangnam,Vanilla Latte,coffee,5500,1,N,5
+101224,2025-05-11,12,Jamsil,Vanilla Latte,coffee,5500,1,Y,4
+101225,2025-04-29,15,Pangyo,Cafe Latte,coffee,5000,1,N,5
+101226,2025-04-29,8,Jamsil,Brownie,dessert,5000,1,Y,
+101227,2025-03-09,21,Jamsil,Americano,coffee,4500,1,N,2
+101228,2025-04-10,15,Hongdae,Croissant,dessert,4000,1,N,5
+101229,2025-04-28,8,Gangnam,Vanilla Latte,coffee,5500,1,N,
+101230,2025-05-06,13,Gangnam,Cold Brew,coffee,5000,1,N,4
+101231,2025-04-30,15,Gangnam,Americano,coffee,4500,1,Y,5
+101232,2025-03-13,15,Hongdae,Americano,coffee,4500,1,N,3
+101233,2025-03-01,17,Hongdae,Cafe Latte,coffee,5000,1,N,5
+101234,2025-05-03,12,Hongdae,Croissant,dessert,4000,2,Y,5
+101235,2025-04-26,9,Hongdae,Americano,coffee,4500,1,Y,
+101236,2025-04-17,9,Jamsil,Green Tea,tea,4500,1,N,
+101237,2025-04-21,21,Hongdae,Cold Brew,coffee,5000,1,N,4
+101238,2025-05-18,16,Gangnam,Cold Brew,coffee,5000,1,Y,2
+101239,2025-04-18,18,Pangyo,Americano,coffee,4500,1,N,3
+101240,2025-04-26,8,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+101241,2025-05-03,13,Gangnam,Orange Juice,juice,6000,1,N,5
+101242,2025-03-29,16,Jamsil,Americano,coffee,4500,1,Y,
+101243,2025-04-17,19,Gangnam,Cafe Latte,coffee,5000,1,N,5
+101244,2025-04-24,12,Gangnam,Americano,coffee,4500,1,Y,3
+101245,2025-03-25,9,Pangyo,Cheesecake,dessert,6500,1,N,5
+101246,2025-05-24,19,Gangnam,Croissant,dessert,4000,1,N,5
+101247,2025-05-11,18,Gangnam,Americano,coffee,4500,1,Y,5
+101248,2025-04-03,16,Jamsil,Americano,coffee,4500,1,N,4
+101249,2025-03-07,10,Hongdae,Croissant,dessert,4000,1,Y,4
+101250,2025-05-16,8,Gangnam,Americano,coffee,4500,1,Y,4
+101251,2025-05-18,12,Jamsil,Earl Grey,tea,4500,2,Y,5
+101252,2025-03-31,9,Hongdae,Cheesecake,dessert,6500,1,N,
+101253,2025-05-12,9,Jamsil,Vanilla Latte,coffee,5500,1,N,4
+101254,2025-05-21,18,Hongdae,Earl Grey,tea,4500,1,Y,5
+101255,2025-03-21,12,Pangyo,Mango Smoothie,juice,6500,2,N,3
+101256,2025-03-24,15,Jamsil,Chamomile,tea,4500,1,N,3
+101257,2025-05-21,13,Hongdae,Orange Juice,juice,6000,1,N,4
+101258,2025-03-27,18,Jamsil,Americano,coffee,4500,2,N,
+101259,2025-03-27,18,Jamsil,Americano,coffee,4500,1,N,3
+101260,2025-04-25,9,Gangnam,Brownie,dessert,5000,1,Y,
+101261,2025-04-14,14,Jamsil,Green Tea,tea,4500,1,N,2
+101262,2025-04-19,12,Jamsil,Mango Smoothie,juice,6500,2,Y,5
+101263,2025-04-11,9,Gangnam,Vanilla Latte,coffee,5500,2,Y,
+101264,2025-04-21,18,Hongdae,Cheesecake,dessert,6500,4,N,5
+101265,2025-05-30,12,Gangnam,Croissant,dessert,4000,1,Y,
+101266,2025-04-07,20,Jamsil,Vanilla Latte,coffee,5500,4,Y,5
+101267,2025-05-30,12,Pangyo,Brownie,dessert,5000,1,Y,3
+101268,2025-03-12,19,Gangnam,Cheesecake,dessert,6500,1,N,
+101269,2025-05-30,8,Hongdae,Americano,coffee,4500,1,Y,
+101270,2025-04-28,16,Hongdae,Mango Smoothie,juice,6500,1,N,4
+101271,2025-05-12,15,Pangyo,Vanilla Latte,coffee,5500,2,N,2
+101272,2025-05-27,8,Gangnam,Earl Grey,tea,4500,1,N,3
+101273,2025-05-12,16,Pangyo,Cafe Latte,coffee,5000,1,N,4
+101274,2025-03-21,8,Jamsil,Cafe Latte,coffee,5000,2,Y,4
+101275,2025-05-25,21,Hongdae,Chamomile,tea,4500,1,N,4
+101276,2025-03-26,16,Jamsil,Cafe Latte,coffee,5000,1,N,
+101277,2025-03-20,10,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+101278,2025-04-17,15,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+101279,2025-04-17,13,Gangnam,Brownie,dessert,5000,1,N,
+101280,2025-03-09,12,Jamsil,Vanilla Latte,coffee,5500,2,N,3
+101281,2025-04-03,8,Jamsil,Mango Smoothie,juice,6500,1,N,4
+101282,2025-03-25,9,Gangnam,Vanilla Latte,coffee,5500,1,Y,4
+101283,2025-03-12,12,Jamsil,Cafe Latte,coffee,5000,1,N,
+101284,2025-04-15,14,Hongdae,Green Tea,tea,4500,1,N,5
+101285,2025-03-09,8,Gangnam,Cheesecake,dessert,6500,1,Y,3
+101286,2025-03-17,18,Gangnam,Vanilla Latte,coffee,5500,1,N,5
+101287,2025-03-08,9,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+101288,2025-04-18,8,Gangnam,Americano,coffee,4500,3,N,
+101289,2025-03-04,13,Jamsil,Cafe Latte,coffee,5000,1,N,4
+101290,2025-05-25,13,Gangnam,Vanilla Latte,coffee,5500,1,Y,5
+101291,2025-04-21,14,Jamsil,Green Tea,tea,4500,3,N,
+101292,2025-04-11,20,Pangyo,Cold Brew,coffee,5000,1,N,4
+101293,2025-04-01,18,Pangyo,Vanilla Latte,coffee,5500,1,N,4
+101294,2025-04-13,9,Gangnam,Americano,coffee,4500,1,N,3
+101295,2025-05-29,8,Gangnam,Cafe Latte,coffee,5000,1,N,
+101296,2025-05-02,16,Jamsil,Cheesecake,dessert,6500,1,Y,5
+101297,2025-05-20,21,Pangyo,Americano,coffee,4500,1,Y,3
+101298,2025-05-25,13,Jamsil,Croissant,dessert,4000,3,Y,
+101299,2025-05-25,12,Hongdae,Earl Grey,tea,4500,1,Y,
+101300,2025-03-14,9,Gangnam,Cafe Latte,coffee,5000,3,N,
+101301,2025-04-23,12,Hongdae,Cafe Latte,coffee,5000,1,N,2
+101302,2025-04-21,11,Hongdae,Cafe Latte,coffee,5000,1,N,4
+101303,2025-03-04,11,Pangyo,Americano,coffee,4500,4,N,4
+101304,2025-03-28,21,Hongdae,Green Tea,tea,4500,1,N,
+101305,2025-04-11,12,Pangyo,Orange Juice,juice,6000,1,Y,5
+101306,2025-03-31,15,Hongdae,Cheesecake,dessert,6500,1,Y,
+101307,2025-03-30,12,Hongdae,Americano,coffee,4500,1,N,4
+101308,2025-05-18,8,Hongdae,Croissant,dessert,4000,1,Y,5
+101309,2025-04-23,14,Pangyo,Cheesecake,dessert,6500,4,N,4
+101310,2025-03-05,21,Pangyo,Earl Grey,tea,4500,1,N,
+101311,2025-04-23,10,Hongdae,Cafe Latte,coffee,5000,2,N,3
+101312,2025-04-24,13,Pangyo,Americano,coffee,4500,3,Y,4
+101313,2025-03-22,19,Gangnam,Cafe Latte,coffee,5000,2,N,4
+101314,2025-03-29,9,Pangyo,Cheesecake,dessert,6500,1,N,
+101315,2025-03-12,12,Hongdae,Brownie,dessert,5000,3,N,3
+101316,2025-05-26,13,Gangnam,Orange Juice,juice,6000,1,N,4
+101317,2025-04-12,18,Hongdae,Cafe Latte,coffee,5000,1,N,1
+101318,2025-04-20,9,Gangnam,Americano,coffee,4500,3,Y,3
+101319,2025-03-14,15,Pangyo,Cafe Latte,coffee,5000,1,N,5
+101320,2025-03-04,14,Gangnam,Green Tea,tea,4500,1,N,3
+101321,2025-05-10,10,Hongdae,Cheesecake,dessert,6500,1,N,4
+101322,2025-03-03,18,Pangyo,Cafe Latte,coffee,5000,1,N,4
+101323,2025-05-17,21,Pangyo,Vanilla Latte,coffee,5500,1,N,3
+101324,2025-05-02,13,Hongdae,Americano,coffee,4500,1,Y,
+101325,2025-03-21,16,Gangnam,Earl Grey,tea,4500,3,Y,
+101326,2025-03-16,20,Pangyo,Earl Grey,tea,4500,1,N,
+101327,2025-03-20,17,Hongdae,Green Tea,tea,4500,1,N,
+101328,2025-05-10,12,Hongdae,Cold Brew,coffee,5000,3,Y,
+101329,2025-05-17,13,Jamsil,Cafe Latte,coffee,5000,1,Y,5
+101330,2025-04-23,9,Gangnam,Americano,coffee,4500,1,N,
+101331,2025-03-27,8,Hongdae,Brownie,dessert,5000,1,N,
+101332,2025-03-12,11,Hongdae,Espresso,coffee,4000,1,N,4
+101333,2025-05-01,18,Jamsil,Mango Smoothie,juice,6500,1,N,3
+101334,2025-04-11,17,Pangyo,Americano,coffee,4500,1,N,4
+101335,2025-04-28,13,Hongdae,Cafe Latte,coffee,5000,1,N,4
+101336,2025-03-02,11,Pangyo,Americano,coffee,4500,4,Y,
+101337,2025-03-15,9,Pangyo,Cheesecake,dessert,6500,1,N,3
+101338,2025-03-20,19,Gangnam,Green Tea,tea,4500,1,Y,
+101339,2025-03-16,19,Hongdae,Chamomile,tea,4500,1,N,
+101340,2025-03-10,11,Jamsil,Americano,coffee,4500,1,N,3
+101341,2025-05-17,13,Jamsil,Americano,coffee,4500,1,Y,4
+101342,2025-03-29,18,Gangnam,Americano,coffee,4500,2,N,4
+101343,2025-03-26,9,Hongdae,Cafe Latte,coffee,5000,4,N,
+101344,2025-03-08,12,Hongdae,Cheesecake,dessert,6500,1,Y,4
+101345,2025-03-19,18,Gangnam,Green Tea,tea,4500,1,N,3
+101346,2025-05-12,9,Gangnam,Vanilla Latte,coffee,5500,1,N,3
+101347,2025-04-16,14,Jamsil,Orange Juice,juice,6000,2,N,
+101348,2025-05-13,9,Jamsil,Americano,coffee,4500,2,Y,5
+101349,2025-05-22,12,Hongdae,Cold Brew,coffee,5000,2,Y,
+101350,2025-03-04,8,Jamsil,Cold Brew,coffee,5000,1,Y,
+101351,2025-03-15,21,Jamsil,Americano,coffee,4500,2,N,
+101352,2025-05-01,20,Pangyo,Mango Smoothie,juice,6500,2,Y,5
+101353,2025-05-01,12,Pangyo,Orange Juice,juice,6000,1,N,5
+101354,2025-03-16,10,Pangyo,Cold Brew,coffee,5000,1,N,3
+101355,2025-04-10,12,Hongdae,Cheesecake,dessert,6500,1,Y,4
+101356,2025-03-04,17,Jamsil,Green Tea,tea,4500,2,Y,
+101357,2025-04-16,8,Hongdae,Americano,coffee,4500,1,N,
+101358,2025-03-28,13,Pangyo,Green Tea,tea,4500,1,N,3
+101359,2025-03-14,10,Hongdae,Cold Brew,coffee,5000,1,Y,4
+101360,2025-05-29,16,Hongdae,Green Tea,tea,4500,1,Y,3
+101361,2025-03-15,13,Gangnam,Cold Brew,coffee,5000,1,Y,
+101362,2025-03-30,17,Pangyo,Croissant,dessert,4000,1,Y,3
+101363,2025-04-21,19,Hongdae,Orange Juice,juice,6000,4,Y,
+101364,2025-03-23,11,Jamsil,Americano,coffee,4500,1,N,3
+101365,2025-05-29,21,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+101366,2025-04-10,15,Jamsil,Brownie,dessert,5000,4,Y,5
+101367,2025-05-25,12,Gangnam,Orange Juice,juice,6000,3,N,4
+101368,2025-03-22,10,Hongdae,Americano,coffee,4500,1,Y,
+101369,2025-05-07,10,Hongdae,Americano,coffee,4500,1,N,5
+101370,2025-03-16,21,Hongdae,Americano,coffee,4500,2,N,4
+101371,2025-05-06,12,Pangyo,Cafe Latte,coffee,5000,1,N,
+101372,2025-05-25,16,Jamsil,Vanilla Latte,coffee,5500,3,Y,
+101373,2025-05-03,13,Jamsil,Cold Brew,coffee,5000,1,N,5
+101374,2025-03-06,9,Gangnam,Cheesecake,dessert,6500,1,N,3
+101375,2025-04-04,12,Pangyo,Cafe Latte,coffee,5000,1,N,2
+101376,2025-04-06,8,Hongdae,Orange Juice,juice,6000,1,N,
+101377,2025-03-18,13,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+101378,2025-05-25,9,Gangnam,Mango Smoothie,juice,6500,3,Y,4
+101379,2025-05-06,8,Pangyo,Green Tea,tea,4500,1,Y,5
+101380,2025-05-09,12,Gangnam,Espresso,coffee,4000,1,Y,4
+101381,2025-04-27,17,Gangnam,Cafe Latte,coffee,5000,2,N,4
+101382,2025-05-27,13,Hongdae,Cafe Latte,coffee,5000,1,N,3
+101383,2025-04-08,12,Jamsil,Brownie,dessert,5000,2,Y,
+101384,2025-03-19,13,Hongdae,Mango Smoothie,juice,6500,2,N,4
+101385,2025-04-28,8,Pangyo,Americano,coffee,4500,1,N,
+101386,2025-03-31,12,Hongdae,Americano,coffee,4500,1,N,4
+101387,2025-04-26,17,Pangyo,Green Tea,tea,4500,1,Y,5
+101388,2025-05-15,13,Pangyo,Cold Brew,coffee,5000,1,Y,
+101389,2025-03-05,19,Hongdae,Mango Smoothie,juice,6500,1,Y,2
+101390,2025-05-21,8,Jamsil,Americano,coffee,4500,2,N,
+101391,2025-03-30,15,Gangnam,Cafe Latte,coffee,5000,1,N,3
+101392,2025-04-19,8,Pangyo,Earl Grey,tea,4500,1,N,2
+101393,2025-05-19,11,Jamsil,Americano,coffee,4500,1,Y,5
+101394,2025-05-22,9,Pangyo,Earl Grey,tea,4500,1,N,
+101395,2025-05-15,18,Hongdae,Croissant,dessert,4000,3,Y,4
+101396,2025-05-26,8,Hongdae,Brownie,dessert,5000,1,Y,
+101397,2025-05-27,16,Gangnam,Americano,coffee,4500,1,Y,5
+101398,2025-04-26,14,Pangyo,Cafe Latte,coffee,5000,1,Y,
+101399,2025-05-23,9,Hongdae,Cheesecake,dessert,6500,1,Y,4
+101400,2025-04-22,9,Hongdae,Cafe Latte,coffee,5000,3,N,3
+101401,2025-05-18,8,Jamsil,Mango Smoothie,juice,6500,1,Y,5
+101402,2025-04-22,9,Gangnam,Mango Smoothie,juice,6500,2,N,3
+101403,2025-03-01,12,Jamsil,Americano,coffee,4500,1,N,3
+101404,2025-03-29,21,Pangyo,Americano,coffee,4500,2,N,4
+101405,2025-03-28,15,Jamsil,Americano,coffee,4500,1,N,4
+101406,2025-03-08,20,Pangyo,Mango Smoothie,juice,6500,2,N,3
+101407,2025-03-31,14,Hongdae,Vanilla Latte,coffee,5500,2,N,4
+101408,2025-03-13,13,Pangyo,Green Tea,tea,4500,2,Y,3
+101409,2025-03-20,18,Pangyo,Cafe Latte,coffee,5000,1,N,
+101410,2025-03-24,8,Gangnam,Cafe Latte,coffee,5000,1,N,
+101411,2025-03-31,18,Gangnam,Green Tea,tea,4500,3,Y,5
+101412,2025-03-05,17,Hongdae,Espresso,coffee,4000,1,N,
+101413,2025-05-09,14,Gangnam,Mango Smoothie,juice,6500,1,Y,
+101414,2025-04-09,13,Pangyo,Espresso,coffee,4000,1,N,4
+101415,2025-03-16,14,Hongdae,Vanilla Latte,coffee,5500,2,N,4
+101416,2025-04-07,13,Jamsil,Americano,coffee,4500,1,Y,3
+101417,2025-03-22,11,Gangnam,Cafe Latte,coffee,5000,1,Y,5
+101418,2025-04-04,18,Jamsil,Vanilla Latte,coffee,5500,2,Y,4
+101419,2025-05-06,8,Hongdae,Green Tea,tea,4500,2,N,
+101420,2025-05-21,9,Jamsil,Mango Smoothie,juice,6500,2,N,
+101421,2025-05-01,8,Gangnam,Brownie,dessert,5000,1,Y,5
+101422,2025-04-19,18,Jamsil,Cafe Latte,coffee,5000,3,Y,5
+101423,2025-03-29,12,Gangnam,Espresso,coffee,4000,2,N,
+101424,2025-04-25,12,Gangnam,Americano,coffee,4500,1,N,3
+101425,2025-04-07,11,Hongdae,Croissant,dessert,4000,1,N,4
+101426,2025-03-19,13,Jamsil,Vanilla Latte,coffee,5500,2,Y,3
+101427,2025-04-14,19,Jamsil,Cafe Latte,coffee,5000,1,Y,5
+101428,2025-03-26,8,Hongdae,Cafe Latte,coffee,5000,1,N,4
+101429,2025-05-14,14,Hongdae,Cold Brew,coffee,5000,1,Y,
+101430,2025-04-20,18,Jamsil,Americano,coffee,4500,1,Y,
+101431,2025-04-28,18,Pangyo,Mango Smoothie,juice,6500,1,Y,5
+101432,2025-03-16,15,Gangnam,Cafe Latte,coffee,5000,2,Y,5
+101433,2025-03-21,18,Gangnam,Vanilla Latte,coffee,5500,1,N,3
+101434,2025-05-10,18,Jamsil,Cold Brew,coffee,5000,1,N,4
+101435,2025-05-17,8,Gangnam,Mango Smoothie,juice,6500,1,N,3
+101436,2025-04-19,8,Pangyo,Cheesecake,dessert,6500,1,N,1
+101437,2025-03-08,21,Hongdae,Espresso,coffee,4000,1,Y,
+101438,2025-05-14,16,Gangnam,Green Tea,tea,4500,1,N,4
+101439,2025-03-03,10,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+101440,2025-03-26,8,Jamsil,Americano,coffee,4500,1,N,
+101441,2025-04-08,8,Gangnam,Vanilla Latte,coffee,5500,3,Y,4
+101442,2025-03-20,9,Hongdae,Americano,coffee,4500,1,Y,4
+101443,2025-05-28,16,Jamsil,Cheesecake,dessert,6500,2,Y,3
+101444,2025-04-16,21,Gangnam,Americano,coffee,4500,1,Y,4
+101445,2025-03-22,12,Jamsil,Americano,coffee,4500,3,N,
+101446,2025-03-15,10,Jamsil,Croissant,dessert,4000,1,Y,3
+101447,2025-04-03,12,Jamsil,Americano,coffee,4500,1,Y,
+101448,2025-04-20,9,Hongdae,Americano,coffee,4500,1,N,3
+101449,2025-05-07,9,Jamsil,Croissant,dessert,4000,1,N,5
+101450,2025-04-02,13,Pangyo,Vanilla Latte,coffee,5500,1,Y,4
+101451,2025-04-23,11,Pangyo,Cold Brew,coffee,5000,2,N,3
+101452,2025-03-21,12,Gangnam,Cheesecake,dessert,6500,1,N,
+101453,2025-04-03,12,Pangyo,Croissant,dessert,4000,1,N,3
+101454,2025-05-31,8,Pangyo,Green Tea,tea,4500,1,N,
+101455,2025-05-09,19,Jamsil,Croissant,dessert,4000,1,N,
+101456,2025-04-17,10,Gangnam,Americano,coffee,4500,1,N,4
+101457,2025-04-02,13,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+101458,2025-05-05,12,Jamsil,Brownie,dessert,5000,1,Y,
+101459,2025-04-29,8,Hongdae,Americano,coffee,4500,1,Y,
+101460,2025-05-01,14,Hongdae,Green Tea,tea,4500,1,Y,3
+101461,2025-05-28,17,Hongdae,Mango Smoothie,juice,6500,1,N,3
+101462,2025-03-31,9,Jamsil,Espresso,coffee,4000,1,Y,4
+101463,2025-04-22,12,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+101464,2025-04-23,21,Pangyo,Green Tea,tea,4500,1,N,5
+101465,2025-04-14,12,Hongdae,Cold Brew,coffee,5000,1,Y,3
+101466,2025-05-03,15,Jamsil,Brownie,dessert,5000,1,N,4
+101467,2025-04-17,12,Jamsil,Croissant,dessert,4000,1,Y,2
+101468,2025-04-26,11,Pangyo,Earl Grey,tea,4500,2,Y,
+101469,2025-04-16,18,Pangyo,Americano,coffee,4500,2,N,3
+101470,2025-03-26,18,Jamsil,Espresso,coffee,4000,3,N,5
+101471,2025-03-23,13,Gangnam,Vanilla Latte,coffee,5500,1,N,
+101472,2025-05-12,20,Jamsil,Croissant,dessert,4000,2,Y,5
+101473,2025-05-03,10,Pangyo,Espresso,coffee,4000,1,N,
+101474,2025-04-22,13,Hongdae,Cheesecake,dessert,6500,1,N,5
+101475,2025-03-31,19,Hongdae,Green Tea,tea,4500,3,Y,
+101476,2025-04-30,16,Gangnam,Americano,coffee,4500,1,N,4
+101477,2025-05-09,21,Gangnam,Green Tea,tea,4500,1,Y,4
+101478,2025-04-19,10,Hongdae,Cafe Latte,coffee,5000,1,N,5
+101479,2025-05-27,14,Jamsil,Cafe Latte,coffee,5000,2,N,
+101480,2025-04-04,19,Hongdae,Vanilla Latte,coffee,5500,2,N,
+101481,2025-03-08,10,Gangnam,Croissant,dessert,4000,1,N,3
+101482,2025-05-31,9,Gangnam,Cafe Latte,coffee,5000,1,N,
+101483,2025-04-16,12,Gangnam,Cold Brew,coffee,5000,1,Y,3
+101484,2025-03-10,9,Jamsil,Cheesecake,dessert,6500,1,N,4
+101485,2025-04-14,19,Hongdae,Chamomile,tea,4500,2,N,4
+101486,2025-04-08,13,Pangyo,Americano,coffee,4500,2,N,
+101487,2025-03-05,18,Gangnam,Orange Juice,juice,6000,1,N,
+101488,2025-04-02,14,Gangnam,Brownie,dessert,5000,1,N,5
+101489,2025-05-21,9,Pangyo,Croissant,dessert,4000,1,Y,5
+101490,2025-05-01,19,Hongdae,Green Tea,tea,4500,1,Y,
+101491,2025-04-09,18,Hongdae,Mango Smoothie,juice,6500,1,Y,
+101492,2025-04-10,17,Gangnam,Croissant,dessert,4000,1,N,4
+101493,2025-03-08,8,Gangnam,Cold Brew,coffee,5000,4,N,4
+101494,2025-05-30,12,Gangnam,Earl Grey,tea,4500,2,N,3
+101495,2025-03-22,14,Pangyo,Croissant,dessert,4000,2,N,5
+101496,2025-03-26,11,Jamsil,Americano,coffee,4500,1,N,
+101497,2025-03-14,15,Gangnam,Cafe Latte,coffee,5000,2,Y,4
+101498,2025-04-06,11,Jamsil,Earl Grey,tea,4500,1,Y,
+101499,2025-04-10,8,Hongdae,Green Tea,tea,4500,1,Y,4
+101500,2025-03-04,10,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+101501,2025-05-18,10,Pangyo,Cafe Latte,coffee,5000,2,N,
+101502,2025-04-04,16,Hongdae,Cheesecake,dessert,6500,1,N,
+101503,2025-04-28,12,Hongdae,Croissant,dessert,4000,1,N,2
+101504,2025-04-23,9,Gangnam,Mango Smoothie,juice,6500,1,N,3
+101505,2025-03-11,12,Jamsil,Cafe Latte,coffee,5000,1,Y,
+101506,2025-05-01,12,Jamsil,Cold Brew,coffee,5000,1,Y,4
+101507,2025-03-14,21,Gangnam,Cold Brew,coffee,5000,3,N,4
+101508,2025-03-14,18,Gangnam,Green Tea,tea,4500,1,N,2
+101509,2025-04-13,11,Hongdae,Cheesecake,dessert,6500,1,Y,
+101510,2025-04-21,12,Pangyo,Orange Juice,juice,6000,1,N,4
+101511,2025-05-30,14,Gangnam,Vanilla Latte,coffee,5500,3,Y,5
+101512,2025-03-14,17,Jamsil,Croissant,dessert,4000,3,Y,
+101513,2025-04-09,15,Pangyo,Green Tea,tea,4500,2,N,3
+101514,2025-05-02,18,Pangyo,Earl Grey,tea,4500,2,N,4
+101515,2025-05-13,15,Gangnam,Cheesecake,dessert,6500,1,N,
+101516,2025-04-12,15,Hongdae,Americano,coffee,4500,1,N,4
+101517,2025-03-26,15,Hongdae,Chamomile,tea,4500,1,N,4
+101518,2025-04-18,21,Hongdae,Earl Grey,tea,4500,1,N,
+101519,2025-04-20,20,Gangnam,Mango Smoothie,juice,6500,2,N,
+101520,2025-04-21,8,Jamsil,Cold Brew,coffee,5000,1,N,5
+101521,2025-04-06,9,Jamsil,Orange Juice,juice,6000,1,Y,
+101522,2025-04-17,13,Jamsil,Americano,coffee,4500,2,Y,5
+101523,2025-03-18,12,Hongdae,Americano,coffee,4500,2,N,4
+101524,2025-05-12,9,Hongdae,Cafe Latte,coffee,5000,1,N,
+101525,2025-05-19,16,Pangyo,Cafe Latte,coffee,5000,4,N,4
+101526,2025-05-08,20,Pangyo,Americano,coffee,4500,1,N,
+101527,2025-05-01,8,Gangnam,Cafe Latte,coffee,5000,1,N,4
+101528,2025-03-27,8,Jamsil,Cafe Latte,coffee,5000,1,N,2
+101529,2025-03-23,20,Hongdae,Earl Grey,tea,4500,1,Y,4
+101530,2025-05-03,12,Gangnam,Earl Grey,tea,4500,1,Y,5
+101531,2025-03-28,9,Pangyo,Cafe Latte,coffee,5000,1,N,3
+101532,2025-05-29,14,Hongdae,Cafe Latte,coffee,5000,1,N,5
+101533,2025-05-24,9,Pangyo,Vanilla Latte,coffee,5500,1,Y,1
+101534,2025-03-16,9,Pangyo,Cafe Latte,coffee,5000,1,Y,
+101535,2025-05-16,14,Hongdae,Orange Juice,juice,6000,3,N,
+101536,2025-05-30,10,Hongdae,Green Tea,tea,4500,1,N,3
+101537,2025-03-12,18,Hongdae,Orange Juice,juice,6000,1,N,
+101538,2025-03-26,13,Jamsil,Cold Brew,coffee,5000,1,N,4
+101539,2025-04-27,8,Pangyo,Americano,coffee,4500,1,Y,
+101540,2025-03-22,12,Gangnam,Brownie,dessert,5000,2,Y,
+101541,2025-03-29,12,Jamsil,Cafe Latte,coffee,5000,2,N,
+101542,2025-04-05,8,Pangyo,Cold Brew,coffee,5000,2,N,5
+101543,2025-03-08,12,Pangyo,Chamomile,tea,4500,2,Y,5
+101544,2025-03-03,18,Hongdae,Earl Grey,tea,4500,2,Y,
+101545,2025-05-12,18,Jamsil,Vanilla Latte,coffee,5500,2,Y,
+101546,2025-04-09,15,Hongdae,Chamomile,tea,4500,1,N,5
+101547,2025-04-06,12,Gangnam,Earl Grey,tea,4500,1,Y,3
+101548,2025-03-29,16,Pangyo,Vanilla Latte,coffee,5500,1,Y,4
+101549,2025-04-27,18,Hongdae,Orange Juice,juice,6000,1,N,4
+101550,2025-03-18,13,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+101551,2025-04-15,19,Gangnam,Orange Juice,juice,6000,1,N,
+101552,2025-04-06,13,Gangnam,Orange Juice,juice,6000,2,N,
+101553,2025-05-22,11,Hongdae,Brownie,dessert,5000,1,Y,5
+101554,2025-04-24,11,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+101555,2025-04-10,17,Gangnam,Cafe Latte,coffee,5000,1,N,4
+101556,2025-04-20,17,Jamsil,Mango Smoothie,juice,6500,1,N,3
+101557,2025-03-19,17,Gangnam,Orange Juice,juice,6000,2,N,4
+101558,2025-03-16,12,Jamsil,Americano,coffee,4500,1,N,
+101559,2025-03-04,9,Pangyo,Croissant,dessert,4000,1,Y,
+101560,2025-04-09,16,Gangnam,Americano,coffee,4500,1,Y,5
+101561,2025-05-26,12,Pangyo,Mango Smoothie,juice,6500,1,N,
+101562,2025-03-31,8,Hongdae,Americano,coffee,4500,1,Y,4
+101563,2025-03-15,11,Hongdae,Brownie,dessert,5000,1,Y,5
+101564,2025-05-09,18,Hongdae,Earl Grey,tea,4500,1,N,
+101565,2025-05-24,12,Hongdae,Americano,coffee,4500,2,N,4
+101566,2025-04-01,17,Gangnam,Cold Brew,coffee,5000,1,Y,4
+101567,2025-05-27,8,Hongdae,Vanilla Latte,coffee,5500,1,N,4
+101568,2025-03-07,12,Pangyo,Americano,coffee,4500,1,N,4
+101569,2025-04-03,9,Pangyo,Americano,coffee,4500,4,Y,4
+101570,2025-03-16,8,Hongdae,Green Tea,tea,4500,1,N,5
+101571,2025-03-02,13,Pangyo,Vanilla Latte,coffee,5500,1,N,4
+101572,2025-05-11,12,Gangnam,Cafe Latte,coffee,5000,3,Y,
+101573,2025-04-04,13,Gangnam,Cold Brew,coffee,5000,1,N,2
+101574,2025-05-17,12,Jamsil,Cheesecake,dessert,6500,1,N,2
+101575,2025-05-10,19,Pangyo,Cafe Latte,coffee,5000,1,Y,4
+101576,2025-05-27,21,Pangyo,Cold Brew,coffee,5000,1,N,3
+101577,2025-03-21,8,Gangnam,Cheesecake,dessert,6500,1,Y,4
+101578,2025-04-04,18,Gangnam,Croissant,dessert,4000,1,N,
+101579,2025-03-29,10,Pangyo,Americano,coffee,4500,1,N,3
+101580,2025-05-20,9,Gangnam,Mango Smoothie,juice,6500,2,N,
+101581,2025-05-22,20,Pangyo,Cafe Latte,coffee,5000,1,Y,
+101582,2025-04-21,14,Pangyo,Espresso,coffee,4000,1,N,
+101583,2025-03-03,13,Gangnam,Mango Smoothie,juice,6500,3,N,
+101584,2025-03-09,12,Gangnam,Mango Smoothie,juice,6500,3,N,
+101585,2025-04-09,15,Gangnam,Americano,coffee,4500,1,N,4
+101586,2025-04-21,14,Jamsil,Croissant,dessert,4000,1,N,5
+101587,2025-03-19,15,Gangnam,Green Tea,tea,4500,2,Y,5
+101588,2025-05-01,8,Pangyo,Cheesecake,dessert,6500,1,Y,5
+101589,2025-05-06,8,Hongdae,Americano,coffee,4500,2,N,4
+101590,2025-05-11,19,Hongdae,Americano,coffee,4500,2,N,3
+101591,2025-05-26,12,Jamsil,Americano,coffee,4500,1,N,4
+101592,2025-05-02,9,Gangnam,Earl Grey,tea,4500,3,N,5
+101593,2025-04-15,18,Gangnam,Croissant,dessert,4000,2,N,3
+101594,2025-03-12,17,Pangyo,Americano,coffee,4500,1,N,4
+101595,2025-03-29,21,Hongdae,Croissant,dessert,4000,1,N,
+101596,2025-05-18,18,Gangnam,Americano,coffee,4500,1,N,
+101597,2025-04-11,15,Pangyo,Earl Grey,tea,4500,2,N,2
+101598,2025-05-25,18,Pangyo,Brownie,dessert,5000,1,N,4
+101599,2025-04-18,12,Gangnam,Cafe Latte,coffee,5000,1,N,4
+101600,2025-05-11,21,Hongdae,Earl Grey,tea,4500,1,Y,5
+101601,2025-05-23,10,Gangnam,Earl Grey,tea,4500,2,Y,3
+101602,2025-05-09,15,Hongdae,Mango Smoothie,juice,6500,1,Y,5
+101603,2025-03-02,18,Hongdae,Mango Smoothie,juice,6500,1,Y,
+101604,2025-05-13,15,Hongdae,Cafe Latte,coffee,5000,2,Y,2
+101605,2025-04-05,18,Pangyo,Cafe Latte,coffee,5000,2,Y,5
+101606,2025-03-16,18,Gangnam,Cafe Latte,coffee,5000,2,N,3
+101607,2025-04-11,15,Pangyo,Cafe Latte,coffee,5000,1,Y,5
+101608,2025-05-11,12,Pangyo,Cafe Latte,coffee,5000,4,N,2
+101609,2025-04-07,15,Jamsil,Americano,coffee,4500,1,N,
+101610,2025-04-17,13,Gangnam,Espresso,coffee,4000,1,Y,5
+101611,2025-05-13,13,Hongdae,Mango Smoothie,juice,6500,1,N,2
+101612,2025-05-15,12,Hongdae,Earl Grey,tea,4500,1,N,4
+101613,2025-04-30,8,Jamsil,Americano,coffee,4500,1,N,3
+101614,2025-04-04,9,Jamsil,Cheesecake,dessert,6500,2,Y,
+101615,2025-03-20,19,Hongdae,Cold Brew,coffee,5000,1,Y,5
+101616,2025-03-18,8,Jamsil,Vanilla Latte,coffee,5500,2,N,5
+101617,2025-03-05,14,Pangyo,Americano,coffee,4500,3,N,5
+101618,2025-05-05,12,Hongdae,Cheesecake,dessert,6500,1,Y,5
+101619,2025-03-02,13,Hongdae,Vanilla Latte,coffee,5500,1,Y,5
+101620,2025-05-04,9,Gangnam,Vanilla Latte,coffee,5500,1,Y,
+101621,2025-05-11,13,Pangyo,Cold Brew,coffee,5000,1,N,5
+101622,2025-04-03,19,Gangnam,Brownie,dessert,5000,3,N,
+101623,2025-05-16,12,Hongdae,Brownie,dessert,5000,1,Y,4
+101624,2025-03-05,8,Jamsil,Americano,coffee,4500,1,N,4
+101625,2025-04-12,8,Gangnam,Green Tea,tea,4500,2,Y,
+101626,2025-03-11,15,Pangyo,Espresso,coffee,4000,1,Y,4
+101627,2025-03-01,8,Hongdae,Green Tea,tea,4500,2,Y,3
+101628,2025-05-26,8,Hongdae,Cafe Latte,coffee,5000,3,N,5
+101629,2025-03-25,10,Hongdae,Green Tea,tea,4500,1,N,5
+101630,2025-04-26,18,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+101631,2025-05-07,20,Jamsil,Croissant,dessert,4000,1,N,5
+101632,2025-03-10,21,Hongdae,Cafe Latte,coffee,5000,1,N,
+101633,2025-03-14,11,Hongdae,Cold Brew,coffee,5000,1,Y,5
+101634,2025-04-12,15,Hongdae,Mango Smoothie,juice,6500,1,Y,
+101635,2025-04-02,12,Hongdae,Cafe Latte,coffee,5000,3,Y,4
+101636,2025-04-01,19,Hongdae,Chamomile,tea,4500,1,N,3
+101637,2025-05-14,21,Pangyo,Earl Grey,tea,4500,1,Y,3
+101638,2025-03-21,12,Pangyo,Americano,coffee,4500,1,N,
+101639,2025-03-31,16,Hongdae,Croissant,dessert,4000,1,Y,5
+101640,2025-04-11,18,Pangyo,Cheesecake,dessert,6500,1,N,3
+101641,2025-04-30,8,Hongdae,Americano,coffee,4500,2,Y,4
+101642,2025-03-06,8,Hongdae,Orange Juice,juice,6000,1,Y,
+101643,2025-04-12,18,Jamsil,Cafe Latte,coffee,5000,1,N,4
+101644,2025-05-19,11,Hongdae,Cold Brew,coffee,5000,3,N,4
+101645,2025-04-15,12,Hongdae,Cheesecake,dessert,6500,3,N,4
+101646,2025-05-14,13,Pangyo,Chamomile,tea,4500,1,N,4
+101647,2025-05-31,16,Jamsil,Cafe Latte,coffee,5000,1,N,5
+101648,2025-05-12,18,Gangnam,Cold Brew,coffee,5000,1,Y,
+101649,2025-04-09,14,Pangyo,Green Tea,tea,4500,1,N,
+101650,2025-05-22,13,Hongdae,Mango Smoothie,juice,6500,1,Y,
+101651,2025-03-15,10,Pangyo,Cold Brew,coffee,5000,2,Y,4
+101652,2025-05-05,21,Gangnam,Vanilla Latte,coffee,5500,1,N,
+101653,2025-05-11,14,Gangnam,Cheesecake,dessert,6500,3,N,4
+101654,2025-03-08,12,Jamsil,Americano,coffee,4500,3,N,4
+101655,2025-03-06,20,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+101656,2025-03-12,15,Jamsil,Americano,coffee,4500,1,N,5
+101657,2025-05-01,11,Hongdae,Brownie,dessert,5000,3,N,3
+101658,2025-05-23,8,Pangyo,Green Tea,tea,4500,1,Y,3
+101659,2025-05-19,9,Hongdae,Brownie,dessert,5000,1,Y,5
+101660,2025-03-16,13,Pangyo,Americano,coffee,4500,2,N,4
+101661,2025-05-14,20,Jamsil,Orange Juice,juice,6000,1,N,4
+101662,2025-05-15,12,Jamsil,Cold Brew,coffee,5000,1,Y,5
+101663,2025-04-02,9,Pangyo,Brownie,dessert,5000,4,N,
+101664,2025-03-09,11,Jamsil,Americano,coffee,4500,1,N,2
+101665,2025-04-19,14,Gangnam,Orange Juice,juice,6000,2,Y,
+101666,2025-04-13,10,Pangyo,Cold Brew,coffee,5000,3,N,3
+101667,2025-04-27,21,Hongdae,Vanilla Latte,coffee,5500,1,N,4
+101668,2025-05-31,13,Jamsil,Croissant,dessert,4000,1,Y,
+101669,2025-05-25,11,Gangnam,Americano,coffee,4500,1,Y,5
+101670,2025-03-28,12,Jamsil,Green Tea,tea,4500,1,Y,
+101671,2025-04-20,9,Hongdae,Cheesecake,dessert,6500,1,N,
+101672,2025-05-07,12,Hongdae,Cold Brew,coffee,5000,1,N,
+101673,2025-03-19,16,Jamsil,Americano,coffee,4500,3,N,
+101674,2025-04-24,8,Jamsil,Cafe Latte,coffee,5000,1,N,4
+101675,2025-03-26,21,Hongdae,Croissant,dessert,4000,1,N,5
+101676,2025-04-06,12,Gangnam,Croissant,dessert,4000,3,N,
+101677,2025-04-11,20,Hongdae,Green Tea,tea,4500,1,Y,5
+101678,2025-03-09,19,Hongdae,Mango Smoothie,juice,6500,1,N,5
+101679,2025-05-02,18,Pangyo,Chamomile,tea,4500,1,Y,
+101680,2025-05-28,10,Jamsil,Americano,coffee,4500,2,N,
+101681,2025-03-12,12,Gangnam,Americano,coffee,4500,1,N,
+101682,2025-04-24,11,Pangyo,Cafe Latte,coffee,5000,1,Y,
+101683,2025-05-17,9,Hongdae,Cafe Latte,coffee,5000,1,Y,5
+101684,2025-03-05,14,Hongdae,Cafe Latte,coffee,5000,1,N,5
+101685,2025-03-30,18,Hongdae,Espresso,coffee,4000,2,N,3
+101686,2025-03-02,21,Jamsil,Americano,coffee,4500,1,N,3
+101687,2025-04-17,18,Jamsil,Brownie,dessert,5000,1,Y,4
+101688,2025-05-17,13,Pangyo,Cafe Latte,coffee,5000,1,N,
+101689,2025-03-01,13,Gangnam,Croissant,dessert,4000,1,Y,5
+101690,2025-03-29,18,Pangyo,Americano,coffee,4500,4,N,3
+101691,2025-05-28,8,Gangnam,Orange Juice,juice,6000,1,Y,
+101692,2025-03-04,19,Pangyo,Americano,coffee,4500,2,N,4
+101693,2025-04-27,14,Gangnam,Espresso,coffee,4000,1,Y,4
+101694,2025-04-18,21,Gangnam,Espresso,coffee,4000,4,Y,2
+101695,2025-05-26,17,Gangnam,Cafe Latte,coffee,5000,2,N,
+101696,2025-03-18,12,Jamsil,Cafe Latte,coffee,5000,1,N,4
+101697,2025-03-27,15,Gangnam,Americano,coffee,4500,2,Y,
+101698,2025-04-01,10,Gangnam,Americano,coffee,4500,1,Y,
+101699,2025-03-20,14,Gangnam,Green Tea,tea,4500,2,N,3
+101700,2025-04-14,19,Hongdae,Mango Smoothie,juice,6500,1,Y,4
+101701,2025-04-10,12,Jamsil,Cafe Latte,coffee,5000,2,N,4
+101702,2025-03-21,15,Jamsil,Cold Brew,coffee,5000,1,N,3
+101703,2025-05-21,15,Pangyo,Americano,coffee,4500,1,Y,
+101704,2025-05-20,18,Pangyo,Mango Smoothie,juice,6500,2,N,4
+101705,2025-05-09,14,Hongdae,Croissant,dessert,4000,1,N,5
+101706,2025-04-09,16,Hongdae,Americano,coffee,4500,1,N,
+101707,2025-04-09,12,Pangyo,Chamomile,tea,4500,1,Y,
+101708,2025-03-02,19,Pangyo,Cheesecake,dessert,6500,1,N,4
+101709,2025-05-12,15,Gangnam,Americano,coffee,4500,1,Y,5
+101710,2025-05-10,8,Hongdae,Americano,coffee,4500,1,Y,
+101711,2025-03-16,14,Jamsil,Americano,coffee,4500,1,Y,
+101712,2025-03-06,14,Gangnam,Espresso,coffee,4000,1,N,4
+101713,2025-03-30,12,Jamsil,Espresso,coffee,4000,4,Y,3
+101714,2025-04-21,10,Pangyo,Americano,coffee,4500,2,N,5
+101715,2025-04-07,12,Hongdae,Cold Brew,coffee,5000,2,Y,3
+101716,2025-04-08,10,Pangyo,Brownie,dessert,5000,2,N,3
+101717,2025-05-07,21,Pangyo,Mango Smoothie,juice,6500,1,N,2
+101718,2025-04-29,11,Jamsil,Americano,coffee,4500,3,Y,4
+101719,2025-05-18,8,Jamsil,Americano,coffee,4500,2,N,
+101720,2025-04-14,18,Jamsil,Mango Smoothie,juice,6500,3,N,
+101721,2025-03-17,21,Hongdae,Brownie,dessert,5000,1,Y,
+101722,2025-05-16,21,Pangyo,Americano,coffee,4500,1,N,5
+101723,2025-05-01,12,Hongdae,Orange Juice,juice,6000,1,N,
+101724,2025-03-03,12,Pangyo,Cheesecake,dessert,6500,1,N,4
+101725,2025-04-07,18,Gangnam,Cafe Latte,coffee,5000,2,Y,4
+101726,2025-03-25,8,Jamsil,Croissant,dessert,4000,3,Y,5
+101727,2025-04-08,20,Gangnam,Croissant,dessert,4000,1,N,3
+101728,2025-03-27,16,Pangyo,Chamomile,tea,4500,1,Y,
+101729,2025-03-25,10,Gangnam,Cold Brew,coffee,5000,1,Y,2
+101730,2025-04-26,14,Jamsil,Croissant,dessert,4000,1,N,4
+101731,2025-04-18,18,Jamsil,Cold Brew,coffee,5000,2,Y,
+101732,2025-04-04,8,Hongdae,Americano,coffee,4500,1,Y,
+101733,2025-04-13,14,Pangyo,Croissant,dessert,4000,1,N,4
+101734,2025-03-11,9,Jamsil,Cafe Latte,coffee,5000,4,N,
+101735,2025-04-22,9,Gangnam,Mango Smoothie,juice,6500,1,Y,4
+101736,2025-03-27,9,Gangnam,Croissant,dessert,4000,2,Y,3
+101737,2025-03-25,8,Jamsil,Green Tea,tea,4500,1,N,3
+101738,2025-04-26,18,Gangnam,Orange Juice,juice,6000,1,Y,3
+101739,2025-05-01,13,Gangnam,Brownie,dessert,5000,1,Y,5
+101740,2025-05-26,9,Hongdae,Cafe Latte,coffee,5000,2,Y,
+101741,2025-05-22,12,Jamsil,Earl Grey,tea,4500,2,Y,4
+101742,2025-03-18,12,Gangnam,Green Tea,tea,4500,1,N,3
+101743,2025-04-08,13,Gangnam,Americano,coffee,4500,1,Y,
+101744,2025-04-29,14,Pangyo,Cafe Latte,coffee,5000,1,Y,
+101745,2025-04-20,20,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+101746,2025-04-28,9,Jamsil,Mango Smoothie,juice,6500,1,Y,
+101747,2025-03-18,9,Gangnam,Earl Grey,tea,4500,1,N,2
+101748,2025-03-20,16,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+101749,2025-05-16,11,Gangnam,Americano,coffee,4500,3,N,4
+101750,2025-03-08,10,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+101751,2025-04-08,8,Pangyo,Cafe Latte,coffee,5000,1,N,3
+101752,2025-05-27,13,Hongdae,Earl Grey,tea,4500,1,Y,
+101753,2025-03-27,20,Jamsil,Green Tea,tea,4500,1,N,4
+101754,2025-03-11,11,Gangnam,Vanilla Latte,coffee,5500,1,Y,
+101755,2025-05-31,15,Gangnam,Earl Grey,tea,4500,1,N,
+101756,2025-04-24,21,Gangnam,Americano,coffee,4500,1,Y,5
+101757,2025-03-26,9,Pangyo,Brownie,dessert,5000,1,N,
+101758,2025-04-04,13,Jamsil,Earl Grey,tea,4500,1,Y,4
+101759,2025-04-30,19,Jamsil,Cold Brew,coffee,5000,2,Y,4
+101760,2025-03-10,9,Hongdae,Cold Brew,coffee,5000,3,N,5
+101761,2025-05-09,20,Pangyo,Cold Brew,coffee,5000,2,N,
+101762,2025-05-31,11,Gangnam,Cold Brew,coffee,5000,1,Y,
+101763,2025-05-05,8,Jamsil,Vanilla Latte,coffee,5500,1,Y,3
+101764,2025-04-26,15,Hongdae,Croissant,dessert,4000,1,Y,2
+101765,2025-03-19,9,Gangnam,Green Tea,tea,4500,1,Y,5
+101766,2025-03-23,12,Hongdae,Vanilla Latte,coffee,5500,2,N,
+101767,2025-04-18,13,Jamsil,Chamomile,tea,4500,1,N,4
+101768,2025-03-11,19,Pangyo,Croissant,dessert,4000,1,Y,
+101769,2025-03-17,18,Hongdae,Green Tea,tea,4500,1,Y,4
+101770,2025-03-16,10,Gangnam,Americano,coffee,4500,1,Y,
+101771,2025-04-09,18,Jamsil,Americano,coffee,4500,3,N,
+101772,2025-04-20,9,Hongdae,Americano,coffee,4500,1,N,
+101773,2025-04-24,18,Pangyo,Cold Brew,coffee,5000,3,N,3
+101774,2025-05-29,17,Jamsil,Earl Grey,tea,4500,3,Y,
+101775,2025-04-25,12,Jamsil,Vanilla Latte,coffee,5500,1,Y,3
+101776,2025-05-11,13,Hongdae,Earl Grey,tea,4500,3,Y,3
+101777,2025-05-02,9,Jamsil,Brownie,dessert,5000,1,N,
+101778,2025-03-15,19,Pangyo,Green Tea,tea,4500,2,N,3
+101779,2025-04-01,17,Gangnam,Green Tea,tea,4500,1,N,3
+101780,2025-04-14,13,Pangyo,Croissant,dessert,4000,1,N,2
+101781,2025-05-26,19,Jamsil,Chamomile,tea,4500,1,N,5
+101782,2025-04-16,12,Jamsil,Brownie,dessert,5000,1,N,4
+101783,2025-04-21,18,Pangyo,Espresso,coffee,4000,2,Y,2
+101784,2025-04-20,19,Jamsil,Americano,coffee,4500,1,N,3
+101785,2025-05-11,12,Jamsil,Mango Smoothie,juice,6500,1,N,4
+101786,2025-03-20,8,Pangyo,Vanilla Latte,coffee,5500,1,N,3
+101787,2025-05-30,9,Pangyo,Americano,coffee,4500,1,Y,3
+101788,2025-03-30,13,Hongdae,Vanilla Latte,coffee,5500,2,N,4
+101789,2025-05-04,21,Gangnam,Americano,coffee,4500,2,N,3
+101790,2025-04-15,10,Jamsil,Green Tea,tea,4500,1,Y,4
+101791,2025-04-05,11,Gangnam,Orange Juice,juice,6000,2,N,4
+101792,2025-03-08,8,Pangyo,Cold Brew,coffee,5000,1,N,
+101793,2025-04-06,14,Gangnam,Brownie,dessert,5000,1,N,
+101794,2025-05-21,9,Jamsil,Brownie,dessert,5000,1,N,
+101795,2025-05-13,19,Pangyo,Cafe Latte,coffee,5000,4,N,2
+101796,2025-03-11,12,Gangnam,Cafe Latte,coffee,5000,1,N,
+101797,2025-05-02,15,Gangnam,Croissant,dessert,4000,2,N,
+101798,2025-04-02,8,Hongdae,Croissant,dessert,4000,2,N,5
+101799,2025-03-02,9,Hongdae,Cheesecake,dessert,6500,1,Y,5
+101800,2025-03-20,15,Gangnam,Croissant,dessert,4000,1,Y,5
+101801,2025-05-13,13,Hongdae,Vanilla Latte,coffee,5500,1,N,4
+101802,2025-04-21,20,Hongdae,Cold Brew,coffee,5000,1,Y,5
+101803,2025-04-23,12,Jamsil,Green Tea,tea,4500,2,N,4
+101804,2025-04-12,11,Hongdae,Cheesecake,dessert,6500,3,Y,4
+101805,2025-04-28,9,Gangnam,Green Tea,tea,4500,1,Y,4
+101806,2025-05-03,14,Gangnam,Americano,coffee,4500,1,N,4
+101807,2025-05-02,20,Hongdae,Americano,coffee,4500,1,N,3
+101808,2025-03-28,9,Pangyo,Americano,coffee,4500,1,Y,4
+101809,2025-05-23,9,Jamsil,Green Tea,tea,4500,1,N,4
+101810,2025-04-05,8,Pangyo,Americano,coffee,4500,1,Y,5
+101811,2025-04-14,13,Hongdae,Americano,coffee,4500,1,N,4
+101812,2025-03-26,20,Hongdae,Americano,coffee,4500,1,N,5
+101813,2025-05-03,15,Gangnam,Cafe Latte,coffee,5000,1,N,
+101814,2025-04-05,12,Jamsil,Cold Brew,coffee,5000,1,N,4
+101815,2025-05-25,11,Hongdae,Cold Brew,coffee,5000,1,N,
+101816,2025-05-02,13,Jamsil,Cafe Latte,coffee,5000,1,Y,5
+101817,2025-04-19,12,Hongdae,Americano,coffee,4500,1,N,
+101818,2025-04-20,21,Gangnam,Croissant,dessert,4000,1,N,
+101819,2025-04-09,13,Hongdae,Americano,coffee,4500,2,N,
+101820,2025-05-03,8,Hongdae,Americano,coffee,4500,1,N,
+101821,2025-03-04,18,Hongdae,Brownie,dessert,5000,1,N,2
+101822,2025-03-02,9,Jamsil,Chamomile,tea,4500,1,Y,4
+101823,2025-03-22,13,Pangyo,Earl Grey,tea,4500,1,N,
+101824,2025-04-16,14,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+101825,2025-05-29,10,Hongdae,Cold Brew,coffee,5000,1,N,
+101826,2025-05-22,15,Hongdae,Cold Brew,coffee,5000,1,Y,
+101827,2025-05-12,18,Gangnam,Cafe Latte,coffee,5000,1,Y,
+101828,2025-03-28,13,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+101829,2025-05-28,8,Hongdae,Americano,coffee,4500,1,N,4
+101830,2025-04-26,18,Jamsil,Brownie,dessert,5000,1,Y,
+101831,2025-04-24,18,Gangnam,Orange Juice,juice,6000,1,N,4
+101832,2025-05-28,21,Jamsil,Vanilla Latte,coffee,5500,2,N,5
+101833,2025-04-07,9,Pangyo,Brownie,dessert,5000,1,N,2
+101834,2025-05-26,9,Gangnam,Mango Smoothie,juice,6500,1,N,3
+101835,2025-05-19,12,Gangnam,Cafe Latte,coffee,5000,2,Y,4
+101836,2025-05-21,10,Pangyo,Americano,coffee,4500,1,N,
+101837,2025-03-07,13,Hongdae,Cheesecake,dessert,6500,1,Y,4
+101838,2025-04-13,18,Hongdae,Cold Brew,coffee,5000,1,N,5
+101839,2025-03-10,15,Jamsil,Americano,coffee,4500,1,N,4
+101840,2025-04-28,8,Jamsil,Vanilla Latte,coffee,5500,1,Y,4
+101841,2025-05-03,9,Jamsil,Espresso,coffee,4000,2,N,5
+101842,2025-05-17,8,Hongdae,Cafe Latte,coffee,5000,1,Y,3
+101843,2025-04-25,8,Hongdae,Earl Grey,tea,4500,1,N,
+101844,2025-04-16,10,Hongdae,Americano,coffee,4500,4,Y,
+101845,2025-04-11,10,Pangyo,Espresso,coffee,4000,1,Y,3
+101846,2025-03-28,8,Pangyo,Green Tea,tea,4500,1,Y,3
+101847,2025-05-19,13,Pangyo,Cafe Latte,coffee,5000,1,Y,3
+101848,2025-03-03,18,Jamsil,Vanilla Latte,coffee,5500,2,Y,
+101849,2025-03-06,8,Gangnam,Americano,coffee,4500,1,Y,5
+101850,2025-05-19,13,Hongdae,Cold Brew,coffee,5000,1,Y,
+101851,2025-05-06,15,Pangyo,Cafe Latte,coffee,5000,1,N,
+101852,2025-05-06,9,Jamsil,Croissant,dessert,4000,1,Y,5
+101853,2025-04-19,15,Pangyo,Green Tea,tea,4500,4,N,4
+101854,2025-04-19,8,Jamsil,Orange Juice,juice,6000,1,Y,5
+101855,2025-05-12,20,Pangyo,Chamomile,tea,4500,1,N,
+101856,2025-05-05,15,Gangnam,Cafe Latte,coffee,5000,1,N,3
+101857,2025-03-17,14,Jamsil,Americano,coffee,4500,1,N,4
+101858,2025-04-11,9,Pangyo,Green Tea,tea,4500,1,N,4
+101859,2025-04-29,8,Jamsil,Cafe Latte,coffee,5000,2,N,4
+101860,2025-04-01,9,Jamsil,Earl Grey,tea,4500,1,N,3
+101861,2025-03-14,18,Pangyo,Americano,coffee,4500,1,Y,
+101862,2025-04-21,20,Pangyo,Earl Grey,tea,4500,1,N,4
+101863,2025-03-18,12,Gangnam,Americano,coffee,4500,1,N,5
+101864,2025-04-16,9,Gangnam,Americano,coffee,4500,1,Y,4
+101865,2025-04-02,18,Hongdae,Croissant,dessert,4000,3,Y,
+101866,2025-04-13,9,Hongdae,Chamomile,tea,4500,1,N,3
+101867,2025-04-04,8,Jamsil,Cheesecake,dessert,6500,2,N,2
+101868,2025-04-08,18,Jamsil,Vanilla Latte,coffee,5500,1,N,4
+101869,2025-03-06,20,Gangnam,Croissant,dessert,4000,4,N,
+101870,2025-04-10,17,Gangnam,Brownie,dessert,5000,1,N,3
+101871,2025-04-22,16,Pangyo,Cold Brew,coffee,5000,4,N,5
+101872,2025-04-23,14,Jamsil,Green Tea,tea,4500,2,N,5
+101873,2025-03-13,21,Gangnam,Americano,coffee,4500,1,N,4
+101874,2025-05-24,8,Gangnam,Cheesecake,dessert,6500,2,N,
+101875,2025-05-22,13,Gangnam,Cheesecake,dessert,6500,2,N,
+101876,2025-03-10,11,Gangnam,Americano,coffee,4500,2,N,
+101877,2025-04-13,11,Gangnam,Cafe Latte,coffee,5000,1,Y,3
+101878,2025-03-19,8,Hongdae,Cafe Latte,coffee,5000,1,N,3
+101879,2025-04-10,14,Hongdae,Mango Smoothie,juice,6500,1,Y,5
+101880,2025-04-20,8,Pangyo,Cold Brew,coffee,5000,2,N,
+101881,2025-05-13,18,Hongdae,Croissant,dessert,4000,1,Y,
+101882,2025-05-14,9,Pangyo,Cheesecake,dessert,6500,1,Y,3
+101883,2025-03-08,9,Jamsil,Green Tea,tea,4500,1,N,2
+101884,2025-05-24,12,Gangnam,Cafe Latte,coffee,5000,1,Y,5
+101885,2025-03-18,15,Gangnam,Cold Brew,coffee,5000,1,N,5
+101886,2025-03-26,15,Pangyo,Croissant,dessert,4000,1,N,4
+101887,2025-03-06,10,Gangnam,Espresso,coffee,4000,1,Y,4
+101888,2025-03-06,21,Jamsil,Americano,coffee,4500,1,N,5
+101889,2025-05-27,18,Gangnam,Brownie,dessert,5000,1,Y,4
+101890,2025-04-24,10,Hongdae,Americano,coffee,4500,2,N,
+101891,2025-03-01,18,Gangnam,Cold Brew,coffee,5000,2,N,4
+101892,2025-03-08,20,Jamsil,Cold Brew,coffee,5000,1,Y,4
+101893,2025-05-30,19,Hongdae,Orange Juice,juice,6000,2,Y,4
+101894,2025-05-23,13,Gangnam,Cafe Latte,coffee,5000,1,N,3
+101895,2025-05-22,13,Gangnam,Green Tea,tea,4500,2,N,
+101896,2025-04-05,9,Pangyo,Espresso,coffee,4000,2,N,
+101897,2025-03-30,9,Gangnam,Americano,coffee,4500,1,Y,5
+101898,2025-05-17,8,Pangyo,Brownie,dessert,5000,1,N,3
+101899,2025-05-02,18,Gangnam,Americano,coffee,4500,2,N,3
+101900,2025-03-11,16,Gangnam,Croissant,dessert,4000,1,Y,5
+101901,2025-03-31,8,Hongdae,Green Tea,tea,4500,2,Y,4
+101902,2025-04-05,11,Jamsil,Americano,coffee,4500,2,N,
+101903,2025-03-30,11,Pangyo,Cold Brew,coffee,5000,2,N,
+101904,2025-05-27,17,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+101905,2025-04-08,19,Pangyo,Chamomile,tea,4500,1,N,3
+101906,2025-04-03,19,Jamsil,Mango Smoothie,juice,6500,1,N,4
+101907,2025-03-26,16,Pangyo,Cafe Latte,coffee,5000,3,Y,
+101908,2025-05-13,13,Pangyo,Cafe Latte,coffee,5000,2,Y,5
+101909,2025-04-08,10,Gangnam,Mango Smoothie,juice,6500,1,N,
+101910,2025-05-21,10,Jamsil,Americano,coffee,4500,1,N,4
+101911,2025-03-24,13,Gangnam,Orange Juice,juice,6000,2,Y,
+101912,2025-05-13,8,Hongdae,Green Tea,tea,4500,2,Y,5
+101913,2025-05-17,20,Hongdae,Americano,coffee,4500,2,Y,
+101914,2025-05-15,18,Jamsil,Cold Brew,coffee,5000,2,N,
+101915,2025-05-14,14,Hongdae,Americano,coffee,4500,1,Y,5
+101916,2025-03-18,15,Pangyo,Mango Smoothie,juice,6500,1,N,3
+101917,2025-03-14,19,Hongdae,Americano,coffee,4500,1,Y,5
+101918,2025-04-22,15,Gangnam,Americano,coffee,4500,2,N,2
+101919,2025-04-16,10,Hongdae,Cafe Latte,coffee,5000,1,N,5
+101920,2025-04-10,11,Jamsil,Brownie,dessert,5000,1,N,2
+101921,2025-03-06,10,Gangnam,Brownie,dessert,5000,1,N,4
+101922,2025-05-28,21,Pangyo,Americano,coffee,4500,1,N,3
+101923,2025-04-19,20,Jamsil,Croissant,dessert,4000,1,N,
+101924,2025-04-15,10,Hongdae,Croissant,dessert,4000,1,N,4
+101925,2025-04-12,8,Gangnam,Orange Juice,juice,6000,1,N,4
+101926,2025-04-12,19,Gangnam,Earl Grey,tea,4500,2,Y,4
+101927,2025-03-27,12,Jamsil,Brownie,dessert,5000,4,Y,5
+101928,2025-05-12,19,Gangnam,Earl Grey,tea,4500,1,Y,4
+101929,2025-04-16,17,Pangyo,Chamomile,tea,4500,1,Y,3
+101930,2025-03-16,12,Jamsil,Vanilla Latte,coffee,5500,2,Y,5
+101931,2025-04-05,9,Gangnam,Cheesecake,dessert,6500,1,N,4
+101932,2025-04-06,19,Gangnam,Green Tea,tea,4500,1,Y,4
+101933,2025-04-08,12,Hongdae,Cold Brew,coffee,5000,1,N,4
+101934,2025-04-30,9,Pangyo,Cold Brew,coffee,5000,1,N,3
+101935,2025-05-06,8,Hongdae,Vanilla Latte,coffee,5500,1,Y,
+101936,2025-05-21,9,Gangnam,Cafe Latte,coffee,5000,1,N,5
+101937,2025-04-25,12,Gangnam,Americano,coffee,4500,2,N,3
+101938,2025-05-26,13,Pangyo,Green Tea,tea,4500,1,Y,5
+101939,2025-03-23,14,Pangyo,Orange Juice,juice,6000,1,N,3
+101940,2025-04-02,17,Gangnam,Cheesecake,dessert,6500,1,N,3
+101941,2025-04-01,11,Gangnam,Americano,coffee,4500,2,N,
+101942,2025-04-27,21,Jamsil,Green Tea,tea,4500,1,N,4
+101943,2025-04-04,13,Jamsil,Brownie,dessert,5000,1,Y,4
+101944,2025-03-14,18,Pangyo,Croissant,dessert,4000,1,N,3
+101945,2025-03-23,20,Gangnam,Cold Brew,coffee,5000,1,Y,5
+101946,2025-03-30,9,Pangyo,Cafe Latte,coffee,5000,2,Y,
+101947,2025-04-03,13,Hongdae,Chamomile,tea,4500,1,Y,
+101948,2025-04-12,13,Hongdae,Chamomile,tea,4500,1,N,
+101949,2025-05-05,13,Pangyo,Croissant,dessert,4000,2,N,
+101950,2025-05-31,13,Gangnam,Green Tea,tea,4500,1,N,2
+101951,2025-04-07,8,Hongdae,Chamomile,tea,4500,3,N,
+101952,2025-03-23,18,Jamsil,Brownie,dessert,5000,1,N,3
+101953,2025-04-19,12,Jamsil,Orange Juice,juice,6000,1,N,3
+101954,2025-04-17,16,Gangnam,Cafe Latte,coffee,5000,2,Y,
+101955,2025-04-25,12,Pangyo,Americano,coffee,4500,1,N,
+101956,2025-04-24,17,Gangnam,Cold Brew,coffee,5000,1,N,4
+101957,2025-03-27,17,Gangnam,Americano,coffee,4500,2,Y,
+101958,2025-04-29,19,Pangyo,Cheesecake,dessert,6500,1,N,
+101959,2025-05-07,8,Jamsil,Americano,coffee,4500,1,N,2
+101960,2025-04-25,8,Jamsil,Mango Smoothie,juice,6500,1,N,
+101961,2025-04-11,12,Jamsil,Americano,coffee,4500,1,N,3
+101962,2025-05-16,14,Gangnam,Croissant,dessert,4000,3,N,4
+101963,2025-04-24,8,Jamsil,Cheesecake,dessert,6500,1,N,4
+101964,2025-03-18,8,Gangnam,Americano,coffee,4500,1,N,5
+101965,2025-03-16,8,Hongdae,Americano,coffee,4500,1,N,
+101966,2025-05-10,12,Gangnam,Americano,coffee,4500,2,N,4
+101967,2025-03-19,18,Hongdae,Cold Brew,coffee,5000,1,N,
+101968,2025-05-29,8,Jamsil,Mango Smoothie,juice,6500,1,N,
+101969,2025-04-23,16,Jamsil,Cold Brew,coffee,5000,2,Y,4
+101970,2025-04-05,8,Gangnam,Cafe Latte,coffee,5000,3,N,4
+101971,2025-03-27,11,Jamsil,Cafe Latte,coffee,5000,1,N,
+101972,2025-04-02,14,Gangnam,Vanilla Latte,coffee,5500,1,N,5
+101973,2025-05-25,18,Gangnam,Cold Brew,coffee,5000,3,Y,5
+101974,2025-04-30,9,Gangnam,Americano,coffee,4500,1,Y,4
+101975,2025-04-17,17,Jamsil,Croissant,dessert,4000,1,Y,
+101976,2025-04-18,10,Gangnam,Cold Brew,coffee,5000,1,N,
+101977,2025-03-18,18,Jamsil,Americano,coffee,4500,1,Y,3
+101978,2025-04-05,20,Hongdae,Mango Smoothie,juice,6500,1,Y,5
+101979,2025-04-22,17,Gangnam,Green Tea,tea,4500,1,Y,5
+101980,2025-05-08,18,Gangnam,Green Tea,tea,4500,1,Y,
+101981,2025-05-14,20,Jamsil,Cheesecake,dessert,6500,1,N,
+101982,2025-04-12,21,Hongdae,Cheesecake,dessert,6500,1,Y,
+101983,2025-04-23,15,Pangyo,Croissant,dessert,4000,1,N,3
+101984,2025-04-30,14,Hongdae,Cafe Latte,coffee,5000,1,N,
+101985,2025-05-04,16,Jamsil,Vanilla Latte,coffee,5500,1,N,
+101986,2025-05-18,13,Jamsil,Espresso,coffee,4000,1,Y,
+101987,2025-05-15,8,Hongdae,Earl Grey,tea,4500,1,N,4
+101988,2025-04-29,16,Hongdae,Cold Brew,coffee,5000,1,N,4
+101989,2025-05-22,8,Pangyo,Americano,coffee,4500,1,N,5
+101990,2025-04-09,15,Pangyo,Americano,coffee,4500,1,N,3
+101991,2025-05-31,13,Gangnam,Green Tea,tea,4500,3,N,4
+101992,2025-04-01,21,Jamsil,Chamomile,tea,4500,1,N,
+101993,2025-05-01,8,Jamsil,Vanilla Latte,coffee,5500,1,Y,
+101994,2025-03-08,16,Hongdae,Mango Smoothie,juice,6500,1,Y,5
+101995,2025-05-21,9,Hongdae,Orange Juice,juice,6000,1,N,4
+101996,2025-03-09,9,Pangyo,Vanilla Latte,coffee,5500,1,Y,
+101997,2025-04-27,13,Pangyo,Vanilla Latte,coffee,5500,3,Y,
+101998,2025-03-07,15,Gangnam,Cafe Latte,coffee,5000,3,N,4
+101999,2025-03-31,21,Gangnam,Orange Juice,juice,6000,1,N,4
+102000,2025-05-09,12,Gangnam,Americano,coffee,4500,2,Y,3
+102001,2025-05-31,18,Jamsil,Brownie,dessert,5000,2,N,3
+102002,2025-03-07,8,Jamsil,Green Tea,tea,4500,1,N,4
+102003,2025-05-30,8,Hongdae,Brownie,dessert,5000,1,N,4
+102004,2025-04-11,12,Jamsil,Green Tea,tea,4500,1,N,4
+102005,2025-03-17,21,Gangnam,Earl Grey,tea,4500,1,N,4
+102006,2025-03-03,14,Pangyo,Americano,coffee,4500,2,N,4
+102007,2025-05-29,13,Hongdae,Americano,coffee,4500,1,N,
+102008,2025-05-06,9,Gangnam,Cafe Latte,coffee,5000,1,Y,3
+102009,2025-03-27,12,Gangnam,Croissant,dessert,4000,2,Y,3
+102010,2025-05-30,20,Gangnam,Espresso,coffee,4000,2,Y,5
+102011,2025-03-28,12,Pangyo,Espresso,coffee,4000,1,N,4
+102012,2025-03-20,12,Jamsil,Cold Brew,coffee,5000,1,Y,
+102013,2025-04-20,18,Gangnam,Americano,coffee,4500,3,N,3
+102014,2025-03-19,18,Hongdae,Vanilla Latte,coffee,5500,2,N,
+102015,2025-05-14,12,Gangnam,Green Tea,tea,4500,1,N,
+102016,2025-03-28,13,Pangyo,Cold Brew,coffee,5000,1,Y,
+102017,2025-04-05,17,Hongdae,Americano,coffee,4500,1,Y,4
+102018,2025-05-13,18,Pangyo,Green Tea,tea,4500,1,N,4
+102019,2025-03-22,10,Hongdae,Cafe Latte,coffee,5000,2,Y,3
+102020,2025-04-05,15,Hongdae,Cold Brew,coffee,5000,1,N,
+102021,2025-04-16,12,Jamsil,Cold Brew,coffee,5000,1,N,
+102022,2025-05-20,21,Gangnam,Croissant,dessert,4000,3,Y,
+102023,2025-03-08,8,Jamsil,Americano,coffee,4500,1,N,
+102024,2025-05-11,19,Hongdae,Vanilla Latte,coffee,5500,1,N,
+102025,2025-05-22,8,Gangnam,Cheesecake,dessert,6500,2,N,
+102026,2025-05-11,9,Pangyo,Vanilla Latte,coffee,5500,2,N,
+102027,2025-03-02,8,Jamsil,Americano,coffee,4500,1,N,
+102028,2025-05-03,18,Pangyo,Mango Smoothie,juice,6500,1,N,3
+102029,2025-03-02,12,Gangnam,Brownie,dessert,5000,1,N,
+102030,2025-03-14,19,Jamsil,Mango Smoothie,juice,6500,2,N,3
+102031,2025-04-14,9,Gangnam,Cheesecake,dessert,6500,1,Y,4
+102032,2025-04-22,13,Hongdae,Vanilla Latte,coffee,5500,2,Y,5
+102033,2025-04-02,20,Hongdae,Orange Juice,juice,6000,1,Y,
+102034,2025-05-10,13,Jamsil,Brownie,dessert,5000,1,N,2
+102035,2025-03-09,14,Pangyo,Earl Grey,tea,4500,1,N,2
+102036,2025-04-12,14,Jamsil,Americano,coffee,4500,1,Y,4
+102037,2025-03-02,11,Gangnam,Orange Juice,juice,6000,4,N,4
+102038,2025-05-19,18,Hongdae,Mango Smoothie,juice,6500,1,Y,4
+102039,2025-03-09,15,Gangnam,Americano,coffee,4500,1,Y,3
+102040,2025-04-28,18,Gangnam,Earl Grey,tea,4500,3,N,2
+102041,2025-03-02,8,Pangyo,Vanilla Latte,coffee,5500,1,N,3
+102042,2025-03-28,8,Jamsil,Vanilla Latte,coffee,5500,2,N,4
+102043,2025-03-22,10,Hongdae,Orange Juice,juice,6000,1,N,4
+102044,2025-03-23,19,Gangnam,Americano,coffee,4500,1,N,4
+102045,2025-03-22,18,Pangyo,Cafe Latte,coffee,5000,1,N,5
+102046,2025-03-08,20,Hongdae,Green Tea,tea,4500,1,N,4
+102047,2025-04-19,11,Gangnam,Americano,coffee,4500,2,N,
+102048,2025-03-16,13,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+102049,2025-05-08,20,Hongdae,Mango Smoothie,juice,6500,3,N,5
+102050,2025-03-28,13,Hongdae,Cafe Latte,coffee,5000,1,N,
+102051,2025-05-25,9,Jamsil,Orange Juice,juice,6000,1,N,4
+102052,2025-04-16,13,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+102053,2025-04-14,9,Gangnam,Green Tea,tea,4500,1,N,
+102054,2025-05-27,9,Hongdae,Cafe Latte,coffee,5000,3,N,
+102055,2025-03-08,12,Jamsil,Earl Grey,tea,4500,1,N,
+102056,2025-03-02,10,Pangyo,Cafe Latte,coffee,5000,1,N,
+102057,2025-04-14,15,Jamsil,Cheesecake,dessert,6500,1,N,2
+102058,2025-03-25,8,Hongdae,Americano,coffee,4500,1,Y,5
+102059,2025-04-27,15,Pangyo,Espresso,coffee,4000,1,N,4
+102060,2025-05-16,18,Hongdae,Brownie,dessert,5000,1,N,4
+102061,2025-05-25,21,Hongdae,Americano,coffee,4500,1,Y,4
+102062,2025-03-22,21,Jamsil,Americano,coffee,4500,3,N,3
+102063,2025-05-23,19,Pangyo,Cafe Latte,coffee,5000,3,N,
+102064,2025-04-29,18,Gangnam,Americano,coffee,4500,1,N,4
+102065,2025-03-21,11,Hongdae,Mango Smoothie,juice,6500,4,N,2
+102066,2025-04-23,15,Gangnam,Croissant,dessert,4000,1,Y,4
+102067,2025-04-13,19,Gangnam,Chamomile,tea,4500,1,Y,3
+102068,2025-03-14,20,Hongdae,Earl Grey,tea,4500,1,Y,4
+102069,2025-05-06,21,Pangyo,Espresso,coffee,4000,1,N,
+102070,2025-04-10,14,Hongdae,Espresso,coffee,4000,1,N,3
+102071,2025-04-02,15,Gangnam,Cafe Latte,coffee,5000,1,N,5
+102072,2025-05-24,15,Jamsil,Cold Brew,coffee,5000,1,Y,4
+102073,2025-03-09,13,Gangnam,Cafe Latte,coffee,5000,1,Y,3
+102074,2025-04-21,13,Jamsil,Vanilla Latte,coffee,5500,1,N,
+102075,2025-05-08,13,Hongdae,Americano,coffee,4500,1,Y,
+102076,2025-05-25,9,Hongdae,Mango Smoothie,juice,6500,1,N,4
+102077,2025-05-11,12,Pangyo,Green Tea,tea,4500,1,Y,4
+102078,2025-05-06,15,Jamsil,Cheesecake,dessert,6500,1,N,4
+102079,2025-05-10,17,Hongdae,Orange Juice,juice,6000,1,Y,4
+102080,2025-03-25,9,Jamsil,Americano,coffee,4500,2,N,
+102081,2025-03-04,12,Jamsil,Americano,coffee,4500,1,N,
+102082,2025-04-01,13,Jamsil,Americano,coffee,4500,1,N,4
+102083,2025-04-20,12,Hongdae,Cold Brew,coffee,5000,2,N,3
+102084,2025-05-22,11,Pangyo,Earl Grey,tea,4500,1,N,4
+102085,2025-03-27,14,Gangnam,Cafe Latte,coffee,5000,1,Y,
+102086,2025-04-05,13,Jamsil,Vanilla Latte,coffee,5500,1,Y,5
+102087,2025-03-04,20,Jamsil,Vanilla Latte,coffee,5500,1,N,5
+102088,2025-05-02,20,Jamsil,Americano,coffee,4500,1,N,
+102089,2025-05-20,18,Pangyo,Vanilla Latte,coffee,5500,2,Y,
+102090,2025-05-09,12,Gangnam,Americano,coffee,4500,1,N,
+102091,2025-04-03,8,Gangnam,Espresso,coffee,4000,2,N,
+102092,2025-04-05,19,Gangnam,Cheesecake,dessert,6500,1,Y,3
+102093,2025-04-05,10,Hongdae,Mango Smoothie,juice,6500,1,N,
+102094,2025-03-28,12,Pangyo,Chamomile,tea,4500,2,N,4
+102095,2025-05-14,9,Pangyo,Green Tea,tea,4500,1,N,3
+102096,2025-04-05,12,Hongdae,Americano,coffee,4500,3,Y,
+102097,2025-03-11,13,Hongdae,Mango Smoothie,juice,6500,1,N,3
+102098,2025-04-07,13,Pangyo,Brownie,dessert,5000,4,N,4
+102099,2025-04-24,9,Pangyo,Croissant,dessert,4000,1,N,3
+102100,2025-03-13,19,Gangnam,Cafe Latte,coffee,5000,1,Y,
+102101,2025-03-28,13,Hongdae,Brownie,dessert,5000,3,N,
+102102,2025-03-27,12,Gangnam,Orange Juice,juice,6000,1,Y,3
+102103,2025-05-23,21,Jamsil,Vanilla Latte,coffee,5500,1,N,5
+102104,2025-05-20,9,Jamsil,Mango Smoothie,juice,6500,4,N,4
+102105,2025-05-17,11,Gangnam,Chamomile,tea,4500,3,Y,5
+102106,2025-05-24,8,Pangyo,Americano,coffee,4500,1,Y,
+102107,2025-05-09,8,Jamsil,Cold Brew,coffee,5000,1,Y,5
+102108,2025-04-21,12,Gangnam,Orange Juice,juice,6000,2,N,
+102109,2025-04-25,12,Gangnam,Brownie,dessert,5000,1,Y,4
+102110,2025-05-12,16,Gangnam,Chamomile,tea,4500,1,N,3
+102111,2025-04-30,13,Jamsil,Croissant,dessert,4000,2,Y,3
+102112,2025-04-06,12,Gangnam,Earl Grey,tea,4500,1,Y,
+102113,2025-04-27,8,Pangyo,Americano,coffee,4500,1,Y,3
+102114,2025-04-12,14,Pangyo,Americano,coffee,4500,1,Y,2
+102115,2025-03-27,9,Hongdae,Cold Brew,coffee,5000,3,Y,
+102116,2025-04-30,12,Hongdae,Cheesecake,dessert,6500,1,Y,5
+102117,2025-03-11,8,Jamsil,Americano,coffee,4500,1,N,
+102118,2025-04-15,12,Gangnam,Brownie,dessert,5000,1,Y,4
+102119,2025-05-10,9,Gangnam,Cold Brew,coffee,5000,1,N,5
+102120,2025-03-30,13,Gangnam,Brownie,dessert,5000,1,N,2
+102121,2025-05-01,21,Jamsil,Cafe Latte,coffee,5000,3,Y,5
+102122,2025-05-29,8,Pangyo,Espresso,coffee,4000,2,N,4
+102123,2025-05-28,18,Jamsil,Espresso,coffee,4000,1,Y,
+102124,2025-03-08,19,Gangnam,Vanilla Latte,coffee,5500,1,N,
+102125,2025-04-15,9,Pangyo,Americano,coffee,4500,1,Y,4
+102126,2025-03-21,9,Hongdae,Cafe Latte,coffee,5000,1,N,5
+102127,2025-03-31,13,Pangyo,Cafe Latte,coffee,5000,1,N,3
+102128,2025-03-21,19,Hongdae,Vanilla Latte,coffee,5500,1,Y,3
+102129,2025-03-29,13,Jamsil,Cheesecake,dessert,6500,3,Y,4
+102130,2025-05-22,12,Hongdae,Americano,coffee,4500,2,N,4
+102131,2025-05-18,14,Gangnam,Mango Smoothie,juice,6500,1,N,3
+102132,2025-03-21,18,Gangnam,Cafe Latte,coffee,5000,1,N,4
+102133,2025-03-19,21,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+102134,2025-04-16,9,Jamsil,Cafe Latte,coffee,5000,1,Y,5
+102135,2025-04-17,9,Gangnam,Mango Smoothie,juice,6500,1,N,3
+102136,2025-05-04,9,Pangyo,Brownie,dessert,5000,1,Y,3
+102137,2025-04-28,11,Jamsil,Americano,coffee,4500,3,N,3
+102138,2025-03-25,8,Gangnam,Croissant,dessert,4000,2,N,
+102139,2025-05-31,8,Pangyo,Croissant,dessert,4000,1,Y,
+102140,2025-04-18,12,Gangnam,Croissant,dessert,4000,1,Y,4
+102141,2025-04-14,14,Hongdae,Chamomile,tea,4500,1,Y,5
+102142,2025-04-22,8,Gangnam,Cold Brew,coffee,5000,2,Y,3
+102143,2025-03-09,11,Gangnam,Earl Grey,tea,4500,4,Y,5
+102144,2025-05-19,13,Gangnam,Americano,coffee,4500,1,Y,4
+102145,2025-04-07,10,Jamsil,Vanilla Latte,coffee,5500,1,Y,
+102146,2025-04-25,15,Jamsil,Cafe Latte,coffee,5000,1,N,4
+102147,2025-05-12,11,Pangyo,Chamomile,tea,4500,2,Y,
+102148,2025-04-23,8,Gangnam,Earl Grey,tea,4500,1,N,2
+102149,2025-04-15,12,Gangnam,Cold Brew,coffee,5000,1,N,4
+102150,2025-05-13,12,Pangyo,Cheesecake,dessert,6500,1,Y,4
+102151,2025-04-01,8,Pangyo,Cold Brew,coffee,5000,2,Y,4
+102152,2025-03-23,13,Jamsil,Americano,coffee,4500,3,N,4
+102153,2025-05-24,8,Gangnam,Americano,coffee,4500,3,N,2
+102154,2025-05-06,10,Pangyo,Cafe Latte,coffee,5000,1,N,4
+102155,2025-05-10,17,Gangnam,Cafe Latte,coffee,5000,1,Y,
+102156,2025-05-04,9,Hongdae,Chamomile,tea,4500,1,Y,
+102157,2025-03-15,21,Pangyo,Brownie,dessert,5000,1,Y,5
+102158,2025-04-10,20,Gangnam,Cold Brew,coffee,5000,2,N,2
+102159,2025-05-29,9,Jamsil,Cheesecake,dessert,6500,4,Y,
+102160,2025-04-15,13,Hongdae,Earl Grey,tea,4500,1,N,4
+102161,2025-03-25,16,Gangnam,Chamomile,tea,4500,1,N,
+102162,2025-03-04,17,Hongdae,Americano,coffee,4500,1,Y,4
+102163,2025-05-03,9,Gangnam,Americano,coffee,4500,1,N,2
+102164,2025-05-26,12,Pangyo,Americano,coffee,4500,4,N,4
+102165,2025-04-20,8,Jamsil,Americano,coffee,4500,2,N,3
+102166,2025-03-08,14,Jamsil,Croissant,dessert,4000,2,Y,4
+102167,2025-04-16,18,Pangyo,Vanilla Latte,coffee,5500,1,N,
+102168,2025-05-03,20,Hongdae,Mango Smoothie,juice,6500,1,N,3
+102169,2025-04-13,8,Gangnam,Cafe Latte,coffee,5000,2,N,3
+102170,2025-04-27,8,Hongdae,Orange Juice,juice,6000,1,N,
+102171,2025-04-15,12,Hongdae,Chamomile,tea,4500,1,N,4
+102172,2025-05-07,19,Jamsil,Cheesecake,dessert,6500,2,N,2
+102173,2025-03-22,16,Pangyo,Americano,coffee,4500,1,Y,4
+102174,2025-05-28,9,Gangnam,Cafe Latte,coffee,5000,1,N,5
+102175,2025-05-13,9,Hongdae,Cold Brew,coffee,5000,3,N,
+102176,2025-03-10,13,Pangyo,Cafe Latte,coffee,5000,1,N,
+102177,2025-03-19,12,Gangnam,Americano,coffee,4500,2,N,
+102178,2025-05-27,8,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+102179,2025-03-10,12,Jamsil,Cold Brew,coffee,5000,1,N,
+102180,2025-05-02,15,Jamsil,Cold Brew,coffee,5000,2,Y,4
+102181,2025-05-16,11,Gangnam,Cheesecake,dessert,6500,4,N,
+102182,2025-03-09,13,Hongdae,Earl Grey,tea,4500,1,Y,2
+102183,2025-04-24,8,Gangnam,Americano,coffee,4500,1,Y,5
+102184,2025-05-29,13,Jamsil,Americano,coffee,4500,1,Y,4
+102185,2025-03-23,10,Gangnam,Green Tea,tea,4500,1,Y,
+102186,2025-04-28,8,Pangyo,Cold Brew,coffee,5000,1,Y,5
+102187,2025-04-05,11,Pangyo,Cheesecake,dessert,6500,1,N,
+102188,2025-03-15,17,Pangyo,Mango Smoothie,juice,6500,1,Y,
+102189,2025-05-08,16,Jamsil,Earl Grey,tea,4500,4,N,4
+102190,2025-05-16,21,Hongdae,Vanilla Latte,coffee,5500,1,N,
+102191,2025-05-05,8,Gangnam,Cold Brew,coffee,5000,1,N,3
+102192,2025-03-03,8,Hongdae,Brownie,dessert,5000,1,Y,5
+102193,2025-05-28,12,Gangnam,Vanilla Latte,coffee,5500,1,Y,4
+102194,2025-04-18,17,Hongdae,Brownie,dessert,5000,1,N,
+102195,2025-05-14,12,Gangnam,Cafe Latte,coffee,5000,1,N,
+102196,2025-03-07,10,Jamsil,Croissant,dessert,4000,1,Y,4
+102197,2025-04-15,12,Jamsil,Americano,coffee,4500,1,Y,5
+102198,2025-05-04,20,Jamsil,Cafe Latte,coffee,5000,1,N,4
+102199,2025-03-18,14,Jamsil,Croissant,dessert,4000,1,N,
+102200,2025-04-09,20,Gangnam,Americano,coffee,4500,1,Y,4
+102201,2025-03-21,16,Hongdae,Cheesecake,dessert,6500,1,Y,4
+102202,2025-04-23,9,Jamsil,Vanilla Latte,coffee,5500,1,Y,
+102203,2025-03-09,18,Gangnam,Cafe Latte,coffee,5000,1,Y,
+102204,2025-05-28,9,Gangnam,Earl Grey,tea,4500,1,N,4
+102205,2025-03-01,15,Hongdae,Chamomile,tea,4500,2,N,
+102206,2025-05-16,9,Jamsil,Orange Juice,juice,6000,1,Y,5
+102207,2025-03-02,9,Hongdae,Croissant,dessert,4000,1,N,5
+102208,2025-05-03,9,Hongdae,Brownie,dessert,5000,1,N,3
+102209,2025-03-06,12,Hongdae,Cold Brew,coffee,5000,1,Y,5
+102210,2025-04-30,18,Hongdae,Green Tea,tea,4500,1,Y,5
+102211,2025-04-08,18,Hongdae,Mango Smoothie,juice,6500,1,N,3
+102212,2025-03-17,8,Pangyo,Cafe Latte,coffee,5000,3,Y,4
+102213,2025-04-17,11,Hongdae,Brownie,dessert,5000,1,N,
+102214,2025-05-09,8,Pangyo,Cafe Latte,coffee,5000,2,Y,
+102215,2025-05-21,9,Gangnam,Cafe Latte,coffee,5000,4,Y,4
+102216,2025-04-02,12,Gangnam,Cafe Latte,coffee,5000,2,N,4
+102217,2025-05-03,14,Hongdae,Earl Grey,tea,4500,2,N,
+102218,2025-05-13,12,Jamsil,Americano,coffee,4500,1,N,
+102219,2025-03-04,12,Pangyo,Orange Juice,juice,6000,1,Y,
+102220,2025-05-24,19,Hongdae,Earl Grey,tea,4500,1,N,3
+102221,2025-04-15,11,Hongdae,Mango Smoothie,juice,6500,2,N,5
+102222,2025-05-18,9,Pangyo,Cafe Latte,coffee,5000,1,N,2
+102223,2025-03-14,11,Jamsil,Chamomile,tea,4500,1,N,5
+102224,2025-03-30,17,Gangnam,Green Tea,tea,4500,1,N,4
+102225,2025-04-25,15,Pangyo,Americano,coffee,4500,1,N,4
+102226,2025-04-28,12,Pangyo,Earl Grey,tea,4500,1,Y,3
+102227,2025-05-06,17,Jamsil,Cafe Latte,coffee,5000,1,Y,
+102228,2025-03-23,9,Pangyo,Croissant,dessert,4000,3,Y,
+102229,2025-05-11,14,Hongdae,Green Tea,tea,4500,1,N,3
+102230,2025-03-09,8,Gangnam,Cold Brew,coffee,5000,1,N,3
+102231,2025-04-24,13,Pangyo,Earl Grey,tea,4500,1,N,3
+102232,2025-05-06,8,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+102233,2025-05-12,15,Jamsil,Earl Grey,tea,4500,1,N,
+102234,2025-05-17,11,Jamsil,Americano,coffee,4500,1,N,4
+102235,2025-03-18,15,Gangnam,Croissant,dessert,4000,3,N,
+102236,2025-03-24,18,Jamsil,Cold Brew,coffee,5000,1,N,
+102237,2025-04-07,13,Pangyo,Americano,coffee,4500,1,Y,5
+102238,2025-03-08,12,Gangnam,Cheesecake,dessert,6500,2,Y,
+102239,2025-05-05,20,Jamsil,Americano,coffee,4500,3,Y,
+102240,2025-04-27,12,Jamsil,Green Tea,tea,4500,3,N,5
+102241,2025-03-06,18,Pangyo,Croissant,dessert,4000,1,Y,3
+102242,2025-05-23,14,Gangnam,Mango Smoothie,juice,6500,1,N,
+102243,2025-05-31,13,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+102244,2025-05-05,18,Pangyo,Green Tea,tea,4500,1,N,3
+102245,2025-03-29,14,Jamsil,Mango Smoothie,juice,6500,1,N,3
+102246,2025-03-15,9,Pangyo,Cafe Latte,coffee,5000,1,N,3
+102247,2025-03-02,8,Gangnam,Green Tea,tea,4500,1,Y,4
+102248,2025-03-26,13,Gangnam,Cheesecake,dessert,6500,1,N,2
+102249,2025-05-17,13,Jamsil,Croissant,dessert,4000,1,N,
+102250,2025-05-18,10,Gangnam,Orange Juice,juice,6000,1,N,
+102251,2025-03-15,16,Hongdae,Cold Brew,coffee,5000,1,Y,4
+102252,2025-05-14,21,Pangyo,Green Tea,tea,4500,1,N,
+102253,2025-03-07,10,Pangyo,Mango Smoothie,juice,6500,1,N,
+102254,2025-03-17,16,Gangnam,Cold Brew,coffee,5000,1,N,2
+102255,2025-04-12,9,Hongdae,Earl Grey,tea,4500,2,N,5
+102256,2025-05-05,8,Pangyo,Vanilla Latte,coffee,5500,1,Y,4
+102257,2025-03-02,19,Pangyo,Americano,coffee,4500,1,N,
+102258,2025-03-07,8,Gangnam,Brownie,dessert,5000,2,N,4
+102259,2025-04-08,9,Jamsil,Cafe Latte,coffee,5000,1,N,
+102260,2025-04-29,9,Gangnam,Earl Grey,tea,4500,1,N,
+102261,2025-05-29,9,Gangnam,Cafe Latte,coffee,5000,3,N,
+102262,2025-04-04,21,Jamsil,Chamomile,tea,4500,3,N,
+102263,2025-03-12,8,Gangnam,Earl Grey,tea,4500,1,N,3
+102264,2025-04-09,18,Pangyo,Vanilla Latte,coffee,5500,1,Y,5
+102265,2025-03-03,12,Gangnam,Earl Grey,tea,4500,1,N,5
+102266,2025-05-05,8,Pangyo,Cold Brew,coffee,5000,1,N,2
+102267,2025-04-19,12,Gangnam,Cafe Latte,coffee,5000,2,N,
+102268,2025-04-23,9,Pangyo,Americano,coffee,4500,1,N,3
+102269,2025-05-26,8,Jamsil,Chamomile,tea,4500,1,N,
+102270,2025-04-12,13,Jamsil,Cheesecake,dessert,6500,2,N,
+102271,2025-03-16,12,Pangyo,Americano,coffee,4500,1,N,3
+102272,2025-05-10,13,Jamsil,Americano,coffee,4500,1,N,4
+102273,2025-03-09,11,Pangyo,Cafe Latte,coffee,5000,1,N,4
+102274,2025-05-06,14,Gangnam,Green Tea,tea,4500,1,Y,4
+102275,2025-04-08,12,Hongdae,Mango Smoothie,juice,6500,1,N,2
+102276,2025-05-01,18,Hongdae,Croissant,dessert,4000,1,Y,4
+102277,2025-04-04,14,Pangyo,Brownie,dessert,5000,1,N,3
+102278,2025-05-23,11,Jamsil,Brownie,dessert,5000,1,N,
+102279,2025-05-22,20,Gangnam,Croissant,dessert,4000,1,N,3
+102280,2025-05-18,12,Jamsil,Cold Brew,coffee,5000,1,Y,
+102281,2025-03-23,12,Jamsil,Americano,coffee,4500,1,N,4
+102282,2025-04-14,13,Hongdae,Brownie,dessert,5000,2,N,
+102283,2025-03-19,8,Hongdae,Cheesecake,dessert,6500,1,Y,5
+102284,2025-05-24,12,Gangnam,Vanilla Latte,coffee,5500,1,Y,
+102285,2025-04-19,8,Hongdae,Vanilla Latte,coffee,5500,1,N,4
+102286,2025-03-20,13,Gangnam,Croissant,dessert,4000,1,N,5
+102287,2025-04-08,9,Gangnam,Chamomile,tea,4500,1,N,4
+102288,2025-05-11,21,Jamsil,Croissant,dessert,4000,1,N,4
+102289,2025-05-28,15,Jamsil,Americano,coffee,4500,1,N,4
+102290,2025-05-06,9,Gangnam,Earl Grey,tea,4500,2,Y,3
+102291,2025-04-07,19,Hongdae,Mango Smoothie,juice,6500,1,Y,3
+102292,2025-04-03,10,Gangnam,Mango Smoothie,juice,6500,1,N,
+102293,2025-04-04,17,Gangnam,Cafe Latte,coffee,5000,1,Y,2
+102294,2025-05-20,8,Hongdae,Croissant,dessert,4000,1,Y,2
+102295,2025-05-22,12,Gangnam,Americano,coffee,4500,1,Y,5
+102296,2025-05-19,9,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+102297,2025-03-11,17,Gangnam,Americano,coffee,4500,2,N,2
+102298,2025-03-07,18,Jamsil,Croissant,dessert,4000,1,N,2
+102299,2025-04-11,9,Jamsil,Earl Grey,tea,4500,1,Y,
+102300,2025-03-18,12,Hongdae,Brownie,dessert,5000,1,Y,4
+102301,2025-04-27,19,Gangnam,Green Tea,tea,4500,1,N,4
+102302,2025-03-25,21,Hongdae,Cold Brew,coffee,5000,1,Y,3
+102303,2025-05-11,17,Pangyo,Cafe Latte,coffee,5000,2,N,3
+102304,2025-05-24,16,Hongdae,Americano,coffee,4500,1,N,4
+102305,2025-03-31,17,Pangyo,Cafe Latte,coffee,5000,2,Y,5
+102306,2025-05-07,12,Hongdae,Chamomile,tea,4500,2,N,
+102307,2025-05-14,20,Jamsil,Brownie,dessert,5000,2,N,3
+102308,2025-03-18,13,Gangnam,Americano,coffee,4500,1,Y,
+102309,2025-05-23,13,Jamsil,Americano,coffee,4500,1,N,4
+102310,2025-04-06,9,Pangyo,Mango Smoothie,juice,6500,1,N,
+102311,2025-05-27,16,Pangyo,Brownie,dessert,5000,2,N,4
+102312,2025-03-27,12,Hongdae,Orange Juice,juice,6000,1,Y,
+102313,2025-03-30,13,Pangyo,Americano,coffee,4500,1,Y,4
+102314,2025-04-29,21,Jamsil,Mango Smoothie,juice,6500,1,Y,4
+102315,2025-04-29,8,Pangyo,Green Tea,tea,4500,1,N,3
+102316,2025-05-07,20,Gangnam,Green Tea,tea,4500,1,Y,4
+102317,2025-05-04,18,Pangyo,Green Tea,tea,4500,2,N,
+102318,2025-05-26,18,Jamsil,Cheesecake,dessert,6500,1,N,5
+102319,2025-04-25,8,Jamsil,Cafe Latte,coffee,5000,2,N,
+102320,2025-04-24,20,Hongdae,Americano,coffee,4500,3,N,3
+102321,2025-04-27,21,Gangnam,Cafe Latte,coffee,5000,1,N,4
+102322,2025-05-09,9,Gangnam,Vanilla Latte,coffee,5500,1,N,4
+102323,2025-03-19,11,Hongdae,Cheesecake,dessert,6500,1,N,4
+102324,2025-03-07,8,Gangnam,Cafe Latte,coffee,5000,1,Y,4
+102325,2025-03-27,8,Pangyo,Croissant,dessert,4000,1,Y,3
+102326,2025-04-01,8,Gangnam,Americano,coffee,4500,2,Y,
+102327,2025-05-16,18,Pangyo,Americano,coffee,4500,1,Y,5
+102328,2025-03-04,13,Hongdae,Cafe Latte,coffee,5000,1,N,4
+102329,2025-05-07,8,Jamsil,Cafe Latte,coffee,5000,1,N,
+102330,2025-05-02,13,Pangyo,Earl Grey,tea,4500,3,N,3
+102331,2025-04-22,9,Gangnam,Mango Smoothie,juice,6500,1,N,
+102332,2025-04-04,9,Jamsil,Cheesecake,dessert,6500,1,N,3
+102333,2025-05-09,15,Jamsil,Green Tea,tea,4500,1,N,
+102334,2025-03-08,19,Gangnam,Cheesecake,dessert,6500,1,N,5
+102335,2025-03-24,12,Hongdae,Espresso,coffee,4000,1,Y,
+102336,2025-04-13,8,Gangnam,Americano,coffee,4500,2,Y,5
+102337,2025-05-16,19,Gangnam,Brownie,dessert,5000,1,N,4
+102338,2025-03-17,18,Hongdae,Americano,coffee,4500,2,Y,
+102339,2025-04-23,19,Pangyo,Americano,coffee,4500,1,Y,5
+102340,2025-05-04,8,Jamsil,Americano,coffee,4500,1,N,4
+102341,2025-04-23,8,Jamsil,Cafe Latte,coffee,5000,1,N,3
+102342,2025-05-02,14,Jamsil,Orange Juice,juice,6000,1,Y,4
+102343,2025-03-14,15,Jamsil,Orange Juice,juice,6000,2,N,4
+102344,2025-04-11,10,Hongdae,Orange Juice,juice,6000,1,Y,5
+102345,2025-04-11,14,Jamsil,Cheesecake,dessert,6500,1,Y,3
+102346,2025-03-13,20,Gangnam,Cheesecake,dessert,6500,1,Y,
+102347,2025-03-08,13,Jamsil,Americano,coffee,4500,1,N,
+102348,2025-03-06,20,Jamsil,Cold Brew,coffee,5000,1,N,5
+102349,2025-05-17,8,Pangyo,Green Tea,tea,4500,1,N,4
+102350,2025-05-30,13,Gangnam,Cafe Latte,coffee,5000,1,N,
+102351,2025-03-10,18,Gangnam,Green Tea,tea,4500,1,Y,
+102352,2025-04-26,18,Pangyo,Green Tea,tea,4500,3,N,5
+102353,2025-05-26,21,Gangnam,Cafe Latte,coffee,5000,2,N,3
+102354,2025-04-12,18,Gangnam,Americano,coffee,4500,1,N,4
+102355,2025-04-16,10,Gangnam,Green Tea,tea,4500,3,N,5
+102356,2025-03-26,13,Jamsil,Green Tea,tea,4500,2,N,3
+102357,2025-04-30,8,Gangnam,Vanilla Latte,coffee,5500,4,N,5
+102358,2025-05-13,11,Gangnam,Cold Brew,coffee,5000,1,Y,
+102359,2025-04-22,12,Jamsil,Cafe Latte,coffee,5000,1,N,3
+102360,2025-04-11,8,Jamsil,Green Tea,tea,4500,1,Y,5
+102361,2025-03-24,18,Pangyo,Cheesecake,dessert,6500,1,N,3
+102362,2025-05-05,14,Jamsil,Cafe Latte,coffee,5000,1,N,5
+102363,2025-05-12,16,Jamsil,Cold Brew,coffee,5000,1,N,4
+102364,2025-04-05,21,Pangyo,Americano,coffee,4500,1,N,2
+102365,2025-04-19,18,Pangyo,Croissant,dessert,4000,4,Y,4
+102366,2025-05-20,11,Jamsil,Mango Smoothie,juice,6500,4,N,5
+102367,2025-05-01,15,Hongdae,Americano,coffee,4500,1,N,
+102368,2025-04-13,15,Hongdae,Green Tea,tea,4500,1,Y,
+102369,2025-05-15,20,Jamsil,Americano,coffee,4500,2,N,
+102370,2025-05-15,13,Hongdae,Americano,coffee,4500,1,Y,4
+102371,2025-04-22,20,Pangyo,Cheesecake,dessert,6500,1,N,3
+102372,2025-03-30,13,Jamsil,Cold Brew,coffee,5000,4,N,3
+102373,2025-05-04,14,Jamsil,Cafe Latte,coffee,5000,3,Y,
+102374,2025-05-26,13,Pangyo,Cafe Latte,coffee,5000,2,N,5
+102375,2025-05-30,9,Jamsil,Cold Brew,coffee,5000,1,N,
+102376,2025-04-28,8,Jamsil,Cafe Latte,coffee,5000,1,Y,4
+102377,2025-05-10,10,Hongdae,Vanilla Latte,coffee,5500,1,Y,4
+102378,2025-04-29,19,Jamsil,Espresso,coffee,4000,1,N,2
+102379,2025-03-04,21,Hongdae,Croissant,dessert,4000,3,N,3
+102380,2025-05-16,20,Pangyo,Earl Grey,tea,4500,1,N,3
+102381,2025-03-31,9,Gangnam,Earl Grey,tea,4500,1,Y,4
+102382,2025-05-22,21,Gangnam,Earl Grey,tea,4500,1,Y,
+102383,2025-04-08,8,Hongdae,Chamomile,tea,4500,1,N,3
+102384,2025-05-06,12,Hongdae,Cafe Latte,coffee,5000,4,Y,3
+102385,2025-05-10,12,Hongdae,Cafe Latte,coffee,5000,3,N,
+102386,2025-04-15,15,Jamsil,Americano,coffee,4500,1,N,2
+102387,2025-03-21,13,Hongdae,Cafe Latte,coffee,5000,2,N,
+102388,2025-03-01,10,Jamsil,Vanilla Latte,coffee,5500,3,N,5
+102389,2025-04-09,19,Jamsil,Americano,coffee,4500,1,N,
+102390,2025-03-15,9,Gangnam,Mango Smoothie,juice,6500,1,Y,5
+102391,2025-03-21,13,Gangnam,Cafe Latte,coffee,5000,3,N,4
+102392,2025-05-19,12,Gangnam,Americano,coffee,4500,2,Y,
+102393,2025-04-25,18,Pangyo,Green Tea,tea,4500,1,N,3
+102394,2025-03-05,14,Gangnam,Cafe Latte,coffee,5000,1,N,5
+102395,2025-03-15,8,Hongdae,Espresso,coffee,4000,1,N,1
+102396,2025-05-25,16,Jamsil,Cheesecake,dessert,6500,1,N,
+102397,2025-05-20,8,Gangnam,Cheesecake,dessert,6500,1,Y,4
+102398,2025-03-10,12,Jamsil,Green Tea,tea,4500,1,N,4
+102399,2025-05-18,16,Hongdae,Cold Brew,coffee,5000,1,Y,5
+102400,2025-04-14,14,Gangnam,Americano,coffee,4500,1,N,4
+102401,2025-04-24,9,Hongdae,Croissant,dessert,4000,1,Y,
+102402,2025-04-02,8,Pangyo,Earl Grey,tea,4500,1,Y,4
+102403,2025-05-09,13,Gangnam,Cafe Latte,coffee,5000,2,Y,4
+102404,2025-04-27,12,Pangyo,Green Tea,tea,4500,1,N,2
+102405,2025-05-02,13,Gangnam,Croissant,dessert,4000,1,N,3
+102406,2025-05-01,9,Jamsil,Americano,coffee,4500,1,Y,2
+102407,2025-04-01,11,Hongdae,Cold Brew,coffee,5000,2,Y,3
+102408,2025-04-19,18,Gangnam,Americano,coffee,4500,1,N,4
+102409,2025-05-11,16,Gangnam,Croissant,dessert,4000,1,N,4
+102410,2025-03-04,16,Gangnam,Cafe Latte,coffee,5000,1,N,2
+102411,2025-05-13,16,Gangnam,Americano,coffee,4500,1,Y,
+102412,2025-04-15,19,Gangnam,Brownie,dessert,5000,1,N,4
+102413,2025-03-03,12,Pangyo,Americano,coffee,4500,1,N,2
+102414,2025-04-06,9,Gangnam,Cold Brew,coffee,5000,1,Y,
+102415,2025-03-20,17,Hongdae,Espresso,coffee,4000,1,Y,
+102416,2025-03-25,8,Jamsil,Croissant,dessert,4000,2,N,5
+102417,2025-05-24,14,Gangnam,Mango Smoothie,juice,6500,1,Y,5
+102418,2025-05-05,8,Hongdae,Orange Juice,juice,6000,1,N,4
+102419,2025-05-21,12,Gangnam,Green Tea,tea,4500,3,N,
+102420,2025-03-06,13,Pangyo,Cheesecake,dessert,6500,1,Y,4
+102421,2025-05-02,16,Hongdae,Cafe Latte,coffee,5000,2,Y,
+102422,2025-05-28,9,Pangyo,Americano,coffee,4500,1,N,4
+102423,2025-05-18,20,Jamsil,Chamomile,tea,4500,1,N,3
+102424,2025-04-01,9,Gangnam,Croissant,dessert,4000,1,N,3
+102425,2025-05-19,13,Jamsil,Brownie,dessert,5000,2,N,
+102426,2025-04-21,13,Gangnam,Cafe Latte,coffee,5000,1,N,3
+102427,2025-03-01,9,Jamsil,Cafe Latte,coffee,5000,1,N,
+102428,2025-05-11,21,Gangnam,Americano,coffee,4500,1,Y,5
+102429,2025-05-28,12,Jamsil,Brownie,dessert,5000,2,N,2
+102430,2025-04-07,12,Jamsil,Americano,coffee,4500,2,Y,3
+102431,2025-03-27,8,Jamsil,Espresso,coffee,4000,1,Y,4
+102432,2025-04-22,17,Hongdae,Croissant,dessert,4000,1,Y,5
+102433,2025-05-22,14,Jamsil,Earl Grey,tea,4500,1,N,5
+102434,2025-03-01,9,Hongdae,Croissant,dessert,4000,1,N,5
+102435,2025-03-24,20,Hongdae,Cafe Latte,coffee,5000,1,N,3
+102436,2025-03-02,9,Jamsil,Americano,coffee,4500,1,Y,5
+102437,2025-04-20,18,Jamsil,Vanilla Latte,coffee,5500,1,N,
+102438,2025-05-17,13,Gangnam,Orange Juice,juice,6000,1,N,3
+102439,2025-05-14,12,Jamsil,Croissant,dessert,4000,2,N,3
+102440,2025-05-12,11,Jamsil,Americano,coffee,4500,1,Y,4
+102441,2025-04-12,18,Gangnam,Americano,coffee,4500,2,N,3
+102442,2025-05-27,10,Jamsil,Americano,coffee,4500,3,N,4
+102443,2025-05-18,9,Jamsil,Cafe Latte,coffee,5000,4,N,
+102444,2025-04-15,20,Jamsil,Mango Smoothie,juice,6500,1,N,4
+102445,2025-05-19,9,Hongdae,Cold Brew,coffee,5000,1,N,4
+102446,2025-04-16,11,Hongdae,Americano,coffee,4500,1,N,3
+102447,2025-03-30,16,Hongdae,Green Tea,tea,4500,3,N,
+102448,2025-04-23,13,Jamsil,Earl Grey,tea,4500,1,N,
+102449,2025-04-13,13,Jamsil,Mango Smoothie,juice,6500,1,N,5
+102450,2025-03-24,13,Gangnam,Americano,coffee,4500,2,N,
+102451,2025-04-19,21,Gangnam,Americano,coffee,4500,1,Y,5
+102452,2025-05-19,8,Gangnam,Americano,coffee,4500,1,Y,3
+102453,2025-04-02,9,Pangyo,Vanilla Latte,coffee,5500,1,N,
+102454,2025-05-27,13,Jamsil,Cafe Latte,coffee,5000,1,N,
+102455,2025-04-04,18,Hongdae,Green Tea,tea,4500,2,N,5
+102456,2025-04-19,13,Hongdae,Mango Smoothie,juice,6500,1,Y,
+102457,2025-03-03,18,Jamsil,Americano,coffee,4500,1,N,
+102458,2025-03-17,13,Gangnam,Mango Smoothie,juice,6500,1,N,4
+102459,2025-04-05,12,Jamsil,Cafe Latte,coffee,5000,4,N,5
+102460,2025-05-03,12,Gangnam,Orange Juice,juice,6000,1,Y,4
+102461,2025-05-13,13,Jamsil,Espresso,coffee,4000,1,Y,
+102462,2025-03-04,19,Pangyo,Chamomile,tea,4500,1,Y,
+102463,2025-03-17,9,Jamsil,Espresso,coffee,4000,1,N,3
+102464,2025-03-09,16,Gangnam,Mango Smoothie,juice,6500,1,N,4
+102465,2025-03-01,9,Hongdae,Green Tea,tea,4500,2,N,4
+102466,2025-05-05,12,Hongdae,Cafe Latte,coffee,5000,1,Y,2
+102467,2025-04-27,13,Gangnam,Americano,coffee,4500,1,N,4
+102468,2025-03-04,12,Pangyo,Cold Brew,coffee,5000,1,Y,5
+102469,2025-04-14,12,Gangnam,Earl Grey,tea,4500,1,N,5
+102470,2025-05-04,9,Hongdae,Americano,coffee,4500,1,N,
+102471,2025-05-13,13,Pangyo,Cafe Latte,coffee,5000,2,Y,
+102472,2025-05-05,9,Hongdae,Croissant,dessert,4000,1,Y,4
+102473,2025-04-29,18,Gangnam,Orange Juice,juice,6000,1,N,3
+102474,2025-05-20,8,Jamsil,Espresso,coffee,4000,1,N,4
+102475,2025-03-29,9,Gangnam,Mango Smoothie,juice,6500,1,Y,3
+102476,2025-05-10,19,Gangnam,Brownie,dessert,5000,1,N,4
+102477,2025-05-21,11,Hongdae,Cold Brew,coffee,5000,1,N,4
+102478,2025-03-06,12,Pangyo,Mango Smoothie,juice,6500,1,N,
+102479,2025-03-04,9,Jamsil,Americano,coffee,4500,1,N,3
+102480,2025-04-30,12,Jamsil,Americano,coffee,4500,1,Y,4
+102481,2025-03-29,18,Pangyo,Croissant,dessert,4000,1,N,5
+102482,2025-04-14,9,Hongdae,Espresso,coffee,4000,3,Y,5
+102483,2025-04-08,8,Hongdae,Americano,coffee,4500,1,N,
+102484,2025-05-25,19,Jamsil,Cafe Latte,coffee,5000,1,N,3
+102485,2025-03-25,9,Pangyo,Chamomile,tea,4500,2,Y,5
+102486,2025-03-21,13,Jamsil,Green Tea,tea,4500,1,N,3
+102487,2025-03-30,10,Jamsil,Americano,coffee,4500,1,Y,
+102488,2025-03-15,9,Pangyo,Americano,coffee,4500,1,N,5
+102489,2025-03-12,17,Gangnam,Mango Smoothie,juice,6500,1,N,3
+102490,2025-05-26,15,Hongdae,Croissant,dessert,4000,1,N,2
+102491,2025-05-14,11,Pangyo,Mango Smoothie,juice,6500,1,N,4
+102492,2025-04-02,8,Hongdae,Cafe Latte,coffee,5000,1,Y,4
+102493,2025-03-11,9,Hongdae,Cafe Latte,coffee,5000,1,N,3
+102494,2025-03-25,20,Pangyo,Earl Grey,tea,4500,2,Y,4
+102495,2025-04-17,8,Hongdae,Cafe Latte,coffee,5000,1,N,
+102496,2025-05-01,17,Hongdae,Vanilla Latte,coffee,5500,1,Y,3
+102497,2025-04-18,8,Pangyo,Green Tea,tea,4500,1,N,3
+102498,2025-05-09,9,Jamsil,Americano,coffee,4500,1,Y,4
+102499,2025-05-31,15,Gangnam,Vanilla Latte,coffee,5500,1,N,3
+102500,2025-04-05,12,Gangnam,Mango Smoothie,juice,6500,3,Y,

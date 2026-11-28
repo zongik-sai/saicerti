@@ -21,6 +21,8 @@ interface Props {
   onReveal: () => void;
   onNext: () => void;
   isLast: boolean;
+  /** 마지막 단계 버튼 글자(기본: 코드 풀러 가기 →) */
+  lastLabel?: string;
   /** 문제의 처음 코드(한 줄 수정이면 틀린 코드, 빈칸 채우기면 빈칸이 있는 코드) */
   startCode?: string;
   kind?: ProblemKind;
@@ -47,7 +49,7 @@ export function optionOrder(options: string[], seed: string, fixed = false): num
 }
 
 /** 중간 점검 한 단계. 맞히면 ✓(세 번 틀리면 정답 보기). 단계 이동은 문제 화면에서 자유롭게 한다. */
-const CODE_LABEL: Record<ProblemKind, string> = { fix: '틀린 코드(이 중 한 줄이 틀렸어요)', blank: '빈칸이 있는 코드', write: '처음 코드' };
+const CODE_LABEL: Record<ProblemKind, string> = { fix: '틀린 코드(이 중 한 줄이 틀렸어요)', blank: '빈칸이 있는 코드', write: '처음 코드', choice: '' };
 
 /**
  * 중간 점검에서 보는 코드: 코드를 보고 푸는 단계(code: 'start')는 질문 위에 펼쳐서,
@@ -106,7 +108,7 @@ export function StepView(p: Props) {
   );
 }
 
-function Footer({ ok, revealed, explain, wrong, onReveal, onNext, isLast, onCheck, canCheck }: { ok: boolean; revealed: boolean; explain: string; wrong: number; onReveal: () => void; onNext: () => void; isLast: boolean; onCheck: () => void; canCheck: boolean }) {
+function Footer({ ok, revealed, explain, wrong, onReveal, onNext, isLast, onCheck, canCheck, lastLabel }: { ok: boolean; revealed: boolean; explain: string; wrong: number; onReveal: () => void; onNext: () => void; isLast: boolean; onCheck: () => void; canCheck: boolean; lastLabel?: string }) {
   return (
     <>
       {!ok && wrong > 0 && <p className="feedback bad">다시 생각해 보세요. ({wrong}번 틀림)</p>}
@@ -129,7 +131,7 @@ function Footer({ ok, revealed, explain, wrong, onReveal, onNext, isLast, onChec
         )}
         {ok && (
           <button className="btn primary" onClick={onNext}>
-            {isLast ? '코드 풀러 가기 →' : '다음 단계 →'}
+            {isLast ? lastLabel ?? '코드 풀러 가기 →' : '다음 단계 →'}
           </button>
         )}
       </div>
@@ -137,7 +139,7 @@ function Footer({ ok, revealed, explain, wrong, onReveal, onNext, isLast, onChec
   );
 }
 
-function Mcq({ step, seed, figures, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'mcq' }> }) {
+function Mcq({ step, seed, figures, done, revealed, onCorrect, onReveal, onNext, isLast, lastLabel }: Props & { step: Extract<Step, { kind: 'mcq' }> }) {
   const order = optionOrder(step.options, `${seed}:${step.id}`, refersToPosition(step.q + step.explain));
   const [sel, setSel] = useState<number | null>(done ? step.answer : null);
   const [wrongPick, setWrongPick] = useState<number | null>(null);
@@ -185,12 +187,12 @@ function Mcq({ step, seed, figures, done, revealed, onCorrect, onReveal, onNext,
           );
         })}
       </div>
-      <Footer ok={ok} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} onCheck={check} canCheck={sel !== null} />
+      <Footer ok={ok} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} lastLabel={lastLabel} onCheck={check} canCheck={sel !== null} />
     </>
   );
 }
 
-function Table({ step, figures, lang, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'table' }> }) {
+function Table({ step, figures, lang, done, revealed, onCorrect, onReveal, onNext, isLast, lastLabel }: Props & { step: Extract<Step, { kind: 'table' }> }) {
   const cells: InputCell[] = step.rows.flat().filter(isInput);
   const [vals, setVals] = useState<string[]>(() => (done ? cells.map((c) => c.a) : cells.map(() => '')));
   const [marks, setMarks] = useState<(boolean | null)[]>(() => cells.map(() => null));
@@ -262,12 +264,12 @@ function Table({ step, figures, lang, done, revealed, onCorrect, onReveal, onNex
         </table>
       </div>
       {!done && <p className="faint">{lang === 'c' ? "참/거짓은 1·0, 문자는 작은따옴표('a'), 문자열은 큰따옴표(\"ab\")로 써요." : "참/거짓은 True·False, 글자는 따옴표('a')로 써요."} 빈칸 없이 모두 채운 뒤 확인을 눌러요.</p>}
-      <Footer ok={done} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} onCheck={check} canCheck={vals.every((v) => v.trim() !== '')} />
+      <Footer ok={done} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} lastLabel={lastLabel} onCheck={check} canCheck={vals.every((v) => v.trim() !== '')} />
     </>
   );
 }
 
-function Short({ step, figures, done, revealed, onCorrect, onReveal, onNext, isLast }: Props & { step: Extract<Step, { kind: 'short' }> }) {
+function Short({ step, figures, done, revealed, onCorrect, onReveal, onNext, isLast, lastLabel }: Props & { step: Extract<Step, { kind: 'short' }> }) {
   const [v, setV] = useState(done ? step.a : '');
   const [mark, setMark] = useState<boolean | null>(null);
   const [wrong, setWrong] = useState(0);
@@ -303,7 +305,7 @@ function Short({ step, figures, done, revealed, onCorrect, onReveal, onNext, isL
           if (e.key === 'Enter' && v.trim()) check();
         }}
       />
-      <Footer ok={done} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} onCheck={check} canCheck={v.trim() !== ''} />
+      <Footer ok={done} revealed={revealed} explain={step.explain} wrong={wrong} onReveal={onReveal} onNext={onNext} isLast={isLast} lastLabel={lastLabel} onCheck={check} canCheck={v.trim() !== ''} />
     </>
   );
 }

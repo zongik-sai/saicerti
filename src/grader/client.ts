@@ -4,7 +4,7 @@
  * - 정해진 시간 안에 끝나지 않으면(무한 반복 등) 워커를 끝내고 새로 만든다.
  */
 import { BASE_URL } from '../lib/config';
-import type { Case, CompareMode, CSpec, Lang } from '../content/types';
+import type { Case, CompareMode, CSpec, Lang, Problem } from '../content/types';
 
 export interface PyError {
   type: string;
@@ -16,12 +16,25 @@ export interface CaseResult {
   ok: boolean;
   got?: string;
   error?: PyError;
+  /** Data 과정: 거의 맞았을 때 도움말(반올림 등) */
+  hint?: string;
 }
 export interface RunOutput {
   compile: PyError | null;
   results: CaseResult[];
   stdout: string;
   stdoutCut: boolean;
+  /** Data 과정: 그래프 그림(PNG base64) */
+  images?: string[];
+}
+
+/** Data 과정 코드가 쓰는 패키지(pandas는 늘) */
+export function dataPkgs(code: string, plot = false): string[] {
+  const out = ['pandas'];
+  if (plot || /\bmatplotlib\b/.test(code)) out.push('matplotlib');
+  if (/\bscipy\b/.test(code)) out.push('scipy');
+  if (/\bsklearn\b/.test(code)) out.push('scikit-learn');
+  return out;
 }
 export type RunResult = { kind: 'done'; out: RunOutput; ms: number } | { kind: 'timeout'; ms: number } | { kind: 'fail'; message: string };
 export type EngineStatus = 'idle' | 'loading' | 'ready' | 'error';
@@ -111,8 +124,42 @@ class PyRunner {
     this.worker = null;
     this.ready = null;
     this.cReady = null;
+    this.dataDone.clear();
     for (const fn of this.pending.values()) fn({ id: -1, ok: false, error: '중단됨' });
     this.pending.clear();
+  }
+
+  /** Data 과정: 패키지와 데이터 파일(변형들)을 미리 준비한다(시간 제한 밖에서) */
+  async prepareData(pkgs: string[], files: { name: string; v: number }[]): Promise<void> {
+    await this.ensurePy();
+    if (!this.worker) throw new Error('중단됨');
+    const key = JSON.stringify([pkgs, files]);
+    if (this.dataDone.has(key)) return;
+    this.dataBusy++;
+    this.set('loading');
+    try {
+      const r = await this.post({ type: 'initData', pkgs, files }).reply;
+      if (!r.ok) throw new Error(r.error || '데이터 분석 도구를 불러오지 못했어요.');
+      this.dataDone.add(key);
+    } finally {
+      this.dataBusy--;
+      if (this.worker) this.set('ready');
+    }
+  }
+  private dataDone = new Set<string>();
+  private dataBusy = 0;
+
+  /** Data 과정 문제 실행: cases의 data(변형 번호)마다 그 데이터로 코드를 새로 실행하고 solution()의 반환값·그래프를 비교 */
+  async runData(code: string, problem: Problem, cases: Case[], timeoutMs = 30000): Promise<RunResult> {
+    const plot = !!problem.data?.plot;
+    const vs = [...new Set(cases.map((c) => c.data ?? 0))];
+    try {
+      await this.prepareData(dataPkgs(code, plot), (problem.data?.files ?? []).flatMap((name) => vs.map((v) => ({ name, v }))));
+    } catch (e) {
+      return { kind: 'fail', message: e instanceof Error ? e.message : String(e) };
+    }
+    const payload = JSON.stringify(cases.map((c) => ({ dir: `/d2data/v${c.data ?? 0}`, expected: c.expected, ...(plot ? { plot: true } : {}) })));
+    return this.exec({ type: 'runData', code, cases: payload, mode: problem.compare ?? 'float' }, timeoutMs, 'python');
   }
 
   async run(code: string, func: string, cases: Case[], mode: CompareMode, timeoutMs = 4000, lang: Lang = 'python', spec?: CSpec): Promise<RunResult> {
@@ -121,8 +168,12 @@ class PyRunner {
     } catch (e) {
       return { kind: 'fail', message: e instanceof Error ? e.message : String(e) };
     }
+    return this.exec({ type: 'run', code, func, cases: JSON.stringify(cases.map((c) => ({ args: c.args, expected: c.expected }))), mode, lang, spec: JSON.stringify(spec ?? {}) }, timeoutMs, lang);
+  }
+
+  private async exec(msg: Record<string, unknown>, timeoutMs: number, lang: Lang): Promise<RunResult> {
     const started = performance.now();
-    const { reply } = this.post({ type: 'run', code, func, cases: JSON.stringify(cases.map((c) => ({ args: c.args, expected: c.expected }))), mode, lang, spec: JSON.stringify(spec ?? {}) });
+    const { reply } = this.post(msg);
     let timer: ReturnType<typeof setTimeout> | undefined;
     const timeout = new Promise<'timeout'>((r) => {
       timer = setTimeout(() => r('timeout'), timeoutMs);

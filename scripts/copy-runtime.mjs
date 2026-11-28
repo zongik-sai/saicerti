@@ -20,8 +20,43 @@ writeFileSync(join(out, 'cinterp.py'), cinterp);
 const wheel = readdirSync(join(root, 'src', 'grader', 'vendor')).find((f) => /^pycparser-.*\.whl$/.test(f));
 copyFileSync(join(root, 'src', 'grader', 'vendor', wheel), join(out, wheel));
 const version = JSON.parse(readFileSync(join(src, 'package.json'), 'utf8')).version;
+// Data 과정(d2): pandas·matplotlib·scipy·scikit-learn과 의존 패키지(wheel)도 같은 폴더에 직접 올린다.
+// .pyodide-pkgs/(저장소에 넣지 않음)에 없으면 Pyodide 공식 배포처에서 받아 pyodide-lock.json의 SHA-256으로 확인한다(빌드할 때만).
+const lock = JSON.parse(readFileSync(join(src, 'pyodide-lock.json'), 'utf8'));
+const want = [];
+const stack = ['pandas', 'matplotlib', 'scipy', 'scikit-learn'];
+while (stack.length) {
+  const k = stack.pop();
+  if (want.includes(k)) continue;
+  want.push(k);
+  stack.push(...(lock.packages[k].depends ?? []));
+}
+const cacheDir = join(root, '.pyodide-pkgs');
+mkdirSync(cacheDir, { recursive: true });
+let fetched = 0;
+for (const k of want) {
+  const { file_name: fn, sha256 } = lock.packages[k];
+  const cached = join(cacheDir, fn);
+  const ok = (buf) => createHash('sha256').update(buf).digest('hex') === sha256;
+  if (!existsSync(cached) || !ok(readFileSync(cached))) {
+    const url = `https://cdn.jsdelivr.net/pyodide/v${version}/full/${fn}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`패키지 내려받기 실패 ${res.status}: ${url}`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    if (!ok(buf)) throw new Error(`패키지 SHA-256 불일치: ${fn}`);
+    writeFileSync(cached, buf);
+    fetched++;
+  }
+  copyFileSync(cached, join(out, fn));
+}
+console.log(`✓ Data 과정 패키지 ${want.length}개(새로 받음 ${fetched}개) → public/pyodide/`);
 const hash = createHash('sha256').update(harness).digest('hex').slice(0, 10);
 const chash = createHash('sha256').update(cinterp).digest('hex').slice(0, 10);
+// Data 과정 CSV(public/data/d2/)의 해시: 데이터를 바꾸면 브라우저가 새로 받게
+const dataDir = join(root, 'public', 'data', 'd2');
+const dh = createHash('sha256');
+if (existsSync(dataDir)) for (const f of readdirSync(dataDir).sort()) dh.update(f).update(readFileSync(join(dataDir, f)));
+const dhash = dh.digest('hex').slice(0, 10);
 // 워커가 읽는 버전 정보(캐시 무효화용)
-writeFileSync(join(out, 'runtime.json'), JSON.stringify({ pyodide: version, harness: hash, cinterp: chash, pycparser: wheel }) + '\n');
+writeFileSync(join(out, 'runtime.json'), JSON.stringify({ pyodide: version, harness: hash, cinterp: chash, pycparser: wheel, data: dhash }) + '\n');
 console.log(`✓ Pyodide ${version} + harness(${hash}) → public/pyodide/`);

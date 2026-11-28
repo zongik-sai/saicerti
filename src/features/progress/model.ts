@@ -35,7 +35,7 @@ export interface MockState {
   round: number;
   startedAt: string;
   endedAt?: string;
-  /** 키: 유형 t01~t10 */
+  /** 키: 유형 t01~t10(Data 과정은 문항 q01~q20) */
   results: Record<string, MockResult>;
 }
 
@@ -119,7 +119,9 @@ export function mergeState(a: CourseState | null | undefined, b: CourseState | n
   return out;
 }
 
-const PID = /^(pyb|pya|cb|ca)-t\d{2}-([a-e]|adv[1-5])$/;
+const PID = /^(pyb|pya|cb|ca|d2)-t\d{2}-([a-e]|adv[1-5])$/;
+/** 모의고사 기록 키: 유형 t01~t10, Data 과정은 문항 q01~q30 */
+const MKEY = /^(t(0[1-9]|10)|q(0[1-9]|[12]\d|30))$/;
 const TKEY = /^t(0[1-9]|10)$/;
 /** [심화] 문제 id(…-adv1~adv5) */
 export const isAdvId = (id: string) => /-adv[1-5]$/.test(id);
@@ -169,7 +171,7 @@ export function sanitize(raw: unknown): CourseState {
       if (endedAt) ms.endedAt = endedAt;
       const res = m.results && typeof m.results === 'object' ? (m.results as Record<string, unknown>) : {};
       for (const [t, r] of Object.entries(res)) {
-        if (!TKEY.test(t) || !r || typeof r !== 'object') continue;
+        if (!MKEY.test(t) || !r || typeof r !== 'object') continue;
         const x = r as Record<string, unknown>;
         ms.results[t] = {
           score: typeof x.score === 'number' && x.score >= 0 && x.score <= 100 ? Math.round(x.score) : 0,

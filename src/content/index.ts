@@ -1,4 +1,4 @@
-import type { Course, CourseId, MockSet, Problem, TypeFile } from './types';
+import type { Course, CourseId, MockFile, MockSet, Problem, TypeFile } from './types';
 
 export interface CourseMeta {
   id: CourseId;
@@ -34,6 +34,14 @@ export const COURSES: CourseMeta[] = [
     path: '/c-basic',
     examMinutes: 50,
   },
+  {
+    id: 'd2',
+    name: 'Data 분석 2급',
+    exam: 'YBM DAT 2급(Python) 대비',
+    blurb: '데이터 분석 이론(객관식)과 pandas로 CSV 데이터를 다루는 코드 문제를 연습해요. 집계·비율·결측치·그래프·t-검정·군집 분석까지.',
+    path: '/data2',
+    examMinutes: 50,
+  },
 ];
 
 export const courseMeta = (id: string): CourseMeta | undefined => COURSES.find((c) => c.id === id);
@@ -43,19 +51,48 @@ const loaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   pyb: import.meta.glob<TypeFile>('./pyb/t*.json', { import: 'default' }),
   pya: import.meta.glob<TypeFile>('./pya/t*.json', { import: 'default' }),
   cb: import.meta.glob<TypeFile>('./cb/t*.json', { import: 'default' }),
+  d2: import.meta.glob<TypeFile>('./d2/t*.json', { import: 'default' }),
 };
 
 const mockLoaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   pyb: import.meta.glob<TypeFile>('./pyb/mock/t*.json', { import: 'default' }),
   pya: import.meta.glob<TypeFile>('./pya/mock/t*.json', { import: 'default' }),
   cb: import.meta.glob<TypeFile>('./cb/mock/t*.json', { import: 'default' }),
+  d2: {},
+};
+/** Data 과정 모의고사: 시험지 순서대로 문항을 담은 파일(mN.json) */
+const mockFileLoaders: Partial<Record<CourseId, Record<string, () => Promise<MockFile>>>> = {
+  d2: import.meta.glob<MockFile>('./d2/mock/m*.json', { import: 'default' }),
 };
 
 const advLoaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   pyb: import.meta.glob<TypeFile>('./pyb/adv/t*.json', { import: 'default' }),
   pya: import.meta.glob<TypeFile>('./pya/adv/t*.json', { import: 'default' }),
   cb: import.meta.glob<TypeFile>('./cb/adv/t*.json', { import: 'default' }),
+  d2: import.meta.glob<TypeFile>('./d2/adv/t*.json', { import: 'default' }),
 };
+
+/** Data 과정 문제는 객관식·데이터 문제에 없는 칸(매개변수·예시 등)을 빈 값으로 채워 같은 모양으로 쓴다 */
+const PROBLEM_DEFAULTS: Pick<Problem, 'params' | 'returns' | 'funcName' | 'argNames' | 'examples' | 'tests' | 'code' | 'solution'> = { params: [], returns: [], funcName: 'solution', argNames: [], examples: [], tests: [], code: '', solution: '' };
+export function normalizeProblem(p: Problem): Problem {
+  return { ...PROBLEM_DEFAULTS, ...p };
+}
+const normalizeType = (t: TypeFile): TypeFile => ({ ...t, problems: t.problems.map(normalizeProblem) });
+
+/** Data 과정 모의고사 파일 → 회별 묶음(문항 키 q01~) */
+export function buildMockFiles(files: MockFile[], types: TypeFile[]): MockSet[] {
+  return files
+    .filter((f) => f && Array.isArray(f.items))
+    .sort((a, b) => a.mock - b.mock)
+    .map((f) => ({
+      n: f.mock,
+      key: `m${f.mock}`,
+      items: f.items.map((it, i) => {
+        const type = types.find((t) => t.type === it.type) ?? { course: f.course, type: it.type, typeTitle: `유형 ${it.type}`, kind: it.kind, skills: [], intro: '', problems: [] };
+        return { type, problem: normalizeProblem(it.problem), key: `q${String(i + 1).padStart(2, '0')}`, kind: it.kind };
+      }),
+    }));
+}
 
 /** 심화 파일을 같은 유형 번호의 기본 유형에 붙인다 */
 export function attachAdv(types: TypeFile[], advFiles: TypeFile[]): TypeFile[] {
@@ -86,14 +123,24 @@ export function loadCourse(id: CourseId): Promise<Course> {
   if (!p) {
     const meta = courseMeta(id)!;
     const all = (ls: Record<string, () => Promise<TypeFile>>) => Promise.all(Object.values(ls).map((l) => l()));
-    p = Promise.all([all(loaders[id]), all(mockLoaders[id]), all(advLoaders[id])]).then(([types, mocks, adv]) => ({
-      id,
-      name: meta.name,
-      exam: meta.exam,
-      blurb: meta.blurb,
-      types: attachAdv(types.filter((t) => t && Array.isArray(t.problems)).sort((a, b) => a.type - b.type), adv),
-      mocks: buildMocks(mocks),
-    }));
+    const allM = (ls: Record<string, () => Promise<MockFile>> = {}) => Promise.all(Object.values(ls).map((l) => l()));
+    p = Promise.all([all(loaders[id]), all(mockLoaders[id]), all(advLoaders[id]), allM(mockFileLoaders[id])]).then(([types, mocks, adv, mockFiles]) => {
+      const ts = attachAdv(
+        types
+          .filter((t) => t && Array.isArray(t.problems))
+          .map(normalizeType)
+          .sort((a, b) => a.type - b.type),
+        adv.filter((a) => a && Array.isArray(a.problems)).map(normalizeType),
+      );
+      return {
+        id,
+        name: meta.name,
+        exam: meta.exam,
+        blurb: meta.blurb,
+        types: ts,
+        mocks: mockFiles.length ? buildMockFiles(mockFiles, ts) : buildMocks(mocks),
+      };
+    });
     cache.set(id, p);
     p.catch(() => cache.delete(id));
   }

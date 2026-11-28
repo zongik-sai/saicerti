@@ -1,14 +1,15 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import type { Course, Lang, Problem, TypeFile } from '../content/types';
-import { KIND_LABEL, KIND_TASK } from '../content/types';
+import type { Course, Lang, Problem, ProblemKind, TypeFile } from '../content/types';
+import { KIND_LABEL, KIND_TASK, kindOf } from '../content/types';
 import { courseMeta } from '../content';
 import { inline } from '../components/Rich';
 import { StepView } from '../components/Steps';
 import { BlankCode, countBlanks, fillBlanks } from '../components/BlankCode';
 import { CodeView } from '../components/pyHighlight';
 import { ResultsView, type Shown } from '../components/Results';
-import { py } from '../grader/client';
+import { dataPkgs, py } from '../grader/client';
+import { ChoiceList, D2Statement, DataResults, WhyList } from './d2Parts';
 import { changedLines, engineText, fixBlockReason, StatementBody, useEngine } from './solveParts';
 import { clearDraft, readDraft, useCourseProgress, writeDraft } from '../features/progress/store';
 import type { ProbState } from '../features/progress/model';
@@ -57,6 +58,8 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
       return { ...p, steps, stepsDone: p.stepsDone || all, revealed: revealed ? [...new Set([...(p.revealed ?? []), sid])] : p.revealed };
     });
 
+  const kind = kindOf(type, problem);
+  const isChoice = kind === 'choice';
   const next = nextProblem(course, type, index, adv);
   const tier = adv ? '심화' : '기본';
   // 기본 5문제를 모두 풀면 과정 화면에서 [심화]를 열 수 있다고 알려 준다
@@ -76,14 +79,14 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
         <section className="card statement" aria-label="문제">
           <div className="row" style={{ gap: '0.4rem' }}>
             {adv && <span className="badge adv">[심화] 선택</span>}
-            <span className={`badge ${type.kind}`}>{KIND_LABEL[type.kind]}</span>
+            <span className={`badge ${kind}`}>{KIND_LABEL[kind]}</span>
             <span className="faint">
               유형 {type.type} · {tier} {index + 1}/5
             </span>
             {ps?.solved && <span className="badge write">해결</span>}
           </div>
           <h1 style={{ marginTop: '0.4rem' }}>{problem.title}</h1>
-          <StatementBody problem={problem} lang={type.lang ?? 'python'} />
+          {course.id === 'd2' ? <D2Statement problem={problem} kind={kind} /> : <StatementBody problem={problem} lang={type.lang ?? 'python'} />}
         </section>
 
         <section aria-label="풀이">
@@ -95,7 +98,7 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
               </small>
             </button>
             <button role="tab" aria-selected={tab === 'code'} className={`panel-tab${ps?.solved ? ' done' : ''}`} onClick={() => setTab('code')}>
-              <span className="num">{ps?.solved ? '✓' : '2'}</span> 코드 풀이
+              <span className="num">{ps?.solved ? '✓' : '2'}</span> {isChoice ? '답 고르기' : '코드 풀이'}
               <small>{ps?.solved ? '해결' : ''}</small>
             </button>
           </div>
@@ -124,7 +127,8 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
                 isLast={stepIdx === problem.steps.length - 1}
                 onNext={goNext}
                 startCode={problem.code}
-                kind={type.kind}
+                kind={isChoice ? undefined : kind}
+                lastLabel={isChoice ? '답 고르러 가기 →' : undefined}
               />
               <div className="step-nav">
                 <button className="btn small ghost" onClick={() => setStepIdx(stepIdx - 1)} disabled={stepIdx === 0}>
@@ -132,7 +136,7 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
                 </button>
                 {!doneSteps.has(problem.steps[stepIdx].id) && (
                   <button className="btn small ghost" onClick={goNext}>
-                    {stepIdx >= problem.steps.length - 1 ? '코드 풀이 보기 →' : '다음 단계 보기 →'}
+                    {stepIdx >= problem.steps.length - 1 ? (isChoice ? '답 고르기 →' : '코드 풀이 보기 →') : '다음 단계 보기 →'}
                   </button>
                 )}
               </div>
@@ -143,16 +147,19 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
             <>
               {!stepsDone && !ps?.solved && (
                 <p className="notice" style={{ marginTop: 0 }}>
-                  중간 점검을 먼저 풀어 보면 코드가 훨씬 쉬워져요 ({problem.steps.filter((x) => doneSteps.has(x.id)).length}/{problem.steps.length}단계 맞힘).{' '}
+                  중간 점검을 먼저 풀어 보면 {isChoice ? '답이' : '코드가'} 훨씬 쉬워져요 ({problem.steps.filter((x) => doneSteps.has(x.id)).length}/{problem.steps.length}단계 맞힘).{' '}
                   <button className="btn small ghost" onClick={() => setTab('steps')}>
                     중간 점검 보기
                   </button>
                 </p>
               )}
+              {isChoice ? (
+                <ChoicePanel key={problem.id} problem={problem} ps={ps} update={update} nextPath={next ? `${meta.path}/${next}` : null} onNext={() => next && navigate(`${meta.path}/${next}`)} homePath={meta.path} advHint={advHint} />
+              ) : (
               <CodePanel
                 key={problem.id}
                 problem={problem}
-                kind={type.kind}
+                kind={kind}
                 lang={type.lang ?? 'python'}
                 learnerKey={learnerKey}
                 ps={ps}
@@ -162,6 +169,7 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
                 homePath={meta.path}
                 advHint={advHint}
               />
+              )}
             </>
           )}
           {prog.syncError && <p className="notice warn" style={{ marginTop: '0.75rem' }}>{prog.syncError}</p>}
@@ -185,7 +193,7 @@ function nextProblem(course: Course, type: TypeFile, index: number, adv: boolean
 
 interface CodeProps {
   problem: Problem;
-  kind: TypeFile['kind'];
+  kind: ProblemKind;
   lang: Lang;
   learnerKey: string;
   ps: ProbState | undefined;
@@ -199,6 +207,13 @@ interface CodeProps {
 function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNext, homePath, advHint }: CodeProps) {
   const engine = useEngine(lang);
   const draft = useMemo(() => readDraft(learnerKey, problem.id, problem.version), [learnerKey, problem.id, problem.version]);
+  // Data 문제: pandas와 예시 데이터를 미리 불러 둔다(처음 실행이 빨라지게)
+  useEffect(() => {
+    if (!problem.data) return;
+    void py()
+      .prepareData(dataPkgs(problem.code, !!problem.data.plot), problem.data.files.map((name) => ({ name, v: 0 })))
+      .catch(() => undefined);
+  }, [problem]);
   const nBlanks = kind === 'blank' ? countBlanks(problem.code) : 0;
   const [code, setCode] = useState<string>(kind === 'blank' ? problem.code : draft?.code ?? problem.code);
   const [blanks, setBlanks] = useState<string[]>(() => {
@@ -238,7 +253,7 @@ function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNe
     if (block) return;
     setBusy(mode);
     const cases = mode === 'run' ? problem.examples : [...problem.examples, ...problem.tests];
-    const result = await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', mode === 'run' ? 5000 : 9000, lang, problem.cspec);
+    const result = problem.data ? await py().runData(fullCode, problem, cases, mode === 'run' ? 20000 : 40000) : await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', mode === 'run' ? 5000 : 9000, lang, problem.cspec);
     setBusy(null);
     setShown({ mode, result, exampleCount: problem.examples.length });
     if (mode === 'submit') {
@@ -301,14 +316,14 @@ function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNe
         )}
       </div>
       <p className="engine" aria-live="polite">
-        {engineText(engine, lang)}
+        {engineText(engine, lang, !!problem.data)}
       </p>
       {notice && (
         <p className="notice warn" role="alert">
           {notice}
         </p>
       )}
-      <div ref={resultsRef}>{shown && <ResultsView shown={shown} problem={problem} lang={lang} />}</div>
+      <div ref={resultsRef}>{shown && (problem.data ? <DataResults mode={shown.mode} result={shown.result} problem={problem} /> : <ResultsView shown={shown} problem={problem} lang={lang} />)}</div>
 
       {solvedNow && (
         <div className="solved-box">
@@ -366,6 +381,127 @@ function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNe
               <CodeView lang={lang} code={problem.solution} />
               <p className="faint" style={{ margin: '0.4rem 0 0' }}>
                 답을 보고 직접 다시 입력해 채점해 보세요.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface ChoiceProps {
+  problem: Problem;
+  ps: ProbState | undefined;
+  update: (fn: (p: ProbState) => ProbState) => void;
+  nextPath: string | null;
+  onNext: () => void;
+  homePath: string;
+  advHint: boolean;
+}
+
+/** 객관식(Data 과정 이론 문제): 고르고 확인. 틀리면 고른 보기가 왜 틀렸는지 보여 주고 다시 고르게 한다 */
+function ChoicePanel({ problem, ps, update, nextPath, onNext, homePath, advHint }: ChoiceProps) {
+  const c = problem.choice!;
+  const solvedNow = !!ps?.solved;
+  const [sel, setSel] = useState<number | null>(solvedNow ? c.answer : null);
+  const [wrong, setWrong] = useState<number[]>([]);
+  const [last, setLast] = useState<number | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [confirmAnswer, setConfirmAnswer] = useState(false);
+  const check = () => {
+    if (sel === null) {
+      setNotice('보기를 하나 골라 주세요.');
+      return;
+    }
+    setNotice(null);
+    setLast(sel);
+    const ok = sel === c.answer;
+    if (!ok) setWrong((w) => [...new Set([...w, sel])]);
+    update((p) => ({ ...p, tries: p.tries + 1, solved: p.solved || ok, solvedAt: p.solvedAt ?? (ok ? new Date().toISOString() : undefined) }));
+  };
+  const reveal = solvedNow || showAnswer;
+  return (
+    <div className="card">
+      <div className="code-head">
+        <span className="badge choice">{KIND_LABEL.choice}</span>
+        <span className="task">{KIND_TASK.choice}</span>
+      </div>
+      <ChoiceList problem={problem} value={sel} onChange={(i) => setSel(i)} disabled={solvedNow} reveal={reveal ? { answer: c.answer, wrong } : wrong.length ? { answer: -1, wrong } : null} name={problem.id} />
+      {!solvedNow && (
+        <div className="actions">
+          <button className="btn primary" onClick={check}>
+            정답 확인
+          </button>
+        </div>
+      )}
+      {notice && (
+        <p className="notice warn" role="alert">
+          {notice}
+        </p>
+      )}
+      {!solvedNow && last !== null && last !== c.answer && (
+        <div className="notice bad" role="status">
+          <strong>아니에요. 다시 골라 보세요.</strong>
+          <div style={{ marginTop: '0.3rem' }}>
+            {'①②③④⑤'[last]} {inline(c.why[last] ?? '')}
+          </div>
+        </div>
+      )}
+      {solvedNow && (
+        <div className="solved-box">
+          <h3>🎉 정답이에요!</h3>
+          <WhyList problem={problem} />
+          <p>{inline(problem.explain)}</p>
+          <div className="row">
+            {nextPath ? (
+              <button className="btn small primary" onClick={onNext}>
+                다음 문제 →
+              </button>
+            ) : (
+              <Link to={homePath} className="btn small primary">
+                과정 화면으로
+              </Link>
+            )}
+          </div>
+          {advHint && (
+            <p className="notice adv-hint">
+              이 유형의 기본 5문제를 모두 풀었어요! <Link to={homePath}>과정 화면</Link>에서 <b>[심화] 열기</b>를 누르면 더 어려운 문제에 도전할 수 있어요(선택).
+            </p>
+          )}
+        </div>
+      )}
+      {!solvedNow && wrong.length >= 2 && (
+        <div style={{ marginTop: '0.8rem' }}>
+          {!showAnswer && !confirmAnswer && (
+            <button className="btn small ghost" onClick={() => setConfirmAnswer(true)}>
+              막혔어요 · 정답과 풀이 보기
+            </button>
+          )}
+          {confirmAnswer && !showAnswer && (
+            <span className="row">
+              <span className="faint">답을 보면 ‘답을 보고 풂’으로 기록돼요. 볼까요?</span>
+              <button
+                className="btn small"
+                onClick={() => {
+                  setShowAnswer(true);
+                  update((p) => ({ ...p, sawAnswerAt: p.sawAnswerAt ?? new Date().toISOString() }));
+                }}
+              >
+                볼게요
+              </button>
+              <button className="btn small ghost" onClick={() => setConfirmAnswer(false)}>
+                조금 더 해 볼게요
+              </button>
+            </span>
+          )}
+          {showAnswer && (
+            <div className="explain revealed">
+              <WhyList problem={problem} />
+              <p style={{ margin: 0 }}>{inline(problem.explain)}</p>
+              <p className="faint" style={{ margin: '0.4rem 0 0' }}>
+                풀이를 읽고 정답을 골라 ‘정답 확인’을 눌러 보세요.
               </p>
             </div>
           )}

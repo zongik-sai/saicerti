@@ -494,3 +494,27 @@ table.data.acc-table .acc-date, table.data.acc-table .acc-email { white-space: n
 .sol-code.numbered .ln-row { display: block; white-space: pre; }
 .sol-code.numbered .ln { display: inline-block; min-width: 2ch; margin-right: 0.9rem; color: var(--faint); text-align: right; user-select: none; white-space: pre; }
 .blank-mark { display: inline-block; min-width: 2.2em; padding: 0 0.3em; border: 1.5px dashed var(--accent); border-radius: 4px; color: var(--accent); font-weight: 700; text-align: center; line-height: 1.25; }
+
+/* ── Data 과정(d2): 객관식·데이터 개요·그래프 ───────────────────── */
+.badge.choice { border-color: color-mix(in srgb, var(--accent) 35%, var(--ok) 35%); color: var(--ink); }
+.choice-list { display: grid; gap: 0.45rem; margin: 0.6rem 0; }
+.choice-opt { display: flex; gap: 0.55rem; align-items: flex-start; padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); cursor: pointer; line-height: 1.5; }
+.choice-opt:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.choice-opt input { margin-top: 0.3rem; accent-color: var(--accent); }
+.choice-opt .no { font-weight: 700; color: var(--soft); min-width: 1.1rem; }
+.choice-opt.sel { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+.choice-opt.correct { border-color: var(--ok); background: var(--ok-soft); }
+.choice-opt.wrong { border-color: color-mix(in srgb, var(--bad) 60%, transparent); background: var(--bad-soft); }
+.why-list { margin: 0.5rem 0; padding-left: 1.1rem; font-size: 0.94rem; }
+.why-list li { margin: 0.25rem 0; }
+.why-list li.correct strong { color: var(--ok); }
+.data-ov { margin-top: 0.4rem; }
+.data-ov h4 { margin: 0.2rem 0 0.3rem; font-size: 0.95rem; }
+.data-ov .small, .small { font-size: 0.85rem; margin: 0.35rem 0 0.2rem; }
+.var-table td:first-child { white-space: nowrap; }
+.sample-table { font-size: 0.8rem; }
+.sample-table th, .sample-table td { white-space: nowrap; padding: 0.25rem 0.4rem; }
+.sample-table td.nan { color: var(--soft); }
+.plot-img { margin: 0.6rem 0 0; }
+.plot-img img { max-width: min(100%, 460px); border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: zoom-in; display: block; }
+.plot-img.big img { max-width: 100%; cursor: zoom-out; }

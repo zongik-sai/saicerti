@@ -157,7 +157,7 @@ function Home() {
       <section className="hero">
         <h1>자격증 코딩, 손으로 따라가고 코드로 확인해요</h1>
         <p className="muted" style={{ maxWidth: '44rem' }}>
-          COS Pro Python·C 시험 유형마다 기본 연습 문제 5개와 도전용 심화 문제 5개, 그리고 모의고사 3회. 먼저 표를 채우며 코드를 손으로 따라가 보고, 그다음 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
+          COS Pro Python·C, YBM DAT(Data 분석) 2급 시험 유형마다 기본 연습 문제 5개와 도전용 심화 문제 5개, 그리고 모의고사. 먼저 표를 채우며 코드를 손으로 따라가 보고, 그다음 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
         </p>
       </section>
       <div className="courses">
@@ -196,7 +196,7 @@ function Home() {
       <h2 style={{ marginTop: '1.6rem' }}>준비 중인 과정</h2>
       <div className="soon">
         <div>프로그래밍 C 심화 (COS Pro 1급 C)</div>
-        <div>Data 2급 · Data 1급</div>
+        <div>Data 1급</div>
       </div>
       {!identity && (
         <div style={{ marginTop: '1.6rem' }}>

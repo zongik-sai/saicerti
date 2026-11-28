@@ -9,3 +9,4 @@ playwright-report
 .tmp
 public/pyodide
 __pycache__
+.pyodide-pkgs
