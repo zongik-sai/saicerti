@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { COURSES, loadCourse } from '../../content';
+import { COURSES, courseMeta, loadCourse, typeKey } from '../../content';
 import type { Course, CourseId } from '../../content/types';
 import { sanitize, type CourseState } from '../progress/model';
 import { supabase } from '../auth/supabase';
@@ -43,6 +43,7 @@ export function TeacherPage() {
     };
   }, [isTeacher, cid]);
 
+  const exam = courseMeta(cid)?.style === 'exam';
   if (isTeacher === null) return <div className="page" role="status">확인 중…</div>;
   if (!isTeacher)
     return (
@@ -74,11 +75,12 @@ export function TeacherPage() {
             <thead>
               <tr>
                 <th>학생</th>
-                <th title="기본 문제 해결 수">기본</th>
-                <th title="심화 문제(선택) 해결 수">심화</th>
+                <th title="기본(연습) 문제 해결 수">{exam ? '연습' : '기본'}</th>
+                {!exam && <th title="심화 문제(선택) 해결 수">심화</th>}
+                <th title="유형 집중 풀이에서 3번 잠겨 유형 기록이 처음으로 돌아간 횟수(모든 유형 합계)">초기화</th>
                 {course.types.map((t) => (
                   <th key={t.type} title={t.typeTitle}>
-                    유형 {t.type}
+                    {exam ? `${t.type}번` : `유형 ${t.type}`}
                   </th>
                 ))}
                 {course.mocks.map((m) => (
@@ -108,15 +110,18 @@ export function TeacherPage() {
                     <td>
                       <strong>{total}</strong>/{course.types.length * 5}
                     </td>
-                    <td className="adv-cell">
-                      <strong>{advTotal}</strong>/{advAll}
-                    </td>
+                    {!exam && (
+                      <td className="adv-cell">
+                        <strong>{advTotal}</strong>/{advAll}
+                      </td>
+                    )}
+                    <td title={Object.entries(r.state.resets ?? {}).map(([k, v]) => `${k} ${v.n}회`).join(', ') || '없음'}>{Object.values(r.state.resets ?? {}).reduce((n, v) => n + v.n, 0) || '-'}</td>
                     {course.types.map((t) => {
                       const s = t.problems.filter((p) => probs[p.id]?.solved).length;
                       const st = t.problems.filter((p) => probs[p.id]?.stepsDone).length;
                       const a = (t.adv?.problems ?? []).filter((p) => probs[p.id]?.solved).length;
                       return (
-                        <td key={t.type} className={s === t.problems.length ? 'full' : s > 0 || st > 0 ? 'part' : ''} title={`기본 해결 ${s}, 중간 점검 마침 ${st}, 심화 해결 ${a}`}>
+                        <td key={t.type} className={s === t.problems.length ? 'full' : s > 0 || st > 0 ? 'part' : ''} title={`${exam ? '연습' : '기본'} 해결 ${s}, 중간 점검 마침 ${st}${exam ? '' : `, 심화 해결 ${a}`}, 지금 잠김 ${r.state.locks?.[typeKey(t)]?.length ?? 0}/3`}>
                           {s}/{t.problems.length}
                           {a > 0 && <span className="adv-count"> +{a}</span>}
                         </td>

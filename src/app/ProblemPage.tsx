@@ -9,7 +9,7 @@ import { BlankCode, countBlanks, fillBlanks } from '../components/BlankCode';
 import { CodeView } from '../components/pyHighlight';
 import { ResultsView, type Shown } from '../components/Results';
 import { dataPkgs, py } from '../grader/client';
-import { ChoiceList, D2Statement, DataResults, WhyList } from './d2Parts';
+import { ChoiceList, ConceptBox, D2Statement, DataResults, WhyList } from './d2Parts';
 import { changedLines, engineText, fixBlockReason, StatementBody, useEngine } from './solveParts';
 import { clearDraft, readDraft, useCourseProgress, writeDraft } from '../features/progress/store';
 import type { ProbState } from '../features/progress/model';
@@ -35,15 +35,19 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
   const stepsDone = !!ps?.stepsDone;
   const doneSteps = new Set(ps?.steps ?? []);
   const firstOpen = problem.steps.findIndex((s) => !doneSteps.has(s.id));
-  const [tab, setTab] = useState<'steps' | 'code'>(stepsDone ? 'code' : 'steps');
-  const [stepIdx, setStepIdx] = useState(firstOpen < 0 ? 0 : firstOpen);
   const meta = courseMeta(course.id)!;
+  // 시험형 과정(Data 2급): 답·코드 풀이를 먼저, 중간 점검은 '풀이 도움'(선택)으로(선생님 요청 2026-11-28)
+  const exam = meta.style === 'exam';
+  const hasSteps = problem.steps.length > 0;
+  const startTab: 'steps' | 'code' = exam || stepsDone || !hasSteps ? 'code' : 'steps';
+  const [tab, setTab] = useState<'steps' | 'code'>(startTab);
+  const [stepIdx, setStepIdx] = useState(firstOpen < 0 ? 0 : firstOpen);
   const navigate = useNavigate();
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // 다른 문제로 이동하면 처음 상태로
-    setTab(stepsDone ? 'code' : 'steps');
+    setTab(startTab);
     setStepIdx(firstOpen < 0 ? 0 : firstOpen);
     window.scrollTo(0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,37 +77,52 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
   return (
     <div className="page" ref={topRef}>
       <div className="crumb">
-        <Link to="/">홈</Link> › <Link to={meta.path}>{meta.name}</Link> › 유형 {type.type}. {type.typeTitle} › [{tier}] {index + 1}
+        <Link to="/">홈</Link> › <Link to={meta.path}>{meta.name}</Link> › {exam ? `시험 ${type.type}번. ${type.typeTitle} › 연습 ${index + 1}` : `유형 ${type.type}. ${type.typeTitle} › [${tier}] ${index + 1}`}
       </div>
       <div className="solve">
         <section className="card statement" aria-label="문제">
           <div className="row" style={{ gap: '0.4rem' }}>
             {adv && <span className="badge adv">[심화] 선택</span>}
             <span className={`badge ${kind}`}>{KIND_LABEL[kind]}</span>
-            <span className="faint">
-              유형 {type.type} · {tier} {index + 1}/5
-            </span>
+            <span className="faint">{exam ? `시험 ${type.type}번 유형 · 연습 ${index + 1}/${type.problems.length}` : `유형 ${type.type} · ${tier} ${index + 1}/5`}</span>
             {ps?.solved && <span className="badge write">해결</span>}
           </div>
           <h1 style={{ marginTop: '0.4rem' }}>{problem.title}</h1>
           {course.id === 'd2' ? <D2Statement problem={problem} kind={kind} /> : <StatementBody problem={problem} lang={type.lang ?? 'python'} />}
+          {exam && type.concept && (
+            <details className="concept-details" style={{ marginTop: '0.6rem' }}>
+              <summary>개념 정리: {type.typeTitle}</summary>
+              <ConceptBox concept={type.concept} />
+            </details>
+          )}
         </section>
 
         <section aria-label="풀이">
-          <div className="panel-tabs" role="tablist">
-            <button role="tab" aria-selected={tab === 'steps'} className={`panel-tab${stepsDone ? ' done' : ''}`} onClick={() => setTab('steps')}>
-              <span className="num">{stepsDone ? '✓' : '1'}</span> 중간 점검
-              <small>
-                {doneSteps.size > problem.steps.length ? problem.steps.length : problem.steps.filter((s) => doneSteps.has(s.id)).length}/{problem.steps.length}
-              </small>
-            </button>
-            <button role="tab" aria-selected={tab === 'code'} className={`panel-tab${ps?.solved ? ' done' : ''}`} onClick={() => setTab('code')}>
-              <span className="num">{ps?.solved ? '✓' : '2'}</span> {isChoice ? '답 고르기' : '코드 풀이'}
-              <small>{ps?.solved ? '해결' : ''}</small>
-            </button>
-          </div>
+          {(() => {
+            const stepsTab = (
+              <button key="steps" role="tab" aria-selected={tab === 'steps'} className={`panel-tab${stepsDone ? ' done' : ''}`} onClick={() => setTab('steps')}>
+                <span className="num">{stepsDone ? '✓' : exam ? '?' : '1'}</span> {exam ? '풀이 도움' : '중간 점검'}
+                <small>
+                  {exam ? '선택 · ' : ''}
+                  {problem.steps.filter((s) => doneSteps.has(s.id)).length}/{problem.steps.length}
+                </small>
+              </button>
+            );
+            const codeTab = (
+              <button key="code" role="tab" aria-selected={tab === 'code'} className={`panel-tab${ps?.solved ? ' done' : ''}`} onClick={() => setTab('code')}>
+                <span className="num">{ps?.solved ? '✓' : exam ? '✎' : '2'}</span> {isChoice ? '답 고르기' : '코드 풀이'}
+                <small>{ps?.solved ? '해결' : ''}</small>
+              </button>
+            );
+            if (!hasSteps) return null;
+            return (
+              <div className="panel-tabs" role="tablist">
+                {exam ? [codeTab, stepsTab] : [stepsTab, codeTab]}
+              </div>
+            );
+          })()}
 
-          {tab === 'steps' && (
+          {tab === 'steps' && hasSteps && (
             <>
               <div className="stepper" aria-label="중간 점검 단계">
                 {problem.steps.map((s, i) => (
@@ -128,7 +147,7 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
                 onNext={goNext}
                 startCode={problem.code}
                 kind={isChoice ? undefined : kind}
-                lastLabel={isChoice ? '답 고르러 가기 →' : undefined}
+                lastLabel={isChoice ? '답 고르러 가기 →' : exam ? '코드 풀이로 →' : undefined}
               />
               <div className="step-nav">
                 <button className="btn small ghost" onClick={() => setStepIdx(stepIdx - 1)} disabled={stepIdx === 0}>
@@ -145,12 +164,21 @@ export function ProblemPage({ course, type, problem, index, adv = false, learner
 
           {tab === 'code' && (
             <>
-              {!stepsDone && !ps?.solved && (
+              {!stepsDone && !ps?.solved && hasSteps && !exam && (
                 <p className="notice" style={{ marginTop: 0 }}>
                   중간 점검을 먼저 풀어 보면 {isChoice ? '답이' : '코드가'} 훨씬 쉬워져요 ({problem.steps.filter((x) => doneSteps.has(x.id)).length}/{problem.steps.length}단계 맞힘).{' '}
                   <button className="btn small ghost" onClick={() => setTab('steps')}>
                     중간 점검 보기
                   </button>
+                </p>
+              )}
+              {!ps?.solved && hasSteps && exam && (
+                <p className="faint" style={{ margin: '0 0 0.5rem' }}>
+                  막히면{' '}
+                  <button className="btn small ghost" onClick={() => setTab('steps')}>
+                    풀이 도움 ({problem.steps.length}단계)
+                  </button>
+                  에서 하나씩 생각해 볼 수 있어요.
                 </p>
               )}
               {isChoice ? (
@@ -227,6 +255,14 @@ function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNe
   const [confirmAnswer, setConfirmAnswer] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
+  // 채점 중에 화면이 바뀌면(유형 초기화 등) 늦게 온 결과로 기록하지 않는다
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
 
   // 코드 초안은 바뀔 때마다 이 기기에 저장(새로고침·탭 닫기에도 남게)
   useEffect(() => {
@@ -254,6 +290,7 @@ function CodePanel({ problem, kind, lang, learnerKey, ps, update, nextPath, onNe
     setBusy(mode);
     const cases = mode === 'run' ? problem.examples : [...problem.examples, ...problem.tests];
     const result = problem.data ? await py().runData(fullCode, problem, cases, mode === 'run' ? 20000 : 40000) : await py().run(fullCode, problem.funcName, cases, problem.compare ?? 'exact', mode === 'run' ? 5000 : 9000, lang, problem.cspec);
+    if (!alive.current) return;
     setBusy(null);
     setShown({ mode, result, exampleCount: problem.examples.length });
     if (mode === 'submit') {

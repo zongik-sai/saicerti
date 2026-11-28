@@ -61,6 +61,9 @@ def pyo_run_py(src, timeout=20):
     return r['result'], None
 
 
+AREAS = ('A1', 'A2', 'A3', 'A4', 'A5')
+
+
 def catalog():
     try:
         return json.load(open(CATALOG, encoding='utf-8'))
@@ -223,7 +226,8 @@ def check_problem(V, where, p, kind, expected_id, seen, adv=False, mock=False, f
                 err(where, '처음 코드가 이미 정답')
     if mock and p.get('steps') == []:
         return changed
-    V.check_steps(where, p, adv, kind if kind in CODE_KINDS else None)
+    # Data 2급(시험형): 중간 점검은 '풀이 도움'(선택, 0~9단계)
+    V.check_steps(where, p, adv, kind if kind in CODE_KINDS else None, help_only=True)
     return changed
 
 
@@ -266,21 +270,40 @@ def _check_file(V, path, where, d, seen, fill):
             if not isinstance(it, dict) or not isinstance(it.get('type'), int) or it.get('kind') not in KINDS or not isinstance(it.get('problem'), dict):
                 err(w, '{type: 유형 번호, kind, problem} 필요')
                 continue
+            if it['type'] != i + 1:
+                err(w, f'유형 번호는 시험 문항 번호와 같아야 함({i + 1}, 지금 {it["type"]})')
             if not os.path.exists(os.path.join(ROOT, 'src', 'content', 'd2', f't{it["type"]:02d}.json')):
                 err(w, f'유형 {it["type"]}의 기본 문제 파일이 없음')
             changed |= check_problem(V, w, it['problem'], it['kind'], f'd2-m{n}-q{i + 1:02d}', seen, mock=True, fill=fill)
         return len(items), changed
-    m = re.search(r'd2[/\\](?:(adv)[/\\])?t(\d{2})\.json$', path)
+    m = re.search(r'd2[/\\]t(\d{2})\.json$', path)
     if not m:
-        err(where, '파일 경로는 src/content/d2/tNN.json, .../adv/tNN.json, .../mock/mN.json')
+        err(where, '파일 경로는 src/content/d2/tNN.json(NN = 시험 문항 번호 01~20), .../mock/mN.json. Data 2급에는 [심화](adv)가 없음')
         return 0, False
-    adv, tnum = bool(m.group(1)), int(m.group(2))
+    adv, tnum = False, int(m.group(1))
+    if not 1 <= tnum <= 20:
+        err(where, '유형 번호는 시험 문항 번호 1~20')
+    if d.get('area') not in AREAS:
+        err(where, f'area는 {", ".join(AREAS)} 중 하나(src/content/index.ts D2_AREAS)')
+    c = d.get('concept')
+    if not isinstance(c, dict) or not isinstance(c.get('text'), str) or not (60 <= len(c['text']) <= 320):
+        err(where, 'concept.text(핵심 개념 2~4문장, 60~320자) 필요')
+    elif 'table' in c:
+        tb = c['table']
+        if not isinstance(tb, dict) or not isinstance(tb.get('head'), list) or not isinstance(tb.get('rows'), list) or any(len(r) != len(tb['head']) for r in tb['rows']):
+            err(where, 'concept.table은 {head, rows}이고 행마다 칸 수가 head와 같아야 함')
+    if isinstance(c, dict) and 'saiedu' in c:
+        z = c['saiedu']
+        if not isinstance(z, dict) or not isinstance(z.get('unit'), int) or not 1 <= z['unit'] <= 11 or not isinstance(z.get('title'), str):
+            err(where, 'concept.saiedu는 {unit: 배움 숲 Data 단원 1~11, title}')
     if d.get('course') != 'd2' or d.get('type') != tnum:
         err(where, f'course/type이 경로와 다름({d.get("course")}, {d.get("type")})')
     kind = d.get('kind')
     if kind not in KINDS:
         err(where, 'kind는 choice|blank|fix|write')
         return 0, False
+    if (kind == 'choice') != (tnum <= 12):
+        err(where, '시험 1~12번은 객관식(choice), 13~20번은 작업형(코드) 유형')
     if not isinstance(d.get('typeTitle'), str) or not (2 <= len(d['typeTitle']) <= 24):
         err(where, 'typeTitle 2~24자')
     if not isinstance(d.get('skills'), list) or not d['skills']:
@@ -306,6 +329,9 @@ def _check_file(V, path, where, d, seen, fill):
         if kind == 'choice' and pk != 'choice' or kind != 'choice' and pk not in CODE_KINDS:
             err(f'{where} #{i + 1}', '객관식 유형에는 객관식만, 코드 유형에는 코드 문제만')
             continue
-        eid = f'd2-t{tnum:02d}-adv{i + 1}' if adv else f'd2-t{tnum:02d}-{"abcde"[i]}'
+        eid = f'd2-t{tnum:02d}-{"abcde"[i]}'
+        # 예전 판(10유형, version 1) 기록이 새 문제에 붙지 않게 version은 2 이상(src/features/progress/model.ts MIN_VER)
+        if isinstance(p.get('version'), int) and p['version'] < 2:
+            err(f'{where} #{i + 1}', 'Data 2급 문제 version은 2 이상')
         changed |= check_problem(V, f'{where} #{i + 1}', p, pk, eid, seen, adv=adv, fill=fill)
     return len(probs), changed

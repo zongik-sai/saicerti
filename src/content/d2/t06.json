@@ -1,1193 +1,702 @@
 {
  "course": "d2",
  "type": 6,
- "typeTitle": "가장 많은 값 찾기",
- "kind": "blank",
+ "typeTitle": "데이터프레임 살펴보기",
+ "kind": "choice",
+ "area": "A3",
  "skills": [
-  "value_counts",
-  "idxmax",
-  "조건 필터 df.loc[조건, ]",
-  "max·sum·mean",
-  "round"
+  "shape·size·ndim",
+  "head·info·describe",
+  "count와 len",
+  "loc·iloc"
  ],
- "intro": "어떤 열에서 가장 많이 나온 값을 `value_counts().idxmax()`로 찾고, 그 값을 가진 행만 `df.loc[조건, ]`으로 골라 다른 열의 최댓값·합계·평균을 구하는 유형이에요. 빈칸으로 value_counts·idxmax·비교(==)·열 이름·집계 함수 자리를 연습해요.",
+ "intro": "`shape`·`head()`·`info()`·`describe()`로 표의 크기와 내용을 확인하고, `loc`·`iloc`로 값을 꺼내는 pandas 기본 문법을 묻는 객관식이에요.",
+ "concept": {
+  "text": "DataFrame은 행과 열로 된 pandas의 표예요. `df.shape`는 (행 수, 열 수), `head()`는 앞 5행, `info()`는 열마다 자료형과 결측이 아닌 값의 수, `describe()`는 숫자 열의 요약 통계를 보여 줘요. `loc`은 이름표로, `iloc`은 위치 번호로 값을 꺼내요.",
+  "table": {
+   "head": [
+    "코드",
+    "결과(학생 8명 × 3열 표)"
+   ],
+   "rows": [
+    [
+     "`df.shape`",
+     "(8, 3)"
+    ],
+    [
+     "`df.size`",
+     "24"
+    ],
+    [
+     "`len(df)`",
+     "8"
+    ],
+    [
+     "`len(df.columns)`",
+     "3"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 4,
+   "title": "pandas 시작: Series와 DataFrame"
+  }
+ },
  "problems": [
   {
    "id": "d2-t06-a",
-   "version": 1,
-   "title": "매물이 가장 많은 모델의 최고가",
-   "statement": "중고차 매물 데이터에는 매물 하나가 한 행으로 들어 있습니다. 매물이 가장 많이 올라온 모델(model)을 찾고, 그 모델 매물 가운데 가장 비싼 가격(price, 만 원)을 구하려고 합니다.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
-   "answerFormat": "1234",
-   "data": {
-    "files": [
-     "used_cars.csv"
-    ]
-   },
+   "version": 2,
+   "title": "행과 열의 개수 알아보기",
+   "statement": "한 반의 출석 기록을 pandas의 DataFrame(행과 열로 된 표) `att`로 불러왔습니다. `att`에는 학생 8명의 기록이 한 명에 한 줄(행)씩 들어 있고, 열은 `name`(이름), `days`(출석 일수), `late`(지각 횟수) 3개입니다.\n\n`print(att.shape)`를 실행했을 때 출력되는 값은 무엇입니까?",
    "figures": [
     {
-     "id": "mini",
+     "id": "f1",
      "kind": "table",
-     "alt": "매물 7개짜리 작은 표 mini: 행 번호, model, price",
+     "alt": "학생 4명의 출석 표 df입니다. 인덱스 0~3, 열은 name, days, late이고 값은 (민아, 20, 1), (준서, 19, 0), (하린, 20, 2), (도윤, 18, 3)입니다.",
      "head": [
-      "행",
-      "model",
-      "price"
+      "인덱스",
+      "name",
+      "days",
+      "late"
      ],
      "rows": [
       [
        0,
-       "KI-A1",
-       1200
-      ],
-      [
-       1,
-       "HY-B2",
-       900
-      ],
-      [
-       2,
-       "KI-A1",
-       1500
-      ],
-      [
-       3,
-       "GE-C3",
-       2100
-      ],
-      [
-       4,
-       "HY-B2",
-       800
-      ],
-      [
-       5,
-       "KI-A1",
-       1100
-      ],
-      [
-       6,
-       "GE-C3",
-       1900
-      ]
-     ]
-    }
-   ],
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    top_model = df[\"model\"].⟦1⟧().idxmax()\n    df_top = df.loc[df[\"model\"] == top_model, ]\n    answer = df_top[\"price\"].⟦2⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "value_counts"
-    },
-    {
-     "answer": "max"
-    }
-   ],
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    top_model = df[\"model\"].value_counts().idxmax()\n    df_top = df.loc[df[\"model\"] == top_model, ]\n    answer = df_top[\"price\"].max()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 2350
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 2880
-    },
-    {
-     "data": 2,
-     "expected": 2790
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "매물 하나가 한 행이에요. '매물이 가장 많이 올라온 모델'을 찾으려면 무엇을 세어야 할까요?",
-     "options": [
-      "model 열에서 모델마다 나온 행의 수",
-      "모델마다 price를 모두 더한 값",
-      "모델마다 가장 높은 price",
-      "데이터 전체의 행 수"
-     ],
-     "answer": 0,
-     "explain": "같은 모델이 나온 행의 수가 곧 그 모델의 매물 수예요. 이렇게 값마다 몇 번 나왔는지 세어 주는 함수가 `value_counts()`예요."
-    },
-    {
-     "id": "s2",
-     "kind": "table",
-     "title": "작은 표로 세어 보기",
-     "prompt": "매물 7개짜리 작은 표 `mini`가 있어요.\n{{fig:mini}}\n`mini[\"model\"].value_counts()`는 모델마다 나온 횟수를 많은 순서로 보여 줘요. 모델마다 개수를 채워 보세요.",
-     "columns": [
-      "모델(이름표)",
-      "개수"
-     ],
-     "rows": [
-      [
-       "KI-A1",
-       {
-        "a": "3"
-       }
-      ],
-      [
-       "HY-B2",
-       {
-        "a": "2"
-       }
-      ],
-      [
-       "GE-C3",
-       {
-        "a": "2"
-       }
-      ]
-     ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'model': ['KI-A1', 'HY-B2', 'KI-A1', 'GE-C3', 'HY-B2', 'KI-A1', 'GE-C3'], 'price': [1200, 900, 1500, 2100, 800, 1100, 1900]})\ndef answers():\n    vc = mini[\"model\"].value_counts()\n    return [int(vc[\"KI-A1\"]), int(vc[\"HY-B2\"]), int(vc[\"GE-C3\"])]",
-     "explain": "KI-A1은 0·2·5행, HY-B2는 1·4행, GE-C3는 3·6행에 있어요. value_counts()의 결과는 모델 이름이 이름표(인덱스), 개수가 값인 Series(이름표가 붙은 값 목록)예요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "`mini[\"model\"].value_counts()` 뒤에 `.idxmax()`를 붙이면 무엇이 나올까요?",
-     "options": [
-      "'KI-A1' (개수가 가장 큰 이름표)",
-      "3 (가장 큰 개수)",
-      "2100 (가장 비싼 가격)",
-      "0 (첫 번째 행 번호)"
-     ],
-     "answer": 0,
-     "explain": "idxmax()는 가장 큰 값 자체가 아니라 그 값이 붙은 이름표(index)를 돌려줘요. 가장 큰 개수 3이 필요하면 max()를 써요. 그래서 `value_counts().idxmax()`로 매물이 가장 많은 모델 이름을 얻어요."
-    },
-    {
-     "id": "s4",
-     "kind": "table",
-     "title": "그 모델의 행만 고르기",
-     "prompt": "`mini.loc[mini[\"model\"] == \"KI-A1\", ]`는 조건이 True인 행만 남겨요. 행마다 조건의 값을 채워 보세요.",
-     "columns": [
-      "행",
-      "model",
-      "price",
-      "model == \"KI-A1\""
-     ],
-     "rows": [
-      [
-       "0",
-       "KI-A1",
-       "1200",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "1",
-       "HY-B2",
-       "900",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "2",
-       "KI-A1",
-       "1500",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "3",
-       "GE-C3",
-       "2100",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "4",
-       "HY-B2",
-       "800",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "5",
-       "KI-A1",
-       "1100",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "6",
-       "GE-C3",
-       "1900",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ]
-     ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'model': ['KI-A1', 'HY-B2', 'KI-A1', 'GE-C3', 'HY-B2', 'KI-A1', 'GE-C3'], 'price': [1200, 900, 1500, 2100, 800, 1100, 1900]})\ndef answers():\n    return [bool(x) for x in (mini[\"model\"] == \"KI-A1\")]",
-     "explain": "KI-A1인 0·2·5행만 True라서 이 세 행이 남아요. `df.loc[조건, ]`의 쉼표 뒤를 비워 두면 모든 열을 그대로 가져와요."
-    },
-    {
-     "id": "s5",
-     "kind": "short",
-     "q": "앞 단계에서 True인 행만 남긴 표를 `df_top`이라 할 때, `df_top[\"price\"].max()`는 얼마일까요?",
-     "a": "1500",
-     "check": "import pandas as pd\nmini = pd.DataFrame({'model': ['KI-A1', 'HY-B2', 'KI-A1', 'GE-C3', 'HY-B2', 'KI-A1', 'GE-C3'], 'price': [1200, 900, 1500, 2100, 800, 1100, 1900]})\ndef answers():\n    df_top = mini.loc[mini[\"model\"] == mini[\"model\"].value_counts().idxmax(), ]\n    return [int(df_top[\"price\"].max())]",
-     "explain": "KI-A1 매물의 가격은 1200, 1500, 1100이라 가장 큰 값은 1500이에요. 고르지 않은 전체 표에서 `mini[\"price\"].max()`를 구하면 GE-C3의 2100이 나와 답이 달라져요."
-    }
-   ],
-   "explain": "`value_counts()`로 모델마다 매물 수를 세고 `idxmax()`로 가장 많은 모델의 이름을 얻어요. `df.loc[조건, ]`으로 그 모델의 행만 고른 뒤 price의 `max()`를 구해요. 고르지 않고 전체에서 max()를 구하면 다른 모델의 가격이 답이 될 수 있어요."
-  },
-  {
-   "id": "d2-t06-b",
-   "version": 1,
-   "title": "가장 많이 주문된 메뉴의 판매 개수",
-   "statement": "카페 주문 데이터에서 주문 한 건은 한 행이고, 한 번 주문할 때 같은 메뉴를 여러 개(qty) 살 수 있습니다. 주문 건수가 가장 많은 메뉴(menu)를 찾고, 그 메뉴가 팔린 개수의 합계(qty의 합)를 구하려고 합니다.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
-   "answerFormat": "123",
-   "data": {
-    "files": [
-     "cafe_orders.csv"
-    ]
-   },
-   "figures": [
-    {
-     "id": "mini",
-     "kind": "table",
-     "alt": "주문 6건짜리 작은 표 mini: 행 번호, menu, qty",
-     "head": [
-      "행",
-      "menu",
-      "qty"
-     ],
-     "rows": [
-      [
-       0,
-       "Latte",
+       "민아",
+       20,
        1
       ],
       [
        1,
-       "Mocha",
-       4
+       "준서",
+       19,
+       0
       ],
       [
        2,
-       "Latte",
-       1
-      ],
-      [
-       3,
-       "Tea",
+       "하린",
+       20,
        2
       ],
       [
-       4,
-       "Latte",
-       1
-      ],
-      [
-       5,
-       "Mocha",
+       3,
+       "도윤",
+       18,
        3
       ]
-     ]
+     ],
+     "caption": "df"
     }
    ],
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    best_menu = df[\"menu\"].⟦1⟧().⟦2⟧()\n    df_best = df.loc[df[\"menu\"] == best_menu, ]\n    answer = df_best[\"qty\"].⟦3⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "value_counts"
-    },
-    {
-     "answer": "idxmax"
-    },
-    {
-     "answer": "sum"
-    }
-   ],
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    best_menu = df[\"menu\"].value_counts().idxmax()\n    df_best = df.loc[df[\"menu\"] == best_menu, ]\n    answer = df_best[\"qty\"].sum()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 701
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 810
-    },
-    {
-     "data": 2,
-     "expected": 891
-    }
-   ],
+   "choice": {
+    "options": [
+     "`24`",
+     "`(3, 8)`",
+     "`(8, 3)`",
+     "`2`"
+    ],
+    "answer": 2,
+    "why": [
+     "24는 전체 칸 수(8 × 3)로, `att.size`의 값이에요.",
+     "shape는 (행 수, 열 수) 순서라서 (3, 8)은 거꾸로 쓴 거예요.",
+     "행 8개, 열 3개이므로 shape는 (8, 3)이에요(정답).",
+     "2는 표의 차원 수(행·열 두 방향)로, `att.ndim`의 값이에요."
+    ]
+   },
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "Latte를 두 번 주문했고 qty가 각각 3과 1이라면, Latte의 '주문 건수'와 '판매 개수(qty의 합)'는 각각 얼마일까요?",
+     "q": "DataFrame에서 **행**과 **열**은 각각 무엇일까요?",
      "options": [
-      "2건, 4개",
-      "4건, 2개",
-      "2건, 2개",
-      "4건, 4개"
+      "행은 가로 한 줄(학생 한 명의 기록), 열은 세로 한 줄(같은 항목의 값들)이에요",
+      "행은 세로 한 줄(같은 항목), 열은 가로 한 줄(학생 한 명의 기록)이에요",
+      "행은 표의 제목, 열은 표를 저장한 파일 이름이에요",
+      "행과 열은 같은 뜻이라 구별하지 않아요"
      ],
      "answer": 0,
-     "explain": "주문 건수는 행의 수(2건), 판매 개수는 qty를 더한 값(3 + 1 = 4개)이에요. 이 문제는 '가장 많은 메뉴'를 주문 건수로 정하고, 답은 판매 개수로 구해요."
+     "explain": "DataFrame은 엑셀 표처럼 생겼어요. 가로 한 줄이 행(기록 하나), 세로 한 줄이 열(항목 하나)이고, 열마다 `name`, `days` 같은 이름이 붙어 있어요."
     },
     {
      "id": "s2",
      "kind": "table",
-     "title": "작은 표로 두 가지 세기",
-     "prompt": "주문 6건짜리 작은 표 `mini`예요.\n{{fig:mini}}\n메뉴마다 주문 건수(`value_counts()`로 센 값)와 판매 개수(qty의 합)를 채워 보세요.",
+     "title": "작은 표로 확인하기",
+     "prompt": "아래 표 `df`(학생 4명, 열 3개)에 각 코드를 실행한 결과를 채워 보세요.\n\n{{fig:f1}}",
      "columns": [
-      "menu",
-      "주문 건수",
-      "판매 개수"
+      "코드",
+      "뜻",
+      "결과"
      ],
      "rows": [
       [
-       "Latte",
+       "df.shape",
+       "(행 수, 열 수)",
        {
-        "a": "3"
-       },
+        "a": "(4, 3)"
+       }
+      ],
+      [
+       "df.shape[0]",
+       "shape의 첫 번째 값",
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "df.shape[1]",
+       "shape의 두 번째 값",
        {
         "a": "3"
        }
       ],
       [
-       "Mocha",
+       "df.size",
+       "전체 칸 수",
        {
-        "a": "2"
-       },
-       {
-        "a": "7"
+        "a": "12"
        }
       ],
       [
-       "Tea",
-       {
-        "a": "1"
-       },
+       "df.ndim",
+       "차원 수",
        {
         "a": "2"
        }
       ]
      ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'menu': ['Latte', 'Mocha', 'Latte', 'Tea', 'Latte', 'Mocha'], 'qty': [1, 4, 1, 2, 1, 3]})\ndef answers():\n    vc = mini[\"menu\"].value_counts()\n    out = []\n    for m in [\"Latte\", \"Mocha\", \"Tea\"]:\n        out += [int(vc[m]), int(mini.loc[mini[\"menu\"] == m, \"qty\"].sum())]\n    return out",
-     "explain": "Latte는 주문이 3건으로 가장 많지만 판매 개수는 Mocha(7개)가 더 많아요. 무엇으로 \"가장 많은\"을 정하는지 문제를 잘 읽어야 해요."
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"name\": [\"민아\", \"준서\", \"하린\", \"도윤\"], \"days\": [20, 19, 20, 18], \"late\": [1, 0, 2, 3]})\n    return [df.shape, df.shape[0], df.shape[1], df.size, df.ndim]",
+     "explain": "shape는 (행 수, 열 수) 튜플이라 [0]이 행 수, [1]이 열 수예요. size는 행 수 × 열 수, ndim은 표의 방향 수(DataFrame은 2)예요."
     },
     {
      "id": "s3",
-     "kind": "short",
-     "q": "앞의 작은 표에서 이 문제의 답(주문 건수가 가장 많은 메뉴의 판매 개수)은 얼마일까요?",
-     "a": "3",
-     "check": "import pandas as pd\nmini = pd.DataFrame({'menu': ['Latte', 'Mocha', 'Latte', 'Tea', 'Latte', 'Mocha'], 'qty': [1, 4, 1, 2, 1, 3]})\ndef answers():\n    best = mini[\"menu\"].value_counts().idxmax()\n    return [int(mini.loc[mini[\"menu\"] == best, ][\"qty\"].sum())]",
-     "explain": "주문 건수가 가장 많은 메뉴는 Latte(3건)이고, Latte의 qty는 1 + 1 + 1 = 3이에요. Mocha의 7은 판매 개수로 1등을 정했을 때의 값이라 답이 아니에요."
-    },
-    {
-     "id": "s4",
      "kind": "mcq",
-     "q": "`df[\"menu\"].value_counts()`의 결과에서 개수가 가장 큰 메뉴의 **이름**을 얻으려면 뒤에 무엇을 붙일까요?",
+     "q": "`att.shape`처럼 괄호 없이 쓰는 것과 `att.head()`처럼 괄호를 붙이는 것은 어떻게 다를까요?",
      "options": [
-      ".idxmax()",
-      ".max()",
-      ".sum()",
-      ".head(1)"
+      "괄호 없는 것은 표가 가진 정보(속성)를 읽고, 괄호 있는 것은 일을 시키는 함수(메서드)를 불러요",
+      "둘은 똑같아서 괄호를 붙여도 되고 빼도 돼요",
+      "괄호 없는 것은 메서드, 괄호 있는 것은 속성이에요",
+      "괄호는 결과를 화면에 크게 보여 줄 때만 붙여요"
      ],
      "answer": 0,
-     "explain": "max()는 가장 큰 개수(숫자)를, idxmax()는 그 개수가 붙은 이름표(메뉴 이름)를 돌려줘요. head(1)은 이름과 개수가 함께 든 Series라서 == 비교에 바로 쓸 수 없어요."
-    },
-    {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "고른 행만 담은 `df_best`에서 qty를 모두 더하는 코드는 무엇일까요?",
-     "options": [
-      "df_best[\"qty\"].sum()",
-      "df_best[\"qty\"].count()",
-      "df_best[\"qty\"].max()",
-      "df_best[\"qty\"].mean()"
-     ],
-     "answer": 0,
-     "explain": "sum()은 값을 모두 더해요. count()는 값이 있는 칸의 수(곧 주문 건수), max()는 가장 큰 qty, mean()은 평균이라 판매 개수가 아니에요."
+     "explain": "shape·size·ndim·columns·dtypes는 속성이라 괄호 없이 써요. head()(앞의 5행 보기)·count()·describe()는 메서드라 괄호를 붙여요. `att.shape()`처럼 쓰면 오류가 나요."
     }
    ],
-   "explain": "주문 건수는 `value_counts()`로 세고 `idxmax()`로 가장 많은 메뉴 이름을 얻어요. 그 메뉴의 행만 `df.loc[조건, ]`으로 고른 뒤 qty를 `sum()`으로 더해요. \"건수(행의 수)\"와 \"개수(qty의 합)\"를 헷갈리지 않는 것이 핵심이에요."
+   "explain": "`shape`는 DataFrame의 (행 수, 열 수)를 튜플로 알려 주는 속성이에요. 행 8개·열 3개이므로 `(8, 3)`이 출력돼요. 전체 칸 수는 `size`, 차원 수는 `ndim`으로 확인해요."
   },
   {
-   "id": "d2-t06-c",
-   "version": 1,
-   "title": "붐비는 정류소의 최장 이용 시간",
-   "statement": "공공 자전거 대여 데이터에서 대여가 가장 많이 이루어진 대여 정류소(station)를 찾고, 그 정류소에서 빌린 대여 가운데 가장 긴 이용 시간(minutes, 분)을 구하려고 합니다.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
-   "answerFormat": "123",
-   "data": {
-    "files": [
-     "bike_rentals.csv"
+   "id": "d2-t06-b",
+   "version": 2,
+   "title": "표를 훑어보는 코드들",
+   "statement": "중고차 매물 표 `cars`를 처음 불러와 살펴보려고 합니다.\n\n코드와 그 코드로 알 수 있는 내용을 **잘못** 짝지은 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "`cars.head()` — 표의 앞 5행",
+     "`cars.info()` — 열마다 자료형과 결측이 아닌 값의 개수",
+     "`cars.describe()` — 숫자 열마다 개수·평균·표준편차·최솟값·사분위수·최댓값",
+     "`cars.shape` — 열마다 결측치(NaN)의 개수"
+    ],
+    "answer": 3,
+    "why": [
+     "head()는 앞에서부터 5행을 보여 줘요(옳은 짝).",
+     "info()는 행 수, 열마다 결측이 아닌 값의 수(Non-Null Count)와 자료형(Dtype)을 보여 줘요(옳은 짝).",
+     "describe()는 숫자 열의 count·mean·std·min·25%·50%·75%·max를 한 번에 보여 줘요(옳은 짝).",
+     "shape는 (행 수, 열 수)만 알려 줘요. 열마다 결측치 개수는 `cars.isna().sum()`으로 구해요. 그래서 잘못 짝지었어요(정답)."
     ]
    },
-   "figures": [
-    {
-     "id": "vc",
-     "kind": "table",
-     "alt": "value_counts 결과: Mangwon 4, Sinsa 3, Yeoksam 1",
-     "head": [
-      "이름표(station)",
-      "값(개수)"
-     ],
-     "rows": [
-      [
-       "Mangwon",
-       4
-      ],
-      [
-       "Sinsa",
-       3
-      ],
-      [
-       "Yeoksam",
-       1
-      ]
-     ]
-    }
-   ],
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    top_station = df[\"station\"].value_counts().⟦1⟧()\n    df_top = df.loc[df[\"station\"] ⟦2⟧ top_station, ]\n    answer = df_top[\"minutes\"].⟦3⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "idxmax"
-    },
-    {
-     "answer": "=="
-    },
-    {
-     "answer": "max"
-    }
-   ],
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    top_station = df[\"station\"].value_counts().idxmax()\n    df_top = df.loc[df[\"station\"] == top_station, ]\n    answer = df_top[\"minutes\"].max()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 112
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 103
-    },
-    {
-     "data": 2,
-     "expected": 86
-    }
-   ],
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "이 문제에서 '가장 많이 나온 값'을 찾는 열과 '가장 큰 값'을 구하는 열을 바르게 짝지은 것은?",
+     "q": "열마다 결측치(NaN) 개수를 세는 코드는 무엇일까요?",
      "options": [
-      "station에서 가장 많이 나온 값, minutes에서 가장 큰 값",
-      "minutes에서 가장 많이 나온 값, station에서 가장 큰 값",
-      "district에서 가장 많이 나온 값, minutes에서 가장 큰 값",
-      "station에서 가장 많이 나온 값, distance_km에서 가장 큰 값"
+      "`cars.isna().sum()`",
+      "`cars.shape`",
+      "`cars.head()`"
      ],
      "answer": 0,
-     "explain": "대여가 가장 많은 '정류소'를 찾으니 station 열을 세고, 답은 이용 시간이니 minutes 열의 최댓값이에요. district는 구, distance_km는 이동 거리라 이 문제와 관계없어요."
+     "explain": "isna()는 칸마다 결측이면 True인 표를 만들고, sum()은 열마다 True(=1)를 더해 결측치 개수를 알려 줘요."
+    }
+   ],
+   "explain": "처음 불러온 표는 `head()`(앞 5행), `shape`(행·열 수), `info()`(자료형·결측 아닌 값 수), `describe()`(숫자 열 요약 통계), `isna().sum()`(열마다 결측치 수)으로 훑어봐요."
+  },
+  {
+   "id": "d2-t06-c",
+   "version": 2,
+   "title": "결측치 세기, 결과가 다른 하나",
+   "statement": "학생 표 `df`의 `club`(동아리) 열은 동아리가 없는 학생의 칸이 비어 있어 `NaN`(결측치)으로 들어 있습니다. 전체 학생은 30명이고, 그중 동아리가 없는 학생은 6명입니다.\n\n다음 네 코드 가운데 실행 결과가 **나머지 셋과 다른** 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "`df[\"club\"].count()`",
+     "`df[\"club\"].notna().sum()`",
+     "`len(df[\"club\"])`",
+     "`df[\"club\"].value_counts().sum()`"
+    ],
+    "answer": 2,
+    "why": [
+     "`count()`는 결측치가 아닌 값만 세어 24가 나와요.",
+     "`notna()`는 값이 있는 칸이 True이고 True는 1로 더해져서 24가 나와요.",
+     "`len()`은 결측치까지 모든 행을 세어 30이 나와요. 혼자만 달라요(정답).",
+     "`value_counts()`는 기본으로 NaN을 빼고 세므로 개수를 모두 더하면 24예요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "**결측치(NaN)**는 무엇일까요?",
+     "options": [
+      "값이 비어 있는 칸(값 없음)이에요",
+      "0이라는 값이에요",
+      "글자 NaN을 적어 넣은 칸이에요",
+      "열에서 가장 큰 값이에요"
+     ],
+     "answer": 0,
+     "explain": "결측치는 기록이 없어 비어 있는 칸이에요. pandas는 NaN(Not a Number)으로 표시해요. 0이나 빈 글자와는 다른, 값이 없다는 표시예요."
     },
     {
      "id": "s2",
      "kind": "table",
-     "title": "idxmax와 max 구별하기",
-     "prompt": "8행짜리 작은 표 `mini`에서 `vc = mini[\"station\"].value_counts()`의 결과가 다음과 같아요.\n{{fig:vc}}\n각 코드의 결과를 채워 보세요(이름은 따옴표 없이 써도 돼요).",
+     "title": "isna와 notna 따라가기",
+     "prompt": "동아리 값 5개가 든 Series(열 하나처럼 값이 한 줄로 늘어선 것) `s`가 있어요. `s.isna()`(결측이면 True)와 `s.notna()`(값이 있으면 True)의 결과를 채워 보세요.",
+     "columns": [
+      "s의 값",
+      "s.isna()",
+      "s.notna()"
+     ],
+     "rows": [
+      [
+       "축구",
+       {
+        "a": "False"
+       },
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "NaN",
+       {
+        "a": "True"
+       },
+       {
+        "a": "False"
+       }
+      ],
+      [
+       "밴드",
+       {
+        "a": "False"
+       },
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "축구",
+       {
+        "a": "False"
+       },
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "NaN",
+       {
+        "a": "True"
+       },
+       {
+        "a": "False"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([\"축구\", None, \"밴드\", \"축구\", None])\n    out = []\n    for a, b in zip(s.isna(), s.notna()):\n        out += [bool(a), bool(b)]\n    return out",
+     "explain": "isna()와 notna()는 칸마다 True/False를 돌려주는데, 서로 정반대예요. True는 1, False는 0으로 더해지므로 뒤에 sum()을 붙이면 개수가 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "개수 세는 코드 비교",
+     "prompt": "같은 `s`(값 5개 중 NaN 2개)에 각 코드를 실행한 결과를 채워 보세요.",
      "columns": [
       "코드",
       "결과"
      ],
      "rows": [
       [
-       "vc.idxmax()",
+       "s.isna().sum()",
        {
-        "a": "Mangwon",
+        "a": "2"
+       }
+      ],
+      [
+       "s.notna().sum()",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "s.count()",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "len(s)",
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "s.value_counts()[\"축구\"]",
+       {
+        "a": "2"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([\"축구\", None, \"밴드\", \"축구\", None])\n    return [s.isna().sum(), s.notna().sum(), s.count(), len(s), s.value_counts()[\"축구\"]]",
+     "explain": "count()와 notna().sum()은 값이 있는 칸만, len()은 NaN까지 모든 칸을 세요. 결측치 개수는 isna().sum()으로 구해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`s.value_counts()`(값마다 개수를 세는 메서드)는 NaN을 어떻게 다룰까요?",
+     "options": [
+      "기본으로 NaN은 빼고 값이 있는 것만 세요",
+      "NaN도 하나의 값으로 함께 세요",
+      "NaN이 있으면 오류가 나요",
+      "NaN을 0으로 바꾸어 세요"
+     ],
+     "answer": 0,
+     "explain": "value_counts()는 기본값이 dropna=True라 NaN을 세지 않아요. 그래서 결과의 개수를 모두 더하면 count()와 같아요. NaN까지 세려면 value_counts(dropna=False)를 써요."
+    }
+   ],
+   "explain": "`count()`, `notna().sum()`, `value_counts().sum()`은 모두 결측치를 빼고 세어 24가 나와요. `len()`만 NaN이 든 행까지 모두 세어 30이에요. 결측치 개수 자체는 `isna().sum()`으로 구하면 6이에요."
+  },
+  {
+   "id": "d2-t06-d",
+   "version": 2,
+   "title": "이름표로 고르기와 자리로 고르기",
+   "statement": "줄넘기 기록 표 `df`를 `df = df.sort_values(\"jumps\", ascending=False)`로 횟수가 많은 순서대로 정렬했더니, 인덱스(행 이름표)가 아래처럼 섞였습니다.\n\n{{fig:f1}}\n\n정렬된 표에서 **맨 위(첫 번째 자리)** 행의 이름 `\"지호\"`를 꺼내는 코드로 알맞은 것은 무엇입니까?",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "정렬된 줄넘기 표 df입니다. 위에서부터 인덱스 2(지호, 95), 0(서연, 88), 3(민준, 76), 1(하은, 64) 순서로 있습니다.",
+     "head": [
+      "인덱스",
+      "name",
+      "jumps"
+     ],
+     "rows": [
+      [
+       2,
+       "지호",
+       95
+      ],
+      [
+       0,
+       "서연",
+       88
+      ],
+      [
+       3,
+       "민준",
+       76
+      ],
+      [
+       1,
+       "하은",
+       64
+      ]
+     ],
+     "caption": "df (정렬 뒤)"
+    }
+   ],
+   "choice": {
+    "options": [
+     "`df.loc[0, \"name\"]`",
+     "`df.iloc[0, 1]`",
+     "`df.loc[1, \"name\"]`",
+     "`df.iloc[0, 0]`"
+    ],
+    "answer": 3,
+    "why": [
+     "`loc`은 인덱스 이름표로 찾아서, 이름표가 0인 행(두 번째 자리)의 \"서연\"이 나와요.",
+     "`iloc[0, 1]`은 첫 번째 행의 두 번째 열(jumps)이라 95가 나와요.",
+     "이름표가 1인 행은 맨 아래 행이라 \"하은\"이 나와요.",
+     "`iloc`은 0부터 세는 자리로 찾아요. 0번째 행·0번째 열(name)이라 \"지호\"예요(정답)."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`sort_values()`로 표를 정렬하면 인덱스(행 이름표)는 어떻게 될까요?",
+     "options": [
+      "원래 행에 붙은 채로 행과 함께 움직여요",
+      "0, 1, 2, 3으로 새로 매겨져요",
+      "모두 지워져요",
+      "정렬할 때마다 무작위로 바뀌어요"
+     ],
+     "answer": 0,
+     "explain": "인덱스는 행의 이름표라서 정렬해도 그 행을 따라다녀요. 그래서 정렬한 뒤에는 이름표 순서(2, 0, 3, 1)와 위에서부터 센 자리(0, 1, 2, 3)가 달라져요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`loc`과 `iloc`의 차이로 옳은 것은?",
+     "options": [
+      "`loc`은 인덱스 이름표와 열 이름으로, `iloc`은 0부터 세는 자리 번호로 골라요",
+      "`loc`은 자리 번호로, `iloc`은 인덱스 이름표로 골라요",
+      "둘은 이름만 다르고 똑같이 동작해요",
+      "`loc`은 행만, `iloc`은 열만 골라요"
+     ],
+     "answer": 0,
+     "explain": "loc은 label(이름표), iloc은 integer location(정수 자리)이라고 기억하면 쉬워요. 그래서 `loc`에는 \"name\" 같은 열 이름을, `iloc`에는 0, 1 같은 열 자리를 써요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "정렬된 표에서 골라 보기",
+     "prompt": "정렬된 표 `df`에서 각 코드의 결과를 채워 보세요. 글자는 따옴표로 써요.\n\n{{fig:f1}}",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "df.loc[3, \"name\"]",
+       {
+        "a": "'민준'",
         "alts": [
-         "'Mangwon'"
+         "민준"
         ]
        }
       ],
       [
-       "vc.max()",
+       "df.iloc[3, 0]",
+       {
+        "a": "'하은'",
+        "alts": [
+         "하은"
+        ]
+       }
+      ],
+      [
+       "df.loc[1, \"jumps\"]",
+       {
+        "a": "64"
+       }
+      ],
+      [
+       "df.iloc[1, 1]",
+       {
+        "a": "88"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"name\": [\"서연\", \"하은\", \"지호\", \"민준\"], \"jumps\": [88, 64, 95, 76]}).sort_values(\"jumps\", ascending=False)\n    return [df.loc[3, \"name\"], df.iloc[3, 0], df.loc[1, \"jumps\"], df.iloc[1, 1]]",
+     "explain": "loc[3, …]은 이름표가 3인 행(세 번째 자리), iloc[3, …]은 자리 3인 행(맨 아래)이에요. 같은 숫자라도 loc과 iloc은 다른 행을 가리킬 수 있어요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "정렬된 표에서 `df.iloc[0, 1]`의 결과는 무엇일까요?",
+     "a": "95",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"name\": [\"서연\", \"하은\", \"지호\", \"민준\"], \"jumps\": [88, 64, 95, 76]}).sort_values(\"jumps\", ascending=False)\n    return [df.iloc[0, 1]]",
+     "explain": "iloc[0, 1]은 0번째 자리 행(맨 위)의 1번째 자리 열(jumps)이에요. 열 자리도 0부터 세어 name이 0, jumps가 1이에요."
+    }
+   ],
+   "explain": "`loc`은 인덱스 이름표로, `iloc`은 0부터 세는 자리로 행과 열을 골라요. 정렬한 뒤에는 이름표와 자리가 달라지므로, 맨 위 행처럼 자리로 말할 때는 `iloc`을 써요. 여기서는 `df.iloc[0, 0]`이 맨 위 행의 name 칸이에요."
+  },
+  {
+   "id": "d2-t06-e",
+   "version": 2,
+   "title": "속성으로 표 크기 읽기",
+   "statement": "영화 정보를 담은 DataFrame `movies`에서 `movies.shape`를 출력했더니 `(150, 6)`이 나왔습니다. 6개 열 가운데 `rating`(평점) 열에만 결측치(NaN)가 12개 있습니다.\n\n다음 설명 중 옳은 것을 **모두** 고른 것은 무엇입니까?\n\nㄱ. `movies.size`의 값은 `900`이다.\nㄴ. `movies.ndim`의 값은 `1`이다.\nㄷ. `len(movies.columns)`의 값은 `150`이다.\nㄹ. `movies[\"rating\"].count()`의 값은 `138`이다.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "영화 표 df입니다. 인덱스 0~3, 열은 title, year, rating이고 값은 (A, 2019, 7.5), (B, 2021, NaN), (C, 2018, 8.1), (D, 2020, 6.9)입니다.",
+     "head": [
+      "인덱스",
+      "title",
+      "year",
+      "rating"
+     ],
+     "rows": [
+      [
+       0,
+       "A",
+       2019,
+       7.5
+      ],
+      [
+       1,
+       "B",
+       2021,
+       "NaN"
+      ],
+      [
+       2,
+       "C",
+       2018,
+       8.1
+      ],
+      [
+       3,
+       "D",
+       2020,
+       6.9
+      ]
+     ],
+     "caption": "df"
+    }
+   ],
+   "choice": {
+    "options": [
+     "ㄱ, ㄹ",
+     "ㄱ, ㄴ",
+     "ㄴ, ㄷ",
+     "ㄱ, ㄷ, ㄹ"
+    ],
+    "answer": 0,
+    "why": [
+     "size는 150 × 6 = 900이고, count()는 NaN 12개를 뺀 138이에요(정답).",
+     "ㄴ이 틀렸어요. DataFrame은 행·열 두 방향이라 ndim이 2예요(1은 Series).",
+     "ㄴ과 ㄷ 모두 틀렸어요. columns는 열 이름 목록이라 길이가 6이에요.",
+     "ㄷ이 틀렸어요. `len(movies.columns)`는 열의 개수인 6이에요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "DataFrame과 **Series**의 관계로 옳은 것은?",
+     "options": [
+      "DataFrame은 행과 열로 된 표이고, 그 표에서 열 하나를 꺼내면 Series예요",
+      "Series는 여러 DataFrame을 모은 것이에요",
+      "DataFrame과 Series는 같은 말이에요",
+      "Series는 표의 맨 위 5행이에요"
+     ],
+     "answer": 0,
+     "explain": "Series는 인덱스가 붙은 값 한 줄이에요. `movies[\"rating\"]`처럼 열 이름으로 하나를 꺼내면 Series가 돼요. 그래서 DataFrame은 2차원(행·열), Series는 1차원이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표의 속성",
+     "prompt": "아래 표 `df`(4행 3열, NaN 1개)에서 각 코드의 결과를 채워 보세요.\n\n{{fig:f1}}",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "df.shape",
+       {
+        "a": "(4, 3)"
+       }
+      ],
+      [
+       "df.size",
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "df.ndim",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "len(df.columns)",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "len(df)",
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.DataFrame({\"title\": [\"A\", \"B\", \"C\", \"D\"], \"year\": [2019, 2021, 2018, 2020], \"rating\": [7.5, None, 8.1, 6.9]})\n    return [df.shape, df.size, df.ndim, len(df.columns), len(df)]",
+     "explain": "size는 NaN 칸까지 포함한 전체 칸 수(4 × 3)예요. columns는 열 이름 목록이라 len을 하면 열 수, len(df)는 행 수예요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "열 하나(Series)의 속성",
+     "prompt": "같은 표에서 `r = df[\"rating\"]`으로 열 하나를 꺼냈어요(값 7.5, NaN, 8.1, 6.9). 각 코드의 결과를 채워 보세요.",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "r.shape",
+       {
+        "a": "(4,)"
+       }
+      ],
+      [
+       "r.ndim",
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "r.size",
        {
         "a": "4"
        }
       ],
       [
-       "vc.idxmin()",
-       {
-        "a": "Yeoksam",
-        "alts": [
-         "'Yeoksam'"
-        ]
-       }
-      ],
-      [
-       "vc.min()",
-       {
-        "a": "1"
-       }
-      ]
-     ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'station': ['Mangwon', 'Sinsa', 'Mangwon', 'Yeoksam', 'Sinsa', 'Mangwon', 'Sinsa', 'Mangwon'], 'minutes': [35, 80, 12, 20, 41, 47, 9, 26]})\ndef answers():\n    vc = mini[\"station\"].value_counts()\n    return [vc.idxmax(), int(vc.max()), vc.idxmin(), int(vc.min())]",
-     "explain": "idx가 붙은 함수(idxmax·idxmin)는 이름표를, 붙지 않은 함수(max·min)는 값을 돌려줘요. 이 문제는 정류소 이름이 필요하니 idxmax()를 써요."
-    },
-    {
-     "id": "s3",
-     "kind": "table",
-     "title": "조건으로 행 고르기",
-     "prompt": "가장 많은 정류소가 Mangwon일 때, 행마다 `mini[\"station\"] == \"Mangwon\"`의 값을 채워 보세요. True인 행만 `mini.loc[조건, ]`에 남아요.",
-     "columns": [
-      "행",
-      "station",
-      "minutes",
-      "station == \"Mangwon\""
-     ],
-     "rows": [
-      [
-       "0",
-       "Mangwon",
-       "35",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "1",
-       "Sinsa",
-       "80",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "2",
-       "Mangwon",
-       "12",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "3",
-       "Yeoksam",
-       "20",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "4",
-       "Sinsa",
-       "41",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "5",
-       "Mangwon",
-       "47",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "6",
-       "Sinsa",
-       "9",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "7",
-       "Mangwon",
-       "26",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ]
-     ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'station': ['Mangwon', 'Sinsa', 'Mangwon', 'Yeoksam', 'Sinsa', 'Mangwon', 'Sinsa', 'Mangwon'], 'minutes': [35, 80, 12, 20, 41, 47, 9, 26]})\ndef answers():\n    top = mini[\"station\"].value_counts().idxmax()\n    return [bool(x) for x in (mini[\"station\"] == top)]",
-     "explain": "Mangwon인 0·2·5·7행만 True예요. ==는 \"같은가?\"를 묻는 비교라서 행마다 True나 False가 나와요."
-    },
-    {
-     "id": "s4",
-     "kind": "short",
-     "q": "앞 단계에서 True인 행만 고른 뒤 minutes의 `max()`를 구하면 얼마일까요?",
-     "a": "47",
-     "check": "import pandas as pd\nmini = pd.DataFrame({'station': ['Mangwon', 'Sinsa', 'Mangwon', 'Yeoksam', 'Sinsa', 'Mangwon', 'Sinsa', 'Mangwon'], 'minutes': [35, 80, 12, 20, 41, 47, 9, 26]})\ndef answers():\n    top = mini[\"station\"].value_counts().idxmax()\n    return [int(mini.loc[mini[\"station\"] == top, ][\"minutes\"].max())]",
-     "explain": "Mangwon 행의 minutes는 35, 12, 47, 26이라 가장 큰 값은 47이에요. 고르지 않고 전체에서 구하면 Sinsa의 80이 나와 답이 달라져요."
-    },
-    {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "`df.loc[조건, ]`의 조건 자리에 들어갈 식으로 알맞은 것은?",
-     "options": [
-      "df[\"station\"] == top_station",
-      "df[\"station\"] = top_station",
-      "df[\"minutes\"] == top_station",
-      "df[\"station\"] != top_station"
-     ],
-     "answer": 0,
-     "explain": "같은지 비교할 때는 ==를 써요. =는 값을 넣는(대입) 기호라 조건 자리에 쓰면 오류가 나요. !=는 \"같지 않다\"라서 다른 정류소만 골라져요."
-    }
-   ],
-   "explain": "`value_counts()`로 정류소마다 대여 수를 세고 `idxmax()`로 가장 많은 정류소 이름을 얻어요. `df[\"station\"] == top_station`으로 그 정류소의 행만 고른 뒤 minutes의 `max()`를 구해요. 비교는 =가 아니라 ==라는 점을 기억해요."
-  },
-  {
-   "id": "d2-t06-d",
-   "version": 1,
-   "title": "가장 흔한 회원 등급의 최대 구매액",
-   "statement": "쇼핑몰 고객 데이터에서 고객 수가 가장 많은 회원 등급(membership)을 찾고, 그 등급 고객들의 1년 구매 금액(annual_spend, 만 원) 가운데 가장 큰 값을 구하려고 합니다.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
-   "answerFormat": "123",
-   "data": {
-    "files": [
-     "customers.csv"
-    ]
-   },
-   "figures": [
-    {
-     "id": "mini",
-     "kind": "table",
-     "alt": "고객 6명짜리 작은 표 mini: 행 번호, membership, annual_spend",
-     "head": [
-      "행",
-      "membership",
-      "annual_spend"
-     ],
-     "rows": [
-      [
-       0,
-       "basic",
-       120
-      ],
-      [
-       1,
-       "silver",
-       340
-      ],
-      [
-       2,
-       "basic",
-       95
-      ],
-      [
-       3,
-       "gold",
-       580
-      ],
-      [
-       4,
-       "basic",
-       210
-      ],
-      [
-       5,
-       "silver",
-       260
-      ]
-     ]
-    }
-   ],
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    top_level = df[⟦1⟧].value_counts().⟦2⟧()\n    df_level = df.loc[df[\"membership\"] ⟦3⟧ top_level, ]\n    answer = df_level[⟦4⟧].max()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "\"membership\"",
-     "alts": [
-      "'membership'"
-     ]
-    },
-    {
-     "answer": "idxmax"
-    },
-    {
-     "answer": "=="
-    },
-    {
-     "answer": "\"annual_spend\"",
-     "alts": [
-      "'annual_spend'"
-     ]
-    }
-   ],
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    top_level = df[\"membership\"].value_counts().idxmax()\n    df_level = df.loc[df[\"membership\"] == top_level, ]\n    answer = df_level[\"annual_spend\"].max()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 558
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 585
-    },
-    {
-     "data": 2,
-     "expected": 596
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "'고객 수가 가장 많은 회원 등급'을 찾으려면 어느 열에 `value_counts()`를 써야 할까요?",
-     "options": [
-      "membership",
-      "annual_spend",
-      "customer_id",
-      "region"
-     ],
-     "answer": 0,
-     "explain": "회원 등급이 membership 열에 있으니 이 열의 값마다 고객 수를 세요. customer_id는 고객마다 번호가 달라 모두 1번씩 나오고, region은 지역이라 이 문제와 관계없어요."
-    },
-    {
-     "id": "s2",
-     "kind": "table",
-     "title": "작은 표로 세어 보기",
-     "prompt": "고객 6명짜리 작은 표 `mini`예요.\n{{fig:mini}}\n`mini[\"membership\"].value_counts()`에서 등급마다 개수를 채우고, 마지막 행에는 `.idxmax()`를 붙였을 때의 결과를 써 보세요.",
-     "columns": [
-      "코드·이름표",
-      "결과"
-     ],
-     "rows": [
-      [
-       "basic의 개수",
+       "r.count()",
        {
         "a": "3"
        }
-      ],
-      [
-       "silver의 개수",
-       {
-        "a": "2"
-       }
-      ],
-      [
-       "gold의 개수",
-       {
-        "a": "1"
-       }
-      ],
-      [
-       "value_counts().idxmax()",
-       {
-        "a": "basic",
-        "alts": [
-         "'basic'"
-        ]
-       }
       ]
      ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'membership': ['basic', 'silver', 'basic', 'gold', 'basic', 'silver'], 'annual_spend': [120, 340, 95, 580, 210, 260]})\ndef answers():\n    vc = mini[\"membership\"].value_counts()\n    return [int(vc[\"basic\"]), int(vc[\"silver\"]), int(vc[\"gold\"]), vc.idxmax()]",
-     "explain": "basic이 3명으로 가장 많아요. idxmax()는 개수 3이 아니라 그 이름표 'basic'을 돌려줘요."
-    },
-    {
-     "id": "s3",
-     "kind": "table",
-     "title": "basic 고객만 고르기",
-     "prompt": "`df_level = mini.loc[mini[\"membership\"] == \"basic\", ]`일 때, 행마다 조건의 값을 채워 보세요.",
-     "columns": [
-      "행",
-      "membership",
-      "annual_spend",
-      "membership == \"basic\""
-     ],
-     "rows": [
-      [
-       "0",
-       "basic",
-       "120",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "1",
-       "silver",
-       "340",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "2",
-       "basic",
-       "95",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "3",
-       "gold",
-       "580",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "4",
-       "basic",
-       "210",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "5",
-       "silver",
-       "260",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ]
-     ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'membership': ['basic', 'silver', 'basic', 'gold', 'basic', 'silver'], 'annual_spend': [120, 340, 95, 580, 210, 260]})\ndef answers():\n    return [bool(x) for x in (mini[\"membership\"] == \"basic\")]",
-     "explain": "basic인 0·2·4행만 True라서 이 세 행이 df_level에 남아요."
+     "check": "def answers():\n    import pandas as pd\n    r = pd.DataFrame({\"title\": [\"A\", \"B\", \"C\", \"D\"], \"year\": [2019, 2021, 2018, 2020], \"rating\": [7.5, None, 8.1, 6.9]})[\"rating\"]\n    return [r.shape, r.ndim, r.size, r.count()]",
+     "explain": "Series는 값이 한 줄이라 shape가 (4,)처럼 숫자 하나에 쉼표가 붙은 튜플이에요. size는 NaN까지 세지만, count()는 NaN을 빼고 세어 3이에요."
     },
     {
      "id": "s4",
-     "kind": "short",
-     "q": "앞 단계의 `df_level`에서 `df_level[\"annual_spend\"].max()`는 얼마일까요?",
-     "a": "210",
-     "check": "import pandas as pd\nmini = pd.DataFrame({'membership': ['basic', 'silver', 'basic', 'gold', 'basic', 'silver'], 'annual_spend': [120, 340, 95, 580, 210, 260]})\ndef answers():\n    top = mini[\"membership\"].value_counts().idxmax()\n    df_level = mini.loc[mini[\"membership\"] == top, ]\n    return [int(df_level[\"annual_spend\"].max())]",
-     "explain": "basic 고객의 구매 금액은 120, 95, 210이라 가장 큰 값은 210이에요."
+     "kind": "mcq",
+     "q": "`shape`, `size`, `ndim`, `count` 가운데 괄호 `()`를 붙여 불러야 하는 메서드는 무엇일까요?",
+     "options": [
+      "count",
+      "shape",
+      "size",
+      "ndim"
+     ],
+     "answer": 0,
+     "explain": "shape·size·ndim·columns·dtypes는 표가 가진 정보(속성)라 괄호 없이 읽어요. count()는 세는 일을 하는 메서드라 괄호를 붙이고, 열마다 NaN이 아닌 값만 세요."
     },
     {
      "id": "s5",
-     "kind": "mcq",
-     "code": "start",
-     "q": "마지막 줄을 `answer = df[\"annual_spend\"].max()`로 쓰면 어떻게 될까요?",
-     "options": [
-      "등급과 관계없이 모든 고객 중 가장 큰 금액이 나와 답이 달라질 수 있다",
-      "가장 많은 등급 고객 중 가장 큰 금액이 그대로 나온다",
-      "오류가 나서 실행되지 않는다",
-      "가장 작은 금액이 나온다"
-     ],
-     "answer": 0,
-     "explain": "df는 고르기 전의 전체 표예요. 작은 표에서는 gold 고객의 580이 나와요. 고른 행을 담은 df_level에서 max()를 구해야 해요."
-    }
-   ],
-   "explain": "membership 열을 `value_counts()`로 세고 `idxmax()`로 가장 많은 등급 이름을 얻어요. 그 등급의 행만 고른 df_level에서 annual_spend의 `max()`를 구해요. 열 이름은 따옴표로 감싼 문자열로 쓰고, 고른 표(df_level)와 전체 표(df)를 헷갈리지 않아야 해요."
-  },
-  {
-   "id": "d2-t06-e",
-   "version": 1,
-   "title": "개봉이 몰린 해의 평균 상영 시간",
-   "statement": "영화 정보 데이터에서 영화가 가장 많이 개봉한 해(release_year)를 찾고, 그해에 개봉한 영화들의 평균 상영 시간(running_time, 분)을 구하려고 합니다.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
-   "answerFormat": "123.45",
-   "data": {
-    "files": [
-     "movies.csv"
-    ]
-   },
-   "figures": [
-    {
-     "id": "mini",
-     "kind": "table",
-     "alt": "영화 6편짜리 작은 표 mini: 행 번호, release_year, running_time",
-     "head": [
-      "행",
-      "release_year",
-      "running_time"
-     ],
-     "rows": [
-      [
-       0,
-       2015,
-       101
-      ],
-      [
-       1,
-       2016,
-       95
-      ],
-      [
-       2,
-       2015,
-       120
-      ],
-      [
-       3,
-       2017,
-       88
-      ],
-      [
-       4,
-       2015,
-       98
-      ],
-      [
-       5,
-       2016,
-       130
-      ]
-     ]
-    }
-   ],
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    top_year = df[⟦1⟧].⟦2⟧().⟦3⟧()\n    df_year = df.loc[df[\"release_year\"] ⟦4⟧ top_year, ]\n    answer = round(df_year[\"running_time\"].⟦5⟧(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "\"release_year\"",
-     "alts": [
-      "'release_year'"
-     ]
-    },
-    {
-     "answer": "value_counts"
-    },
-    {
-     "answer": "idxmax"
-    },
-    {
-     "answer": "=="
-    },
-    {
-     "answer": "mean"
-    }
-   ],
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    top_year = df[\"release_year\"].value_counts().idxmax()\n    df_year = df.loc[df[\"release_year\"] == top_year, ]\n    answer = round(df_year[\"running_time\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 112.91
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 112.73
-    },
-    {
-     "data": 2,
-     "expected": 112.24
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "release_year처럼 숫자로 된 열도 `value_counts()`로 셀 수 있어요. release_year가 차례로 2015, 2016, 2015일 때 `value_counts().idxmax()`의 결과는 무엇일까요?",
-     "options": [
-      "2015",
-      "2",
-      "2016",
-      "2015.5"
-     ],
-     "answer": 0,
-     "explain": "연도도 하나의 값이라 같은 값끼리 세요. 2015가 2번으로 가장 많고, idxmax()는 개수 2가 아니라 그 이름표 2015를 돌려줘요."
-    },
-    {
-     "id": "s2",
-     "kind": "table",
-     "title": "작은 표로 세어 보기",
-     "prompt": "영화 6편짜리 작은 표 `mini`예요.\n{{fig:mini}}\n`mini[\"release_year\"].value_counts()`에서 연도마다 개수를 채워 보세요.",
-     "columns": [
-      "release_year(이름표)",
-      "개수"
-     ],
-     "rows": [
-      [
-       "2015",
-       {
-        "a": "3"
-       }
-      ],
-      [
-       "2016",
-       {
-        "a": "2"
-       }
-      ],
-      [
-       "2017",
-       {
-        "a": "1"
-       }
-      ]
-     ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'release_year': [2015, 2016, 2015, 2017, 2015, 2016], 'running_time': [101, 95, 120, 88, 98, 130]})\ndef answers():\n    vc = mini[\"release_year\"].value_counts()\n    return [int(vc[2015]), int(vc[2016]), int(vc[2017])]",
-     "explain": "2015년은 0·2·4행으로 3편이라 가장 많아요. 그래서 top_year는 2015가 돼요."
-    },
-    {
-     "id": "s3",
-     "kind": "table",
-     "title": "그해 영화만 고르기",
-     "prompt": "가장 많이 개봉한 해가 2015일 때, 행마다 `release_year == 2015`의 값을 채워 보세요.",
-     "columns": [
-      "행",
-      "release_year",
-      "running_time",
-      "release_year == 2015"
-     ],
-     "rows": [
-      [
-       "0",
-       "2015",
-       "101",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "1",
-       "2016",
-       "95",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "2",
-       "2015",
-       "120",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "3",
-       "2017",
-       "88",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "4",
-       "2015",
-       "98",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "5",
-       "2016",
-       "130",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ]
-     ],
-     "check": "import pandas as pd\nmini = pd.DataFrame({'release_year': [2015, 2016, 2015, 2017, 2015, 2016], 'running_time': [101, 95, 120, 88, 98, 130]})\ndef answers():\n    top = mini[\"release_year\"].value_counts().idxmax()\n    return [bool(x) for x in (mini[\"release_year\"] == top)]",
-     "explain": "release_year는 숫자 열이라 숫자 2015와 비교해요. 문자열 \"2015\"와 비교하면 모두 False가 되지만, 코드에서는 idxmax()가 준 값(숫자)을 그대로 쓰니 걱정하지 않아도 돼요."
-    },
-    {
-     "id": "s4",
      "kind": "short",
-     "q": "앞 단계에서 True인 영화들의 running_time 평균을 소수점 둘째 자리까지 반올림하면(`round(평균, 2)`) 얼마일까요?",
-     "a": "106.33",
-     "check": "import pandas as pd\nmini = pd.DataFrame({'release_year': [2015, 2016, 2015, 2017, 2015, 2016], 'running_time': [101, 95, 120, 88, 98, 130]})\ndef answers():\n    top = mini[\"release_year\"].value_counts().idxmax()\n    df_year = mini.loc[mini[\"release_year\"] == top, ]\n    return [float(round(df_year[\"running_time\"].mean(), 2))]",
-     "explain": "(101 + 120 + 98) ÷ 3 = 106.333…이라 소수점 둘째 자리까지 반올림하면 106.33이에요. `round(값, 2)`의 2가 남길 소수 자릿수예요."
+     "q": "`shape`가 `(40, 5)`인 DataFrame의 `size`는 얼마일까요?",
+     "a": "200",
+     "check": "def answers():\n    import pandas as pd\n    return [pd.DataFrame([[0] * 5] * 40).size]",
+     "explain": "size = 행 수 × 열 수라서 40 × 5 = 200이에요. 문제의 (150, 6)에도 같은 방법을 써 보세요."
     },
     {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "고른 영화들의 평균 상영 시간을 구하는 코드로 알맞은 것은?",
-     "options": [
-      "df_year[\"running_time\"].mean()",
-      "df_year[\"running_time\"].sum()",
-      "df_year[\"running_time\"].count()",
-      "df[\"running_time\"].mean()"
-     ],
-     "answer": 0,
-     "explain": "평균은 mean()이에요. sum()은 합계, count()는 개수이고, df로 쓰면 모든 해의 영화로 평균을 내서 답이 달라져요."
+     "id": "s6",
+     "kind": "short",
+     "q": "40행짜리 표의 어떤 열에 NaN이 7개 있어요. 그 열의 `count()`는 얼마일까요?",
+     "a": "33",
+     "check": "def answers():\n    import pandas as pd\n    return [pd.Series([1.0] * 33 + [None] * 7).count()]",
+     "explain": "count()는 NaN을 빼고 세므로 40 − 7 = 33이에요. 문제의 rating 열도 150행에서 NaN 12개를 빼면 돼요."
     }
    ],
-   "explain": "숫자 열인 release_year도 `value_counts().idxmax()`로 가장 많이 나온 연도를 찾을 수 있어요. 그 연도의 행만 고른 뒤 running_time의 `mean()`을 구하고 `round(…, 2)`로 소수점 둘째 자리까지 반올림해요."
+   "explain": "`shape`가 (150, 6)이면 `size`는 150 × 6 = 900, `ndim`은 2, `len(movies.columns)`는 6이에요. `count()`는 결측치를 빼고 세므로 150 − 12 = 138이에요. 그래서 옳은 것은 ㄱ, ㄹ이에요."
   }
  ]
 }

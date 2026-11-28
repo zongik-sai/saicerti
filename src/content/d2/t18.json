@@ -1,0 +1,1165 @@
+{
+ "course": "d2",
+ "type": 18,
+ "typeTitle": "조건에 맞는 비율",
+ "kind": "write",
+ "area": "A3",
+ "skills": [
+  "isin으로 여러 값 고르기",
+  "& | 로 조건 묶기",
+  "조건의 mean()은 비율",
+  "분모 정하기"
+ ],
+ "intro": "대상 행을 조건으로 고른 뒤, 그 안에서 또 다른 조건을 만족하는 행의 비율을 구하는 작업형이에요. 분모(대상)를 정확히 정하는 것이 핵심이에요.",
+ "concept": {
+  "text": "비율은 '조건을 만족하는 행 수 ÷ 대상 행 수'예요. 먼저 대상을 `df.loc[df[\"cat\"].isin([\"A\", \"B\"]), ]`처럼 고르고, 그 안에서 조건식을 만들어요. True는 1, False는 0으로 계산되므로 `(조건).mean()`이 곧 비율이에요.",
+  "table": {
+   "head": [
+    "dept",
+    "dept == \"men\""
+   ],
+   "rows": [
+    [
+     "men",
+     "True"
+    ],
+    [
+     "women",
+     "False"
+    ],
+    [
+     "men",
+     "True"
+    ],
+    [
+     "비율",
+     "2 ÷ 3 ≈ 0.667"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 5,
+   "title": "데이터 선택·필터링·정렬"
+  }
+ },
+ "problems": [
+  {
+   "id": "d2-t18-a",
+   "version": 2,
+   "title": "두 구의 비회원 대여 비율",
+   "statement": "공공 자전거 대여 데이터는 대여 한 건이 한 행이며, `district` 열에 대여한 구, `user_type` 열에 이용자 종류(member: 회원, guest: 비회원)가 들어 있습니다. `district`가 Gangnam 또는 Songpa인 대여만 골랐을 때, 그중 `user_type`이 guest인 대여의 비율을 구하려고 합니다. 참고로 예시 데이터에서 `district`가 Mapo 또는 Jongno인 대여 중 guest의 비율은 0.352입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 비율의 분모는 district가 Gangnam 또는 Songpa인 대여 건수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "bike_rentals.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    sub = df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]\n    answer = round((sub[\"user_type\"] == \"guest\").mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.36
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.37
+    },
+    {
+     "data": 2,
+     "expected": 0.36
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 비율의 분모로 알맞은 것은?",
+     "options": [
+      "전체 대여 건수",
+      "guest의 대여 건수",
+      "district가 Gangnam 또는 Songpa인 대여 건수",
+      "Gangnam·Songpa의 guest 대여 건수"
+     ],
+     "answer": 2,
+     "explain": "'~인 대여 중'이라는 말은 고른 행만 전체로 본다는 뜻이에요. 그래서 분모는 두 구의 대여 건수이고, 분자는 그중 guest인 대여 건수예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "대여 7건이 아래와 같아요. 두 구(Gangnam·Songpa)에 속해 분모에 들어가는지, 두 구에 속하면서 guest라서 분자에 들어가는지 True/False로 채워 보세요.",
+     "columns": [
+      "district",
+      "user_type",
+      "분모에 들어가나요?",
+      "분자에 들어가나요?"
+     ],
+     "rows": [
+      [
+       "Gangnam",
+       "guest",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "Mapo",
+       "guest",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Songpa",
+       "member",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Gangnam",
+       "member",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Jongno",
+       "guest",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Songpa",
+       "guest",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "Gangnam",
+       "member",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('Gangnam', 'guest'), ('Mapo', 'guest'), ('Songpa', 'member'), ('Gangnam', 'member'), ('Jongno', 'guest'), ('Songpa', 'guest'), ('Gangnam', 'member')]\n    out = []\n    for d, u in rows:\n        pick = d in [\"Gangnam\", \"Songpa\"]\n        out += [pick, pick and u == \"guest\"]\n    return out",
+     "explain": "Mapo·Jongno의 guest는 guest이지만 두 구가 아니라서 분자에도 분모에도 들어가지 않아요. 두 구에 속하는 5건 중 guest는 2건이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 7건에서 구하는 비율은 얼마일까요? 소수로 답해 보세요.",
+     "a": "0.4",
+     "alts": [
+      "0.40",
+      ".4"
+     ],
+     "check": "def answers():\n    return [2 / 5]",
+     "explain": "분모는 두 구의 5건, 분자는 그중 guest 2건이라 2 ÷ 5 = 0.4예요. 7건 전체로 나누면(2 ÷ 7) 분모가 틀려요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`district`가 Gangnam 또는 Songpa인 행만 고르는 코드로 알맞은 것은?",
+     "options": [
+      "df[df[\"district\"] == \"Gangnam\" and \"Songpa\"]",
+      "df[df[\"district\"].isin(\"Gangnam\", \"Songpa\")]",
+      "df[df[\"user_type\"].isin([\"Gangnam\", \"Songpa\"])]",
+      "df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]"
+     ],
+     "answer": 3,
+     "explain": "isin(목록)은 값이 목록 안에 있으면 True를 돌려줘서 여러 범주를 한 번에 고를 수 있어요. 목록은 대괄호 [ ]로 묶어 하나로 넘겨야 하고, 구 이름은 user_type이 아니라 district 열에 있어요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`sub = df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]`일 때, guest의 비율을 구하는 식으로 알맞은 것은?",
+     "options": [
+      "(sub[\"user_type\"] == \"guest\").sum()",
+      "(sub[\"user_type\"] == \"guest\").mean()",
+      "(df[\"user_type\"] == \"guest\").mean()",
+      "len(sub) / len(df)"
+     ],
+     "answer": 1,
+     "explain": "비교식은 행마다 True/False를 만들고, 계산할 때 True는 1·False는 0이에요. 그래서 mean()은 True의 비율이 돼요. sum()은 guest의 건수, df를 쓰면 전체 대여의 비율, len(sub) / len(df)는 두 구가 전체에서 차지하는 비율이에요."
+    }
+   ],
+   "explain": "isin으로 두 구의 대여만 골라 sub를 만든 뒤, sub 안에서 guest인 비율을 구해요. True/False의 평균 mean()이 곧 비율이라 따로 나누지 않아도 돼요. 분모를 전체 대여 건수로 하면 틀린 값이 나와요."
+  },
+  {
+   "id": "d2-t18-b",
+   "version": 2,
+   "title": "코딩·과학 동아리의 수학 우수 비율",
+   "statement": "학생 성적 데이터는 학생 한 명이 한 행이며, `club` 열에 학생의 동아리(동아리가 없는 학생은 비어 있음), `math` 열에 수학 점수가 들어 있습니다. `club`이 coding 또는 science인 학생들 가운데 수학 점수가 80점 이상인 학생의 비율을 구하려고 합니다. 참고로 예시 데이터에서 `club`이 sports 또는 music인 학생 중 수학 점수가 80점 이상인 학생의 비율은 0.175입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 비율의 분모는 club이 coding 또는 science인 학생 수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.12",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    sub = df[df[\"club\"].isin([\"coding\", \"science\"])]\n    answer = round((sub[\"math\"] >= 80).mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.26
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.29
+    },
+    {
+     "data": 2,
+     "expected": 0.3
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "수학 점수가 정확히 80점인 coding 동아리 학생은 어떻게 셀까요?",
+     "options": [
+      "분모에만 들어가요",
+      "분자와 분모에 모두 들어가요",
+      "분자와 분모 모두에서 빠져요"
+     ],
+     "answer": 1,
+     "explain": "'80점 이상'은 80을 포함해요. 그래서 비교식은 >= 80이고, 80점 학생은 분자에도 들어가요. 고른 동아리 학생은 모두 분모에 들어가요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "동아리가 없어 `club`이 비어 있는(결측, NaN) 학생에게 `df[\"club\"].isin([\"coding\", \"science\"])`를 계산하면 어떻게 될까요?",
+     "options": [
+      "True가 되어 함께 골라져요",
+      "오류가 나요",
+      "False가 되어 골라지지 않아요",
+      "NaN이 그대로 남아요"
+     ],
+     "answer": 2,
+     "explain": "결측(NaN)은 값이 비어 있다는 뜻이에요. 비어 있는 값은 목록 안의 어떤 값과도 같지 않으니 isin은 False를 돌려주고, 그 학생은 고르지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "학생 7명의 club과 math가 아래와 같아요(NaN은 동아리 없음). 분모(coding·science 학생)와 분자(그중 80점 이상)에 들어가는지 True/False로 채워 보세요.",
+     "columns": [
+      "club",
+      "math",
+      "분모에 들어가나요?",
+      "분자에 들어가나요?"
+     ],
+     "rows": [
+      [
+       "coding",
+       "85",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "NaN",
+       "92",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "science",
+       "80",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "sports",
+       "88",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "science",
+       "64",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "coding",
+       "79",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "science",
+       "95",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('coding', 85), (None, 92), ('science', 80), ('sports', 88), ('science', 64), ('coding', 79), ('science', 95)]\n    out = []\n    for c, m in rows:\n        pick = c in [\"coding\", \"science\"]\n        out += [pick, pick and m >= 80]\n    return out",
+     "explain": "분모는 coding·science 학생 5명이에요. 그중 80점 이상(85, 80, 95)인 3명이 분자예요. 92점·88점 학생은 점수가 높아도 두 동아리가 아니라서 세지 않아요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "위 7명에서 구하는 비율은 얼마일까요? 소수로 답해 보세요.",
+     "a": "0.6",
+     "alts": [
+      "0.60",
+      ".6"
+     ],
+     "check": "def answers():\n    return [3 / 5]",
+     "explain": "분자 3명 ÷ 분모 5명 = 0.6이에요. 7명 전체로 나누거나 79점 학생을 넣으면 값이 달라져요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`sub`가 coding·science 학생만 고른 표일 때, 비율을 구하는 식으로 알맞은 것은?",
+     "options": [
+      "(sub[\"math\"] >= 80).mean()",
+      "(sub[\"math\"] > 80).mean()",
+      "sub[\"math\"].mean() / 80",
+      "(df[\"math\"] >= 80).mean()"
+     ],
+     "answer": 0,
+     "explain": "(sub[\"math\"] >= 80)은 학생마다 True/False를 만들고, mean()이 True의 비율을 구해요. > 80은 80점 학생을 빼 버리고, 평균 점수를 80으로 나누는 것은 비율이 아니에요. df를 쓰면 모든 학생의 비율이 돼요."
+    }
+   ],
+   "explain": "isin으로 두 동아리 학생만 고른 뒤 그 안에서 (math >= 80)의 평균을 구하면 비율이에요. '이상'이라 >=를 쓰고, 동아리가 없는 학생(결측)은 isin에서 저절로 빠져요. 동아리 이름을 sports·music으로 바꿔 참고 값 0.175가 나오는지 확인해 볼 수 있어요."
+  },
+  {
+   "id": "d2-t18-c",
+   "version": 2,
+   "title": "평점 남긴 주문의 높은 평점 비율",
+   "statement": "카페 주문 데이터의 `rating` 열에는 손님이 남긴 평점(1~5점)이 들어 있고, 평점을 남기지 않은 주문은 비어 있습니다(결측). `store`가 Gangnam 또는 Hongdae인 주문 가운데 **평점을 남긴 주문만** 대상으로 하여, 평점이 4점 이상인 주문의 비율을 구하려고 합니다. 참고로 예시 데이터에서 같은 방법으로 Jamsil·Pangyo 매장의 비율을 구하면 0.640입니다(셋째 자리까지 반올림한 값을 print하면 0.64로 보입니다). solution 함수를 완성해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 비율의 분모는 store가 Gangnam 또는 Hongdae인 주문 중 rating이 결측이 아닌 주문 수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 셋째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.123",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    sub = df[df[\"store\"].isin([\"Gangnam\", \"Hongdae\"])]\n    sub = sub.dropna(subset=[\"rating\"])\n    answer = round((sub[\"rating\"] >= 4).mean(), 3)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.659
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.648
+    },
+    {
+     "data": 2,
+     "expected": 0.659
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "평점을 남기지 않은 주문(`rating`이 비어 있음)은 이 비율에서 어떻게 다룰까요?",
+     "options": [
+      "0점으로 보고 분모에 넣어요",
+      "분자와 분모 모두에서 빼요",
+      "4점 미만으로 보고 분모에만 넣어요",
+      "5점으로 보고 분자에 넣어요"
+     ],
+     "answer": 1,
+     "explain": "결측치는 값이 기록되지 않은 빈칸이에요. 문제에서 '평점을 남긴 주문만 대상'이라고 했으니 결측인 주문은 분자·분모 어디에도 넣지 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "pandas에서 `rating`이 NaN(결측)인 행에 `rating >= 4`를 계산하면 결과는 무엇일까요?",
+     "options": [
+      "True",
+      "NaN",
+      "오류가 나요",
+      "False"
+     ],
+     "answer": 3,
+     "explain": "NaN과의 크기 비교는 언제나 False예요. 그래서 결측을 빼지 않고 (sub[\"rating\"] >= 4).mean()을 구하면 결측 주문이 4점 미만처럼 분모에 들어가 비율이 작아져요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "주문 8건이 아래와 같아요(NaN은 평점 없음). 분모(두 매장이면서 평점이 있음)와 분자(그중 4점 이상)에 들어가는지 True/False로 채워 보세요.",
+     "columns": [
+      "store",
+      "rating",
+      "분모에 들어가나요?",
+      "분자에 들어가나요?"
+     ],
+     "rows": [
+      [
+       "Gangnam",
+       "5.0",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "Hongdae",
+       "NaN",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Jamsil",
+       "4.0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Gangnam",
+       "3.0",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Hongdae",
+       "4.0",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "Gangnam",
+       "NaN",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Pangyo",
+       "5.0",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "Hongdae",
+       "4.0",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('Gangnam', 5.0), ('Hongdae', None), ('Jamsil', 4.0), ('Gangnam', 3.0), ('Hongdae', 4.0), ('Gangnam', None), ('Pangyo', 5.0), ('Hongdae', 4.0)]\n    out = []\n    for s, r in rows:\n        pick = s in [\"Gangnam\", \"Hongdae\"] and r is not None\n        out += [pick, pick and r >= 4]\n    return out",
+     "explain": "두 매장의 주문은 6건이지만 그중 2건은 평점이 없어 빠지고, 분모는 4건이에요. 4점 이상은 5.0, 4.0, 4.0의 3건이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "결측을 빼야 하는 까닭",
+     "prompt": "앞의 8건으로 두 방법을 비교해 보세요. 비율은 소수 그대로 적어요.",
+     "columns": [
+      "계산 방법",
+      "분자",
+      "분모",
+      "비율"
+     ],
+     "rows": [
+      [
+       "결측을 빼고 셈(맞는 방법)",
+       {
+        "a": "3"
+       },
+       {
+        "a": "4"
+       },
+       {
+        "a": "0.75",
+        "alts": [
+         ".75"
+        ]
+       }
+      ],
+      [
+       "결측을 빼지 않고 셈",
+       {
+        "a": "3"
+       },
+       {
+        "a": "6"
+       },
+       {
+        "a": "0.5",
+        "alts": [
+         ".5",
+         "0.50"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('Gangnam', 5.0), ('Hongdae', None), ('Jamsil', 4.0), ('Gangnam', 3.0), ('Hongdae', 4.0), ('Gangnam', None), ('Pangyo', 5.0), ('Hongdae', 4.0)]\n    two = [r for s, r in rows if s in [\"Gangnam\", \"Hongdae\"]]\n    ok = [r for r in two if r is not None]\n    hi = sum(1 for r in ok if r >= 4)\n    return [hi, len(ok), hi / len(ok), hi, len(two), hi / len(two)]",
+     "explain": "결측을 빼지 않으면 평점이 없는 2건이 4점 미만처럼 분모에 들어가 0.5가 돼요. 문제의 분모는 평점이 있는 주문 수라서 0.75가 맞아요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "두 매장 주문만 고른 표 `sub`에서 `rating`이 결측이 **아닌** 행만 남기는 코드로 알맞지 **않은** 것은?",
+     "options": [
+      "sub.dropna(subset=[\"rating\"])",
+      "sub[sub[\"rating\"].notna()]",
+      "sub[sub[\"rating\"].isna()]",
+      "sub[~sub[\"rating\"].isna()]"
+     ],
+     "answer": 2,
+     "explain": "isna()는 결측이면 True라서 sub[sub[\"rating\"].isna()]는 거꾸로 결측인 행만 남겨요. notna()는 결측이 아니면 True, ~는 True/False를 뒤집는 기호, dropna(subset=[...])는 그 열이 결측인 행을 지워요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "예시 데이터(cafe_orders.csv)에서 `store`가 Gangnam 또는 Hongdae이면서 평점을 남긴 주문은 몇 건일까요? print로 확인해 보세요.",
+     "a": "912",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"cafe_orders.csv\")\n    sub = df[df[\"store\"].isin([\"Gangnam\", \"Hongdae\"])]\n    return [sub[\"rating\"].notna().sum()]",
+     "explain": "두 매장의 주문 1341건 중 평점을 남긴 912건이 분모예요. 이 수가 맞게 나오면 그중 4점 이상인 주문의 비율을 구하면 돼요."
+    }
+   ],
+   "explain": "isin으로 두 매장의 주문을 고른 뒤 dropna(subset=[\"rating\"])로 평점이 없는 주문을 빼야 분모가 평점을 남긴 주문 수가 돼요. 결측을 빼지 않으면 NaN >= 4가 False로 계산되어 비율이 작게 나와요. 마지막에 round(…, 3)으로 셋째 자리까지 반올림해요."
+  },
+  {
+   "id": "d2-t18-d",
+   "version": 2,
+   "title": "오래 상영하고 흥행한 영화의 비율",
+   "statement": "영화 데이터는 영화 한 편이 한 행이며, `country` 열에 제작 국가, `running_time` 열에 상영 시간(분), `audience` 열에 관객 수(명)가 들어 있습니다. `country`가 KR 또는 US인 영화만 골랐을 때, 그중 상영 시간이 120분 이상**이면서** 관객 수가 1000000명(100만 명) 이상인 영화의 비율을 구하려고 합니다. 참고로 예시 데이터에서 KR 또는 US 영화 중 상영 시간이 120분 이상인 영화의 비율은 0.393입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 비율의 분모는 country가 KR 또는 US인 영화 수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 셋째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.123",
+   "data": {
+    "files": [
+     "movies.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    sub = df[df[\"country\"].isin([\"KR\", \"US\"])]\n    cond = (sub[\"running_time\"] >= 120) & (sub[\"audience\"] >= 1000000)\n    answer = round(cond.mean(), 3)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.114
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.113
+    },
+    {
+     "data": 2,
+     "expected": 0.139
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "'상영 시간이 120분 이상이면서 관객 수가 100만 명 이상'인 영화는 어떤 영화일까요?",
+     "options": [
+      "두 조건 중 하나만 만족해도 되는 영화",
+      "두 조건을 모두 만족하는 영화",
+      "상영 시간 조건만 만족하는 영화",
+      "관객 수 조건은 만족하고 상영 시간은 120분 미만인 영화"
+     ],
+     "answer": 1,
+     "explain": "'~이면서'는 두 조건이 동시에 참이어야 한다는 뜻(그리고, AND)이에요. pandas에서는 & 기호로 두 조건을 묶어요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "두 조건을 함께 쓰는 pandas 코드로 알맞은 것은? (`m`은 `df[\"running_time\"]`, `a`는 `df[\"audience\"]`예요.)",
+     "options": [
+      "m >= 120 and a >= 1000000",
+      "(m >= 120) | (a >= 1000000)",
+      "m >= 120 & a >= 1000000",
+      "(m >= 120) & (a >= 1000000)"
+     ],
+     "answer": 3,
+     "explain": "열(Series)끼리의 조건은 and·or 대신 &(그리고)·|(또는)를 써요. &는 >=보다 먼저 계산되므로 조건마다 괄호를 꼭 쳐야 해요. 괄호가 없으면 120 & a를 먼저 계산해 오류가 나요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "조건 따라가기",
+     "prompt": "영화 6편이 아래와 같아요. KR·US 영화인지(분모), 두 조건(120분 이상, 100만 명 이상)을 모두 만족하는지 True/False로 채워 보세요.",
+     "columns": [
+      "country",
+      "running_time",
+      "audience",
+      "KR·US인가요?",
+      "두 조건을 모두 만족하나요?"
+     ],
+     "rows": [
+      [
+       "KR",
+       "135",
+       "2400000",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "US",
+       "128",
+       "800000",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "JP",
+       "140",
+       "3000000",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "KR",
+       "105",
+       "1500000",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "US",
+       "122",
+       "1000000",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "FR",
+       "130",
+       "1200000",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('KR', 135, 2400000), ('US', 128, 800000), ('JP', 140, 3000000), ('KR', 105, 1500000), ('US', 122, 1000000), ('FR', 130, 1200000)]\n    out = []\n    for c, t, a in rows:\n        out += [c in [\"KR\", \"US\"], t >= 120 and a >= 1000000]\n    return out",
+     "explain": "JP·FR 영화는 두 조건을 만족해도 KR·US가 아니라서 비율에 들어가지 않아요. US 122분·1000000명 영화는 둘 다 기준과 같거나 커서(이상) 두 조건을 모두 만족해요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "비율 계산과 흔한 실수",
+     "prompt": "앞의 6편으로 계산해 보세요. 비율은 소수 그대로 적어요.",
+     "columns": [
+      "계산",
+      "값"
+     ],
+     "rows": [
+      [
+       "KR·US 영화 수(분모)",
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "그중 두 조건을 모두 만족한 영화 수(분자)",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "맞는 비율",
+       {
+        "a": "0.5",
+        "alts": [
+         ".5",
+         "0.50"
+        ]
+       }
+      ],
+      [
+       "&를 |(또는)로 잘못 쓴 비율",
+       {
+        "a": "1.0",
+        "alts": [
+         "1"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [('KR', 135, 2400000), ('US', 128, 800000), ('JP', 140, 3000000), ('KR', 105, 1500000), ('US', 122, 1000000), ('FR', 130, 1200000)]\n    sub = [(t, a) for c, t, a in rows if c in [\"KR\", \"US\"]]\n    both = sum(1 for t, a in sub if t >= 120 and a >= 1000000)\n    either = sum(1 for t, a in sub if t >= 120 or a >= 1000000)\n    return [len(sub), both, both / len(sub), either / len(sub)]",
+     "explain": "분모 4편 중 2편이 두 조건을 모두 만족해 0.5예요. |를 쓰면 한 조건만 맞아도 세어져 4편 모두 들어가 1.0이 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`sub = df[df[\"country\"].isin([\"KR\", \"US\"])]`일 때, 비율을 구하는 식으로 알맞은 것은?",
+     "options": [
+      "((sub[\"running_time\"] >= 120) & (sub[\"audience\"] >= 1000000)).mean()",
+      "(sub[\"running_time\"] >= 120).mean() * (sub[\"audience\"] >= 1000000).mean()",
+      "((df[\"running_time\"] >= 120) & (df[\"audience\"] >= 1000000)).mean()",
+      "((sub[\"running_time\"] >= 120) & (sub[\"audience\"] >= 1000000)).sum() / len(df)"
+     ],
+     "answer": 0,
+     "explain": "두 조건을 &로 묶은 True/False의 평균이 바로 비율이에요. 두 비율을 곱하는 것은 두 조건을 함께 만족하는 영화를 실제로 센 것이 아니라서 값이 달라요. df나 len(df)를 쓰면 분모가 전체 영화가 돼요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "예시 데이터(movies.csv)에서 `country`가 KR 또는 US인 영화는 몇 편일까요? print로 확인해 보세요.",
+     "a": "1006",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [df[\"country\"].isin([\"KR\", \"US\"]).sum()]",
+     "explain": "isin의 결과(True/False)를 sum()하면 True의 개수, 곧 고른 영화 수가 나와요. 이 1006편이 분모예요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "예시 데이터에서 KR·US 영화 가운데 두 조건을 모두 만족하는 영화는 몇 편일까요?",
+     "a": "115",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    sub = df[df[\"country\"].isin([\"KR\", \"US\"])]\n    return [((sub[\"running_time\"] >= 120) & (sub[\"audience\"] >= 1000000)).sum()]",
+     "explain": "두 조건을 &로 묶은 뒤 sum()으로 세면 돼요. 이 수를 분모로 나누고 셋째 자리까지 반올림하면 비율이에요."
+    }
+   ],
+   "explain": "isin으로 KR·US 영화를 고르고, 두 조건을 각각 괄호로 감싸 &로 묶어요. 묶은 True/False의 평균이 비율이라 따로 나누지 않아도 돼요. &와 |를 헷갈리거나 괄호를 빠뜨리지 않도록 주의해요."
+  },
+  {
+   "id": "d2-t18-e",
+   "version": 2,
+   "title": "앱 사용 여부에 따른 gold 비율 차이",
+   "statement": "쇼핑몰 고객 데이터는 고객 한 명이 한 행이며, `membership` 열에 회원 등급(basic·silver·gold), `app_user` 열에 앱 사용 여부(Y: 사용, N: 사용하지 않음)가 들어 있습니다. 앱 사용자(Y) 가운데 gold 등급 고객의 비율에서, 앱 미사용자(N) 가운데 gold 등급 고객의 비율을 뺀 값을 구하려고 합니다. 참고로 예시 데이터에서 전체 고객 중 gold 등급 고객의 비율은 0.171입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 앱 사용자의 비율은 앱 사용자 수로, 앱 미사용자의 비율은 앱 미사용자 수로 나누어 구하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 두 비율을 반올림하지 않은 채로 뺀 뒤, 그 결과를 반올림하여 소수점 셋째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.123",
+   "data": {
+    "files": [
+     "customers.csv"
+    ]
+   },
+   "code": "import pandas as pd\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    y = df[df[\"app_user\"] == \"Y\"][\"membership\"].value_counts(normalize=True)\n    n = df[df[\"app_user\"] == \"N\"][\"membership\"].value_counts(normalize=True)\n    answer = round(y[\"gold\"] - n[\"gold\"], 3)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.092
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.103
+    },
+    {
+     "data": 2,
+     "expected": 0.091
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`value_counts(normalize=True)`가 돌려주는 값은 무엇일까요?",
+     "options": [
+      "값마다 개수",
+      "값마다 개수를 전체 개수로 나눈 비율(구성비)",
+      "값을 0~1 사이로 바꾼 점수",
+      "값마다 평균"
+     ],
+     "answer": 1,
+     "explain": "normalize는 전체를 1로 맞춘다는 뜻이에요. normalize=True를 넣으면 개수 대신 개수 ÷ 전체 개수를 돌려주어서, 결과를 모두 더하면 1이 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 구성비 구하기",
+     "prompt": "고객 9명 중 앱 사용자(Y) 4명의 등급은 gold, basic, gold, silver이고, 앱 미사용자(N) 5명의 등급은 basic, basic, gold, silver, basic이에요. 빈칸을 채워 보세요.",
+     "columns": [
+      "집단",
+      "고객 수",
+      "gold 고객 수",
+      "gold 비율"
+     ],
+     "rows": [
+      [
+       "앱 사용자(Y)",
+       {
+        "a": "4"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "0.5",
+        "alts": [
+         ".5",
+         "0.50"
+        ]
+       }
+      ],
+      [
+       "앱 미사용자(N)",
+       {
+        "a": "5"
+       },
+       {
+        "a": "1"
+       },
+       {
+        "a": "0.2",
+        "alts": [
+         ".2",
+         "0.20"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    groups = [[\"gold\", \"basic\", \"gold\", \"silver\"], [\"basic\", \"basic\", \"gold\", \"silver\", \"basic\"]]\n    out = []\n    for g in groups:\n        s = pd.Series(g)\n        out += [len(s), s.value_counts()[\"gold\"], s.value_counts(normalize=True)[\"gold\"]]\n    return out",
+     "explain": "앱 사용자의 gold 비율은 2 ÷ 4 = 0.5, 앱 미사용자는 1 ÷ 5 = 0.2예요. 두 비율의 분모가 각 집단의 고객 수로 서로 다르다는 점이 중요해요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "위 9명에서 구하는 값(앱 사용자의 gold 비율 − 앱 미사용자의 gold 비율)은 얼마일까요?",
+     "a": "0.3",
+     "alts": [
+      "0.30",
+      ".3"
+     ],
+     "check": "def answers():\n    return [round(2 / 4 - 1 / 5, 3)]",
+     "explain": "0.5 − 0.2 = 0.3이에요. 비율끼리의 차이는 %p(퍼센트포인트)로 읽어서 30%p 차이라고 말해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "앱 사용자(Y) 가운데 gold 등급의 비율을 꺼내는 코드로 알맞은 것은?",
+     "options": [
+      "df[\"membership\"].value_counts(normalize=True)[\"gold\"]",
+      "df[df[\"app_user\"] == \"Y\"][\"membership\"].value_counts()[\"gold\"]",
+      "df[df[\"membership\"] == \"gold\"][\"app_user\"].value_counts(normalize=True)[\"Y\"]",
+      "df[df[\"app_user\"] == \"Y\"][\"membership\"].value_counts(normalize=True)[\"gold\"]"
+     ],
+     "answer": 3,
+     "explain": "먼저 app_user가 Y인 고객만 고른 뒤 membership의 구성비를 구하고, 이름표 \"gold\"로 값을 꺼내요. 고르지 않으면 전체 고객의 비율, normalize가 없으면 개수, gold 고객 중 앱 사용자의 비율은 분모가 gold 고객 수라서 모두 달라요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "반올림은 마지막에",
+     "prompt": "두 비율이 0.31652와 0.18349라고 해요. 두 방법으로 계산한 값을 소수점 셋째 자리까지 적어 보세요.",
+     "columns": [
+      "계산 방법",
+      "결과"
+     ],
+     "rows": [
+      [
+       "빼고 나서 셋째 자리로 반올림",
+       {
+        "a": "0.133",
+        "alts": [
+         ".133"
+        ]
+       }
+      ],
+      [
+       "각각 셋째 자리로 반올림한 뒤 빼기",
+       {
+        "a": "0.134",
+        "alts": [
+         ".134"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    a, b = 0.31652, 0.18349\n    return [round(a - b, 3), round(round(a, 3) - round(b, 3), 3)]",
+     "explain": "먼저 반올림하면 버려지거나 더해진 작은 차이가 남아 마지막 자리가 달라질 수 있어요. 그래서 문제에서 반올림하지 않은 비율로 뺀 뒤 마지막에 한 번만 반올림하라고 했어요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "예시 데이터(customers.csv)에서 앱 사용자(`app_user`가 Y)는 몇 명일까요? print로 확인해 보세요.",
+     "a": "605",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"customers.csv\")\n    return [(df[\"app_user\"] == \"Y\").sum()]",
+     "explain": "이 605명이 앱 사용자 쪽 비율의 분모예요. 앱 미사용자 쪽 분모는 나머지 고객 수예요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "구한 값이 0.15라면 어떻게 해석할 수 있을까요?",
+     "options": [
+      "앱 사용자 쪽의 gold 비율이 미사용자보다 15%p 높다",
+      "앱 사용자가 미사용자보다 15% 많다",
+      "gold 고객의 15%가 앱 사용자다",
+      "앱 사용자 중 15%가 gold다"
+     ],
+     "answer": 0,
+     "explain": "두 비율의 차이이므로 앱 사용자 쪽 gold 비율이 15퍼센트포인트(%p) 더 높다고 읽어요. 사람 수의 차이나 한 집단의 비율 자체를 말하는 값이 아니에요."
+    }
+   ],
+   "explain": "앱 사용자와 미사용자를 각각 고른 뒤 value_counts(normalize=True)로 등급 구성비를 구하고, [\"gold\"]로 gold의 비율을 꺼내 빼요. 두 비율의 분모는 각 집단의 고객 수예요. 반올림은 뺀 뒤 마지막에 한 번만 해요."
+  }
+ ]
+}

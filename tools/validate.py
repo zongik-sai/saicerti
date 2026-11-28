@@ -81,11 +81,14 @@ NEEDS_CODE = {
 }
 
 
-def check_steps(where, p, adv=False, kind=None):
+def check_steps(where, p, adv=False, kind=None, help_only=False):
+    """help_only: 시험형 과정(Data 2급)의 '풀이 도움' — 단계는 0~9개(선택), 있으면 객관식 1개 이상(표 채우기는 선택)"""
     steps = p.get('steps')
-    lo, hi = (6, 9) if adv else (3, 6)
+    lo, hi = (0, 9) if help_only else (6, 9) if adv else (3, 6)
     if not isinstance(steps, list) or not (lo <= len(steps) <= hi):
         err(where, f'steps는 {lo}~{hi}개' + ('(심화 문제)' if adv else ''))
+        return
+    if help_only and not steps:
         return
     ids = set()
     kinds = []
@@ -179,8 +182,8 @@ def check_steps(where, p, adv=False, kind=None):
                     err(w, f'정답 {s.get("a")!r} ≠ 계산 {res}')
         else:
             err(w, f'kind 오류 {k!r}(mcq|table|short)')
-    need = 2 if adv else 1
-    if kinds.count('table') < need:
+    need = 2 if adv and not help_only else 1
+    if kinds.count('table') < need and not help_only:
         err(where, f'표 채우기(table) 단계가 {need}개 이상 필요')
     if kinds.count('mcq') < need:
         err(where, f'객관식(mcq) 단계가 {need}개 이상 필요')

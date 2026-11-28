@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { advGate, emptyProb, isAdvId, mergeState, mockGate, sanitize, tally, type CourseState } from '../../src/features/progress/model';
+import { addLock, advGate, emptyProb, isAdvId, LOCK_LIMIT, lockCount, mergeState, mockGate, resetType, sanitize, tally, type CourseState, type ProbState } from '../../src/features/progress/model';
+import { classifyLeave, focusReducer, initialFocus, lockNotice } from '../../src/features/focus/focusMachine';
 
 const t = (s: string) => `2026-11-23T0${s}:00:00.000Z`;
 
@@ -72,7 +73,7 @@ describe('[심화]·모의고사 잠금(선생님 요청 2026-11-27)', () => {
   it('심화 id를 알아보고, 기록 정리에서 남긴다', () => {
     expect(isAdvId('pyb-t01-adv3')).toBe(true);
     expect(isAdvId('pyb-t01-a')).toBe(false);
-    const s = sanitize({ probs: { 'pyb-t01-adv1': { solved: true }, 'pyb-t01-adv6': {}, 'cb-t10-adv5': {} }, advOpen: ['t01', 't01', 't11', 3, 't10'] });
+    const s = sanitize({ probs: { 'pyb-t01-adv1': { solved: true }, 'pyb-t01-adv6': {}, 'cb-t10-adv5': {} }, advOpen: ['t01', 't01', 't21', 3, 't10'] });
     expect(Object.keys(s.probs).sort()).toEqual(['cb-t10-adv5', 'pyb-t01-adv1']);
     expect(s.advOpen).toEqual(['t01', 't10']);
   });
@@ -93,5 +94,90 @@ describe('[심화]·모의고사 잠금(선생님 요청 2026-11-27)', () => {
     expect(mockGate(solved(basic), basic, 'm1')).toBe(true);
     expect(mockGate({ v: 1, probs: {}, mocks: { m2: { round: 1, startedAt: t('1'), results: {} } } }, basic, 'm2')).toBe(true);
     expect(mockGate({ v: 1, probs: {} }, basic, 'm1', true)).toBe(true);
+  });
+});
+
+describe('유형 집중 풀이: 잠김·초기화(선생님 요청 2026-11-28)', () => {
+  const solved = (ver = 1): ProbState => ({ ...emptyProb(ver, '2026-11-28T00:00:00.000Z'), solved: true, stepsDone: true, steps: ['s1'] });
+  const base = (): CourseState => ({
+    v: 1,
+    probs: { 'pyb-t01-a': solved(), 'pyb-t01-adv1': solved(), 'pyb-t02-a': solved() },
+    advOpen: ['t01', 't02'],
+    mocks: { m1: { round: 1, startedAt: '2026-11-28T00:00:00.000Z', results: { t01: { score: 100, solved: true, tries: 1, at: '2026-11-28T00:00:00.000Z' } } } },
+  });
+
+  it('세 번째 잠김에서 그 유형(기본·심화·심화 열림)만 지우고 모의고사·다른 유형은 남긴다', () => {
+    expect(LOCK_LIMIT).toBe(3);
+    let s = base();
+    const r1 = addLock(s, 't01', '2026-11-28T01:00:00.000Z');
+    expect(r1).toMatchObject({ count: 1, reset: false });
+    const r2 = addLock(r1.state, 't01', '2026-11-28T01:00:00.000Z');
+    expect(r2.count).toBe(2);
+    expect(r2.state.locks!.t01![1] > r2.state.locks!.t01![0]).toBe(true);
+    expect(lockCount(r2.state, 't01')).toBe(2);
+    const r3 = addLock(r2.state, 't01', '2026-11-28T02:00:00.000Z');
+    expect(r3).toMatchObject({ count: 3, reset: true });
+    s = r3.state;
+    expect(Object.keys(s.probs)).toEqual(['pyb-t02-a']);
+    expect(s.advOpen).toEqual(['t02']);
+    expect(s.mocks?.m1.results.t01.solved).toBe(true);
+    expect(lockCount(s, 't01')).toBe(0);
+    expect(s.resets?.t01).toEqual({ at: '2026-11-28T02:00:00.000Z', n: 1 });
+  });
+
+  it('다른 기기의 예전 기록이 초기화를 되살리지 않는다(초기화 뒤에 푼 것은 남는다)', () => {
+    const old = base();
+    const reset = resetType(base(), 't01', '2026-11-28T02:00:00.000Z');
+    const after = { ...reset, probs: { ...reset.probs, 'pyb-t01-b': solved() } };
+    for (const m of [mergeState(old, after), mergeState(after, old)]) {
+      expect(Object.keys(m.probs).sort()).toEqual(['pyb-t01-b', 'pyb-t02-a']);
+      expect(m.resets?.t01.n).toBe(1);
+      expect(m.advOpen).toEqual(['t02']);
+    }
+    // 잠김 횟수: 초기화 전 시각은 버리고, 초기화 뒤 시각은 합친다
+    const a = { ...old, locks: { t01: ['2026-11-28T01:00:00.000Z', '2026-11-28T01:30:00.000Z'] } };
+    const b = { ...reset, locks: { t01: ['2026-11-28T03:00:00.000Z'] } };
+    expect(mergeState(a, b).locks).toEqual({ t01: ['2026-11-28T03:00:00.000Z'] });
+  });
+
+  it('저장된 잠김·초기화 값을 믿지 않고 정리한다', () => {
+    const s = sanitize({ v: 1, probs: {}, locks: { t01: ['x', '2026-11-28T01:00:00.000Z'], t99: ['2026-11-28T01:00:00.000Z'], t20: [] }, resets: { t13: { at: '2026-11-28T01:00:00.000Z', n: -3 }, t02: { at: 'nope' } } });
+    expect(s.locks).toEqual({ t01: ['2026-11-28T01:00:00.000Z'] });
+    expect(s.resets).toEqual({ t13: { at: '2026-11-28T01:00:00.000Z', n: 1 } });
+  });
+
+  it('Data 2급 예전 판(version 1) 기록은 버린다(같은 id가 다른 문제를 가리키게 됨)', () => {
+    const s = sanitize({ v: 1, probs: { 'd2-t05-a': solved(1), 'd2-t13-a': solved(2), 'pyb-t01-a': solved(1) } });
+    expect(Object.keys(s.probs).sort()).toEqual(['d2-t13-a', 'pyb-t01-a']);
+  });
+});
+
+describe('유형 집중 풀이 상태기계', () => {
+  const on = { visible: true, hasFocus: true };
+  it('시작 화면 → 풀이 시작 → 이탈은 잠김 1회, 연속 이벤트는 세지 않음, 자동 재개 없음', () => {
+    let s = focusReducer(initialFocus, { type: 'start', env: on });
+    expect(s).toEqual({ status: 'readyToResume', reason: 'gate' });
+    expect(classifyLeave('blur', { status: s.status, fsGrace: false, counted: false })).toBe('pause');
+    s = focusReducer(s, { type: 'resume', env: on });
+    expect(s.status).toBe('active');
+    expect(classifyLeave('blur', { status: 'active', fsGrace: true, counted: false })).toBe('defer');
+    expect(classifyLeave('pagehide', { status: 'active', fsGrace: true, counted: false })).toBe('lock');
+    expect(classifyLeave('hidden', { status: 'active', fsGrace: false, counted: false })).toBe('lock');
+    expect(classifyLeave('hidden', { status: 'active', fsGrace: false, counted: true })).toBe('pause');
+    s = focusReducer(s, { type: 'blur' });
+    expect(s).toEqual({ status: 'paused', reason: 'blur' });
+    s = focusReducer(s, { type: 'hidden' });
+    expect(s.reason).toBe('blur');
+    s = focusReducer(s, { type: 'focus', env: on });
+    expect(s.status).toBe('readyToResume');
+    s = focusReducer(s, { type: 'manualBreak' });
+    expect(s.status).toBe('readyToResume');
+  });
+  it('쉬기는 세지 않는 멈춤이고, 안내 문구는 마지막 경고·초기화를 알린다', () => {
+    const s = focusReducer({ status: 'active', reason: null }, { type: 'manualBreak' });
+    expect(s).toEqual({ status: 'paused', reason: 'manual' });
+    expect(lockNotice(1, 3, false).last).toBe(false);
+    expect(lockNotice(2, 3, false).last).toBe(true);
+    expect(lockNotice(3, 3, true).title).toContain('처음으로');
   });
 });

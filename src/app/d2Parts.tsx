@@ -1,6 +1,6 @@
 /** Data 과정(d2) 화면 조각: 데이터 개요, 문제 설명, 객관식 풀이, 데이터 문제 결과 */
 import { useState } from 'react';
-import type { Problem, ProblemKind } from '../content/types';
+import type { Concept, Problem, ProblemKind } from '../content/types';
 import { Rich, inline } from '../components/Rich';
 import catalogJson from '../datasets/d2.json';
 import type { PyError, RunResult } from '../grader/client';
@@ -253,6 +253,47 @@ export function DataResults({ mode, result, problem, hideExpected = false, submi
       {pass < all && pass > 0 && !firstErr && <p className="faint">예시 데이터에서는 맞는데 숨은 데이터에서 틀리면, 값을 직접 적었거나 이 데이터에서만 맞는 방법을 썼는지 확인해 보세요.</p>}
       {img}
       {stdout}
+    </div>
+  );
+}
+
+/** 유형의 핵심 개념(2~4문장 + 작은 표). link면 배움 숲 Data 단원으로 가는 링크도(문제 화면에서는 집중 풀이 중이라 링크를 두지 않는다) */
+export function ConceptBox({ concept, link = false }: { concept: Concept; link?: boolean }) {
+  return (
+    <div className="concept">
+      <Rich text={concept.text} />
+      {concept.table && (
+        <div className="scroll-x">
+          <table className="ex-table concept-table">
+            <thead>
+              <tr>
+                {concept.table.head.map((h, i) => (
+                  <th key={i} scope="col">
+                    {inline(h)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {concept.table.rows.map((r, i) => (
+                <tr key={i}>
+                  {r.map((c, j) => (
+                    <td key={j}>{inline(String(c))}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {link && concept.saiedu && (
+        <p className="faint small" style={{ margin: '0.4rem 0 0' }}>
+          더 자세히:{' '}
+          <a href={`https://zongik-sai.github.io/saiedu/#/data/unit/U${concept.saiedu.unit}`} target="_blank" rel="noopener">
+            배움 숲 Data {concept.saiedu.unit}단원 「{concept.saiedu.title}」 ↗
+          </a>
+        </p>
+      )}
     </div>
   );
 }

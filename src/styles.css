@@ -518,3 +518,27 @@ table.data.acc-table .acc-date, table.data.acc-table .acc-email { white-space: n
 .plot-img { margin: 0.6rem 0 0; }
 .plot-img img { max-width: min(100%, 460px); border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: zoom-in; display: block; }
 .plot-img.big img { max-width: 100%; cursor: zoom-out; }
+
+/* ---------- 유형 집중 풀이(전체화면·잠김, 선생님 요청 2026-11-28) ---------- */
+.focus-overlay { position: fixed; inset: 0; z-index: 2147483000; background: var(--bg); display: grid; place-items: center; padding: 1.5rem; overflow: auto; }
+.focus-card { max-width: 520px; width: 100%; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 2rem 1.5rem; }
+.focus-card h2 { margin-top: 0; }
+.strict-rules { text-align: left; margin: 0.75rem 0 1rem; padding-left: 1.2rem; display: grid; gap: 0.35rem; font-size: 0.95rem; }
+.strict-warn { color: var(--bad); }
+.strict-wrap { padding-top: 0; padding-bottom: 0; }
+.strict-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: space-between; margin: 0.5rem 0 0; padding: 0.25rem 0.4rem 0.25rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+
+/* ---------- Data 2급: 영역별 시험 문항 유형(선생님 요청 2026-11-28) ---------- */
+.area { margin-top: 1.5rem; }
+.area-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; border-bottom: 2px solid var(--line); padding-bottom: 0.25rem; margin-bottom: 0.35rem; }
+.area-head h2 { margin: 0; font-size: 1.2rem; }
+.area-no { font-size: 0.8rem; font-weight: 700; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0 0.45rem; margin-right: 0.2rem; vertical-align: 0.15em; }
+.exam-type .type-no small { font-size: 0.75rem; margin-left: 0.05rem; }
+.concept-details { margin: 0.1rem 0 0.2rem; }
+.concept-details > summary { cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--accent); min-height: 32px; display: inline-flex; align-items: center; }
+.concept { border-left: 3px solid var(--accent); background: var(--surface-2); border-radius: 0 8px 8px 0; padding: 0.5rem 0.75rem; margin: 0.25rem 0 0.4rem; font-size: 0.93rem; }
+.concept .rich p { margin: 0.2rem 0; color: var(--ink); }
+.concept-table { margin-top: 0.4rem; font-size: 0.86rem; }
+.small { font-size: 0.86rem; }
+.exam-type .tier-list { flex-direction: row; flex-wrap: wrap; gap: 0.4rem; }
+.exam-type .tier-list .prob-chip { width: auto; flex: 1 1 15rem; }

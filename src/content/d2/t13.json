@@ -1,0 +1,1030 @@
+{
+ "course": "d2",
+ "type": 13,
+ "typeTitle": "집계해서 그래프 그리기",
+ "kind": "write",
+ "area": "A5",
+ "skills": [
+  "// 와 * 로 구간 만들기",
+  "value_counts·sort_index",
+  "groupby 집계",
+  "plot.bar·plot.line"
+ ],
+ "intro": "값을 구간(예: 10년 단위)으로 묶거나 그룹으로 나눠 센 결과를 정렬해 막대·선 그래프로 그리는 작업형이에요. 그린 그래프의 막대(점) 값으로 채점해요.",
+ "concept": {
+  "text": "연도처럼 촘촘한 값은 `year // 10 * 10`처럼 몫을 이용해 구간으로 묶어요. 구간마다 개수는 `value_counts()`, 합계·평균은 `groupby()`로 구하고, `sort_index()`로 구간 순서대로 정렬한 뒤 `.plot.bar()`나 `.plot.line()`으로 그려요.",
+  "table": {
+   "head": [
+    "year",
+    "year // 10",
+    "year // 10 * 10"
+   ],
+   "rows": [
+    [
+     "1987",
+     "198",
+     "1980"
+    ],
+    [
+     "1990",
+     "199",
+     "1990"
+    ],
+    [
+     "2004",
+     "200",
+     "2000"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 8,
+   "title": "시각화와 결과 해석"
+  }
+ },
+ "problems": [
+  {
+   "id": "d2-t13-a",
+   "version": 2,
+   "title": "시간대별 자전거 대여 건수",
+   "statement": "공공 자전거 대여 데이터에서 하루 중 어느 때에 자전거를 많이 빌리는지 보려고 합니다. 대여 시각(hour, 0~23)을 4시간 단위로 묶은 time_slot 변수를 만들고(0~3시 → 0, 4~7시 → 4, …, 20~23시 → 20), time_slot별 대여 건수를 막대그래프로 시각화하시오.\n\n- 데이터의 한 행이 대여 1건입니다. 막대 높이는 그 시간대의 대여 건수(행의 개수)입니다.\n- x축은 time_slot 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
+   "data": {
+    "files": [
+     "bike_rentals.csv"
+    ],
+    "plot": true
+   },
+   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
+   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"time_slot\"] = df[\"hour\"] // 4 * 4\n    counts = df[\"time_slot\"].value_counts().sort_index()\n    print(counts)\n    counts.plot(kind=\"bar\")\n    plt.show()",
+   "examples": [
+    {
+     "data": 0,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "0",
+       "4",
+       "8",
+       "12",
+       "16",
+       "20"
+      ],
+      "y": [
+       160,
+       423,
+       833,
+       312,
+       1008,
+       264
+      ]
+     }
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "0",
+       "4",
+       "8",
+       "12",
+       "16",
+       "20"
+      ],
+      "y": [
+       170,
+       399,
+       794,
+       304,
+       983,
+       250
+      ]
+     }
+    },
+    {
+     "data": 2,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "0",
+       "4",
+       "8",
+       "12",
+       "16",
+       "20"
+      ],
+      "y": [
+       166,
+       412,
+       790,
+       356,
+       1117,
+       259
+      ]
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "4시간 단위 time_slot을 만드는 식은?",
+     "options": [
+      "`df[\"hour\"] // 4 * 4`",
+      "`df[\"hour\"] // 4`",
+      "`df[\"hour\"] % 4`",
+      "`df[\"hour\"] * 4 // 4`"
+     ],
+     "answer": 0,
+     "explain": "// 4로 몫을 구한 뒤 4를 곱하면 0, 4, 8, …, 20이 돼요. // 4만 하면 0~5의 묶음 번호, % 4는 나머지, * 4 // 4는 원래 시각 그대로예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "대여 8건을 묶어 세기",
+     "prompt": "대여 시각이 7, 8, 9, 13, 17, 18, 18, 22시인 대여 8건을 time_slot으로 묶어, 시간대별 대여 건수를 세어 보세요.",
+     "columns": [
+      "time_slot",
+      "대여 건수"
+     ],
+     "rows": [
+      [
+       "4",
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "8",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "16",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "20",
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "def answers():\n    hours = [7, 8, 9, 13, 17, 18, 18, 22]\n    return [sum(1 for h in hours if h // 4 * 4 == t) for t in [4, 8, 12, 16, 20]]",
+     "explain": "7시는 4 구간, 8·9시는 8 구간, 17·18·18시는 16 구간이에요. 이렇게 같은 구간 값끼리 세는 일을 value_counts()가 해 줘요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`df[\"time_slot\"].value_counts()`를 정렬하지 않고 그대로 그리면 x축은 어떤 순서가 될까요?",
+     "options": [
+      "time_slot 값이 작은 것부터",
+      "대여 건수가 많은 것부터",
+      "데이터에 처음 나온 순서대로",
+      "time_slot 값이 큰 것부터"
+     ],
+     "answer": 1,
+     "explain": "value_counts()는 많이 나온 값부터 보여 줘요. 문제는 time_slot 오름차순이므로 sort_index()를 붙여 인덱스(구간 값) 순서로 바꿔야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(bike_rentals.csv)에서 가장 높은 막대의 time_slot 값은 무엇일까요?",
+     "a": "16",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"bike_rentals.csv\")\n    return [int((df[\"hour\"] // 4 * 4).value_counts().idxmax())]",
+     "explain": "16 구간(16~19시)은 퇴근 시간이 들어 있어 대여가 가장 많아요. 그다음은 출근 시간이 든 8 구간이에요."
+    }
+   ],
+   "explain": "시각을 `hour // 4 * 4`로 4시간 구간 값으로 바꾼 열을 만들고, value_counts()로 구간마다 행 수(대여 건수)를 세요. sort_index()로 구간 순서를 맞춘 뒤 plot(kind=\"bar\")와 plt.show()로 그려요."
+  },
+  {
+   "id": "d2-t13-b",
+   "version": 2,
+   "title": "5년 단위 개봉 영화 수",
+   "statement": "영화 데이터에서 시기별로 영화가 몇 편 개봉했는지 보려고 합니다. 개봉 연도(release_year)를 5년 단위로 묶은 period 변수를 만들고(예: 2003년 → 2000, 2015년 → 2015, 2019년 → 2015), period별 영화 수를 막대그래프로 시각화하시오.\n\n- 막대 하나가 period 값 하나이고, 막대 높이는 그 시기에 개봉한 영화 수(행의 개수)입니다.\n- x축은 period 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
+   "data": {
+    "files": [
+     "movies.csv"
+    ],
+    "plot": true
+   },
+   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
+   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"period\"] = df[\"release_year\"] // 5 * 5\n    counts = df[\"period\"].value_counts().sort_index()\n    print(counts)\n    counts.plot(kind=\"bar\")\n    plt.show()",
+   "examples": [
+    {
+     "data": 0,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "2000",
+       "2005",
+       "2010",
+       "2015",
+       "2020"
+      ],
+      "y": [
+       307,
+       320,
+       323,
+       259,
+       291
+      ]
+     }
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "2000",
+       "2005",
+       "2010",
+       "2015",
+       "2020"
+      ],
+      "y": [
+       298,
+       273,
+       290,
+       297,
+       292
+      ]
+     }
+    },
+    {
+     "data": 2,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "2000",
+       "2005",
+       "2010",
+       "2015",
+       "2020"
+      ],
+      "y": [
+       299,
+       289,
+       301,
+       336,
+       325
+      ]
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "table",
+     "title": "5년 단위로 묶기",
+     "prompt": "개봉 연도 5개를 `release_year // 5`와 `release_year // 5 * 5`로 계산한 값을 채워 보세요.",
+     "columns": [
+      "release_year",
+      "release_year // 5",
+      "release_year // 5 * 5"
+     ],
+     "rows": [
+      [
+       "2003",
+       {
+        "a": "400"
+       },
+       {
+        "a": "2000"
+       }
+      ],
+      [
+       "2005",
+       {
+        "a": "401"
+       },
+       {
+        "a": "2005"
+       }
+      ],
+      [
+       "2009",
+       {
+        "a": "401"
+       },
+       {
+        "a": "2005"
+       }
+      ],
+      [
+       "2014",
+       {
+        "a": "402"
+       },
+       {
+        "a": "2010"
+       }
+      ],
+      [
+       "2024",
+       {
+        "a": "404"
+       },
+       {
+        "a": "2020"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for y in [2003, 2005, 2009, 2014, 2024]:\n        out += [y // 5, y // 5 * 5]\n    return out",
+     "explain": "// 5는 \"5년 묶음이 몇 개 지났는지\"(몫)만 알려 줘요. 다시 5를 곱해야 2000, 2005처럼 구간의 첫 연도가 돼요. 2005~2009년은 모두 2005가 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "period를 만드는 식으로 알맞은 것은?",
+     "options": [
+      "`df[\"release_year\"] // 5`",
+      "`df[\"release_year\"] % 5`",
+      "`df[\"release_year\"] // 5 * 5`",
+      "`df[\"release_year\"] / 5 * 5`"
+     ],
+     "answer": 2,
+     "explain": "// 5만 하면 400, 401처럼 묶음 번호만 남아요. % 5는 나머지(0~4)이고, / 5 * 5는 소수점 아래를 버리지 않아 원래 연도로 돌아와요. // 5 * 5를 해야 구간의 첫 연도가 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "period별 영화 수를 period 오름차순으로 얻는 코드는?",
+     "options": [
+      "`df.groupby(\"period\")[\"audience\"].sum()`",
+      "`df[\"period\"].value_counts().sort_index()`",
+      "`df[\"period\"].value_counts().sort_values()`",
+      "`df[\"period\"].unique()`"
+     ],
+     "answer": 1,
+     "explain": "value_counts()가 period마다 행(영화)의 개수를 세고, sort_index()가 period 값 순서로 정렬해요. 첫 번째는 관객 수 합계, 세 번째는 개수가 적은 순서, 네 번째는 서로 다른 값 목록이에요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(movies.csv)에서 period가 2020인 영화(2020~2024년 개봉)는 몇 편일까요?",
+     "a": "291",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [int((df[\"release_year\"] // 5 * 5 == 2020).sum())]",
+     "explain": "그래프 맨 오른쪽 막대의 높이예요. print(counts)로 구간별 개수를 먼저 확인하면 그래프가 맞는지 살피기 쉬워요."
+    }
+   ],
+   "explain": "`연도 // 5 * 5`로 5년 단위 구간 열을 만들고, value_counts().sort_index()로 구간별 영화 수를 시기 순서대로 얻어 막대그래프로 그려요. 구간 단위(5년)를 10년으로 잘못 쓰거나 sort_index()를 빼면 막대가 달라져요."
+  },
+  {
+   "id": "d2-t13-c",
+   "version": 2,
+   "title": "수학 점수 구간별 학생 수",
+   "statement": "어느 고등학교의 학생 성적 데이터에서 수학 점수가 어떻게 퍼져 있는지 보려고 합니다. 수학 점수(math)를 10점 단위로 묶은 math_bin 변수를 `df[\"math\"] // 10 * 10`으로 만들고(예: 57점 → 50, 100점 → 100), math_bin 값별 학생 수를 막대그래프로 시각화하시오.\n\n- 막대 하나가 math_bin 값 하나이고, 막대 높이는 그 구간에 속한 학생 수입니다.\n- x축은 math_bin 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ],
+    "plot": true
+   },
+   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
+   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"math_bin\"] = df[\"math\"] // 10 * 10\n    counts = df[\"math_bin\"].value_counts().sort_index()\n    print(counts)\n    counts.plot(kind=\"bar\")\n    plt.show()",
+   "examples": [
+    {
+     "data": 0,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "10",
+       "20",
+       "30",
+       "40",
+       "50",
+       "60",
+       "70",
+       "80",
+       "90",
+       "100"
+      ],
+      "y": [
+       2,
+       13,
+       43,
+       100,
+       154,
+       199,
+       207,
+       102,
+       57,
+       23
+      ]
+     }
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "10",
+       "20",
+       "30",
+       "40",
+       "50",
+       "60",
+       "70",
+       "80",
+       "90",
+       "100"
+      ],
+      "y": [
+       4,
+       12,
+       38,
+       96,
+       145,
+       194,
+       201,
+       107,
+       46,
+       17
+      ]
+     }
+    },
+    {
+     "data": 2,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "10",
+       "20",
+       "30",
+       "40",
+       "50",
+       "60",
+       "70",
+       "80",
+       "90",
+       "100"
+      ],
+      "y": [
+       3,
+       13,
+       31,
+       97,
+       164,
+       228,
+       208,
+       120,
+       51,
+       25
+      ]
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`//`는 나눈 몫만 남기는 나눗셈(소수점 아래를 버림)이에요. `57 // 10 * 10`의 값은 무엇일까요?",
+     "options": [
+      "5",
+      "50",
+      "57",
+      "60"
+     ],
+     "answer": 1,
+     "explain": "57 // 10은 몫 5이고, 5 × 10 = 50이에요. 그래서 50~59점은 모두 50이라는 같은 구간 값이 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "점수를 구간 값으로",
+     "prompt": "학생 6명의 수학 점수를 `math // 10 * 10`으로 바꾼 math_bin 값을 채워 보세요.",
+     "columns": [
+      "math",
+      "math_bin"
+     ],
+     "rows": [
+      [
+       "57",
+       {
+        "a": "50"
+       }
+      ],
+      [
+       "63",
+       {
+        "a": "60"
+       }
+      ],
+      [
+       "68",
+       {
+        "a": "60"
+       }
+      ],
+      [
+       "90",
+       {
+        "a": "90"
+       }
+      ],
+      [
+       "100",
+       {
+        "a": "100"
+       }
+      ],
+      [
+       "49",
+       {
+        "a": "40"
+       }
+      ]
+     ],
+     "check": "def answers():\n    return [x // 10 * 10 for x in [57, 63, 68, 90, 100, 49]]",
+     "explain": "63점과 68점은 둘 다 60이 되어 같은 막대에 들어가요. 100점은 100 // 10 * 10 = 100이라 100 구간 막대가 따로 생겨요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "math_bin별 학생 수를 math_bin 오름차순으로 얻으려고 해요. 알맞은 코드는?",
+     "options": [
+      "`df[\"math_bin\"].value_counts().sort_index()`",
+      "`df[\"math_bin\"].value_counts()`",
+      "`df[\"math_bin\"].sum()`",
+      "`df[\"math_bin\"].sort_values()`"
+     ],
+     "answer": 0,
+     "explain": "value_counts()는 값마다 몇 번 나왔는지(개수) 세어 주지만, 개수가 많은 값부터 보여 줘요. sort_index()를 붙여야 구간 값(인덱스) 순서가 돼요. sum()은 모두 더한 수 하나이고, sort_values()는 열의 값을 늘어놓기만 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(student_scores.csv)에서 100점을 받아 math_bin이 100인 학생은 몇 명일까요? 그래프 맨 오른쪽 막대의 높이예요.",
+     "a": "23",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"student_scores.csv\")\n    return [int((df[\"math\"] // 10 * 10 == 100).sum())]",
+     "explain": "`(df[\"math\"] // 10 * 10 == 100).sum()`처럼 조건의 True 개수를 더해도 되고, 그래프를 그리기 전에 print(counts)로 확인해도 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "구간별 학생 수가 담긴 Series `counts`로 세로 막대그래프를 그리는 코드는?",
+     "options": [
+      "`counts.plot(kind=\"barh\")`",
+      "`counts.plot(kind=\"line\")`",
+      "`counts.plot(kind=\"bar\")`",
+      "`counts.plot(kind=\"pie\")`"
+     ],
+     "answer": 2,
+     "explain": "kind=\"bar\"는 세로 막대, \"barh\"는 가로 막대(h는 horizontal, 가로), \"line\"은 선 그래프, \"pie\"는 원그래프예요. 그린 뒤 plt.show()로 화면에 보여 줘요."
+    }
+   ],
+   "explain": "`값 // 10 * 10`은 값을 10 단위 구간의 시작 값으로 바꿔 줘요. value_counts()로 구간마다 개수를 세고 sort_index()로 구간 순서를 맞춘 뒤 plot(kind=\"bar\")로 그려요. sort_index()를 빼면 개수가 많은 구간부터 놓여 x축 순서가 달라져요."
+  },
+  {
+   "id": "d2-t13-d",
+   "version": 2,
+   "title": "시간대별 판매 수량 합계",
+   "statement": "카페 주문 데이터에서 시간대별로 메뉴가 몇 개 팔렸는지 보려고 합니다. 주문 시각(hour)을 2시간 단위로 묶은 slot 변수를 만들고(예: 8·9시 → 8, 10·11시 → 10), slot별 **판매 수량(qty)의 합계**를 막대그래프로 시각화하시오.\n\n- 한 주문(행)에서 같은 메뉴를 여러 개 살 수 있으므로, 주문 건수가 아니라 qty를 더한 값이 막대 높이입니다.\n- x축은 slot 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ],
+    "plot": true
+   },
+   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
+   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"slot\"] = df[\"hour\"] // 2 * 2\n    total = df.groupby(\"slot\")[\"qty\"].sum()\n    print(total)\n    total.plot(kind=\"bar\")\n    plt.show()",
+   "examples": [
+    {
+     "data": 0,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "8",
+       "10",
+       "12",
+       "14",
+       "16",
+       "18",
+       "20"
+      ],
+      "y": [
+       897,
+       370,
+       880,
+       313,
+       280,
+       497,
+       315
+      ]
+     }
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "8",
+       "10",
+       "12",
+       "14",
+       "16",
+       "18",
+       "20"
+      ],
+      "y": [
+       814,
+       318,
+       871,
+       288,
+       302,
+       491,
+       305
+      ]
+     }
+    },
+    {
+     "data": 2,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "8",
+       "10",
+       "12",
+       "14",
+       "16",
+       "18",
+       "20"
+      ],
+      "y": [
+       895,
+       359,
+       937,
+       345,
+       314,
+       552,
+       330
+      ]
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "table",
+     "title": "건수와 합계 비교",
+     "prompt": "주문 6건의 (hour, qty)가 (8, 1), (9, 2), (10, 1), (12, 3), (13, 1), (13, 2)예요. slot별 주문 건수와 qty 합계를 채워 보세요.",
+     "columns": [
+      "slot",
+      "주문 건수",
+      "qty 합계"
+     ],
+     "rows": [
+      [
+       "8",
+       {
+        "a": "2"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "10",
+       {
+        "a": "1"
+       },
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "12",
+       {
+        "a": "3"
+       },
+       {
+        "a": "6"
+       }
+      ]
+     ],
+     "check": "def answers():\n    orders = [(8, 1), (9, 2), (10, 1), (12, 3), (13, 1), (13, 2)]\n    out = []\n    for s in [8, 10, 12]:\n        g = [q for h, q in orders if h // 2 * 2 == s]\n        out += [len(g), sum(g)]\n    return out",
+     "explain": "12 구간은 주문이 3건이지만 팔린 개수는 3 + 1 + 2 = 6개예요. 이 문제의 막대 높이는 주문 건수가 아니라 qty 합계예요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "이 문제에서 막대 높이로 알맞은 것은?",
+     "options": [
+      "slot별 주문 건수(행의 개수)",
+      "slot별 qty 합계",
+      "slot별 qty 평균",
+      "slot별 price 합계"
+     ],
+     "answer": 1,
+     "explain": "문제는 \"몇 개 팔렸는지\"를 물어요. 한 주문에 2개를 사면 qty가 2이므로, 행을 세지 않고 qty를 더해야 해요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "slot별 qty 합계를 구하는 코드는?",
+     "options": [
+      "`df.groupby(\"slot\")[\"qty\"].count()`",
+      "`df[\"slot\"].value_counts()`",
+      "`df.groupby(\"qty\")[\"slot\"].sum()`",
+      "`df.groupby(\"slot\")[\"qty\"].sum()`"
+     ],
+     "answer": 3,
+     "explain": "groupby(\"slot\")은 slot 값이 같은 행끼리 묶고, [\"qty\"].sum()은 묶음마다 qty를 더해요. count()와 value_counts()는 행의 개수(주문 건수)를 세고, groupby(\"qty\")는 묶는 기준이 거꾸로예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`df.groupby(\"slot\")[\"qty\"].sum()`의 결과는 어떤 순서로 나올까요?",
+     "options": [
+      "합계가 큰 slot부터",
+      "slot 값이 작은 것부터",
+      "데이터에 처음 나온 slot부터"
+     ],
+     "answer": 1,
+     "explain": "groupby는 기본으로 묶는 기준 값(slot)을 오름차순으로 정렬해 결과를 내요. 그래서 value_counts()와 달리 sort_index()를 붙이지 않아도 돼요(붙여도 결과는 같아요)."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "예시 데이터(cafe_orders.csv)에서 slot이 20인 시간대(20·21시)의 판매 수량 합계는 몇 개일까요?",
+     "a": "315",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"cafe_orders.csv\")\n    return [int(df.loc[df[\"hour\"] // 2 * 2 == 20, \"qty\"].sum())]",
+     "explain": "그래프 맨 오른쪽 막대의 높이예요. print(total)로 slot별 합계를 먼저 확인해 보세요."
+    }
+   ],
+   "explain": "구간 열(slot)을 만든 뒤 groupby(\"slot\")[\"qty\"].sum()으로 구간마다 수량을 더해요. value_counts()로 세면 주문 건수가 되어 막대 높이가 달라져요. groupby 결과는 slot 순서로 나오므로 그대로 plot(kind=\"bar\")로 그리면 돼요."
+  },
+  {
+   "id": "d2-t13-e",
+   "version": 2,
+   "title": "차 나이 구간별 평균 가격",
+   "statement": "중고차 매물 데이터에서 차가 오래될수록 가격이 얼마나 내려가는지 보려고 합니다. 사고 이력(accident)이 N인 매물만 골라, 2025년을 기준으로 한 차 나이 car_age(= 2025 − year)를 만들고, car_age를 3년 단위로 묶은 age_bin 변수를 만드시오(예: car_age 1·2 → 0, 3·4·5 → 3, 12·13 → 12). 그리고 age_bin별 **가격(price, 만 원)의 평균**을 소수점 첫째 자리까지 반올림해 막대그래프로 시각화하시오.\n\n- 막대 높이는 그 구간 매물들의 평균 가격(소수점 첫째 자리까지 반올림)입니다.\n- x축은 age_bin 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
+   "data": {
+    "files": [
+     "used_cars.csv"
+    ],
+    "plot": true
+   },
+   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
+   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    # 시각화 코드\n    ok = df.loc[df[\"accident\"] == \"N\", ].copy()\n    ok[\"car_age\"] = 2025 - ok[\"year\"]\n    ok[\"age_bin\"] = ok[\"car_age\"] // 3 * 3\n    avg = ok.groupby(\"age_bin\")[\"price\"].mean().round(1)\n    print(avg)\n    avg.plot(kind=\"bar\")\n    plt.show()",
+   "examples": [
+    {
+     "data": 0,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "0",
+       "3",
+       "6",
+       "9",
+       "12"
+      ],
+      "y": [
+       2964.6,
+       2060.5,
+       1184.9,
+       724.6,
+       430.5
+      ]
+     }
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "0",
+       "3",
+       "6",
+       "9",
+       "12"
+      ],
+      "y": [
+       2845.1,
+       2007,
+       1196.2,
+       700.6,
+       435
+      ]
+     }
+    },
+    {
+     "data": 2,
+     "expected": {
+      "kind": "bar",
+      "x": [
+       "0",
+       "3",
+       "6",
+       "9",
+       "12"
+      ],
+      "y": [
+       3092.4,
+       1960.8,
+       1171.9,
+       694,
+       422.7
+      ]
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "2025년 기준 차 나이 car_age를 만드는 식으로 알맞은 것은?",
+     "options": [
+      "`df[\"year\"] - 2025`",
+      "`2025 - df[\"year\"]`",
+      "`df[\"year\"] // 3 * 3`",
+      "`2025 // df[\"year\"]`"
+     ],
+     "answer": 1,
+     "explain": "2024년식은 2025 − 2024 = 1살이에요. 첫 번째는 음수가 나오고, 세 번째는 연식을 구간으로 묶은 값, 네 번째는 몫이라 거의 1이 돼요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "연식 → 차 나이 → 구간",
+     "prompt": "연식(year) 6개로 car_age와 `car_age // 3 * 3`(age_bin)을 채워 보세요.",
+     "columns": [
+      "year",
+      "car_age",
+      "age_bin"
+     ],
+     "rows": [
+      [
+       "2024",
+       {
+        "a": "1"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "2022",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "2020",
+       {
+        "a": "5"
+       },
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "2016",
+       {
+        "a": "9"
+       },
+       {
+        "a": "9"
+       }
+      ],
+      [
+       "2013",
+       {
+        "a": "12"
+       },
+       {
+        "a": "12"
+       }
+      ],
+      [
+       "2012",
+       {
+        "a": "13"
+       },
+       {
+        "a": "12"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for y in [2024, 2022, 2020, 2016, 2013, 2012]:\n        out += [2025 - y, (2025 - y) // 3 * 3]\n    return out",
+     "explain": "파생 열을 두 번 만들어요: 연식으로 차 나이를 만들고, 차 나이로 다시 구간을 만들어요. 2024년식(1살)은 0 구간, 2020년식(5살)은 3 구간이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "차 나이 대신 연식을 바로 `df[\"year\"] // 3 * 3`으로 묶으면 어떻게 될까요?",
+     "options": [
+      "2022·2023·2024년식이 한 묶음이 되어, 차 나이로 묶은 구간(1·2살, 3~5살, …)과 달라진다",
+      "연식은 // 를 쓸 수 없어 오류가 난다",
+      "결과가 똑같으므로 아무 문제 없다"
+     ],
+     "answer": 0,
+     "explain": "2024 // 3 * 3 = 2022라서 2022~2024년식(1~3살)이 한 구간이 돼요. 문제의 구간은 차 나이 1·2살이 0 구간이라 묶음이 어긋나요. 문제에서 말한 순서대로 car_age를 먼저 만들어야 해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "ok가 사고 이력 N인 매물만 담은 표일 때, 막대 높이를 구하는 코드는?",
+     "options": [
+      "`ok.groupby(\"age_bin\")[\"price\"].sum().round(1)`",
+      "`ok.groupby(\"age_bin\")[\"price\"].mean().round(1)`",
+      "`ok[\"age_bin\"].value_counts().sort_index()`",
+      "`round(ok[\"price\"].mean(), 1)`"
+     ],
+     "answer": 1,
+     "explain": "mean()은 평균(값을 모두 더해 개수로 나눈 값)이고, round(1)은 소수점 첫째 자리까지 반올림해요. 첫 번째는 합계, 세 번째는 매물 수, 네 번째는 전체 평균 한 개예요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "평균 구하기",
+     "prompt": "매물 6대의 (age_bin, price, accident)가 (0, 2900, N), (0, 3100, N), (0, 1500, Y), (3, 2000, N), (3, 2155, N), (3, 2234, N)이에요. 사고 없는(N) 매물의 수와 평균 가격(첫째 자리 반올림), 그리고 사고 차(Y)까지 넣었을 때의 평균(반올림)을 채워 보세요.",
+     "columns": [
+      "age_bin",
+      "N 매물 수",
+      "N 평균 가격",
+      "Y까지 넣은 평균"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "2"
+       },
+       {
+        "a": "3000.0",
+        "alts": [
+         "3000"
+        ]
+       },
+       {
+        "a": "2500.0",
+        "alts": [
+         "2500"
+        ]
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "3"
+       },
+       {
+        "a": "2129.7"
+       },
+       {
+        "a": "2129.7"
+       }
+      ]
+     ],
+     "check": "def answers():\n    cars = [(0, 2900, 'N'), (0, 3100, 'N'), (0, 1500, 'Y'), (3, 2000, 'N'), (3, 2155, 'N'), (3, 2234, 'N')]\n    out = []\n    for b in [0, 3]:\n        n = [p for a, p, acc in cars if a == b and acc == \"N\"]\n        al = [p for a, p, acc in cars if a == b]\n        out += [len(n), round(sum(n) / len(n), 1), round(sum(al) / len(al), 1)]\n    return out",
+     "explain": "3 구간은 (2000 + 2155 + 2234) ÷ 3 = 2129.66…이라 2129.7이에요. 0 구간은 사고 차(1500)까지 넣으면 평균이 2500.0으로 내려가요. 그래서 필터를 먼저 해야 해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "groupby 결과에 sort_index()를 붙이지 않아도 x축이 오름차순인 까닭은?",
+     "options": [
+      "groupby는 묶는 기준 값(age_bin) 오름차순으로 결과를 내기 때문",
+      "평균은 항상 작은 값부터 나오기 때문",
+      "round(1)이 순서를 다시 정렬하기 때문"
+     ],
+     "answer": 0,
+     "explain": "groupby는 기본으로 기준 값을 정렬해요. 평균이나 반올림은 순서를 바꾸지 않아요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "예시 데이터(used_cars.csv)에서 age_bin이 0인 막대의 높이(평균 가격, 소수점 첫째 자리 반올림)는 얼마일까요?",
+     "a": "2964.6",
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"used_cars.csv\")\n    ok = df.loc[df[\"accident\"] == \"N\", ].copy()\n    ok[\"age_bin\"] = (2025 - ok[\"year\"]) // 3 * 3\n    return [ok.groupby(\"age_bin\")[\"price\"].mean().round(1)[0]]",
+     "explain": "1·2살 차(2023·2024년식)의 평균 가격이에요. 반올림하지 않으면 2964.565…처럼 나와 정답 그래프와 높이가 달라요."
+    }
+   ],
+   "explain": "사고 이력 N으로 행을 고른 뒤, `2025 - year`로 차 나이를, `car_age // 3 * 3`으로 구간을 만들어요. groupby(\"age_bin\")[\"price\"].mean().round(1)로 구간별 평균을 반올림해 그려요. 반올림을 빠뜨리거나 평균 대신 합계를 쓰면 막대 높이가 달라져요."
+  }
+ ]
+}

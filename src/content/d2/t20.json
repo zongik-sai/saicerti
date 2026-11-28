@@ -1,0 +1,930 @@
+{
+ "course": "d2",
+ "type": 20,
+ "typeTitle": "k-means 군집 분석",
+ "kind": "write",
+ "area": "A4",
+ "skills": [
+  "KMeans(n_clusters, random_state, n_init)",
+  "fit()과 labels_",
+  "군집 번호 열 만들기",
+  "군집별 value_counts·mean"
+ ],
+ "intro": "sklearn의 `KMeans`로 정해진 열을 군집으로 나누고, `labels_`로 군집 번호를 붙여 군집마다 개수·평균을 구하는 작업형이에요.",
+ "concept": {
+  "text": "k-means는 정답 없이 가까운 데이터끼리 k개의 군집으로 묶는 비지도학습이에요. `KMeans(n_clusters=3, random_state=123, n_init=10).fit(df[[\"열\"]])`로 학습하면 `labels_`에 행마다 군집 번호(0, 1, 2)가 들어 있어요. random_state를 정해야 실행할 때마다 같은 결과가 나와요.",
+  "table": {
+   "head": [
+    "annual_spend",
+    "labels_"
+   ],
+   "rows": [
+    [
+     "120",
+     "0"
+    ],
+    [
+     "980",
+     "2"
+    ],
+    [
+     "450",
+     "1"
+    ],
+    [
+     "130",
+     "0"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 11,
+   "title": "머신러닝 기초와 작업형 답안 쓰기"
+  }
+ },
+ "problems": [
+  {
+   "id": "d2-t20-a",
+   "version": 2,
+   "title": "앱 사용 고객의 가장 작은 군집",
+   "statement": "쇼핑몰 고객 데이터에서 앱 사용자(app_user가 Y)만 골라, 1년 구매 금액(annual_spend) 한 열로 k-means 군집 분석을 하려고 합니다. 군집을 3개로 나누었을 때 가장 작은 군집에 속한 고객 수를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 annual_spend 열만 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "customers.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_app = df.loc[df[\"app_user\"] == \"Y\", ]\n\ndef solution():\n    km = ⟦1⟧(n_clusters=⟦2⟧, random_state=123, n_init=10).fit(df_app[⟦3⟧])\n    answer = pd.Series(km.⟦4⟧).value_counts().⟦5⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "KMeans"
+    },
+    {
+     "answer": "3"
+    },
+    {
+     "answer": "[\"annual_spend\"]",
+     "alts": [
+      "['annual_spend']"
+     ]
+    },
+    {
+     "answer": "labels_"
+    },
+    {
+     "answer": "min"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_app = df.loc[df[\"app_user\"] == \"Y\", ]\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_app[[\"annual_spend\"]])\n    answer = pd.Series(km.labels_).value_counts().min()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 143
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 133
+    },
+    {
+     "data": 2,
+     "expected": 124
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "군집 분석(clustering)은 어떤 일을 할까요?",
+     "options": [
+      "정답이 있는 데이터로 배워 새 데이터의 정답을 예측한다",
+      "두 집단의 평균 차이를 검정한다",
+      "정답(라벨) 없이 서로 비슷한 데이터끼리 무리(군집)를 짓는다",
+      "데이터를 큰 값부터 차례로 정렬한다"
+     ],
+     "answer": 2,
+     "explain": "군집 분석은 정답 없이 가까운 데이터끼리 묶는 비지도학습이에요. k-means는 무리의 중심을 k개 두고, 데이터마다 가장 가까운 중심의 무리에 넣어요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "가까운 중심 고르기",
+     "prompt": "세 무리의 중심이 50, 200, 500(만 원)이에요. 구매 금액이 60, 130, 420인 고객이 각 중심과 얼마나 떨어져 있는지(차이의 절댓값) 채우고, 가장 가까운 중심을 골라 보세요.",
+     "columns": [
+      "annual_spend",
+      "50과 거리",
+      "200과 거리",
+      "500과 거리",
+      "가장 가까운 중심"
+     ],
+     "rows": [
+      [
+       "60",
+       {
+        "a": "10"
+       },
+       {
+        "a": "140"
+       },
+       {
+        "a": "440"
+       },
+       {
+        "a": "50"
+       }
+      ],
+      [
+       "130",
+       {
+        "a": "80"
+       },
+       {
+        "a": "70"
+       },
+       {
+        "a": "370"
+       },
+       {
+        "a": "200"
+       }
+      ],
+      [
+       "420",
+       {
+        "a": "370"
+       },
+       {
+        "a": "220"
+       },
+       {
+        "a": "80"
+       },
+       {
+        "a": "500"
+       }
+      ]
+     ],
+     "check": "def answers():\n    cs = [50, 200, 500]\n    out = []\n    for x in [60, 130, 420]:\n        ds = [abs(x - c) for c in cs]\n        out += ds + [cs[ds.index(min(ds))]]\n    return out",
+     "explain": "k-means는 이렇게 데이터마다 가장 가까운 중심의 무리에 넣고, 무리의 평균으로 중심을 옮기는 일을 더 바뀌지 않을 때까지 되풀이해요. 130처럼 두 중심 사이에 있어도 조금이라도 더 가까운 쪽으로 가요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`KMeans(n_clusters=3, random_state=123, n_init=10)`의 설정을 바르게 풀이한 것은?",
+     "options": [
+      "n_clusters=3은 3번 반복, random_state=123은 123번째 행부터, n_init=10은 군집 10개",
+      "n_clusters=3은 열 3개 사용, random_state=123은 고객 123명만, n_init=10은 10초 동안 실행",
+      "세 설정 모두 결과에 아무 영향을 주지 않는다",
+      "n_clusters=3은 군집 3개, random_state=123은 무작위 시작을 늘 똑같게, n_init=10은 시작 중심을 10번 바꿔 돌려 보고 가장 좋은 결과를 쓴다"
+     ],
+     "answer": 3,
+     "explain": "k-means는 처음 중심을 무작위로 골라서 시작에 따라 결과가 달라질 수 있어요. random_state로 무작위를 고정하고, n_init번 다시 시작해 무리 안 거리가 가장 작은 결과를 써요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "KMeans의 fit에 넣는 값으로 알맞은 것은?",
+     "options": [
+      "df_app[\"annual_spend\"] — Series",
+      "df_app[[\"annual_spend\"]] — 열 하나짜리 표(DataFrame)",
+      "\"annual_spend\" — 열 이름 글자",
+      "df_app[\"annual_spend\"].mean() — 평균 값 하나"
+     ],
+     "answer": 1,
+     "explain": "fit은 행 × 열 모양(2차원)의 데이터를 받아요. 대괄호를 두 번 써서 열 하나짜리 표로 넣어야 해요. Series를 넣으면 2차원이 아니라는 오류가 나요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "군집 결과 km.labels_가 [0, 2, 2, 1, 2, 0, 2]라면 `pd.Series(km.labels_).value_counts().min()`의 값은?",
+     "a": "1",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    return [int(pd.Series([0, 2, 2, 1, 2, 0, 2]).value_counts().min())]",
+     "explain": "labels_는 행마다 몇 번 군집에 들어갔는지 적은 번호예요. 군집마다 세면 2번 4명, 0번 2명, 1번 1명이니 가장 작은 군집의 크기는 1이에요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "예시 데이터(customers.csv)에서 앱 사용자(app_user가 Y)는 몇 명일까요?",
+     "a": "605",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"customers.csv\")\n    return [int((df[\"app_user\"] == \"Y\").sum())]",
+     "explain": "이 고객들을 세 무리로 나누므로 세 군집의 크기를 모두 더하면 이 수가 돼요. 가장 작은 군집의 크기는 이 수를 3으로 나눈 값보다 클 수 없어요."
+    }
+   ],
+   "explain": "KMeans(n_clusters=3, random_state=123, n_init=10).fit(표)로 군집을 만들고, 행마다 붙은 군집 번호 km.labels_를 pd.Series로 바꿔 value_counts()로 세요. 가장 작은 군집의 크기는 .min()이에요. fit에 df_app[\"annual_spend\"]처럼 Series를 넣으면 오류가 나니 대괄호를 두 번 써요.",
+   "kind": "blank"
+  },
+  {
+   "id": "d2-t20-b",
+   "version": 2,
+   "title": "비싼 매물 군집의 크기",
+   "statement": "중고차 매물 데이터의 가격(price)과 주행 거리(mileage_km) 두 변수로 k-means 군집 분석을 하여 매물을 3개의 군집으로 나누려고 합니다. 군집 번호를 \"cluster\" 변수로 만들고, 평균 가격이 가장 높은 군집에 속한 매물 수를 구하시오.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 price, mileage_km 두 변수를 이 순서대로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "used_cars.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    answer = 0\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df[[\"price\", \"mileage_km\"]])\n    df[\"cluster\"] = km.labels_\n    top = df.groupby(\"cluster\")[\"price\"].mean().idxmax()\n    answer = int((df[\"cluster\"] == top).sum())\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 628
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 591
+    },
+    {
+     "data": 2,
+     "expected": 593
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "KMeans에 price와 mileage_km 두 열을 함께 넣는 코드로 알맞은 것은 무엇일까요?",
+     "options": [
+      "`df[[\"price\", \"mileage_km\"]]`",
+      "`df[\"price\", \"mileage_km\"]`",
+      "`df[\"price\"]`"
+     ],
+     "answer": 0,
+     "explain": "여러 열을 고를 때는 열 이름 목록을 대괄호로 한 번 더 감싸요. `df[\"price\", \"mileage_km\"]`는 오류가 나요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`KMeans(...).fit(...)`으로 학습한 뒤, 행마다 붙은 군집 번호가 들어 있는 속성은 무엇일까요?",
+     "options": [
+      "`labels_`",
+      "`cluster_centers_`",
+      "`n_clusters`"
+     ],
+     "answer": 0,
+     "explain": "labels_에는 행 순서대로 군집 번호(0, 1, 2)가 들어 있어요. cluster_centers_는 군집마다 중심 좌표예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "평균 가격이 가장 높은 군집의 번호를 찾는 코드로 알맞은 것은 무엇일까요?",
+     "options": [
+      "`df.groupby(\"cluster\")[\"price\"].mean().idxmax()`",
+      "`df.groupby(\"cluster\")[\"price\"].mean().max()`",
+      "`df[\"cluster\"].value_counts().idxmax()`"
+     ],
+     "answer": 0,
+     "explain": "groupby로 군집별 평균 가격을 구하고 idxmax()로 가장 큰 값의 이름표(군집 번호)를 얻어요. max()는 그 평균 가격 자체예요."
+    }
+   ],
+   "explain": "KMeans로 두 열을 3개 군집으로 나누고 labels_를 cluster 열에 넣어요. 군집별 평균 가격이 가장 높은 군집 번호를 idxmax()로 찾은 뒤, 그 군집의 행 수를 세요."
+  },
+  {
+   "id": "d2-t20-c",
+   "version": 2,
+   "title": "남성 고객의 월 구매 금액 군집",
+   "statement": "쇼핑몰 고객 데이터에서 남성 고객(gender가 M)만 고른 뒤, 한 달 평균 구매 금액을 1년 구매 금액(annual_spend) ÷ 12로 계산하여 새 변수로 만듭니다. 이 한 달 평균 구매 금액 한 열로 k-means 군집 분석을 하여 군집을 3개로 나누었을 때, 가장 큰 군집에 속한 고객 수를 구합니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 한 달 평균 구매 금액은 \"monthly_spend\" 변수로 만드시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 monthly_spend 열만 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "customers.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_m = df.loc[df[\"gender\"] == \"M\", ].copy()\ndf_m[\"monthly_spend\"] = df_m[\"annual_spend\"] / 12\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_m[[\"monthly_spend\"]])\n    answer = int(pd.Series(km.labels_).value_counts().max())\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 295
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 290
+    },
+    {
+     "data": 2,
+     "expected": 330
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제를 푸는 순서로 알맞은 것은?",
+     "options": [
+      "KMeans로 fit → 남성 고객 고르기 → monthly_spend 열 만들기 → 가장 큰 개수",
+      "monthly_spend 열 만들기 → KMeans로 fit → 가장 큰 monthly_spend 값",
+      "남성 고객 고르기 → monthly_spend 평균 구하기 → 평균보다 큰 고객 수",
+      "남성 고객 고르기 → monthly_spend 열 만들기 → KMeans로 fit → labels_를 세어 가장 큰 개수"
+     ],
+     "answer": 3,
+     "explain": "군집에 쓸 고객과 열을 먼저 준비한 뒤 fit해요. 답은 금액이 아니라 가장 큰 군집에 속한 고객 수예요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "고객 5명의 성별과 1년 구매 금액이에요. gender == \"M\"의 값을 채우고, 남성 고객만 monthly_spend(= annual_spend / 12)를 채워 보세요.",
+     "columns": [
+      "gender",
+      "annual_spend",
+      "gender == \"M\"",
+      "monthly_spend"
+     ],
+     "rows": [
+      [
+       "M",
+       "60",
+       {
+        "a": "True"
+       },
+       {
+        "a": "5.0",
+        "alts": [
+         "5"
+        ]
+       }
+      ],
+      [
+       "F",
+       "240",
+       {
+        "a": "False"
+       },
+       "-"
+      ],
+      [
+       "M",
+       "300",
+       {
+        "a": "True"
+       },
+       {
+        "a": "25.0",
+        "alts": [
+         "25"
+        ]
+       }
+      ],
+      [
+       "F",
+       "48",
+       {
+        "a": "False"
+       },
+       "-"
+      ],
+      [
+       "M",
+       "36",
+       {
+        "a": "True"
+       },
+       {
+        "a": "3.0",
+        "alts": [
+         "3"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"gender\": [\"M\", \"F\", \"M\", \"F\", \"M\"], \"annual_spend\": [60, 240, 300, 48, 36]})\n    out = []\n    for g, s in zip(t[\"gender\"], t[\"annual_spend\"]):\n        out.append(g == \"M\")\n        if g == \"M\":\n            out.append(s / 12)\n    return out",
+     "explain": "남성 고객만 남긴 표에 df_m[\"monthly_spend\"] = df_m[\"annual_spend\"] / 12처럼 열 연산으로 새 열을 만들어요. 고른 표에 열을 더할 때는 .copy()로 따로 떼어 두면 경고가 나지 않아요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "군집 크기 세기",
+     "prompt": "남성 고객 7명을 군집했더니 km.labels_가 [1, 0, 1, 2, 1, 0, 1]로 나왔어요. 군집마다 고객 수를 세고, 가장 큰 군집의 크기를 채워 보세요.",
+     "columns": [
+      "군집 번호",
+      "고객 수"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "4"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "1"
+       }
+      ],
+      [
+       "가장 큰 군집의 크기",
+       {
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    vc = pd.Series([1, 0, 1, 2, 1, 0, 1]).value_counts()\n    return [int(vc[0]), int(vc[1]), int(vc[2]), int(vc.max())]",
+     "explain": "pd.Series(km.labels_).value_counts()가 군집 번호마다 개수를 세어 주고, .max()가 그중 가장 큰 개수예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`n_init=10`의 뜻으로 알맞은 것은?",
+     "options": [
+      "군집을 10개 만든다",
+      "10번째 행부터 군집에 쓴다",
+      "시작 중심을 10번 다르게 골라 돌려 보고, 무리 안의 거리가 가장 작은 결과를 쓴다",
+      "중심을 옮기는 반복을 10번에서 멈춘다"
+     ],
+     "answer": 2,
+     "explain": "k-means는 처음 중심을 어디에 두느냐에 따라 결과가 달라질 수 있어요. 그래서 여러 번 시작해 보고 가장 잘 묶인 결과를 써요. random_state=123은 그 무작위를 늘 똑같게 해요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "답으로 군집 번호(0·1·2)가 아니라 '가장 큰 군집의 크기'를 묻는 까닭은?",
+     "options": [
+      "번호가 큰 군집일수록 고객이 많아서",
+      "군집 번호는 무리에 붙인 이름일 뿐이라, 데이터나 설정이 바뀌면 같은 무리라도 번호가 달라질 수 있어서",
+      "군집 번호는 언제나 0이라서",
+      "군집 번호는 글자라서 셀 수 없어서"
+     ],
+     "answer": 1,
+     "explain": "k-means는 무리를 나눈 뒤 번호를 정해진 차례 없이 붙여요. 그래서 크기·평균처럼 번호와 상관없는 값을 답으로 써요."
+    }
+   ],
+   "explain": "df.loc[df[\"gender\"] == \"M\", ].copy()로 남성 고객을 고르고 monthly_spend = annual_spend / 12 열을 만들어요. KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_m[[\"monthly_spend\"]]) 뒤 pd.Series(km.labels_).value_counts().max()가 가장 큰 군집의 크기예요. 정수로 돌려주려면 int()로 감싸요."
+  },
+  {
+   "id": "d2-t20-d",
+   "version": 2,
+   "title": "30005번 고객이 속한 군집",
+   "statement": "쇼핑몰 고객 데이터 전체를 1년 구매 금액(annual_spend)과 한 달 방문 횟수(visits_per_month) 두 열로 k-means 군집 분석하여 3개의 군집으로 나누고, 군집 번호를 새 변수에 저장하려고 합니다. 고객 번호(customer_id)가 30005인 고객이 속한 군집에 모두 몇 명의 고객이 있는지(그 고객 자신도 포함) 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 annual_spend, visits_per_month 두 열을 이 순서대로 사용하시오.\n※ 군집 번호는 \"cluster\" 변수로 만드시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
+   "answerFormat": "123",
+   "data": {
+    "files": [
+     "customers.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df[⟦1⟧])\n    df[\"cluster\"] = km.⟦2⟧\n    target = df.loc[df[\"customer_id\"] == ⟦3⟧, \"cluster\"].iloc[0]\n    answer = int((df[\"cluster\"] ⟦4⟧ target).⟦5⟧())\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "[\"annual_spend\", \"visits_per_month\"]",
+     "alts": [
+      "['annual_spend', 'visits_per_month']"
+     ]
+    },
+    {
+     "answer": "labels_"
+    },
+    {
+     "answer": "30005"
+    },
+    {
+     "answer": "=="
+    },
+    {
+     "answer": "sum"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df[[\"annual_spend\", \"visits_per_month\"]])\n    df[\"cluster\"] = km.labels_\n    target = df.loc[df[\"customer_id\"] == 30005, \"cluster\"].iloc[0]\n    answer = int((df[\"cluster\"] == target).sum())\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 442
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 158
+    },
+    {
+     "data": 2,
+     "expected": 474
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제의 답은 무엇일까요?",
+     "options": [
+      "30005번 고객의 군집 번호(0·1·2 가운데 하나)",
+      "30005번 고객과 같은 군집에 들어간 고객 수(그 고객 포함)",
+      "30005번 고객의 1년 구매 금액",
+      "가장 큰 군집에 속한 고객 수"
+     ],
+     "answer": 1,
+     "explain": "군집 번호는 무리에 붙인 이름일 뿐이라 데이터에 따라 바뀔 수 있어요. 그래서 번호 대신 '그 고객이 속한 무리의 크기'를 답으로 써요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "annual_spend와 visits_per_month 두 열로 군집하면, 고객끼리 가까운지를 무엇으로 잴까요?",
+     "options": [
+      "(구매 금액, 방문 횟수)를 좌표로 하는 두 점 사이의 거리",
+      "구매 금액의 차이만",
+      "방문 횟수의 차이만",
+      "고객 번호의 차이"
+     ],
+     "answer": 0,
+     "explain": "열 두 개를 쓰면 고객 한 명이 평면 위의 점 하나가 되고, 두 값을 모두 반영한 거리로 가까운 중심을 골라요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "두 열에서 가까운 중심 고르기",
+     "prompt": "세 중심이 A(1, 1), B(4, 5), C(8, 2)예요. 점 (x, y)와 중심 (a, b) 사이의 거리 제곱 (x − a)² + (y − b)²를 채우고 가장 가까운 중심을 골라 보세요.",
+     "columns": [
+      "점",
+      "A까지",
+      "B까지",
+      "C까지",
+      "가장 가까운 중심"
+     ],
+     "rows": [
+      [
+       "(2, 2)",
+       {
+        "a": "2"
+       },
+       {
+        "a": "13"
+       },
+       {
+        "a": "36"
+       },
+       {
+        "a": "A"
+       }
+      ],
+      [
+       "(5, 4)",
+       {
+        "a": "25"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "13"
+       },
+       {
+        "a": "B"
+       }
+      ],
+      [
+       "(7, 3)",
+       {
+        "a": "40"
+       },
+       {
+        "a": "13"
+       },
+       {
+        "a": "2"
+       },
+       {
+        "a": "C"
+       }
+      ]
+     ],
+     "check": "def answers():\n    cs = {\"A\": (1, 1), \"B\": (4, 5), \"C\": (8, 2)}\n    out = []\n    for x, y in [(2, 2), (5, 4), (7, 3)]:\n        ds = {k: (x - a) ** 2 + (y - b) ** 2 for k, (a, b) in cs.items()}\n        out += list(ds.values()) + [min(ds, key=ds.get)]\n    return out",
+     "explain": "거리 제곱이 가장 작은 중심이 가장 가까운 중심이에요. k-means는 점마다 이렇게 무리를 정한 뒤, 무리의 평균 위치로 중심을 옮기기를 되풀이해요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "같은 군집인지 확인하기",
+     "prompt": "고객 6명의 군집 결과예요. 30005번 고객의 군집 번호를 target이라 할 때, df[\"cluster\"] == target의 값을 채워 보세요.",
+     "columns": [
+      "customer_id",
+      "cluster",
+      "cluster == target"
+     ],
+     "rows": [
+      [
+       "30001",
+       "2",
+       {
+        "a": "False"
+       }
+      ],
+      [
+       "30002",
+       "0",
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "30003",
+       "0",
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "30004",
+       "1",
+       {
+        "a": "False"
+       }
+      ],
+      [
+       "30005",
+       "0",
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "30006",
+       "2",
+       {
+        "a": "False"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"customer_id\": [30001, 30002, 30003, 30004, 30005, 30006], \"cluster\": [2, 0, 0, 1, 0, 2]})\n    target = t.loc[t[\"customer_id\"] == 30005, \"cluster\"].iloc[0]\n    return [bool(x) for x in (t[\"cluster\"] == target)]",
+     "explain": "30005번 고객의 군집 번호는 0이라 target = 0이에요. 30005번 고객 자신도 True가 되어 함께 세어져요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "위 표에서 `(df[\"cluster\"] == target).sum()`의 값은?",
+     "a": "3",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    c = pd.Series([2, 0, 0, 1, 0, 2])\n    return [int((c == 0).sum())]",
+     "explain": "True를 1, False를 0으로 세어 더하므로 True의 개수, 곧 같은 군집의 고객 수가 나와요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "`df.loc[df[\"customer_id\"] == 30005, \"cluster\"]` 뒤에 `.iloc[0]`을 붙이는 까닭은?",
+     "options": [
+      "첫 번째 고객(30001번)의 군집 번호를 꺼내려고",
+      "군집 번호를 0으로 바꾸려고",
+      "결과가 표 전체라서 첫 행만 남기려고",
+      "결과가 값 하나가 든 Series라서, 그 안의 군집 번호 값을 꺼내려고"
+     ],
+     "answer": 3,
+     "explain": "조건으로 고르면 행이 하나여도 Series로 나와요. .iloc[0]으로 첫 번째 값을 꺼내야 target이 숫자 하나가 되어 ==로 견줄 수 있어요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "예시 데이터(customers.csv)에서 30005번 고객의 1년 구매 금액(annual_spend)은 얼마일까요?",
+     "a": "176",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"customers.csv\")\n    return [int(df.loc[df[\"customer_id\"] == 30005, \"annual_spend\"].iloc[0])]",
+     "explain": "df.loc[조건, \"annual_spend\"].iloc[0]처럼 꺼낼 수 있어요. 구매 금액과 방문 횟수를 보면 이 고객이 적게·중간·많이 사는 무리 가운데 어디에 가까운지 짐작할 수 있어요."
+    }
+   ],
+   "explain": "두 열 표 df[[\"annual_spend\", \"visits_per_month\"]]로 fit하고 km.labels_를 cluster 열로 붙여요. 30005번 고객의 군집 번호를 .iloc[0]으로 꺼내 target에 두고, (df[\"cluster\"] == target).sum()으로 같은 군집의 고객 수를 세요. 군집 번호 자체는 바뀔 수 있으니 답으로 쓰지 않아요.",
+   "kind": "blank"
+  },
+  {
+   "id": "d2-t20-e",
+   "version": 2,
+   "title": "우수 회원 VIP 군집의 평균 나이",
+   "statement": "쇼핑몰 고객 데이터에서 회원 등급(membership)이 silver 또는 gold인 고객만 고릅니다. 이 고객들을 annual_spend와 visits_per_month 두 열로 k-means 군집 분석하여 3개의 군집으로 나누고 군집 번호를 새 변수에 저장합니다. 군집별 1년 구매 금액(annual_spend) 평균이 가장 높은 군집을 찾아, 그 군집에 속한 고객들의 평균 나이(age)를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 annual_spend, visits_per_month 두 열을 이 순서대로 사용하시오.\n※ 군집 번호는 \"cluster\" 변수로 만드시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "12.34",
+   "data": {
+    "files": [
+     "customers.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_sub = df.loc[df[\"membership\"].⟦1⟧([\"silver\", \"gold\"]), ].copy()\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_sub[[\"annual_spend\", \"visits_per_month\"]])\n    df_sub[\"cluster\"] = km.labels_\n    spend_mean = df_sub.⟦2⟧(\"cluster\")[\"annual_spend\"].mean()\n    vip = spend_mean.⟦3⟧()\n    answer = round(df_sub.loc[df_sub[\"cluster\"] == ⟦4⟧, \"age\"].⟦5⟧(), ⟦6⟧)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "isin"
+    },
+    {
+     "answer": "groupby"
+    },
+    {
+     "answer": "idxmax"
+    },
+    {
+     "answer": "vip"
+    },
+    {
+     "answer": "mean"
+    },
+    {
+     "answer": "2"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_sub = df.loc[df[\"membership\"].isin([\"silver\", \"gold\"]), ].copy()\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_sub[[\"annual_spend\", \"visits_per_month\"]])\n    df_sub[\"cluster\"] = km.labels_\n    spend_mean = df_sub.groupby(\"cluster\")[\"annual_spend\"].mean()\n    vip = spend_mean.idxmax()\n    answer = round(df_sub.loc[df_sub[\"cluster\"] == vip, \"age\"].mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 43.54
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 45.13
+    },
+    {
+     "data": 2,
+     "expected": 44.19
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제에서 답으로 구하는 값은?",
+     "options": [
+      "나이 평균이 가장 높은 군집의 구매 금액 평균",
+      "가장 큰 군집에 속한 고객들의 나이 평균",
+      "구매 금액 평균이 가장 높은 군집에 속한 고객들의 나이 평균",
+      "silver·gold 고객 전체의 나이 평균"
+     ],
+     "answer": 2,
+     "explain": "군집은 구매 금액·방문 횟수로 만들고, 그중 구매 금액 평균이 가장 높은 무리(VIP 군집)를 고른 다음 그 무리의 나이 평균을 구해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "isin으로 고르기",
+     "prompt": "`df[\"membership\"].isin([\"silver\", \"gold\"])`는 값이 목록 안에 있으면 True예요. 고객 5명의 결과를 채워 보세요.",
+     "columns": [
+      "membership",
+      "isin([\"silver\", \"gold\"])"
+     ],
+     "rows": [
+      [
+       "basic",
+       {
+        "a": "False"
+       }
+      ],
+      [
+       "gold",
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "silver",
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "basic",
+       {
+        "a": "False"
+       }
+      ],
+      [
+       "gold",
+       {
+        "a": "True"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([\"basic\", \"gold\", \"silver\", \"basic\", \"gold\"])\n    return [bool(x) for x in s.isin([\"silver\", \"gold\"])]",
+     "explain": "isin은 '== \"silver\"' 또는 '== \"gold\"'를 |로 묶은 것과 같아요. 고를 값이 여러 개일 때 짧게 쓸 수 있어요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "예시 데이터(customers.csv)에서 회원 등급이 silver 또는 gold인 고객은 몇 명일까요?",
+     "a": "615",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"customers.csv\")\n    return [int(df[\"membership\"].isin([\"silver\", \"gold\"]).sum())]",
+     "explain": "이 고객들만 세 군집으로 나누므로, 세 군집의 크기를 더하면 이 수가 돼요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "군집별 평균 구하기",
+     "prompt": "고객 6명의 (cluster, annual_spend, age)가 (0, 60, 30), (2, 480, 52), (1, 210, 41), (2, 520, 44), (0, 40, 36), (1, 190, 39)예요. groupby(\"cluster\")로 군집별 평균을 채워 보세요.",
+     "columns": [
+      "cluster",
+      "annual_spend 평균",
+      "age 평균"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "50.0",
+        "alts": [
+         "50"
+        ]
+       },
+       {
+        "a": "33.0",
+        "alts": [
+         "33"
+        ]
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "200.0",
+        "alts": [
+         "200"
+        ]
+       },
+       {
+        "a": "40.0",
+        "alts": [
+         "40"
+        ]
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "500.0",
+        "alts": [
+         "500"
+        ]
+       },
+       {
+        "a": "48.0",
+        "alts": [
+         "48"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"cluster\": [0, 2, 1, 2, 0, 1], \"annual_spend\": [60, 480, 210, 520, 40, 190], \"age\": [30, 52, 41, 44, 36, 39]})\n    g = t.groupby(\"cluster\")[[\"annual_spend\", \"age\"]].mean()\n    out = []\n    for c in [0, 1, 2]:\n        out += [float(g.loc[c, \"annual_spend\"]), float(g.loc[c, \"age\"])]\n    return out",
+     "explain": "groupby(\"cluster\")[\"annual_spend\"].mean()은 군집 번호를 인덱스로, 군집별 평균을 값으로 가진 Series를 돌려줘요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "위 표에서 spend_mean = df.groupby(\"cluster\")[\"annual_spend\"].mean()일 때 `spend_mean.idxmax()`의 값은?",
+     "options": [
+      "2",
+      "500.0",
+      "0",
+      "48.0"
+     ],
+     "answer": 0,
+     "explain": "max()는 가장 큰 값(500.0)을, idxmax()는 그 값이 있는 자리의 이름표(인덱스), 곧 군집 번호 2를 돌려줘요. 그래서 vip에는 군집 번호가 들어가요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "위 표에서 구매 금액 평균이 가장 높은 군집에 속한 고객들의 나이 평균은?",
+     "a": "48.0",
+     "alts": [
+      "48"
+     ],
+     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"cluster\": [0, 2, 1, 2, 0, 1], \"annual_spend\": [60, 480, 210, 520, 40, 190], \"age\": [30, 52, 41, 44, 36, 39]})\n    vip = t.groupby(\"cluster\")[\"annual_spend\"].mean().idxmax()\n    return [float(t.loc[t[\"cluster\"] == vip, \"age\"].mean())]",
+     "explain": "vip = 2이므로 cluster가 2인 고객(52세, 44세)의 나이 평균 48.0세예요. df.loc[df[\"cluster\"] == vip, \"age\"].mean()으로 구해요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "df_sub는 조건으로 골라 낸 표라 인덱스가 0, 1, 2, …로 이어지지 않아요. `df_sub[\"cluster\"] = pd.Series(km.labels_)`처럼 Series로 바꿔 붙이면 어떻게 될까요?",
+     "options": [
+      "km.labels_를 그대로 붙인 것과 똑같다",
+      "인덱스가 같은 행끼리만 짝지어져 군집 번호가 어긋나고 NaN이 생긴다",
+      "오류가 나서 멈춘다",
+      "모든 행의 군집 번호가 0이 된다"
+     ],
+     "answer": 1,
+     "explain": "Series끼리는 인덱스 이름표를 맞춰서 붙어요. km.labels_(배열)를 그대로 붙이면 행 차례대로 들어가서 안전해요."
+    },
+    {
+     "id": "s8",
+     "kind": "mcq",
+     "q": "vip 대신 `df_sub[\"cluster\"] == 2`처럼 번호를 바로 쓰면 안 되는 까닭은?",
+     "options": [
+      "2번 군집은 언제나 가장 작은 군집이라서",
+      "군집 번호는 1부터 시작해서",
+      "cluster 열의 값은 글자라서",
+      "구매 금액 평균이 가장 높은 군집의 번호는 데이터에 따라 0·1·2 가운데 어느 것이든 될 수 있어서"
+     ],
+     "answer": 3,
+     "explain": "k-means는 무리에 번호를 정해진 차례 없이 붙여요. 그래서 평균을 구한 뒤 idxmax()로 번호를 찾아 써야 숨은 데이터에서도 맞아요."
+    }
+   ],
+   "explain": "isin([\"silver\", \"gold\"])으로 고객을 고르고 두 열로 군집한 뒤 km.labels_를 cluster 열로 붙여요. groupby(\"cluster\")[\"annual_spend\"].mean()의 idxmax()가 VIP 군집 번호이고, 그 군집의 age 평균을 round(…, 2)로 돌려줘요. 군집 번호를 2처럼 직접 쓰거나 max()를 쓰는 것이 흔한 실수예요.",
+   "kind": "blank"
+  }
+ ]
+}

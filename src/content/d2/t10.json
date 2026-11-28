@@ -1,816 +1,911 @@
 {
  "course": "d2",
  "type": 10,
- "typeTitle": "검정과 군집 분석",
- "kind": "blank",
+ "typeTitle": "의사결정나무",
+ "kind": "choice",
+ "area": "A4",
  "skills": [
-  "ttest_ind(t 통계량·p-value)",
-  "귀무가설·유의수준",
-  "notna·dropna로 결측 제외",
-  "KMeans(n_clusters·random_state·n_init)",
-  "labels_·value_counts"
+  "뿌리·중간·말단 노드",
+  "나무 따라 예측하기",
+  "지니 계수(불순도)",
+  "깊이 제한과 가지치기"
  ],
- "intro": "두 집단의 평균이 정말 다른지 독립 2표본 t-검정(ttest_ind)으로 확인하고, k-means로 비슷한 고객끼리 무리를 지어 군집의 크기를 구해요. p-value와 t 통계량을 읽는 법, 군집 번호 대신 크기로 답하는 법을 연습해요.",
+ "intro": "의사결정나무의 뿌리·중간·말단 노드와 깊이, 나무를 따라 예측하는 방법, 지니 계수로 나눌 질문을 고르는 원리를 묻는 객관식이에요.",
+ "concept": {
+  "text": "의사결정나무는 질문으로 데이터를 계속 나누어 예측하는 모델이에요. 전체 데이터가 들어 있는 맨 위 노드가 뿌리 노드, 더 나뉘지 않고 예측 결과를 내는 노드가 말단(잎) 노드예요. 나뉜 노드 안이 한 종류로 몰릴수록 불순도(지니 계수)가 낮아요.",
+  "table": {
+   "head": [
+    "노드",
+    "뜻"
+   ],
+   "rows": [
+    [
+     "뿌리 노드",
+     "전체 데이터, 첫 질문"
+    ],
+    [
+     "중간 노드",
+     "다시 나뉘는 노드"
+    ],
+    [
+     "말단 노드",
+     "최종 예측 결과"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 11,
+   "title": "머신러닝 기초와 작업형 답안 쓰기"
+  }
+ },
  "problems": [
   {
    "id": "d2-t10-a",
-   "version": 1,
-   "title": "남녀 학생의 수학 점수 비교",
-   "statement": "학생 성적 데이터에서 남학생(gender가 M)과 여학생(gender가 F)의 수학 점수(math) 평균에 차이가 있는지 독립 2표본 t-검정으로 알아보려고 합니다. 남학생의 수학 점수를 첫 번째 집단, 여학생의 수학 점수를 두 번째 집단으로 하여 검정했을 때의 p-value를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 넷째 자리까지 반환하도록 하시오.",
-   "answerFormat": "0.1234",
-   "data": {
-    "files": [
-     "student_scores.csv"
+   "version": 2,
+   "title": "더 나뉘지 않는 노드",
+   "statement": "한 놀이공원이 방문객 200명의 자료로 연간 회원권을 살지(yes/no)를 예측하는 의사결정나무를 만들었습니다. 상자 하나가 노드 하나이고, 맨 위 글자는 노드 이름, n은 그 노드에 들어 있는 방문객 수, 물음표가 붙은 줄은 그 노드에서 데이터를 나누는 질문입니다(visits는 한 해 방문 횟수, age는 나이).\n\n{{fig:f1}}\n\n그림의 노드 C, D, E처럼 더 이상 나누어지지 않고 최종 예측 결과를 내는 노드를 무엇이라고 합니까?",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "svg",
+     "caption": "질문에 '예'이면 yes, '아니요'이면 no 쪽 선을 따라 내려갑니다.",
+     "alt": "의사결정나무 그림. 맨 위 노드 A(200명)는 'visits >= 5 ?'(한 해 방문 5회 이상인가) 질문으로 나뉩니다. 예이면 노드 B(80명), 아니요이면 노드 C(120명, 예측 no)로 갑니다. 노드 B는 'age < 20 ?'(20세 미만인가) 질문으로 나뉘어, 예이면 노드 D(30명, 예측 no), 아니요이면 노드 E(50명, 예측 yes)로 갑니다.",
+     "svg": "<svg viewBox='0 0 450 276' xmlns='http://www.w3.org/2000/svg'><line x1='225' y1='70' x2='130' y2='110' stroke='currentColor' stroke-width='1.5'/><text x='172.25' y='86' text-anchor='end' font-size='12'>yes</text><line x1='225' y1='70' x2='340' y2='110' stroke='currentColor' stroke-width='1.5'/><text x='286.75' y='86' text-anchor='start' font-size='12'>no</text><line x1='130' y1='170' x2='70' y2='210' stroke='currentColor' stroke-width='1.5'/><text x='93' y='186' text-anchor='end' font-size='12'>yes</text><line x1='130' y1='170' x2='200' y2='210' stroke='currentColor' stroke-width='1.5'/><text x='171.5' y='186' text-anchor='start' font-size='12'>no</text><rect x='165' y='10' width='120' height='60' rx='7' fill='currentColor' fill-opacity='0.07' stroke='currentColor' stroke-width='1.5'/><text x='225' y='29' text-anchor='middle' font-size='14' font-weight='700'>A</text><text x='225' y='45' text-anchor='middle' font-size='12'>n = 200</text><text x='225' y='61' text-anchor='middle' font-size='12'>visits &gt;= 5 ?</text><rect x='70' y='110' width='120' height='60' rx='7' fill='currentColor' fill-opacity='0.07' stroke='currentColor' stroke-width='1.5'/><text x='130' y='129' text-anchor='middle' font-size='14' font-weight='700'>B</text><text x='130' y='145' text-anchor='middle' font-size='12'>n = 80</text><text x='130' y='161' text-anchor='middle' font-size='12'>age &lt; 20 ?</text><rect x='280' y='110' width='120' height='60' rx='7' fill='none' stroke='currentColor' stroke-width='1.5'/><text x='340' y='129' text-anchor='middle' font-size='14' font-weight='700'>C</text><text x='340' y='145' text-anchor='middle' font-size='12'>n = 120</text><text x='340' y='161' text-anchor='middle' font-size='12'>predict: no</text><rect x='10' y='210' width='120' height='60' rx='7' fill='none' stroke='currentColor' stroke-width='1.5'/><text x='70' y='229' text-anchor='middle' font-size='14' font-weight='700'>D</text><text x='70' y='245' text-anchor='middle' font-size='12'>n = 30</text><text x='70' y='261' text-anchor='middle' font-size='12'>predict: no</text><rect x='140' y='210' width='120' height='60' rx='7' fill='none' stroke='currentColor' stroke-width='1.5'/><text x='200' y='229' text-anchor='middle' font-size='14' font-weight='700'>E</text><text x='200' y='245' text-anchor='middle' font-size='12'>n = 50</text><text x='200' y='261' text-anchor='middle' font-size='12'>predict: yes</text></svg>"
+    }
+   ],
+   "choice": {
+    "options": [
+     "뿌리 노드",
+     "중간 노드",
+     "말단 노드",
+     "가지"
+    ],
+    "answer": 2,
+    "why": [
+     "뿌리 노드는 모든 데이터(200명)가 들어 있는 맨 위의 노드 A예요.",
+     "중간 노드는 위 노드에서 내려오고 아래로 또 나뉘는 노드 B 같은 노드예요.",
+     "더 나뉘지 않고 예측 결과를 내는 C, D, E는 말단 노드(잎 노드)예요(정답).",
+     "가지는 노드와 노드를 잇는 선(질문의 답에 따라 갈라지는 길)이고, 노드가 아니에요."
     ]
    },
-   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\nmale = df.loc[df[\"gender\"] == ⟦1⟧, \"math\"]\nfemale = df.loc[df[\"gender\"] == \"F\", \"math\"]\n\ndef solution():\n    stat, p = ⟦2⟧(male, female)\n    answer = round(p, ⟦3⟧)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "\"M\"",
-     "alts": [
-      "'M'"
-     ]
-    },
-    {
-     "answer": "ttest_ind"
-    },
-    {
-     "answer": "4"
-    }
-   ],
-   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\nmale = df.loc[df[\"gender\"] == \"M\", \"math\"]\nfemale = df.loc[df[\"gender\"] == \"F\", \"math\"]\n\ndef solution():\n    stat, p = ttest_ind(male, female)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 0.6061
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 0.2491
-    },
-    {
-     "data": 2,
-     "expected": 0.8842
-    }
-   ],
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "남학생과 여학생의 수학 점수 평균이 정말 다른지, 아니면 우연히 조금 다르게 나온 것인지 확인하려고 해요. 알맞은 방법은?",
+     "q": "의사결정나무는 새 데이터를 어떻게 예측할까요?",
      "options": [
-      "독립 2표본 t-검정(ttest_ind)",
-      "k-means 군집 분석",
-      "value_counts()로 학생 수 세기",
-      "수학 점수를 오름차순으로 정렬하기"
+      "맨 위 노드부터 질문에 예/아니요로 답하며 내려가, 도착한 노드의 결과를 쓴다",
+      "모든 데이터의 평균을 그대로 쓴다",
+      "보상 점수가 가장 큰 행동을 고른다",
+      "가장 아래 줄 노드들의 결과를 모두 더한다"
      ],
      "answer": 0,
-     "explain": "서로 다른 두 집단(남학생·여학생)의 평균을 비교해 그 차이가 우연인지 따지는 방법이 독립 2표본 t-검정이에요. scipy.stats의 ttest_ind 함수로 해요."
+     "explain": "의사결정나무는 스무고개처럼 질문을 따라 내려가요. 더 내려갈 곳이 없는 노드에 도착하면 그 노드의 결과가 예측값이에요."
     },
     {
      "id": "s2",
-     "kind": "mcq",
-     "q": "t-검정은 먼저 귀무가설을 세워요. 귀무가설은 '차이가 없다'는 기본 가정이에요. 이 문제의 귀무가설로 알맞은 것은?",
-     "options": [
-      "남학생의 수학 점수 평균이 더 높다",
-      "여학생의 수학 점수 평균이 더 높다",
-      "남학생과 여학생의 수학 점수 평균은 같다",
-      "남학생과 여학생의 수가 같다"
-     ],
-     "answer": 2,
-     "explain": "귀무가설은 '두 평균은 같다(차이가 없다)'예요. 데이터가 이 가정과 많이 어긋나면 귀무가설을 버리고 '차이가 있다'고 판단해요."
-    },
-    {
-     "id": "s3",
      "kind": "table",
-     "title": "작은 수로 평균 비교",
-     "prompt": "남학생 3명의 수학 점수가 70, 80, 90이고, 여학생 3명의 점수가 60, 75, 75라고 해요. 집단마다 평균을 구하고 평균의 차를 채워 보세요.",
+     "title": "노드 살펴보기",
+     "prompt": "그림을 보고 노드마다 바로 아래로 갈라져 나온 노드(자식 노드)의 수와 노드 종류를 채워 보세요. 노드 종류는 뿌리·중간·말단 가운데 하나로 써요.\n\n- 뿌리: 맨 위에서 모든 데이터를 가진 노드\n- 중간: 위 노드에서 내려오고, 아래로 또 나뉘는 노드\n- 말단: 더 이상 나뉘지 않는 노드\n\n{{fig:f1}}",
      "columns": [
-      "집단",
-      "점수",
-      "평균"
+      "노드",
+      "데이터 수(명)",
+      "자식 노드 수",
+      "노드 종류"
      ],
      "rows": [
       [
-       "남학생",
-       "70, 80, 90",
+       "A",
+       "200",
        {
-        "a": "80",
+        "a": "2",
         "alts": [
-         "80.0"
+         "2.0"
+        ]
+       },
+       {
+        "a": "뿌리",
+        "alts": [
+         "뿌리노드",
+         "루트",
+         "루트노드",
+         "root"
         ]
        }
       ],
       [
-       "여학생",
-       "60, 75, 75",
+       "B",
+       "80",
        {
-        "a": "70",
+        "a": "2",
         "alts": [
-         "70.0"
+         "2.0"
+        ]
+       },
+       {
+        "a": "중간",
+        "alts": [
+         "중간노드"
         ]
        }
       ],
       [
-       "평균의 차(남 − 여)",
-       "-",
+       "C",
+       "120",
        {
-        "a": "10",
+        "a": "0",
         "alts": [
-         "10.0"
+         "0.0"
+        ]
+       },
+       {
+        "a": "말단",
+        "alts": [
+         "말단노드",
+         "잎",
+         "잎노드",
+         "리프",
+         "leaf"
+        ]
+       }
+      ],
+      [
+       "D",
+       "30",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "말단",
+        "alts": [
+         "말단노드",
+         "잎",
+         "잎노드",
+         "리프",
+         "leaf"
+        ]
+       }
+      ],
+      [
+       "E",
+       "50",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "말단",
+        "alts": [
+         "말단노드",
+         "잎",
+         "잎노드",
+         "리프",
+         "leaf"
         ]
        }
       ]
      ],
-     "check": "def answers():\n    m = [70, 80, 90]\n    f = [60, 75, 75]\n    mm = sum(m) // len(m)\n    fm = sum(f) // len(f)\n    return [mm, fm, mm - fm]",
-     "explain": "평균이 10점 차이 나도 학생 수가 적고 점수가 많이 흩어져 있으면 우연일 수 있어요. t-검정은 평균의 차를 점수가 흩어진 정도와 학생 수까지 함께 따져서 판단해요."
+     "check": "def answers():\n    children = {'A': ['B', 'C'], 'B': ['D', 'E'], 'C': [], 'D': [], 'E': []}\n    parent = {c: p for p, cs in children.items() for c in cs}\n    out = []\n    for n in 'ABCDE':\n        k = len(children[n])\n        kind = '뿌리' if n not in parent else ('말단' if k == 0 else '중간')\n        out += [k, kind]\n    return out",
+     "explain": "자식 노드가 있으면 아래로 더 나뉘는 노드예요. 맨 위 A는 뿌리, A 아래에서 또 나뉘는 B는 중간, 자식이 없는 C·D·E는 말단 노드예요."
+    },
+    {
+     "id": "s3",
+     "kind": "short",
+     "q": "말단 노드 C, D, E의 방문객 수를 모두 더하면 몇 명일까요?",
+     "a": "200",
+     "check": "def answers():\n    return [120 + 30 + 50]",
+     "explain": "말단 노드들은 처음 데이터를 겹치지 않게 나누어 가져요. 그래서 합이 뿌리 노드의 200명과 같아요."
     },
     {
      "id": "s4",
      "kind": "mcq",
-     "q": "어떤 t-검정에서 p-value가 0.32로 나왔어요. 유의수준 0.05에서 알맞은 판단은?",
+     "q": "그림에서 노드와 노드를 잇는 선(yes·no로 갈라지는 길)을 무엇이라고 할까요?",
      "options": [
-      "0.32는 0.05보다 크므로 두 평균에 차이가 있다",
-      "p-value가 0보다 크면 언제나 차이가 있다",
-      "두 평균이 정확히 같다는 것이 증명되었다",
-      "0.32는 0.05보다 크므로 두 평균에 차이가 있다고 말할 수 없다"
+      "가지",
+      "뿌리",
+      "깊이",
+      "레이블"
      ],
-     "answer": 3,
-     "explain": "p-value는 '정말 차이가 없다면 지금만큼 큰 차이가 우연히 나올 확률'이에요. 유의수준(판단 기준, 보통 0.05)보다 작을 때만 '차이가 있다'고 하고, 크면 차이가 있다고 말할 수 없을 뿐 같다고 증명한 것은 아니에요."
-    },
-    {
-     "id": "s5",
-     "kind": "short",
-     "q": "`stat, p = ttest_ind(male, female)`이라고 쓰면 p에 p-value가 들어가요. p가 0.123456이라면 소수점 넷째 자리까지 반올림한 값은?",
-     "a": "0.1235",
-     "alts": [],
-     "check": "def answers():\n    return [round(0.123456, 4)]",
-     "explain": "넷째 자리까지 남기고 다섯째 자리에서 반올림해요. round(값, 자리 수)의 두 번째 값이 남길 소수 자리 수예요."
+     "answer": 0,
+     "explain": "질문의 답에 따라 갈라지는 길을 가지(branch)라고 해요. 노드는 상자, 가지는 상자를 잇는 선이에요."
     }
    ],
-   "explain": "df.loc[조건, \"math\"]로 두 집단의 수학 점수를 고른 뒤 stat, p = ttest_ind(첫 번째, 두 번째)로 검정해요. 돌려받는 두 값 중 두 번째가 p-value이고, round(p, 4)로 넷째 자리까지 반올림해요. p-value가 0.05보다 크면 두 평균에 차이가 있다고 말할 수 없어요."
+   "explain": "의사결정나무에서 모든 데이터가 들어 있는 맨 위 노드는 뿌리 노드, 그 아래에서 또 나뉘는 노드는 중간 노드, 더 이상 나뉘지 않고 예측 결과를 내는 노드는 말단(잎) 노드예요. 노드를 잇는 선은 가지라고 해요."
   },
   {
    "id": "d2-t10-b",
-   "version": 1,
-   "title": "2010년 전후 영화의 평점",
-   "statement": "영화 정보 데이터에서 평점(rating)이 결측이 아닌 영화만 고른 뒤, 개봉 연도(release_year)가 2010년 미만인 영화와 2010년 이상인 영화의 평점 평균에 차이가 있는지 독립 2표본 t-검정으로 알아보려고 합니다. 2010년 미만 영화의 평점을 첫 번째 집단, 2010년 이상 영화의 평점을 두 번째 집단으로 하여 검정했을 때의 p-value를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 넷째 자리까지 반환하도록 하시오.",
-   "answerFormat": "0.1234",
-   "data": {
-    "files": [
-     "movies.csv"
+   "version": 2,
+   "title": "의사결정나무의 부분 이름",
+   "statement": "의사결정나무는 질문으로 데이터를 계속 나누어 예측하는 모델입니다.\n\n의사결정나무에 대한 설명으로 옳지 **않은** 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "전체 데이터를 담고 첫 질문을 하는 맨 위 노드를 뿌리 노드라고 한다.",
+     "더 이상 나누어지지 않고 최종 예측 결과를 내는 노드를 말단 노드(잎 노드)라고 한다.",
+     "뿌리 노드에서 가장 깊은 말단 노드까지 내려가는 단계의 수를 나무의 깊이라고 한다.",
+     "아래 노드로 내려갈수록 노드 하나에 들어 있는 데이터의 수는 늘어난다."
+    ],
+    "answer": 3,
+    "why": [
+     "뿌리 노드는 전체 데이터를 담고 첫 질문을 하는 맨 위 노드예요(옳은 설명).",
+     "말단(잎) 노드는 더 나뉘지 않고 예측 결과를 내요(옳은 설명).",
+     "뿌리에서 가장 깊은 말단 노드까지 내려간 단계 수가 깊이예요(옳은 설명).",
+     "한 노드의 데이터를 질문에 따라 둘 이상으로 나누므로, 아래로 갈수록 노드 하나의 데이터 수는 줄어들어요(정답)."
     ]
    },
-   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ndf_sub = df.loc[df[\"rating\"].⟦1⟧(), ]\nbefore = df_sub.loc[df_sub[\"release_year\"] ⟦2⟧ 2010, \"rating\"]\nafter = df_sub.loc[df_sub[\"release_year\"] >= 2010, \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(before, after)\n    answer = round(⟦3⟧, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "notna"
-    },
-    {
-     "answer": "<"
-    },
-    {
-     "answer": "p"
-    }
-   ],
-   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ndf_sub = df.loc[df[\"rating\"].notna(), ]\nbefore = df_sub.loc[df_sub[\"release_year\"] < 2010, \"rating\"]\nafter = df_sub.loc[df_sub[\"release_year\"] >= 2010, \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(before, after)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 0.9621
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 0.6024
-    },
-    {
-     "data": 2,
-     "expected": 0.3993
-    }
-   ],
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "평점이 빈 값(NaN, 결측)인 영화가 섞인 채로 ttest_ind를 하면 어떻게 될까요?",
+     "q": "뿌리 노드에 100명이 있고 첫 질문으로 둘로 나누었더니 한쪽이 60명이었어요. 다른 쪽은 몇 명일까요?",
      "options": [
-      "빈 값을 0점으로 여기고 계산한다",
-      "결과가 nan(숫자 아님)으로 나와 p-value를 얻을 수 없다",
-      "빈 값이 있는 집단은 통째로 빼고 계산한다",
-      "빈 값만 저절로 빼고 계산한다"
-     ],
-     "answer": 1,
-     "explain": "ttest_ind는 기본 설정에서 빈 값이 하나라도 있으면 결과를 nan으로 돌려줘요. 그래서 먼저 notna()로 평점이 있는 영화만 골라 두어야 해요."
-    },
-    {
-     "id": "s2",
-     "kind": "table",
-     "title": "작은 표로 따라가기",
-     "prompt": "영화 6편의 개봉 연도와 평점이에요(NaN은 빈 값). rating.notna()의 값과 들어가는 집단(before: 2010년 미만, after: 2010년 이상, 제외: 평점 없음)을 채워 보세요.",
-     "columns": [
-      "release_year",
-      "rating",
-      "rating.notna()",
-      "집단"
-     ],
-     "rows": [
-      [
-       "2005",
-       "7.2",
-       {
-        "a": "True"
-       },
-       {
-        "a": "before"
-       }
-      ],
-      [
-       "2012",
-       "NaN",
-       {
-        "a": "False"
-       },
-       {
-        "a": "제외"
-       }
-      ],
-      [
-       "2010",
-       "6.5",
-       {
-        "a": "True"
-       },
-       {
-        "a": "after"
-       }
-      ],
-      [
-       "2008",
-       "NaN",
-       {
-        "a": "False"
-       },
-       {
-        "a": "제외"
-       }
-      ],
-      [
-       "2019",
-       "8.1",
-       {
-        "a": "True"
-       },
-       {
-        "a": "after"
-       }
-      ],
-      [
-       "2009",
-       "5.9",
-       {
-        "a": "True"
-       },
-       {
-        "a": "before"
-       }
-      ]
-     ],
-     "check": "def answers():\n    import numpy as np\n    import pandas as pd\n    t = pd.DataFrame({\"release_year\": [2005, 2012, 2010, 2008, 2019, 2009], \"rating\": [7.2, np.nan, 6.5, np.nan, 8.1, 5.9]})\n    out = []\n    for y, ok in zip(t[\"release_year\"], t[\"rating\"].notna()):\n        g = (\"before\" if y < 2010 else \"after\") if ok else \"제외\"\n        out += [bool(ok), g]\n    return out",
-     "explain": "평점이 없는 영화는 어느 집단에도 넣지 않아요. 2010년 영화는 '2010년 이상'이므로 after에 들어가요. 미만은 <, 이상은 >=예요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "ttest_ind(a, b)는 값 두 개를 돌려줘요. 돌려주는 차례대로 바르게 쓴 것은?",
-     "options": [
-      "t 통계량, p-value",
-      "p-value, t 통계량",
-      "a의 평균, b의 평균",
-      "평균의 차, 표준편차"
+      "40명",
+      "100명",
+      "160명"
      ],
      "answer": 0,
-     "explain": "stat, p = ttest_ind(a, b)라고 쓰면 첫 번째 값(t 통계량)은 stat에, 두 번째 값(p-value)은 p에 들어가요. 이 문제는 p-value를 반올림해 돌려줘요."
-    },
-    {
-     "id": "s4",
-     "kind": "short",
-     "q": "예시 데이터(movies.csv)에서 평점이 결측이 아닌 영화는 모두 몇 편일까요?",
-     "a": "1410",
-     "alts": [],
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [int(df[\"rating\"].notna().sum())]",
-     "explain": "df[\"rating\"].notna().sum()으로 셀 수 있어요. True를 1로 세어 더하기 때문이에요. 이 영화들만 두 집단으로 나누어 검정해요."
-    },
-    {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "검정 결과 p-value가 0.05보다 크게 나왔다면, 결과를 바르게 말한 것은?",
-     "options": [
-      "2010년 이후 영화의 평점이 더 높다",
-      "2010년 이전 영화의 평점이 더 높다",
-      "두 집단의 영화 수가 같다",
-      "2010년 전후 영화의 평점 평균에 차이가 있다고 말할 수 없다"
-     ],
-     "answer": 3,
-     "explain": "p-value가 유의수준 0.05보다 크면 귀무가설(평균이 같다)을 버리지 못해요. 그래서 '차이가 있다고 말할 수 없다'고 판단해요."
+     "explain": "나눈 두 노드의 데이터를 더하면 위 노드의 데이터 수와 같아요. 100 − 60 = 40명이에요."
     }
    ],
-   "explain": "먼저 df[\"rating\"].notna()로 평점이 있는 영화만 남겨야 ttest_ind가 nan을 내지 않아요. 2010년 미만은 <, 이상은 >=로 나누고, stat, p 중 p를 round(p, 4)로 반올림해요. 결측을 빼지 않으면 p-value가 nan이 되는 것이 흔한 실수예요."
+   "explain": "의사결정나무는 뿌리 노드(전체 데이터) → 중간 노드 → 말단 노드(예측 결과)로 내려가며 데이터를 나눠요. 나눌수록 노드 하나의 데이터는 줄어요."
   },
   {
    "id": "d2-t10-c",
-   "version": 1,
-   "title": "회원과 비회원의 별점 t 통계량",
-   "statement": "카페 주문 데이터에서 별점(rating)이 결측인 주문을 빼고, 회원(member가 Y) 주문과 비회원(member가 Y가 아닌) 주문의 별점 평균을 독립 2표본 t-검정으로 비교하려고 합니다. 회원의 별점을 첫 번째 집단, 비회원의 별점을 두 번째 집단으로 하여 검정했을 때의 t 통계량(검정 통계량)을 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 별점이 결측인 행은 dropna 함수로 제외하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
-   "answerFormat": "1.23",
-   "data": {
-    "files": [
-     "cafe_orders.csv"
+   "version": 2,
+   "title": "의사결정나무 따라 내려가기",
+   "statement": "어느 학교가 학생 120명의 자료로 수학 경시대회 통과 여부(pass/fail)를 예측하는 의사결정나무를 만들었습니다. 노드마다 이름, 학생 수(n), 통과(pass)·탈락(fail) 학생 수가 적혀 있고, 물음표가 붙은 줄은 그 노드에서 데이터를 나누는 질문입니다. 질문에 '예'이면 yes 쪽, '아니요'이면 no 쪽으로 내려가며, 말단 노드에서는 학생이 더 많은 쪽(pass 또는 fail)으로 예측합니다.\n\n{{fig:f1}}\n\n(단, study_hours는 하루 공부 시간, absences는 결석 횟수, hw_rate는 숙제 제출률입니다. 나무의 **깊이**는 뿌리 노드에서 가장 멀리 있는 말단 노드까지 내려가며 거치는 가지(노드와 노드를 잇는 선)의 수입니다.)\n\n이 그림에 대한 설명으로 옳은 것은 무엇입니까?",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "svg",
+     "caption": "질문에 '예'이면 yes, '아니요'이면 no 쪽 선을 따라 내려갑니다.",
+     "alt": "의사결정나무 그림. 노드 A(120명, pass 60, fail 60)는 'study_hours >= 3 ?'으로 나뉘어 yes는 노드 B, no는 노드 C(50명, pass 8, fail 42)로 갑니다. 노드 B(70명, pass 52, fail 18)는 'absences <= 2 ?'로 나뉘어 yes는 노드 D(50명, pass 46, fail 4), no는 노드 E로 갑니다. 노드 E(20명, pass 6, fail 14)는 'hw_rate >= 0.8 ?'로 나뉘어 yes는 노드 F(8명, pass 5, fail 3), no는 노드 G(12명, pass 1, fail 11)로 갑니다.",
+     "svg": "<svg viewBox='0 0 500 438' xmlns='http://www.w3.org/2000/svg'><line x1='280' y1='86' x2='160' y2='125' stroke='currentColor' stroke-width='1.5'/><text x='216' y='101.55' text-anchor='end' font-size='12'>yes</text><line x1='280' y1='86' x2='420' y2='125' stroke='currentColor' stroke-width='1.5'/><text x='353' y='101.55' text-anchor='start' font-size='12'>no</text><line x1='160' y1='201' x2='80' y2='240' stroke='currentColor' stroke-width='1.5'/><text x='114' y='216.55' text-anchor='end' font-size='12'>yes</text><line x1='160' y1='201' x2='260' y2='240' stroke='currentColor' stroke-width='1.5'/><text x='215' y='216.55' text-anchor='start' font-size='12'>no</text><line x1='260' y1='316' x2='180' y2='355' stroke='currentColor' stroke-width='1.5'/><text x='214' y='331.55' text-anchor='end' font-size='12'>yes</text><line x1='260' y1='316' x2='340' y2='355' stroke='currentColor' stroke-width='1.5'/><text x='306' y='331.55' text-anchor='start' font-size='12'>no</text><rect x='208' y='10' width='144' height='76' rx='7' fill='currentColor' fill-opacity='0.07' stroke='currentColor' stroke-width='1.5'/><text x='280' y='29' text-anchor='middle' font-size='14' font-weight='700'>A</text><text x='280' y='45' text-anchor='middle' font-size='12'>n = 120</text><text x='280' y='61' text-anchor='middle' font-size='12'>pass 60 / fail 60</text><text x='280' y='77' text-anchor='middle' font-size='12'>study_hours &gt;= 3 ?</text><rect x='88' y='125' width='144' height='76' rx='7' fill='currentColor' fill-opacity='0.07' stroke='currentColor' stroke-width='1.5'/><text x='160' y='144' text-anchor='middle' font-size='14' font-weight='700'>B</text><text x='160' y='160' text-anchor='middle' font-size='12'>n = 70</text><text x='160' y='176' text-anchor='middle' font-size='12'>pass 52 / fail 18</text><text x='160' y='192' text-anchor='middle' font-size='12'>absences &lt;= 2 ?</text><rect x='348' y='125' width='144' height='76' rx='7' fill='none' stroke='currentColor' stroke-width='1.5'/><text x='420' y='144' text-anchor='middle' font-size='14' font-weight='700'>C</text><text x='420' y='160' text-anchor='middle' font-size='12'>n = 50</text><text x='420' y='176' text-anchor='middle' font-size='12'>pass 8 / fail 42</text><rect x='8' y='240' width='144' height='76' rx='7' fill='none' stroke='currentColor' stroke-width='1.5'/><text x='80' y='259' text-anchor='middle' font-size='14' font-weight='700'>D</text><text x='80' y='275' text-anchor='middle' font-size='12'>n = 50</text><text x='80' y='291' text-anchor='middle' font-size='12'>pass 46 / fail 4</text><rect x='188' y='240' width='144' height='76' rx='7' fill='currentColor' fill-opacity='0.07' stroke='currentColor' stroke-width='1.5'/><text x='260' y='259' text-anchor='middle' font-size='14' font-weight='700'>E</text><text x='260' y='275' text-anchor='middle' font-size='12'>n = 20</text><text x='260' y='291' text-anchor='middle' font-size='12'>pass 6 / fail 14</text><text x='260' y='307' text-anchor='middle' font-size='12'>hw_rate &gt;= 0.8 ?</text><rect x='108' y='355' width='144' height='76' rx='7' fill='none' stroke='currentColor' stroke-width='1.5'/><text x='180' y='374' text-anchor='middle' font-size='14' font-weight='700'>F</text><text x='180' y='390' text-anchor='middle' font-size='12'>n = 8</text><text x='180' y='406' text-anchor='middle' font-size='12'>pass 5 / fail 3</text><rect x='268' y='355' width='144' height='76' rx='7' fill='none' stroke='currentColor' stroke-width='1.5'/><text x='340' y='374' text-anchor='middle' font-size='14' font-weight='700'>G</text><text x='340' y='390' text-anchor='middle' font-size='12'>n = 12</text><text x='340' y='406' text-anchor='middle' font-size='12'>pass 1 / fail 11</text></svg>"
+    }
+   ],
+   "choice": {
+    "options": [
+     "말단 노드는 C, D, G의 3개입니다.",
+     "이 나무의 깊이는 2입니다.",
+     "노드 C에 도착한 학생은 pass로 예측합니다.",
+     "하루 공부 시간이 4시간이고 결석이 3번인 학생은 노드 E를 거쳐 내려갑니다."
+    ],
+    "answer": 3,
+    "why": [
+     "더 나뉘지 않는 노드는 C, D, F, G의 4개예요. F를 빠뜨렸어요.",
+     "A → B → E → F(또는 G)로 가지 3개를 거치므로 깊이는 3이에요.",
+     "노드 C에는 pass 8명, fail 42명이 있어 더 많은 쪽인 fail로 예측해요.",
+     "'study_hours >= 3'이 예라서 B로, 'absences <= 2'가 아니요라서 E로 가요(정답)."
     ]
    },
-   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.⟦1⟧(subset=[\"rating\"])\nmember = df_sub.loc[df_sub[\"member\"] == \"Y\", \"rating\"]\nguest = df_sub.loc[df_sub[\"member\"] ⟦2⟧ \"Y\", \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(⟦3⟧, guest)\n    answer = round(⟦4⟧, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "dropna"
-    },
-    {
-     "answer": "!="
-    },
-    {
-     "answer": "member"
-    },
-    {
-     "answer": "stat"
-    }
-   ],
-   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.dropna(subset=[\"rating\"])\nmember = df_sub.loc[df_sub[\"member\"] == \"Y\", \"rating\"]\nguest = df_sub.loc[df_sub[\"member\"] != \"Y\", \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(member, guest)\n    answer = round(stat, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 9.77
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 8.4
-    },
-    {
-     "data": 2,
-     "expected": 7.05
-    }
-   ],
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "`df.dropna(subset=[\"rating\"])`는 어떤 일을 할까요?",
+     "q": "의사결정나무에서 처음 모은 데이터 전체가 들어 있는 맨 위 노드를 무엇이라고 할까요?",
      "options": [
-      "어느 열이든 빈 값이 하나라도 있는 행을 모두 지운다",
-      "rating 열을 통째로 지운다",
-      "rating 열이 빈 행만 지운다",
-      "빈 별점을 0으로 바꾼다"
+      "뿌리 노드",
+      "중간 노드",
+      "말단 노드",
+      "가지"
      ],
-     "answer": 2,
-     "explain": "subset에 적은 열만 보고, 그 열이 빈 행을 지운 새 표를 돌려줘요. df.loc[df[\"rating\"].notna(), ]로 고른 것과 결과가 같아요."
+     "answer": 0,
+     "explain": "모든 데이터(120명)에서 시작하는 맨 위 노드가 뿌리 노드(root node)예요. 이 그림에서는 A예요."
     },
     {
      "id": "s2",
+     "kind": "mcq",
+     "q": "**중간 노드**는 어떤 노드일까요?",
+     "options": [
+      "위에서 내려오는 가지와 아래로 갈라지는 가지가 모두 있는 노드",
+      "학생 수가 가장 많은 노드",
+      "아래로 갈라지는 가지가 없는 노드",
+      "그림에서 가운데 줄에 그려진 노드"
+     ],
+     "answer": 0,
+     "explain": "중간 노드는 부모 노드(바로 위 노드)와 자식 노드(바로 아래 노드)가 모두 있는 노드예요. 그림 속 위치가 아니라 연결로 정해요."
+    },
+    {
+     "id": "s3",
      "kind": "table",
-     "title": "작은 표로 평균 비교",
-     "prompt": "주문 7건의 (member, rating)이 (Y, 5), (N, 3), (Y, 빈 값), (N, 4), (Y, 4), (N, 빈 값), (N, 2)예요. 빈 별점을 뺀 뒤 집단마다 주문 수와 별점 평균을 채우고, 평균의 차를 구해 보세요.",
+     "title": "노드 종류 정리",
+     "prompt": "노드마다 자식 노드(바로 아래로 갈라져 나온 노드)의 수와 노드 종류(뿌리·중간·말단)를 채워 보세요.\n\n{{fig:f1}}",
      "columns": [
-      "집단",
-      "주문 수",
-      "별점 평균"
+      "노드",
+      "자식 노드 수",
+      "노드 종류"
      ],
      "rows": [
       [
-       "회원(Y)",
+       "A",
        {
-        "a": "2"
-       },
-       {
-        "a": "4.5"
-       }
-      ],
-      [
-       "비회원(N)",
-       {
-        "a": "3"
-       },
-       {
-        "a": "3.0",
+        "a": "2",
         "alts": [
-         "3"
+         "2.0"
+        ]
+       },
+       {
+        "a": "뿌리",
+        "alts": [
+         "뿌리노드",
+         "루트",
+         "루트노드",
+         "root"
         ]
        }
       ],
       [
-       "평균의 차(회원 − 비회원)",
-       "-",
+       "B",
        {
-        "a": "1.5"
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       },
+       {
+        "a": "중간",
+        "alts": [
+         "중간노드"
+        ]
+       }
+      ],
+      [
+       "C",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "말단",
+        "alts": [
+         "말단노드",
+         "잎",
+         "잎노드",
+         "리프",
+         "leaf"
+        ]
+       }
+      ],
+      [
+       "D",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "말단",
+        "alts": [
+         "말단노드",
+         "잎",
+         "잎노드",
+         "리프",
+         "leaf"
+        ]
+       }
+      ],
+      [
+       "E",
+       {
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
+       },
+       {
+        "a": "중간",
+        "alts": [
+         "중간노드"
+        ]
+       }
+      ],
+      [
+       "F",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "말단",
+        "alts": [
+         "말단노드",
+         "잎",
+         "잎노드",
+         "리프",
+         "leaf"
+        ]
+       }
+      ],
+      [
+       "G",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "말단",
+        "alts": [
+         "말단노드",
+         "잎",
+         "잎노드",
+         "리프",
+         "leaf"
+        ]
        }
       ]
      ],
-     "check": "def answers():\n    import numpy as np\n    import pandas as pd\n    t = pd.DataFrame({\"member\": [\"Y\", \"N\", \"Y\", \"N\", \"Y\", \"N\", \"N\"], \"rating\": [5, 3, np.nan, 4, 4, np.nan, 2]})\n    t = t.dropna(subset=[\"rating\"])\n    m = t.loc[t[\"member\"] == \"Y\", \"rating\"]\n    g = t.loc[t[\"member\"] != \"Y\", \"rating\"]\n    return [len(m), float(m.mean()), len(g), float(g.mean()), float(m.mean() - g.mean())]",
-     "explain": "빈 별점 2건을 빼면 회원 2건(5, 4), 비회원 3건(3, 4, 2)이 남아요. 회원 평균이 1.5점 더 높으니, 회원을 첫 번째로 넣으면 t 통계량은 양수가 돼요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "ttest_ind(회원 별점, 비회원 별점)의 t 통계량(stat)이 양수(+)라면 무엇을 뜻할까요?",
-     "options": [
-      "비회원의 별점 평균이 회원보다 높다",
-      "회원의 별점 평균이 비회원보다 높다",
-      "p-value가 0.05보다 작다",
-      "두 집단의 주문 수가 같다"
-     ],
-     "answer": 1,
-     "explain": "t 통계량은 (첫 번째 집단 평균 − 두 번째 집단 평균)을 흩어진 정도로 나눈 값이에요. 첫 번째 집단의 평균이 크면 양수, 작으면 음수가 되고, 0에서 멀수록 차이가 뚜렷해요."
+     "check": "TREE = {\n    'A': ('study_hours', 3, '>=', 'B', 'C'),\n    'B': ('absences', 2, '<=', 'D', 'E'),\n    'E': ('hw_rate', 0.8, '>=', 'F', 'G'),\n}\nLEAF = {'C': (8, 42), 'D': (46, 4), 'F': (5, 3), 'G': (1, 11)}\ndef answers():\n    children = {n: [t[3], t[4]] for n, t in TREE.items()}\n    parent = {c: p for p, cs in children.items() for c in cs}\n    out = []\n    for n in 'ABCDEFG':\n        k = len(children.get(n, []))\n        kind = '뿌리' if n not in parent else ('말단' if k == 0 else '중간')\n        out += [k, kind]\n    return out",
+     "explain": "자식이 없는 C, D, F, G가 말단 노드, 위아래가 모두 연결된 B, E가 중간 노드, 맨 위 A가 뿌리 노드예요."
     },
     {
      "id": "s4",
-     "kind": "mcq",
-     "q": "문제에서 말한 부호대로 t 통계량을 얻으려면 ttest_ind에 두 집단을 어떤 차례로 넣어야 할까요?",
-     "options": [
-      "비회원 별점을 먼저, 회원 별점을 나중에",
-      "차례는 상관없다(부호도 늘 같다)",
-      "두 집단을 합친 별점 하나만 넣는다",
-      "회원 별점을 먼저, 비회원 별점을 나중에"
-     ],
-     "answer": 3,
-     "explain": "문제에서 회원을 첫 번째 집단으로 정했어요. 차례를 바꾸면 p-value는 같지만 t 통계량의 부호가 반대로 나와요."
-    },
-    {
-     "id": "s5",
-     "kind": "short",
-     "q": "예시 데이터(cafe_orders.csv)에서 별점이 결측이 아닌 비회원 주문(member가 Y가 아님)은 몇 건일까요?",
-     "a": "1033",
-     "alts": [],
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"cafe_orders.csv\")\n    return [int(((df[\"rating\"].notna()) & (df[\"member\"] != \"Y\")).sum())]",
-     "explain": "비회원은 member가 Y가 아닌 주문이라 != \"Y\"로 골라요. 조건 두 개를 &로 묶어 세면 돼요."
-    }
-   ],
-   "explain": "dropna(subset=[\"rating\"])로 별점이 빈 주문을 먼저 빼요. 비회원은 member != \"Y\"로 고르고, ttest_ind(member, guest)처럼 회원을 첫 번째로 넣어야 t 통계량의 부호가 문제와 맞아요. 이번에는 p가 아니라 stat을 round(stat, 2)로 돌려줘요."
-  },
-  {
-   "id": "d2-t10-d",
-   "version": 1,
-   "title": "앱 사용 고객의 가장 작은 군집",
-   "statement": "쇼핑몰 고객 데이터에서 앱 사용자(app_user가 Y)만 골라, 1년 구매 금액(annual_spend) 한 열로 k-means 군집 분석을 하려고 합니다. 군집을 3개로 나누었을 때 가장 작은 군집에 속한 고객 수를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 annual_spend 열만 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
-   "answerFormat": "123",
-   "data": {
-    "files": [
-     "customers.csv"
-    ]
-   },
-   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_app = df.loc[df[\"app_user\"] == \"Y\", ]\n\ndef solution():\n    km = ⟦1⟧(n_clusters=⟦2⟧, random_state=123, n_init=10).fit(df_app[⟦3⟧])\n    answer = pd.Series(km.⟦4⟧).value_counts().⟦5⟧()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "blanks": [
-    {
-     "answer": "KMeans"
-    },
-    {
-     "answer": "3"
-    },
-    {
-     "answer": "[\"annual_spend\"]",
-     "alts": [
-      "['annual_spend']"
-     ]
-    },
-    {
-     "answer": "labels_"
-    },
-    {
-     "answer": "min"
-    }
-   ],
-   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_app = df.loc[df[\"app_user\"] == \"Y\", ]\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_app[[\"annual_spend\"]])\n    answer = pd.Series(km.labels_).value_counts().min()\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 143
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 133
-    },
-    {
-     "data": 2,
-     "expected": 124
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "군집 분석(clustering)은 어떤 일을 할까요?",
-     "options": [
-      "정답이 있는 데이터로 배워 새 데이터의 정답을 예측한다",
-      "두 집단의 평균 차이를 검정한다",
-      "정답(라벨) 없이 서로 비슷한 데이터끼리 무리(군집)를 짓는다",
-      "데이터를 큰 값부터 차례로 정렬한다"
-     ],
-     "answer": 2,
-     "explain": "군집 분석은 정답 없이 가까운 데이터끼리 묶는 비지도학습이에요. k-means는 무리의 중심을 k개 두고, 데이터마다 가장 가까운 중심의 무리에 넣어요."
-    },
-    {
-     "id": "s2",
      "kind": "table",
-     "title": "가까운 중심 고르기",
-     "prompt": "세 무리의 중심이 50, 200, 500(만 원)이에요. 구매 금액이 60, 130, 420인 고객이 각 중심과 얼마나 떨어져 있는지(차이의 절댓값) 채우고, 가장 가까운 중심을 골라 보세요.",
+     "title": "가지 세기",
+     "prompt": "뿌리 노드 A에서 각 말단 노드까지 내려가는 길에서 거치는 가지(노드를 잇는 선)의 수를 세어 보세요.",
      "columns": [
-      "annual_spend",
-      "50과 거리",
-      "200과 거리",
-      "500과 거리",
-      "가장 가까운 중심"
+      "말단 노드",
+      "내려가는 길",
+      "가지 수"
      ],
      "rows": [
       [
-       "60",
+       "C",
+       "A → C",
        {
-        "a": "10"
-       },
-       {
-        "a": "140"
-       },
-       {
-        "a": "440"
-       },
-       {
-        "a": "50"
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
        }
       ],
       [
-       "130",
+       "D",
+       "A → B → D",
        {
-        "a": "80"
-       },
-       {
-        "a": "70"
-       },
-       {
-        "a": "370"
-       },
-       {
-        "a": "200"
+        "a": "2",
+        "alts": [
+         "2.0"
+        ]
        }
       ],
       [
-       "420",
+       "F",
+       "A → B → E → F",
        {
-        "a": "370"
-       },
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
+       }
+      ],
+      [
+       "G",
+       "A → B → E → G",
        {
-        "a": "220"
-       },
-       {
-        "a": "80"
-       },
-       {
-        "a": "500"
+        "a": "3",
+        "alts": [
+         "3.0"
+        ]
        }
       ]
      ],
-     "check": "def answers():\n    cs = [50, 200, 500]\n    out = []\n    for x in [60, 130, 420]:\n        ds = [abs(x - c) for c in cs]\n        out += ds + [cs[ds.index(min(ds))]]\n    return out",
-     "explain": "k-means는 이렇게 데이터마다 가장 가까운 중심의 무리에 넣고, 무리의 평균으로 중심을 옮기는 일을 더 바뀌지 않을 때까지 되풀이해요. 130처럼 두 중심 사이에 있어도 조금이라도 더 가까운 쪽으로 가요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "`KMeans(n_clusters=3, random_state=123, n_init=10)`의 설정을 바르게 풀이한 것은?",
-     "options": [
-      "n_clusters=3은 3번 반복, random_state=123은 123번째 행부터, n_init=10은 군집 10개",
-      "n_clusters=3은 열 3개 사용, random_state=123은 고객 123명만, n_init=10은 10초 동안 실행",
-      "세 설정 모두 결과에 아무 영향을 주지 않는다",
-      "n_clusters=3은 군집 3개, random_state=123은 무작위 시작을 늘 똑같게, n_init=10은 시작 중심을 10번 바꿔 돌려 보고 가장 좋은 결과를 쓴다"
-     ],
-     "answer": 3,
-     "explain": "k-means는 처음 중심을 무작위로 골라서 시작에 따라 결과가 달라질 수 있어요. random_state로 무작위를 고정하고, n_init번 다시 시작해 무리 안 거리가 가장 작은 결과를 써요."
-    },
-    {
-     "id": "s4",
-     "kind": "mcq",
-     "q": "KMeans의 fit에 넣는 값으로 알맞은 것은?",
-     "options": [
-      "df_app[\"annual_spend\"] — Series",
-      "df_app[[\"annual_spend\"]] — 열 하나짜리 표(DataFrame)",
-      "\"annual_spend\" — 열 이름 글자",
-      "df_app[\"annual_spend\"].mean() — 평균 값 하나"
-     ],
-     "answer": 1,
-     "explain": "fit은 행 × 열 모양(2차원)의 데이터를 받아요. 대괄호를 두 번 써서 열 하나짜리 표로 넣어야 해요. Series를 넣으면 2차원이 아니라는 오류가 나요."
+     "check": "TREE = {\n    'A': ('study_hours', 3, '>=', 'B', 'C'),\n    'B': ('absences', 2, '<=', 'D', 'E'),\n    'E': ('hw_rate', 0.8, '>=', 'F', 'G'),\n}\nLEAF = {'C': (8, 42), 'D': (46, 4), 'F': (5, 3), 'G': (1, 11)}\ndef answers():\n    parent = {}\n    for n, t in TREE.items():\n        parent[t[3]] = n\n        parent[t[4]] = n\n    out = []\n    for leaf in 'CDFG':\n        d, n = 0, leaf\n        while n in parent:\n            n = parent[n]\n            d += 1\n        out.append(d)\n    return out",
+     "explain": "가지 수는 길에 있는 화살표 개수, 곧 '지나는 노드 수 − 1'이에요. 가장 긴 길은 F와 G로 가는 길이에요."
     },
     {
      "id": "s5",
      "kind": "short",
-     "q": "군집 결과 km.labels_가 [0, 2, 2, 1, 2, 0, 2]라면 `pd.Series(km.labels_).value_counts().min()`의 값은?",
-     "a": "1",
-     "alts": [],
-     "check": "def answers():\n    import pandas as pd\n    return [int(pd.Series([0, 2, 2, 1, 2, 0, 2]).value_counts().min())]",
-     "explain": "labels_는 행마다 몇 번 군집에 들어갔는지 적은 번호예요. 군집마다 세면 2번 4명, 0번 2명, 1번 1명이니 가장 작은 군집의 크기는 1이에요."
+     "q": "이 나무의 깊이(뿌리 노드에서 가장 멀리 있는 말단 노드까지 거치는 가지 수)는 얼마일까요?",
+     "a": "3",
+     "check": "def answers():\n    return [max([1, 2, 3, 3])]",
+     "explain": "가장 멀리 있는 말단 노드 F, G까지 가지 3개를 거치므로 깊이는 3이에요."
     },
     {
      "id": "s6",
-     "kind": "short",
-     "q": "예시 데이터(customers.csv)에서 앱 사용자(app_user가 Y)는 몇 명일까요?",
-     "a": "605",
-     "alts": [],
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"customers.csv\")\n    return [int((df[\"app_user\"] == \"Y\").sum())]",
-     "explain": "이 고객들을 세 무리로 나누므로 세 군집의 크기를 모두 더하면 이 수가 돼요. 가장 작은 군집의 크기는 이 수를 3으로 나눈 값보다 클 수 없어요."
-    }
-   ],
-   "explain": "KMeans(n_clusters=3, random_state=123, n_init=10).fit(표)로 군집을 만들고, 행마다 붙은 군집 번호 km.labels_를 pd.Series로 바꿔 value_counts()로 세요. 가장 작은 군집의 크기는 .min()이에요. fit에 df_app[\"annual_spend\"]처럼 Series를 넣으면 오류가 나니 대괄호를 두 번 써요."
-  },
-  {
-   "id": "d2-t10-e",
-   "version": 1,
-   "title": "남성 고객의 월 구매 금액 군집",
-   "kind": "write",
-   "statement": "쇼핑몰 고객 데이터에서 남성 고객(gender가 M)만 고른 뒤, 한 달 평균 구매 금액을 1년 구매 금액(annual_spend) ÷ 12로 계산하여 새 변수로 만듭니다. 이 한 달 평균 구매 금액 한 열로 k-means 군집 분석을 하여 군집을 3개로 나누었을 때, 가장 큰 군집에 속한 고객 수를 구합니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"customers.csv\"를 사용하시오.\n※ 한 달 평균 구매 금액은 \"monthly_spend\" 변수로 만드시오.\n※ 군집 분석은 sklearn.cluster의 KMeans를 사용하고 n_clusters=3, random_state=123, n_init=10으로 설정하시오.\n※ 군집 분석에는 monthly_spend 열만 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 정수로 반환하도록 하시오.",
-   "answerFormat": "123",
-   "data": {
-    "files": [
-     "customers.csv"
-    ]
-   },
-   "code": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\ndf = pd.read_csv(\"customers.csv\")\n\ndf_m = df.loc[df[\"gender\"] == \"M\", ].copy()\ndf_m[\"monthly_spend\"] = df_m[\"annual_spend\"] / 12\n\ndef solution():\n    km = KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_m[[\"monthly_spend\"]])\n    answer = int(pd.Series(km.labels_).value_counts().max())\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 295
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 290
-    },
-    {
-     "data": 2,
-     "expected": 330
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "이 문제를 푸는 순서로 알맞은 것은?",
-     "options": [
-      "KMeans로 fit → 남성 고객 고르기 → monthly_spend 열 만들기 → 가장 큰 개수",
-      "monthly_spend 열 만들기 → KMeans로 fit → 가장 큰 monthly_spend 값",
-      "남성 고객 고르기 → monthly_spend 평균 구하기 → 평균보다 큰 고객 수",
-      "남성 고객 고르기 → monthly_spend 열 만들기 → KMeans로 fit → labels_를 세어 가장 큰 개수"
-     ],
-     "answer": 3,
-     "explain": "군집에 쓸 고객과 열을 먼저 준비한 뒤 fit해요. 답은 금액이 아니라 가장 큰 군집에 속한 고객 수예요."
-    },
-    {
-     "id": "s2",
      "kind": "table",
-     "title": "작은 표로 따라가기",
-     "prompt": "고객 5명의 성별과 1년 구매 금액이에요. gender == \"M\"의 값을 채우고, 남성 고객만 monthly_spend(= annual_spend / 12)를 채워 보세요.",
+     "title": "학생 따라가기",
+     "prompt": "학생마다 나무를 따라 내려가 도착하는 말단 노드와 예측(pass/fail)을 채워 보세요.",
      "columns": [
-      "gender",
-      "annual_spend",
-      "gender == \"M\"",
-      "monthly_spend"
+      "학생",
+      "study_hours",
+      "absences",
+      "hw_rate",
+      "도착 노드",
+      "예측"
      ],
      "rows": [
-      [
-       "M",
-       "60",
-       {
-        "a": "True"
-       },
-       {
-        "a": "5.0",
-        "alts": [
-         "5"
-        ]
-       }
-      ],
-      [
-       "F",
-       "240",
-       {
-        "a": "False"
-       },
-       "-"
-      ],
-      [
-       "M",
-       "300",
-       {
-        "a": "True"
-       },
-       {
-        "a": "25.0",
-        "alts": [
-         "25"
-        ]
-       }
-      ],
-      [
-       "F",
-       "48",
-       {
-        "a": "False"
-       },
-       "-"
-      ],
-      [
-       "M",
-       "36",
-       {
-        "a": "True"
-       },
-       {
-        "a": "3.0",
-        "alts": [
-         "3"
-        ]
-       }
-      ]
-     ],
-     "check": "def answers():\n    import pandas as pd\n    t = pd.DataFrame({\"gender\": [\"M\", \"F\", \"M\", \"F\", \"M\"], \"annual_spend\": [60, 240, 300, 48, 36]})\n    out = []\n    for g, s in zip(t[\"gender\"], t[\"annual_spend\"]):\n        out.append(g == \"M\")\n        if g == \"M\":\n            out.append(s / 12)\n    return out",
-     "explain": "남성 고객만 남긴 표에 df_m[\"monthly_spend\"] = df_m[\"annual_spend\"] / 12처럼 열 연산으로 새 열을 만들어요. 고른 표에 열을 더할 때는 .copy()로 따로 떼어 두면 경고가 나지 않아요."
-    },
-    {
-     "id": "s3",
-     "kind": "table",
-     "title": "군집 크기 세기",
-     "prompt": "남성 고객 7명을 군집했더니 km.labels_가 [1, 0, 1, 2, 1, 0, 1]로 나왔어요. 군집마다 고객 수를 세고, 가장 큰 군집의 크기를 채워 보세요.",
-     "columns": [
-      "군집 번호",
-      "고객 수"
-     ],
-     "rows": [
-      [
-       "0",
-       {
-        "a": "2"
-       }
-      ],
       [
        "1",
+       "5",
+       "1",
+       "0.6",
        {
-        "a": "4"
+        "a": "D"
+       },
+       {
+        "a": "pass",
+        "alts": [
+         "Pass",
+         "PASS"
+        ]
        }
       ],
       [
        "2",
+       "6",
+       "5",
+       "0.9",
        {
-        "a": "1"
+        "a": "F"
+       },
+       {
+        "a": "pass",
+        "alts": [
+         "Pass",
+         "PASS"
+        ]
        }
       ],
       [
-       "가장 큰 군집의 크기",
+       "3",
+       "2",
+       "0",
+       "1.0",
        {
-        "a": "4"
+        "a": "C"
+       },
+       {
+        "a": "fail",
+        "alts": [
+         "Fail",
+         "FAIL"
+        ]
+       }
+      ],
+      [
+       "4",
+       "3",
+       "4",
+       "0.5",
+       {
+        "a": "G"
+       },
+       {
+        "a": "fail",
+        "alts": [
+         "Fail",
+         "FAIL"
+        ]
        }
       ]
      ],
-     "check": "def answers():\n    import pandas as pd\n    vc = pd.Series([1, 0, 1, 2, 1, 0, 1]).value_counts()\n    return [int(vc[0]), int(vc[1]), int(vc[2]), int(vc.max())]",
-     "explain": "pd.Series(km.labels_).value_counts()가 군집 번호마다 개수를 세어 주고, .max()가 그중 가장 큰 개수예요."
+     "check": "TREE = {\n    'A': ('study_hours', 3, '>=', 'B', 'C'),\n    'B': ('absences', 2, '<=', 'D', 'E'),\n    'E': ('hw_rate', 0.8, '>=', 'F', 'G'),\n}\nLEAF = {'C': (8, 42), 'D': (46, 4), 'F': (5, 3), 'G': (1, 11)}\ndef answers():\n    students = [{'study_hours': 5, 'absences': 1, 'hw_rate': 0.6}, {'study_hours': 6, 'absences': 5, 'hw_rate': 0.9},\n                {'study_hours': 2, 'absences': 0, 'hw_rate': 1.0}, {'study_hours': 3, 'absences': 4, 'hw_rate': 0.5}]\n    out = []\n    for s in students:\n        n = 'A'\n        while n in TREE:\n            col, v, op, yes, no = TREE[n]\n            ok = s[col] >= v if op == '>=' else s[col] <= v\n            n = yes if ok else no\n        p, f = LEAF[n]\n        out += [n, 'pass' if p > f else 'fail']\n    return out",
+     "explain": "질문이 참이면 yes, 거짓이면 no 쪽으로 가요. study_hours가 3이면 '3 이상'이 참이에요. 말단 노드에서는 pass와 fail 중 많은 쪽으로 예측해요."
+    },
+    {
+     "id": "s7",
+     "kind": "short",
+     "q": "말단 노드 C, D, F, G 가운데 pass로 예측하는 노드는 몇 개일까요?",
+     "a": "2",
+     "check": "TREE = {\n    'A': ('study_hours', 3, '>=', 'B', 'C'),\n    'B': ('absences', 2, '<=', 'D', 'E'),\n    'E': ('hw_rate', 0.8, '>=', 'F', 'G'),\n}\nLEAF = {'C': (8, 42), 'D': (46, 4), 'F': (5, 3), 'G': (1, 11)}\ndef answers():\n    return [sum(1 for p, f in LEAF.values() if p > f)]",
+     "explain": "D(pass 46, fail 4)와 F(pass 5, fail 3)는 pass가 더 많고, C(pass 8, fail 42)와 G(pass 1, fail 11)는 fail이 더 많아요."
+    }
+   ],
+   "explain": "자식 노드가 없는 노드가 말단 노드(C, D, F, G)이고, 깊이는 뿌리에서 가장 먼 말단 노드까지의 가지 수(3)예요. 새 데이터는 질문의 참·거짓에 따라 yes·no 쪽으로 내려가 도착한 말단 노드의 다수 쪽으로 예측해요. 공부 4시간·결석 3번인 학생은 A에서 yes, B에서 no라서 E를 거쳐요."
+  },
+  {
+   "id": "d2-t10-d",
+   "version": 2,
+   "title": "나무가 너무 깊을 때",
+   "statement": "한 학생이 의사결정나무를 깊이 제한 없이 학습시켰더니, 학습 데이터 정확도는 100%였지만 평가 데이터 정확도는 70%에 그쳤습니다.\n\n이 문제를 줄이기 위한 방법으로 가장 알맞은 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "최대 깊이(max_depth)를 제한하거나 가지치기를 해서 나무를 단순하게 만든다.",
+     "평가 데이터를 학습 데이터에 모두 합쳐 다시 학습한 뒤, 같은 평가 데이터로 정확도를 다시 잰다.",
+     "말단 노드마다 데이터가 1개씩만 남도록 나무를 더 깊게 만든다.",
+     "학습 데이터 정확도가 100%이므로 아무것도 바꾸지 않는다."
+    ],
+    "answer": 0,
+    "why": [
+     "학습 데이터에만 지나치게 맞춘 과적합이에요. 깊이를 제한하거나 가지치기로 나무를 단순하게 만들면 새 데이터도 더 잘 맞힐 수 있어요(정답).",
+     "평가 데이터로 학습하면 그 데이터를 이미 본 셈이라 정확도가 부풀려져요. 평가 데이터는 학습에 쓰지 않아야 해요.",
+     "나무를 더 깊게 만들면 학습 데이터에 더 딱 맞춰져 과적합이 심해져요.",
+     "학습 데이터만 잘 맞히고 새 데이터를 못 맞히는 것이 문제예요. 평가 데이터의 정확도를 봐야 해요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "학습 데이터는 아주 잘 맞히지만 평가 데이터는 잘 못 맞히는 상태를 무엇이라고 할까요?",
+     "options": [
+      "과적합",
+      "과소적합",
+      "정규화"
+     ],
+     "answer": 0,
+     "explain": "학습 데이터에 지나치게 맞춰져 처음 보는 데이터를 잘 못 맞히는 상태가 과적합이에요."
+    }
+   ],
+   "explain": "의사결정나무가 너무 깊으면 학습 데이터의 작은 차이까지 외워 과적합이 돼요. max_depth로 깊이를 제한하거나, 쓸모가 적은 가지를 잘라 내는 가지치기(pruning)로 막아요."
+  },
+  {
+   "id": "d2-t10-e",
+   "version": 2,
+   "title": "지니 계수로 순도 비교",
+   "statement": "의사결정나무는 노드를 나눌 때, 나뉜 노드 안의 데이터가 한 종류로 많이 몰리도록(불순도가 낮아지도록) 질문을 고릅니다. 데이터가 두 종류(구매·비구매)로 이루어진 노드의 **지니 계수**(지니 불순도)는 다음과 같이 구합니다.\n\n- 지니 계수 = 1 − (구매 비율² + 비구매 비율²)\n- 구매 비율 = 구매 수 ÷ 노드의 데이터 수\n\n다음은 어느 쇼핑몰의 구매 예측 나무에 있는 네 노드의 데이터 수입니다.\n\n{{fig:f1}}\n\n이에 대한 설명으로 옳은 것은 무엇입니까?",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "alt": "표: 노드 P는 구매 10·비구매 10(합계 20), 노드 Q는 구매 36·비구매 4(합계 40), 노드 R은 구매 0·비구매 25(합계 25), 노드 S는 구매 30·비구매 10(합계 40)입니다.",
+     "head": [
+      "노드",
+      "구매",
+      "비구매",
+      "합계"
+     ],
+     "rows": [
+      [
+       "P",
+       10,
+       10,
+       20
+      ],
+      [
+       "Q",
+       36,
+       4,
+       40
+      ],
+      [
+       "R",
+       0,
+       25,
+       25
+      ],
+      [
+       "S",
+       30,
+       10,
+       40
+      ]
+     ]
+    }
+   ],
+   "choice": {
+    "options": [
+     "노드 P의 지니 계수는 1입니다.",
+     "지니 계수가 낮은 노드부터 차례로 놓으면 R, Q, S, P입니다.",
+     "노드 R은 구매가 한 건도 없으므로 네 노드 가운데 불순도가 가장 높습니다.",
+     "노드 S의 지니 계수는 0.25입니다."
+    ],
+    "answer": 1,
+    "why": [
+     "P는 구매·비구매가 0.5씩 반반이라 1 − (0.25 + 0.25) = 0.5예요. 두 종류일 때 지니 계수는 0.5를 넘지 않아요.",
+     "R 0, Q 0.18, S 0.375, P 0.5이므로 낮은 차례는 R, Q, S, P예요(정답).",
+     "R은 모두 비구매로 한 종류만 있으니 지니 계수가 0, 곧 불순도가 가장 낮아요.",
+     "S는 1 − (0.75² + 0.25²) = 1 − (0.5625 + 0.0625) = 0.375예요. 0.25는 제곱을 빠뜨린 값이에요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "노드의 **불순도가 낮다**는 것은 어떤 뜻일까요?",
+     "options": [
+      "노드 안의 데이터가 거의 한 종류로 몰려 있다",
+      "노드 안에 두 종류가 반반씩 섞여 있다",
+      "노드에 들어 있는 데이터 수가 적다",
+      "노드가 나무의 아래쪽에 있다"
+     ],
+     "answer": 0,
+     "explain": "불순도는 '여러 종류가 얼마나 섞여 있나'를 뜻해요. 한 종류만 있으면 불순도가 가장 낮고(순수), 반반이면 가장 높아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "비율 구하기",
+     "prompt": "노드마다 구매 비율과 비구매 비율(각 수 ÷ 합계)을 소수로 채워 보세요.",
+     "columns": [
+      "노드",
+      "구매",
+      "비구매",
+      "합계",
+      "구매 비율",
+      "비구매 비율"
+     ],
+     "rows": [
+      [
+       "P",
+       "10",
+       "10",
+       "20",
+       {
+        "a": "0.5"
+       },
+       {
+        "a": "0.5"
+       }
+      ],
+      [
+       "Q",
+       "36",
+       "4",
+       "40",
+       {
+        "a": "0.9"
+       },
+       {
+        "a": "0.1"
+       }
+      ],
+      [
+       "R",
+       "0",
+       "25",
+       "25",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       }
+      ],
+      [
+       "S",
+       "30",
+       "10",
+       "40",
+       {
+        "a": "0.75"
+       },
+       {
+        "a": "0.25"
+       }
+      ]
+     ],
+     "check": "def fix(v):\n    v = round(v, 4)\n    return int(v) if v == int(v) else v\nfrom fractions import Fraction\nNODES = [('P', 10, 10), ('Q', 36, 4), ('R', 0, 25), ('S', 30, 10)]\ndef answers():\n    out = []\n    for name, buy, no in NODES:\n        p = Fraction(buy, buy + no)\n        out += [fix(float(p)), fix(float(1 - p))]\n    return out",
+     "explain": "구매 비율과 비구매 비율을 더하면 항상 1이에요. R은 구매가 0이라 구매 비율 0, 비구매 비율 1이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "지니 계수 계산하기",
+     "prompt": "앞에서 구한 비율을 각각 제곱해 더한 뒤 1에서 빼 보세요. 소수는 끝까지 계산해 써요.",
+     "columns": [
+      "노드",
+      "구매 비율²",
+      "비구매 비율²",
+      "지니 계수"
+     ],
+     "rows": [
+      [
+       "P",
+       {
+        "a": "0.25"
+       },
+       {
+        "a": "0.25"
+       },
+       {
+        "a": "0.5"
+       }
+      ],
+      [
+       "Q",
+       {
+        "a": "0.81"
+       },
+       {
+        "a": "0.01"
+       },
+       {
+        "a": "0.18"
+       }
+      ],
+      [
+       "R",
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       },
+       {
+        "a": "1",
+        "alts": [
+         "1.0"
+        ]
+       },
+       {
+        "a": "0",
+        "alts": [
+         "0.0"
+        ]
+       }
+      ],
+      [
+       "S",
+       {
+        "a": "0.5625"
+       },
+       {
+        "a": "0.0625"
+       },
+       {
+        "a": "0.375"
+       }
+      ]
+     ],
+     "check": "def fix(v):\n    v = round(v, 4)\n    return int(v) if v == int(v) else v\nfrom fractions import Fraction\nNODES = [('P', 10, 10), ('Q', 36, 4), ('R', 0, 25), ('S', 30, 10)]\ndef answers():\n    out = []\n    for name, buy, no in NODES:\n        p = Fraction(buy, buy + no)\n        q = 1 - p\n        out += [fix(float(p * p)), fix(float(q * q)), fix(float(1 - p * p - q * q))]\n    return out",
+     "explain": "P: 1 − 0.5 = 0.5, Q: 1 − 0.82 = 0.18, R: 1 − 1 = 0, S: 1 − 0.625 = 0.375예요."
     },
     {
      "id": "s4",
      "kind": "mcq",
-     "q": "`n_init=10`의 뜻으로 알맞은 것은?",
+     "q": "두 종류로 이루어진 노드에서 지니 계수가 가장 클 때는 언제이고, 그 값은 얼마일까요?",
      "options": [
-      "군집을 10개 만든다",
-      "10번째 행부터 군집에 쓴다",
-      "시작 중심을 10번 다르게 골라 돌려 보고, 무리 안의 거리가 가장 작은 결과를 쓴다",
-      "중심을 옮기는 반복을 10번에서 멈춘다"
+      "두 종류가 반반일 때, 0.5",
+      "한 종류만 있을 때, 1",
+      "두 종류가 반반일 때, 1",
+      "한 종류만 있을 때, 0.5"
      ],
-     "answer": 2,
-     "explain": "k-means는 처음 중심을 어디에 두느냐에 따라 결과가 달라질 수 있어요. 그래서 여러 번 시작해 보고 가장 잘 묶인 결과를 써요. random_state=123은 그 무작위를 늘 똑같게 해요."
+     "answer": 0,
+     "explain": "반반이면 1 − (0.5² + 0.5²) = 0.5로 가장 커요. 한 종류만 있으면 1 − (1² + 0²) = 0으로 가장 작아요."
     },
     {
      "id": "s5",
-     "kind": "mcq",
-     "q": "답으로 군집 번호(0·1·2)가 아니라 '가장 큰 군집의 크기'를 묻는 까닭은?",
-     "options": [
-      "번호가 큰 군집일수록 고객이 많아서",
-      "군집 번호는 무리에 붙인 이름일 뿐이라, 데이터나 설정이 바뀌면 같은 무리라도 번호가 달라질 수 있어서",
-      "군집 번호는 언제나 0이라서",
-      "군집 번호는 글자라서 셀 수 없어서"
+     "kind": "short",
+     "q": "흔한 실수: 지니 계수를 '1 − 구매 비율'로만 계산하면 노드 S는 얼마가 나올까요?",
+     "a": "0.25",
+     "check": "def fix(v):\n    v = round(v, 4)\n    return int(v) if v == int(v) else v\nfrom fractions import Fraction\nNODES = [('P', 10, 10), ('Q', 36, 4), ('R', 0, 25), ('S', 30, 10)]\ndef answers():\n    name, buy, no = NODES[3]\n    return [fix(float(1 - Fraction(buy, buy + no)))]",
+     "explain": "비율을 제곱해 더하는 과정을 빠뜨리면 0.25가 나와요. 지니 계수는 두 비율을 모두 제곱해 더한 뒤 1에서 빼야 해서 S는 0.375예요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "네 노드를 지니 계수가 낮은 차례로 써 보세요. (쓰는 모양 예: P, Q, R, S)",
+     "a": "R, Q, S, P",
+     "alts": [
+      "RQSP",
+      "R→Q→S→P",
+      "R<Q<S<P"
      ],
-     "answer": 1,
-     "explain": "k-means는 무리를 나눈 뒤 번호를 정해진 차례 없이 붙여요. 그래서 크기·평균처럼 번호와 상관없는 값을 답으로 써요."
+     "check": "def fix(v):\n    v = round(v, 4)\n    return int(v) if v == int(v) else v\nfrom fractions import Fraction\nNODES = [('P', 10, 10), ('Q', 36, 4), ('R', 0, 25), ('S', 30, 10)]\ndef answers():\n    g = {}\n    for name, buy, no in NODES:\n        p = Fraction(buy, buy + no)\n        g[name] = 1 - p * p - (1 - p) ** 2\n    return [', '.join(sorted(g, key=g.get))]",
+     "explain": "지니 계수가 낮을수록 한 종류로 많이 몰린(순수한) 노드예요: R(0) < Q(0.18) < S(0.375) < P(0.5)."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "나무가 노드를 나눌 질문을 고를 때, 어떤 질문을 더 좋게 볼까요?",
+     "options": [
+      "나뉜 노드들의 지니 계수가 낮아지는 질문",
+      "나뉜 노드들의 지니 계수가 높아지는 질문",
+      "나뉜 노드들의 데이터 수가 똑같아지는 질문"
+     ],
+     "answer": 0,
+     "explain": "나눈 뒤 각 노드가 한 종류로 잘 모이면(지니 계수가 낮으면) 예측이 더 확실해져요. 그래서 불순도를 가장 많이 줄이는 질문을 골라요."
     }
    ],
-   "explain": "df.loc[df[\"gender\"] == \"M\", ].copy()로 남성 고객을 고르고 monthly_spend = annual_spend / 12 열을 만들어요. KMeans(n_clusters=3, random_state=123, n_init=10).fit(df_m[[\"monthly_spend\"]]) 뒤 pd.Series(km.labels_).value_counts().max()가 가장 큰 군집의 크기예요. 정수로 돌려주려면 int()로 감싸요."
+   "explain": "지니 계수는 1에서 각 종류 비율의 제곱을 빼서 구하고, 낮을수록 한 종류로 몰린 순수한 노드예요. 두 종류일 때 반반이면 가장 큰 0.5, 한 종류뿐이면 0이에요. 네 노드는 R(0) < Q(0.18) < S(0.375) < P(0.5) 차례예요."
   }
  ]
 }

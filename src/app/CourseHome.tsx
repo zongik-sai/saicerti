@@ -4,6 +4,7 @@ import { KIND_LABEL } from '../content/types';
 import { allAdvProblems, allProblems, courseMeta, typeKey } from '../content';
 import { advGate, mockGate, solvedCount, tally, type CourseState } from '../features/progress/model';
 import { useCourseProgress } from '../features/progress/store';
+import { ExamCourseHome } from './ExamCourseHome';
 
 interface Props {
   course: Course;
@@ -13,14 +14,18 @@ interface Props {
   preview?: boolean;
 }
 
-export function CourseHome({ course, learnerKey, remote, preview = false }: Props) {
+export function CourseHome(props: Props) {
+  if (courseMeta(props.course.id)?.style === 'exam') return <ExamCourseHome {...props} />;
+  return <TypeCourseHome {...props} />;
+}
+
+function TypeCourseHome({ course, learnerKey, remote, preview = false }: Props) {
   const meta = courseMeta(course.id)!;
   const prog = useCourseProgress(learnerKey, course.id, remote);
   const ids = allProblems(course).map((p) => p.id);
   const advIds = allAdvProblems(course).map((p) => p.id);
   const t = tally(prog.state, ids);
   const advSolved = solvedCount(prog.state, advIds);
-  const basicLeft = ids.length - t.solved;
   return (
     <div className="page narrow">
       <div className="crumb">
@@ -44,6 +49,9 @@ export function CourseHome({ course, learnerKey, remote, preview = false }: Prop
         <p className="faint" style={{ margin: '0.5rem 0 0' }}>
           유형마다 <b>[기본] 5문제</b>는 꼭 풀고, <b className="adv-ink">[심화] 5문제</b>는 원하면 도전해요(그 유형의 기본 5문제를 모두 풀면 열 수 있어요). 문제마다 <b>① 중간 점검</b>(표 채우기·객관식)을 푼 뒤 <b>② {course.id === 'd2' ? '답 고르기(이론)·코드 풀이(데이터)' : '코드 풀이'}</b>로 자동 채점을 받아요. 기본 {ids.length}문제를 모두 풀면 맨 아래 <b>모의고사</b>가 열려요.
         </p>
+        <p className="faint" style={{ margin: '0.4rem 0 0' }}>
+          문제는 <b>전체화면 집중 풀이</b>로 풀어요. 푸는 중에 다른 창으로 가거나 전체화면을 나가면 잠기고, 한 유형에서 <b>3번</b> 잠기면 그 유형의 기록(기본·심화)이 처음으로 돌아가요.
+        </p>
         {preview && (
           <p className="notice" style={{ margin: '0.5rem 0 0' }}>
             선생님 계정이라 심화·모의고사가 잠금 없이 열려 있어요. 학생에게는 조건을 채워야 열려요.
@@ -61,6 +69,21 @@ export function CourseHome({ course, learnerKey, remote, preview = false }: Prop
       {course.types.length < 10 && <p className="notice" style={{ marginTop: '1rem' }}>문제를 준비하고 있어요(지금 {course.types.length}개 유형).</p>}
       <Legend />
 
+      <MockSection course={course} state={prog.state} ids={ids} preview={preview} />
+    </div>
+  );
+}
+
+/** 과정 화면 맨 아래 모의고사(기본 문제를 모두 풀면 열림) */
+export function MockSection({ course, state, ids, preview }: { course: Course; state: CourseState; ids: string[]; preview: boolean }) {
+  const meta = courseMeta(course.id)!;
+  const solved = solvedCount(state, ids);
+  const basicLeft = ids.length - solved;
+  const t = { solved };
+  const prog = { state };
+  const word = meta.style === 'exam' ? '연습' : '기본';
+  return (
+    <>
       <h2 style={{ marginTop: '1.6rem' }}>모의고사</h2>
       <p className="faint" style={{ marginTop: 0 }}>
         {course.id === 'd2'
@@ -69,7 +92,7 @@ export function CourseHome({ course, learnerKey, remote, preview = false }: Prop
       </p>
       {basicLeft > 0 && !preview && (
         <p className="notice lock-note">
-          🔒 기본 {ids.length}문제를 모두 풀면 모의고사가 열려요. 지금 {t.solved}/{ids.length} — {basicLeft}문제 남았어요.
+          🔒 {word} {ids.length}문제를 모두 풀면 모의고사가 열려요. 지금 {t.solved}/{ids.length} — {basicLeft}문제 남았어요.
         </p>
       )}
       <div className="mock-cards">
@@ -81,7 +104,7 @@ export function CourseHome({ course, learnerKey, remote, preview = false }: Prop
               <div key={m.key} className="card mock-card locked" aria-disabled="true">
                 <strong>🔒 모의고사 {m.n}회</strong>
                 <span className="faint">{m.items.length}문항</span>
-                <span className="mock-state">기본 문제를 모두 풀면 열려요</span>
+                <span className="mock-state">{word} 문제를 모두 풀면 열려요</span>
               </div>
             );
           const solvedN = st ? Object.values(st.results).filter((r) => r.solved).length : 0;
@@ -95,11 +118,11 @@ export function CourseHome({ course, learnerKey, remote, preview = false }: Prop
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 
-function chipState(state: CourseState, p: Problem) {
+export function chipState(state: CourseState, p: Problem) {
   const s = state.probs[p.id];
   const coding = s?.stepsDone || (s?.tries ?? 0) > 0;
   const cls = s?.solved ? 'solved' : coding ? 'coding' : s ? 'started' : '';
@@ -196,7 +219,7 @@ function TypeCard({ ty, path, state, preview, onOpen }: { ty: TypeFile; path: st
   );
 }
 
-function Legend() {
+export function Legend({ adv = true }: { adv?: boolean }) {
   const chip = (cls: string) => (
     <span className={`prob-chip ${cls}`} style={{ minHeight: 0, padding: '0 0.3rem' }}>
       <span className="dot" />
@@ -208,7 +231,7 @@ function Legend() {
       <span>{chip('started')}중간 점검 중</span>
       <span>{chip('coding')}코드 풀이 중</span>
       <span>{chip('solved')}해결</span>
-      <span>{chip('adv')}심화(선택)</span>
+      {adv && <span>{chip('adv')}심화(선택)</span>}
     </div>
   );
 }

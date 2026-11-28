@@ -1,900 +1,950 @@
 {
  "course": "d2",
  "type": 7,
- "typeTitle": "비율·구성비 구하기",
- "kind": "write",
+ "typeTitle": "데이터 수집과 쿼리",
+ "kind": "choice",
+ "area": "A2",
  "skills": [
-  "value_counts·슬라이싱([:n])",
-  "len(df)로 전체 행 수",
-  "isin으로 여러 범주 고르기",
-  "True/False의 mean()으로 비율",
-  "round"
+  "테이블·행·열",
+  "기본 키·외래 키",
+  "쿼리와 SQL SELECT",
+  "ETL"
  ],
- "intro": "전체 또는 고른 행 가운데 어떤 범주나 조건이 차지하는 비율(구성비)을 구합니다. value_counts()로 상위 몇 개 범주를 잘라 더하거나, isin으로 고른 행 안에서 조건을 만족하는 행의 비율을 구하며, 무엇이 분모인지 정확히 가리는 연습을 합니다.",
+ "intro": "데이터베이스의 테이블·행·열·기본 키와, 데이터를 꺼내는 요청(쿼리)·SQL, ETL처럼 데이터를 모으는 과정을 묻는 객관식이에요.",
+ "concept": {
+  "text": "데이터베이스는 데이터를 테이블(표)에 저장해요. 행마다 값이 겹치지 않아 그 행을 가리킬 수 있는 열이 기본 키예요. 원하는 데이터를 꺼내거나 고치도록 데이터베이스에 보내는 요청을 쿼리라 하고, 보통 SQL로 써요.",
+  "table": {
+   "head": [
+    "SQL 조각",
+    "뜻"
+   ],
+   "rows": [
+    [
+     "`SELECT name, age`",
+     "name·age 열을 꺼낸다"
+    ],
+    [
+     "`FROM members`",
+     "members 테이블에서"
+    ],
+    [
+     "`WHERE age >= 20`",
+     "age가 20 이상인 행만"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 9,
+   "title": "빅데이터와 분석 방법론"
+  }
+ },
  "problems": [
   {
    "id": "d2-t07-a",
-   "version": 1,
-   "title": "인기 메뉴 두 개의 주문 비율",
-   "statement": "카페 주문 데이터는 주문 한 건이 한 행으로 기록되어 있고, `menu` 열에 주문한 메뉴 이름이 들어 있습니다. 주문 건수가 가장 많은 메뉴 2개를 골라, 이 두 메뉴의 주문 건수가 **전체 주문 건수**에서 차지하는 비율을 구하려고 합니다. 주문 수량(`qty`)은 생각하지 않고 행의 개수로 셉니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 비율의 분모는 전체 주문 건수(전체 행의 수)로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
-   "answerFormat": "0.12",
-   "data": {
-    "files": [
-     "cafe_orders.csv"
+   "version": 2,
+   "title": "도서관 기록 골라 오기",
+   "statement": "학교 도서관은 대출 기록을 데이터베이스의 `loans` 테이블에 저장합니다.\n\n{{fig:loans}}\n\n사서 선생님이 이 테이블에서 '11월에 책을 빌린 학생의 학번과 이름'만 골라 보려고, 다음 SQL 문장을 데이터베이스에 보냈습니다.\n\n`SELECT student_id, name FROM loans WHERE month = 11`\n\n이처럼 데이터베이스에 원하는 데이터를 찾아 가져오도록(또는 고치도록) 보내는 요청을 무엇이라고 합니까?",
+   "figures": [
+    {
+     "id": "loans",
+     "kind": "table",
+     "caption": "loans 테이블(대출 기록)",
+     "alt": "loans 테이블: 열은 loan_id, student_id, name, book, month이고 대출 기록 6행이 있음",
+     "head": [
+      "loan_id",
+      "student_id",
+      "name",
+      "book",
+      "month"
+     ],
+     "rows": [
+      [
+       1,
+       2031,
+       "김하늘",
+       "파이썬 첫걸음",
+       11
+      ],
+      [
+       2,
+       2045,
+       "이도윤",
+       "데이터 이야기",
+       11
+      ],
+      [
+       3,
+       2031,
+       "김하늘",
+       "통계 입문",
+       11
+      ],
+      [
+       4,
+       2012,
+       "박서준",
+       "빅데이터 세상",
+       10
+      ],
+      [
+       5,
+       2045,
+       "이도윤",
+       "SQL 시작하기",
+       11
+      ],
+      [
+       6,
+       2031,
+       "김하늘",
+       "세계 지도책",
+       11
+      ]
+     ]
+    }
+   ],
+   "choice": {
+    "options": [
+     "스키마(schema)",
+     "인덱스(index)",
+     "기본 키(primary key)",
+     "쿼리(query)"
+    ],
+    "answer": 3,
+    "why": [
+     "스키마는 테이블에 어떤 열이 있고 각 열에 어떤 종류의 값이 들어가는지 정한 구조(설계도)예요.",
+     "인덱스는 검색을 빠르게 하려고 만들어 두는 찾아보기 목록이에요. 요청 자체가 아니에요.",
+     "기본 키는 행마다 값이 달라 한 행을 콕 집어 주는 열(여기서는 loan_id)이에요.",
+     "데이터베이스에 데이터를 골라 달라고 보내는 요청이 쿼리이고, 보통 SQL로 써요(정답)."
     ]
    },
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    cnt = df[\"menu\"].value_counts()\n    answer = round(cnt[:2].sum() / len(df), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 0.35
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 0.4
-    },
-    {
-     "data": 2,
-     "expected": 0.39
-    }
-   ],
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "이 문제의 비율은 분자 ÷ 분모로 구해요. 분자와 분모로 알맞은 것은?",
+     "q": "데이터베이스에서 '테이블'은 무엇일까요?",
      "options": [
-      "분자: 상위 2개 메뉴의 qty 합 / 분모: 전체 qty 합",
-      "분자: 상위 2개 메뉴의 주문 건수 합 / 분모: 전체 주문 건수",
-      "분자: 상위 2개 메뉴의 주문 건수 합 / 분모: 메뉴 종류의 수",
-      "분자: 가장 많은 메뉴의 주문 건수 / 분모: 둘째로 많은 메뉴의 주문 건수"
+      "데이터를 행과 열로 정리해 담아 두는 표",
+      "데이터를 그린 막대그래프",
+      "데이터를 찾아 달라는 명령",
+      "데이터베이스 프로그램의 이름"
      ],
-     "answer": 1,
-     "explain": "비율(구성비)은 전체 중 일부가 차지하는 몫이라 부분 ÷ 전체로 구해요. 이 문제는 주문 한 건(한 행)을 하나로 세고 수량(qty)은 보지 않으니, 분모는 전체 행의 수예요."
+     "answer": 0,
+     "explain": "테이블은 엑셀 시트처럼 행(가로줄)과 열(세로줄)로 된 표예요. 행 하나는 기록 하나(레코드), 열 하나는 항목 하나(필드)예요."
     },
     {
      "id": "s2",
      "kind": "table",
-     "title": "value_counts() 따라가기",
-     "prompt": "주문 10건의 menu가 차례로 Americano, Cafe Latte, Green Tea, Americano, Cafe Latte, Americano, Croissant, Green Tea, Americano, Cafe Latte예요. `df[\"menu\"].value_counts()`는 값마다 몇 번 나왔는지 세어 **많은 것부터** 차례로 보여 줘요. 결과를 채워 보세요.",
+     "title": "테이블 살펴보기",
+     "prompt": "{{fig:loans}}\n\n위 `loans` 테이블을 보고 채워 보세요(머리줄은 열 이름이라 행으로 세지 않아요).",
      "columns": [
-      "순서",
-      "메뉴",
-      "주문 건수"
+      "질문",
+      "답"
      ],
      "rows": [
       [
-       "1",
+       "행(가로줄)의 개수",
        {
-        "a": "Americano"
-       },
+        "a": "6"
+       }
+      ],
+      [
+       "열(세로줄)의 개수",
+       {
+        "a": "5"
+       }
+      ],
+      [
+       "month가 11인 행의 개수",
+       {
+        "a": "5"
+       }
+      ]
+     ],
+     "check": "def answers():\n    head = ['loan_id', 'student_id', 'name', 'book', 'month']\n    rows = [[1, 2031, \"김하늘\", \"파이썬 첫걸음\", 11], [2, 2045, \"이도윤\", \"데이터 이야기\", 11], [3, 2031, \"김하늘\", \"통계 입문\", 11], [4, 2012, \"박서준\", \"빅데이터 세상\", 10], [5, 2045, \"이도윤\", \"SQL 시작하기\", 11], [6, 2031, \"김하늘\", \"세계 지도책\", 11]]\n    return [len(rows), len(head), sum(1 for r in rows if r[4] == 11)]",
+     "explain": "행은 기록 하나, 열은 항목 하나예요. 이렇게 조건(month가 11)에 맞는 행만 골라내는 일을 데이터베이스에 요청하는 것이 바로 쿼리예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "다음 SQL 문장은 무엇을 해 달라는 요청일까요?\n\n`SELECT student_id, name FROM loans WHERE month = 11`",
+     "options": [
+      "loans 테이블에서 month가 11인 행의 student_id와 name 열을 가져와 달라",
+      "loans 테이블을 지워 달라",
+      "loans 테이블에 month 열을 새로 만들어 달라",
+      "loans 테이블의 모든 열을 11번 보여 달라"
+     ],
+     "answer": 0,
+     "explain": "SELECT 뒤에는 가져올 열, FROM 뒤에는 테이블, WHERE 뒤에는 행을 고르는 조건을 써요. SQL은 데이터베이스에 이런 요청을 쓰는 언어예요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "`loans` 테이블에서 행마다 값이 달라 한 행을 콕 집어 주는 열, 곧 기본 키로 알맞은 것은 무엇일까요?",
+     "options": [
+      "loan_id",
+      "student_id",
+      "name",
+      "month"
+     ],
+     "answer": 0,
+     "explain": "student_id는 같은 학생이 여러 번 빌리면 값이 겹쳐요(2031이 세 번). 행마다 겹치지 않는 loan_id가 기본 키로 알맞아요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "책 맨 뒤의 '찾아보기'처럼, 검색을 빠르게 하려고 데이터베이스에 만들어 두는 것은 무엇일까요?",
+     "options": [
+      "인덱스",
+      "스키마",
+      "쿼리",
+      "행"
+     ],
+     "answer": 0,
+     "explain": "인덱스는 어떤 열의 값으로 행을 빨리 찾게 해 주는 목록이에요. 쿼리 결과는 그대로이고 찾는 속도만 빨라져요."
+    }
+   ],
+   "explain": "쿼리(query)는 '질문'이라는 뜻으로, 데이터베이스에 원하는 데이터를 골라 달라고 보내는 요청이에요. 보통 SQL로 쓰며, 조건으로 행을 고르고 필요한 열만 뽑아 분석에 쓸 데이터를 만들 때 써요. 스키마(구조)·인덱스(찾아보기)·기본 키(행을 구별하는 열)와 헷갈리지 않게 정리해 두세요."
+  },
+  {
+   "id": "d2-t07-b",
+   "version": 2,
+   "title": "데이터를 모아 옮기는 과정",
+   "statement": "한 편의점 회사는 매일 밤 지점마다 따로 저장된 판매 기록을 꺼내, 날짜 형식과 상품 코드를 하나로 맞춘 뒤, 본사의 분석용 데이터 창고에 넣습니다.\n\n이처럼 데이터를 **추출**하고 **변환**해 **적재**하는 과정을 무엇이라고 합니까?",
+   "choice": {
+    "options": [
+     "ETL(Extract·Transform·Load)",
+     "CRISP-DM",
+     "EDA(탐색적 데이터 분석)",
+     "ERD(개체 관계도)"
+    ],
+    "answer": 0,
+    "why": [
+     "Extract(추출) → Transform(변환) → Load(적재)의 첫 글자를 딴 ETL이에요(정답).",
+     "CRISP-DM은 업무 이해부터 전개까지 분석 프로젝트 전체를 진행하는 6단계 절차예요.",
+     "EDA는 통계량과 그래프로 데이터를 살펴보는 탐색적 데이터 분석이에요.",
+     "ERD는 데이터베이스의 테이블과 테이블 사이의 관계를 그림으로 나타낸 개체 관계도예요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "ETL의 T(Transform, 변환)에서 하는 일로 알맞은 것은 무엇일까요?",
+     "options": [
+      "날짜 형식·상품 코드를 하나로 맞추고 다듬기",
+      "데이터를 원래 저장소에서 꺼내기",
+      "다듬은 데이터를 데이터 창고에 넣기"
+     ],
+     "answer": 0,
+     "explain": "꺼내기는 Extract, 넣기는 Load예요. 그 사이에 형식을 맞추고 다듬는 일이 Transform이에요."
+    }
+   ],
+   "explain": "ETL은 여러 곳의 데이터를 꺼내(Extract) 형식을 맞추고 다듬어(Transform) 분석용 저장소에 넣는(Load) 과정이에요."
+  },
+  {
+   "id": "d2-t07-c",
+   "version": 2,
+   "title": "두 테이블을 잇는 열",
+   "statement": "학교 데이터베이스에 학생 테이블 `students`와 동아리 가입 테이블 `joins`가 있습니다.\n\n{{fig:f1}}\n\n{{fig:f2}}\n\n설명으로 옳지 **않은** 것은 무엇입니까?",
+   "choice": {
+    "options": [
+     "`students`의 `student_id`는 행마다 값이 달라 기본 키로 쓸 수 있다.",
+     "`joins`의 `student_id`는 `students` 테이블의 행을 가리키는 외래 키이다.",
+     "`joins`의 `student_id` 열은 `joins` 테이블의 기본 키로 쓰기에 알맞다.",
+     "학번이 1001인 학생은 동아리 2개에 가입했다."
+    ],
+    "answer": 2,
+    "why": [
+     "1001, 1002, 1003으로 겹치는 값이 없어 행 하나를 정확히 가리킬 수 있어요(옳은 설명).",
+     "다른 테이블의 기본 키 값을 가져와 그 행을 가리키는 열을 외래 키라고 해요(옳은 설명).",
+     "기본 키는 행마다 값이 달라야 해요. `joins`에는 1001이 두 번 나오므로 기본 키로 쓸 수 없어요. 이 테이블의 기본 키로는 `join_id`가 알맞아요(정답).",
+     "`joins`에서 student_id가 1001인 행이 로봇·사진 두 개예요(옳은 설명)."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "기본 키(primary key)가 되려면 그 열은 어떤 조건을 만족해야 할까요?",
+     "options": [
+      "행마다 값이 달라야(겹치지 않아야) 한다",
+      "값이 숫자여야 한다",
+      "표의 맨 마지막 열이어야 한다"
+     ],
+     "answer": 0,
+     "explain": "기본 키는 행 하나를 정확히 가리켜야 하므로 값이 겹치지 않아야 하고 비어 있으면 안 돼요."
+    }
+   ],
+   "explain": "기본 키는 테이블 안에서 행마다 값이 달라 그 행을 가리킬 수 있는 열이에요. 외래 키는 다른 테이블의 기본 키 값을 가져와 두 테이블을 이어 주는 열이에요.",
+   "figures": [
+    {
+     "id": "f1",
+     "kind": "table",
+     "caption": "students",
+     "alt": "students 테이블: student_id, name, grade 열. 1001 김하늘 1학년, 1002 이바다 2학년, 1003 박구름 1학년.",
+     "head": [
+      "student_id",
+      "name",
+      "grade"
+     ],
+     "rows": [
+      [
+       1001,
+       "김하늘",
+       1
+      ],
+      [
+       1002,
+       "이바다",
+       2
+      ],
+      [
+       1003,
+       "박구름",
+       1
+      ]
+     ]
+    },
+    {
+     "id": "f2",
+     "kind": "table",
+     "caption": "joins",
+     "alt": "joins 테이블: join_id, student_id, club 열. 1번 1001 로봇, 2번 1003 밴드, 3번 1001 사진, 4번 1002 로봇.",
+     "head": [
+      "join_id",
+      "student_id",
+      "club"
+     ],
+     "rows": [
+      [
+       1,
+       1001,
+       "로봇"
+      ],
+      [
+       2,
+       1003,
+       "밴드"
+      ],
+      [
+       3,
+       1001,
+       "사진"
+      ],
+      [
+       4,
+       1002,
+       "로봇"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2-t07-d",
+   "version": 2,
+   "title": "체육관 회원 쿼리 결과 읽기",
+   "statement": "한 동네 체육관은 회원 정보를 데이터베이스의 `members` 테이블에 저장합니다.\n\n{{fig:members}}\n\n이 테이블에 다음 쿼리를 실행했습니다.\n\n`SELECT name, program FROM members WHERE age >= 20 AND program = 'yoga'`\n\n설명으로 옳지 **않은** 것은 무엇입니까?",
+   "figures": [
+    {
+     "id": "members",
+     "kind": "table",
+     "caption": "members 테이블",
+     "alt": "members 테이블: 열은 member_id, name, age, program이고 회원 6명의 기록이 있음",
+     "head": [
+      "member_id",
+      "name",
+      "age",
+      "program"
+     ],
+     "rows": [
+      [
+       101,
+       "민준",
+       17,
+       "yoga"
+      ],
+      [
+       102,
+       "서연",
+       24,
+       "swim"
+      ],
+      [
+       103,
+       "도윤",
+       31,
+       "yoga"
+      ],
+      [
+       104,
+       "하은",
+       20,
+       "yoga"
+      ],
+      [
+       105,
+       "지호",
+       45,
+       "swim"
+      ],
+      [
+       106,
+       "수아",
+       52,
+       "yoga"
+      ]
+     ]
+    }
+   ],
+   "choice": {
+    "options": [
+     "`members` 테이블은 행이 6개, 열이 4개이다.",
+     "`member_id`는 행마다 값이 달라 기본 키로 쓰기에 알맞다.",
+     "쿼리 결과는 행 2개, 열 2개로 이루어진 표이다.",
+     "테이블의 열 이름과 각 열의 자료형(정수, 문자열 등)을 정해 둔 구조를 스키마라고 한다."
+    ],
+    "answer": 2,
+    "why": [
+     "가로줄(회원)이 6개, 세로줄(항목)이 4개라 맞는 설명이에요.",
+     "member_id는 101~106으로 겹치지 않아 기본 키로 알맞아요.",
+     "결과는 103·104·106번 회원 3명이라 행이 3개예요. 20세인 104번도 '20 이상'에 들어가요(정답).",
+     "열 이름과 자료형을 정한 테이블의 구조(설계도)가 스키마라서 맞는 설명이에요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "테이블을 만들기 전에 '열은 member_id·name·age·program이고, age에는 정수, name에는 문자열이 들어간다'처럼 정해 두는 구조(설계도)를 무엇이라고 할까요?",
+     "options": [
+      "스키마",
+      "쿼리",
+      "인덱스",
+      "기본 키"
+     ],
+     "answer": 0,
+     "explain": "스키마는 테이블에 어떤 열이 있고 각 열에 어떤 종류의 값(자료형)이 들어가는지 정한 설계도예요. 실제 회원 기록(행)은 이 구조에 맞춰 채워져요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "테이블 구조 세기",
+     "prompt": "{{fig:members}}\n\n위 `members` 테이블을 보고 채워 보세요. 행은 가로줄(회원 한 명의 기록), 열은 세로줄(항목 하나)이에요.",
+     "columns": [
+      "질문",
+      "답"
+     ],
+     "rows": [
+      [
+       "행의 개수",
+       {
+        "a": "6"
+       }
+      ],
+      [
+       "열의 개수",
        {
         "a": "4"
        }
       ],
       [
-       "2",
+       "program이 yoga인 행의 개수",
        {
-        "a": "Cafe Latte"
+        "a": "4"
+       }
+      ]
+     ],
+     "check": "def answers():\n    head = ['member_id', 'name', 'age', 'program']\n    rows = [[101, \"민준\", 17, \"yoga\"], [102, \"서연\", 24, \"swim\"], [103, \"도윤\", 31, \"yoga\"], [104, \"하은\", 20, \"yoga\"], [105, \"지호\", 45, \"swim\"], [106, \"수아\", 52, \"yoga\"]]\n    return [len(rows), len(head), sum(1 for r in rows if r[3] == 'yoga')]",
+     "explain": "머리줄(열 이름)은 행으로 세지 않아요. yoga 회원은 101·103·104·106번 4명이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "SQL의 `WHERE age >= 20`은 어떤 행을 고를까요?",
+     "options": [
+      "age가 20 이상인 행(20 포함)",
+      "age가 20보다 큰 행(20 제외)",
+      "age가 정확히 20인 행만",
+      "age 열만 20번 보여 준다"
+     ],
+     "answer": 0,
+     "explain": "`>=`는 '크거나 같다'예요. 그래서 나이가 정확히 20인 행도 골라요. 20을 빼려면 `>`를 써요."
+    },
+    {
+     "id": "s4",
+     "kind": "table",
+     "title": "조건 따라가기",
+     "prompt": "회원마다 `age >= 20`이 참인지, 그리고 두 조건(`age >= 20`, `program = 'yoga'`)이 **모두** 참이라 쿼리 결과에 나오는지 True·False로 채워 보세요. AND는 두 조건이 모두 참일 때만 참이에요.",
+     "columns": [
+      "member_id",
+      "age",
+      "program",
+      "age >= 20",
+      "결과에 나오나"
+     ],
+     "rows": [
+      [
+       "101",
+       "17",
+       "yoga",
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
        },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "102",
+       "24",
+       "swim",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "103",
+       "31",
+       "yoga",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "104",
+       "20",
+       "yoga",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ],
+      [
+       "105",
+       "45",
+       "swim",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "False",
+        "alts": [
+         "false"
+        ]
+       }
+      ],
+      [
+       "106",
+       "52",
+       "yoga",
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       },
+       {
+        "a": "True",
+        "alts": [
+         "true"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    rows = [[101, \"민준\", 17, \"yoga\"], [102, \"서연\", 24, \"swim\"], [103, \"도윤\", 31, \"yoga\"], [104, \"하은\", 20, \"yoga\"], [105, \"지호\", 45, \"swim\"], [106, \"수아\", 52, \"yoga\"]]\n    out = []\n    for mid, name, age, prog in rows:\n        ok = age >= 20\n        out += [ok, ok and prog == 'yoga']\n    return out",
+     "explain": "102·105번은 나이 조건은 맞지만 swim이라 빠지고, 101번은 yoga지만 17세라 빠져요. 결과에 나오는 회원은 103·104·106번이에요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "`SELECT name, program`으로 시작하는 쿼리의 결과에는 어떤 열이 나올까요?",
+     "options": [
+      "name과 program 두 열",
+      "테이블의 모든 열",
+      "name 한 열",
+      "member_id와 name 두 열"
+     ],
+     "answer": 0,
+     "explain": "SELECT 뒤에 적은 열만 결과에 나와요. 그래서 결과의 열 수는 SELECT 뒤에 적은 열의 수와 같아요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "쿼리 `SELECT name, program FROM members WHERE age >= 20 AND program = 'yoga'`의 결과에는 행이 몇 개일까요?",
+     "a": "3",
+     "alts": [
+      "3개"
+     ],
+     "check": "def answers():\n    rows = [[101, \"민준\", 17, \"yoga\"], [102, \"서연\", 24, \"swim\"], [103, \"도윤\", 31, \"yoga\"], [104, \"하은\", 20, \"yoga\"], [105, \"지호\", 45, \"swim\"], [106, \"수아\", 52, \"yoga\"]]\n    return [sum(1 for r in rows if r[2] >= 20 and r[3] == 'yoga')]",
+     "explain": "103(31세)·104(20세)·106(52세)번 회원이 두 조건을 모두 만족해요. 20세를 빼먹으면 2개로 잘못 세게 돼요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "`member_id`를 기본 키로 쓸 수 있는 까닭은 무엇일까요?",
+     "options": [
+      "행마다 값이 달라(겹치지 않아) 한 행을 콕 집을 수 있기 때문",
+      "숫자로 되어 있기 때문",
+      "맨 왼쪽 열이기 때문",
+      "값이 다른 열보다 크기 때문"
+     ],
+     "answer": 0,
+     "explain": "기본 키는 값이 겹치지 않고 비어 있지 않아 각 행을 하나로 구별하는 열이에요. 숫자인지, 맨 앞에 있는지는 상관없어요."
+    }
+   ],
+   "explain": "`members` 테이블은 행 6개·열 4개이고, 겹치지 않는 `member_id`가 기본 키로 알맞아요. 쿼리는 나이가 20 이상(20 포함)이면서 program이 yoga인 103·104·106번 회원만 골라 name·program 두 열을 보여 주므로 결과는 행 3개·열 2개예요. `>=`를 `>`로 잘못 읽으면 104번(20세)을 빼먹어 2개로 착각해요."
+  },
+  {
+   "id": "d2-t07-e",
+   "version": 2,
+   "title": "공공 자전거 데이터 종합 점검",
+   "statement": "한 공공 자전거 회사가 대여 수요를 예측하려고 다음 네 가지 데이터를 모았습니다.\n\n(가) 대여 기록을 담은 데이터베이스의 `rentals` 테이블(아래 그림)\n(나) 앱이 보내는 JSON 기록 — 예: `{\"user\": 7, \"event\": \"unlock\", \"gps\": [37.5, 127.0]}`, 기록마다 들어 있는 키가 조금씩 다름\n(다) 고객센터 게시판에 올라온 불편 사항 글\n(라) 정류소를 비추는 CCTV 영상\n\n{{fig:rentals}}\n\n설명으로 옳은 것을 **모두** 고른 것은 무엇입니까?\n\nㄱ. (가)는 정형 데이터이고, (나)는 반정형 데이터이다.\nㄴ. (다)와 (라)는 정해진 열 구조가 없는 비정형 데이터이다.\nㄷ. 분석에 쓰려고 (나)의 키를 열로 펼쳐 표로 바꾼 뒤 (가)와 합치는 일은 CRISP-DM의 데이터 준비 단계에서 한다.\nㄹ. (가)의 station 열에 인덱스를 만들면 `SELECT * FROM rentals WHERE station = 'S3'` 쿼리가 돌려주는 행의 수가 줄어든다.\nㅁ. (가)~(라)처럼 형태가 서로 다른 데이터를 함께 다루어야 한다는 점은 빅데이터의 특징 가운데 다양성(Variety)에 해당한다.",
+   "figures": [
+    {
+     "id": "rentals",
+     "kind": "table",
+     "caption": "rentals 테이블(대여 기록)",
+     "alt": "rentals 테이블: 열은 rental_id, station, start_time, minutes이고 대여 기록 6행이 있으며 station이 S3인 행은 3개",
+     "head": [
+      "rental_id",
+      "station",
+      "start_time",
+      "minutes"
+     ],
+     "rows": [
+      [
+       1,
+       "S1",
+       "08:05",
+       12
+      ],
+      [
+       2,
+       "S3",
+       "08:20",
+       25
+      ],
+      [
+       3,
+       "S2",
+       "09:10",
+       8
+      ],
+      [
+       4,
+       "S3",
+       "12:40",
+       31
+      ],
+      [
+       5,
+       "S1",
+       "17:55",
+       15
+      ],
+      [
+       6,
+       "S3",
+       "18:30",
+       9
+      ]
+     ]
+    }
+   ],
+   "choice": {
+    "options": [
+     "ㄱ, ㄴ, ㄷ",
+     "ㄱ, ㄴ, ㄷ, ㅁ",
+     "ㄱ, ㄷ, ㄹ, ㅁ",
+     "ㄴ, ㄷ, ㄹ, ㅁ"
+    ],
+    "answer": 1,
+    "why": [
+     "ㅁ도 옳아요. 형태가 다른 데이터가 섞여 있는 것이 바로 다양성이에요.",
+     "ㄹ만 틀렸어요. 인덱스는 찾는 속도를 높일 뿐 결과 행 수는 그대로예요(정답).",
+     "ㄴ은 옳고 ㄹ은 틀려요. 글과 영상은 비정형이고, 인덱스는 쿼리 결과를 바꾸지 않아요.",
+     "ㄱ은 옳고 ㄹ은 틀려요. 테이블은 정형, 키가 있는 JSON은 반정형이에요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "반정형 데이터의 특징으로 알맞은 것은 무엇일까요?",
+     "options": [
+      "키·태그 같은 이름표로 구조를 담지만, 기록마다 항목이 달라도 된다",
+      "열 이름과 자료형이 미리 정해진 표다",
+      "구조가 전혀 없는 글·소리·영상이다",
+      "숫자로만 이루어져 있다"
+     ],
+     "answer": 0,
+     "explain": "JSON·XML 같은 반정형 데이터는 값마다 이름표(키·태그)가 붙어 구조를 알 수 있어요. 다만 기록마다 키가 다를 수 있어 표처럼 딱 고정되지는 않아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "네 가지 데이터의 형태",
+     "prompt": "문제의 (가)~(라)가 어떤 형태인지 **정형**, **반정형**, **비정형** 가운데 하나로 채워 보세요.",
+     "columns": [
+      "데이터",
+      "형태"
+     ],
+     "rows": [
+      [
+       "(가) rentals 테이블",
+       {
+        "a": "정형",
+        "alts": [
+         "'정형'",
+         "정형 데이터"
+        ]
+       }
+      ],
+      [
+       "(나) 앱의 JSON 기록",
+       {
+        "a": "반정형",
+        "alts": [
+         "'반정형'",
+         "반정형 데이터"
+        ]
+       }
+      ],
+      [
+       "(다) 불편 사항 글",
+       {
+        "a": "비정형",
+        "alts": [
+         "'비정형'",
+         "비정형 데이터"
+        ]
+       }
+      ],
+      [
+       "(라) CCTV 영상",
+       {
+        "a": "비정형",
+        "alts": [
+         "'비정형'",
+         "비정형 데이터"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    form = {'table': '정형', 'json': '반정형', 'text': '비정형', 'video': '비정형'}\n    return [form[k] for k in ['table', 'json', 'text', 'video']]",
+     "explain": "열이 정해진 테이블은 정형, 키가 붙었지만 기록마다 키가 다른 JSON은 반정형, 자유로운 글과 영상은 비정형이에요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "JSON 기록을 표로 펼치기",
+     "prompt": "다음 JSON 기록 3개를 키 하나를 열 하나로 펼쳐 표(DataFrame)로 만들어요. 어떤 기록에 없는 키의 칸은 값이 비어 있는 칸(결측값)이 돼요.\n\n`{\"user\": 7, \"event\": \"unlock\", \"minutes\": 12}`\n`{\"user\": 9, \"event\": \"unlock\"}`\n`{\"user\": 7, \"event\": \"lock\", \"minutes\": 30, \"coupon\": \"C1\"}`",
+     "columns": [
+      "질문",
+      "답"
+     ],
+     "rows": [
+      [
+       "표의 행 수",
        {
         "a": "3"
        }
       ],
       [
-       "3",
+       "표의 열 수(서로 다른 키의 수)",
        {
-        "a": "Green Tea"
-       },
-       {
-        "a": "2"
+        "a": "4"
        }
       ],
       [
-       "4",
+       "결측값 칸의 수",
        {
-        "a": "Croissant"
-       },
-       {
-        "a": "1"
+        "a": "3"
        }
       ]
      ],
-     "check": "def answers():\n    import pandas as pd\n    s = pd.Series([\"Americano\", \"Cafe Latte\", \"Green Tea\", \"Americano\", \"Cafe Latte\", \"Americano\", \"Croissant\", \"Green Tea\", \"Americano\", \"Cafe Latte\"])\n    out = []\n    for name, n in s.value_counts().items():\n        out += [name, n]\n    return out",
-     "explain": "value_counts()의 결과는 메뉴 이름이 이름표(index)이고 주문 건수가 값인 Series예요. 많은 순으로 정렬되어 있어서 앞에서부터 잘라 내면 상위 몇 개를 바로 얻을 수 있어요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "`cnt = df[\"menu\"].value_counts()`일 때, 상위 2개 메뉴의 주문 건수 합을 구하는 코드로 알맞은 것은?",
-     "options": [
-      "cnt.max()",
-      "cnt[:2].count()",
-      "cnt[:2].sum()",
-      "cnt.sum()"
-     ],
-     "answer": 2,
-     "explain": "cnt[:2]는 슬라이싱(앞에서부터 잘라 내기)으로 1·2위 메뉴를 꺼내고, sum()이 두 주문 건수를 더해요. count()는 값이 몇 개 있는지(여기서는 2)를 세고, cnt.max()는 1위 메뉴 하나, cnt.sum()은 전체 주문 건수예요."
+     "check": "import pandas as pd\n\ndef answers():\n    recs = [{\"user\": 7, \"event\": \"unlock\", \"minutes\": 12}, {\"user\": 9, \"event\": \"unlock\"}, {\"user\": 7, \"event\": \"lock\", \"minutes\": 30, \"coupon\": \"C1\"}]\n    df = pd.DataFrame(recs)\n    return [df.shape[0], df.shape[1], int(df.isna().sum().sum())]",
+     "explain": "키는 user·event·minutes·coupon 4개라 열이 4개예요. 첫 기록은 coupon이, 둘째 기록은 minutes·coupon이 없어 결측값이 모두 3칸이에요."
     },
     {
      "id": "s4",
-     "kind": "short",
-     "q": "앞의 주문 10건에서 상위 2개 메뉴(Americano, Cafe Latte)의 주문 비율은 얼마일까요? 소수로 답해 보세요.",
-     "a": "0.7",
-     "alts": [
-      "0.70",
-      ".7"
-     ],
-     "check": "def answers():\n    return [(4 + 3) / 10]",
-     "explain": "(4 + 3) ÷ 10 = 0.7이에요. 실제 데이터에서는 분모가 len(df)(전체 행의 수)이고, 마지막에 round(값, 2)로 소수점 둘째 자리까지 반올림해요."
-    },
-    {
-     "id": "s5",
      "kind": "mcq",
-     "q": "0.4682를 반올림하여 소수점 둘째 자리까지 나타내는 코드와 결과로 알맞은 것은?",
+     "q": "JSON 기록을 이렇게 표로 바꾸고 다른 테이블과 합쳐 분석에 쓸 데이터를 만드는 일은 CRISP-DM의 어느 단계일까요?",
      "options": [
-      "round(0.4682, 2) → 0.47",
-      "round(0.4682, 2) → 0.46",
-      "round(0.4682) → 0.47",
-      "round(0.4682, 3) → 0.47"
+      "데이터 준비",
+      "데이터 이해",
+      "모델링",
+      "전개"
      ],
      "answer": 0,
-     "explain": "round(값, 자릿수)는 소수점 아래 자릿수까지 반올림해요. 셋째 자리 8이 5 이상이라 올려서 0.47이 돼요. 자릿수를 빼면 정수로 반올림해 0이 되고, 3을 넣으면 0.468이에요."
-    }
-   ],
-   "explain": "value_counts()는 많은 순으로 정렬된 개수를 돌려주므로 [:2]로 상위 2개를 잘라 sum()으로 더하면 분자가 돼요. 분모는 전체 주문 건수 len(df)예요. 수량(qty)을 더하거나 메뉴 종류 수로 나누지 않도록 주의해요."
-  },
-  {
-   "id": "d2-t07-b",
-   "version": 1,
-   "title": "많이 만든 장르 세 개의 비중",
-   "statement": "영화 데이터는 영화 한 편이 한 행이며, `genre` 열에 영화의 장르가 들어 있습니다. 영화 수가 많은 장르부터 차례로 3개를 골랐을 때, 이 3개 장르에 속한 영화가 **전체 영화**에서 차지하는 구성비를 구하려고 합니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 구성비의 분모는 전체 영화 수(전체 행의 수)로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
-   "answerFormat": "0.12",
-   "data": {
-    "files": [
-     "movies.csv"
-    ]
-   },
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    cnt = df[\"genre\"].value_counts()\n    answer = round(cnt[:3].sum() / len(df), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 0.57
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 0.56
-    },
-    {
-     "data": 2,
-     "expected": 0.56
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "상위 3개 장르의 구성비가 0.6이라는 말의 뜻으로 알맞은 것은?",
-     "options": [
-      "상위 3개 장르가 전체 장르 수의 60%이다",
-      "상위 3개 장르의 영화가 모두 합쳐 0.6편이다",
-      "전체 영화 중 60%가 상위 3개 장르에 속한다",
-      "상위 3개 장르의 영화가 나머지 장르보다 0.6배 많다"
-     ],
-     "answer": 2,
-     "explain": "구성비는 전체를 1(100%)로 볼 때 어떤 부분이 차지하는 몫이에요. 0.6이면 영화 100편 중 60편 꼴로 상위 3개 장르라는 뜻이에요."
-    },
-    {
-     "id": "s2",
-     "kind": "table",
-     "title": "작은 표로 구성비 구하기",
-     "prompt": "영화 20편을 장르별로 센 `value_counts()` 결과가 drama 6, action 5, comedy 4, horror 3, sf 2예요(많은 순). 빈칸을 채워 보세요.",
-     "columns": [
-      "계산",
-      "값"
-     ],
-     "rows": [
-      [
-       "상위 3개 장르의 영화 수 합",
-       {
-        "a": "15"
-       }
-      ],
-      [
-       "전체 영화 수",
-       {
-        "a": "20"
-       }
-      ],
-      [
-       "구성비(상위 3개 합 ÷ 전체)",
-       {
-        "a": "0.75",
-        "alts": [
-         ".75"
-        ]
-       }
-      ]
-     ],
-     "check": "def answers():\n    import pandas as pd\n    cnt = pd.Series([6, 5, 4, 3, 2], index=[\"drama\", \"action\", \"comedy\", \"horror\", \"sf\"])\n    top = cnt[:3].sum()\n    total = cnt.sum()\n    return [top, total, top / total]",
-     "explain": "상위 3개는 drama, action, comedy로 6 + 5 + 4 = 15편이에요. 전체는 20편이라 구성비는 15 ÷ 20 = 0.75예요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "`cnt = df[\"genre\"].value_counts()`일 때, `cnt[:3]`과 같은 결과를 내는 코드는?",
-     "options": [
-      "cnt.tail(3)",
-      "cnt.head(3)",
-      "cnt.sort_index()[:3]",
-      "cnt.iloc[3]"
-     ],
-     "answer": 1,
-     "explain": "head(3)은 앞에서 3개를 꺼내요. tail(3)은 뒤의 3개(가장 적은 장르들)이고, sort_index()는 장르 이름의 알파벳 순으로 다시 정렬해 버리며, iloc[3]은 넷째 장르 하나의 개수예요."
-    },
-    {
-     "id": "s4",
-     "kind": "mcq",
-     "q": "전체 영화 수(행의 수)를 구하는 코드로 알맞지 **않은** 것은?",
-     "options": [
-      "len(df)",
-      "df.shape[0]",
-      "len(df.columns)",
-      "len(df.index)"
-     ],
-     "answer": 2,
-     "explain": "df.shape는 (행 수, 열 수)라서 shape[0]이 행 수예요. len(df)와 len(df.index)도 행 수지만, len(df.columns)는 열(변수)의 개수예요."
+     "explain": "데이터 준비에서는 분석에 쓸 데이터를 고르고, 고치고, 새 열을 만들고, 여러 데이터를 합치고, 형식을 바꿔요."
     },
     {
      "id": "s5",
-     "kind": "short",
-     "q": "예시 데이터(movies.csv)에서 영화 수가 가장 많은 장르는 무엇일까요? print로 확인해 보세요.",
-     "a": "drama",
-     "alts": [
-      "'drama'"
-     ],
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [df[\"genre\"].value_counts().index[0]]",
-     "explain": "value_counts()의 맨 앞(index[0])이 가장 많은 장르예요. 숨은 데이터에서는 순위가 달라질 수 있으니 장르 이름을 직접 쓰지 말고 [:3]으로 잘라 써요."
-    }
-   ],
-   "explain": "value_counts()로 장르별 영화 수를 많은 순으로 센 뒤, [:3]으로 상위 3개를 잘라 sum()으로 더해요. 이것을 전체 영화 수 len(df)로 나누고 round(…, 2)로 반올림하면 돼요. 상위 장르의 이름은 데이터마다 달라질 수 있으니 직접 쓰지 않는 것이 안전해요."
-  },
-  {
-   "id": "d2-t07-c",
-   "version": 1,
-   "title": "두 구의 비회원 대여 비율",
-   "statement": "공공 자전거 대여 데이터는 대여 한 건이 한 행이며, `district` 열에 대여한 구, `user_type` 열에 이용자 종류(member: 회원, guest: 비회원)가 들어 있습니다. `district`가 Gangnam 또는 Songpa인 대여만 골랐을 때, 그중 `user_type`이 guest인 대여의 비율을 구하려고 합니다. 참고로 예시 데이터에서 `district`가 Mapo 또는 Jongno인 대여 중 guest의 비율은 0.352입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 비율의 분모는 district가 Gangnam 또는 Songpa인 대여 건수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
-   "answerFormat": "0.12",
-   "data": {
-    "files": [
-     "bike_rentals.csv"
-    ]
-   },
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    sub = df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]\n    answer = round((sub[\"user_type\"] == \"guest\").mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 0.36
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 0.37
-    },
-    {
-     "data": 2,
-     "expected": 0.36
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "이 비율의 분모로 알맞은 것은?",
-     "options": [
-      "전체 대여 건수",
-      "guest의 대여 건수",
-      "district가 Gangnam 또는 Songpa인 대여 건수",
-      "Gangnam·Songpa의 guest 대여 건수"
-     ],
-     "answer": 2,
-     "explain": "'~인 대여 중'이라는 말은 고른 행만 전체로 본다는 뜻이에요. 그래서 분모는 두 구의 대여 건수이고, 분자는 그중 guest인 대여 건수예요."
-    },
-    {
-     "id": "s2",
      "kind": "table",
-     "title": "작은 표로 따라가기",
-     "prompt": "대여 7건이 아래와 같아요. 두 구(Gangnam·Songpa)에 속해 분모에 들어가는지, 두 구에 속하면서 guest라서 분자에 들어가는지 True/False로 채워 보세요.",
+     "title": "인덱스가 있을 때와 없을 때",
+     "prompt": "{{fig:rentals}}\n\n위 `rentals` 테이블에 `SELECT * FROM rentals WHERE station = 'S3'`을 실행해요. `*`는 '모든 열'이라는 뜻이에요. 결과를 채워 보세요.",
      "columns": [
-      "district",
-      "user_type",
-      "분모에 들어가나요?",
-      "분자에 들어가나요?"
+      "질문",
+      "답"
      ],
      "rows": [
       [
-       "Gangnam",
-       "guest",
+       "인덱스가 없을 때 결과의 행 수",
        {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
+        "a": "3"
        }
       ],
       [
-       "Mapo",
-       "guest",
+       "station 열에 인덱스를 만든 뒤 결과의 행 수",
        {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
+        "a": "3"
        }
       ],
       [
-       "Songpa",
-       "member",
+       "결과의 열 수",
        {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "Gangnam",
-       "member",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "Jongno",
-       "guest",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "Songpa",
-       "guest",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "Gangnam",
-       "member",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
+        "a": "4"
        }
       ]
      ],
-     "check": "def answers():\n    rows = [('Gangnam', 'guest'), ('Mapo', 'guest'), ('Songpa', 'member'), ('Gangnam', 'member'), ('Jongno', 'guest'), ('Songpa', 'guest'), ('Gangnam', 'member')]\n    out = []\n    for d, u in rows:\n        pick = d in [\"Gangnam\", \"Songpa\"]\n        out += [pick, pick and u == \"guest\"]\n    return out",
-     "explain": "Mapo·Jongno의 guest는 guest이지만 두 구가 아니라서 분자에도 분모에도 들어가지 않아요. 두 구에 속하는 5건 중 guest는 2건이에요."
+     "check": "def answers():\n    head = ['rental_id', 'station', 'start_time', 'minutes']\n    rows = [[1, \"S1\", \"08:05\", 12], [2, \"S3\", \"08:20\", 25], [3, \"S2\", \"09:10\", 8], [4, \"S3\", \"12:40\", 31], [5, \"S1\", \"17:55\", 15], [6, \"S3\", \"18:30\", 9]]\n    n = sum(1 for r in rows if r[1] == 'S3')\n    return [n, n, len(head)]",
+     "explain": "조건에 맞는 행은 2·4·6번 3개예요. 인덱스를 만들어도 조건에 맞는 행은 그대로라 결과는 똑같이 3행이에요."
     },
     {
-     "id": "s3",
-     "kind": "short",
-     "q": "위 7건에서 구하는 비율은 얼마일까요? 소수로 답해 보세요.",
-     "a": "0.4",
-     "alts": [
-      "0.40",
-      ".4"
-     ],
-     "check": "def answers():\n    return [2 / 5]",
-     "explain": "분모는 두 구의 5건, 분자는 그중 guest 2건이라 2 ÷ 5 = 0.4예요. 7건 전체로 나누면(2 ÷ 7) 분모가 틀려요."
-    },
-    {
-     "id": "s4",
+     "id": "s6",
      "kind": "mcq",
-     "q": "`district`가 Gangnam 또는 Songpa인 행만 고르는 코드로 알맞은 것은?",
+     "q": "station 열에 인덱스를 만들면 무엇이 달라질까요?",
      "options": [
-      "df[df[\"district\"] == \"Gangnam\" and \"Songpa\"]",
-      "df[df[\"district\"].isin(\"Gangnam\", \"Songpa\")]",
-      "df[df[\"user_type\"].isin([\"Gangnam\", \"Songpa\"])]",
-      "df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]"
-     ],
-     "answer": 3,
-     "explain": "isin(목록)은 값이 목록 안에 있으면 True를 돌려줘서 여러 범주를 한 번에 고를 수 있어요. 목록은 대괄호 [ ]로 묶어 하나로 넘겨야 하고, 구 이름은 user_type이 아니라 district 열에 있어요."
-    },
-    {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "`sub = df[df[\"district\"].isin([\"Gangnam\", \"Songpa\"])]`일 때, guest의 비율을 구하는 식으로 알맞은 것은?",
-     "options": [
-      "(sub[\"user_type\"] == \"guest\").sum()",
-      "(sub[\"user_type\"] == \"guest\").mean()",
-      "(df[\"user_type\"] == \"guest\").mean()",
-      "len(sub) / len(df)"
-     ],
-     "answer": 1,
-     "explain": "비교식은 행마다 True/False를 만들고, 계산할 때 True는 1·False는 0이에요. 그래서 mean()은 True의 비율이 돼요. sum()은 guest의 건수, df를 쓰면 전체 대여의 비율, len(sub) / len(df)는 두 구가 전체에서 차지하는 비율이에요."
-    }
-   ],
-   "explain": "isin으로 두 구의 대여만 골라 sub를 만든 뒤, sub 안에서 guest인 비율을 구해요. True/False의 평균 mean()이 곧 비율이라 따로 나누지 않아도 돼요. 분모를 전체 대여 건수로 하면 틀린 값이 나와요."
-  },
-  {
-   "id": "d2-t07-d",
-   "version": 1,
-   "title": "코딩·과학 동아리의 수학 우수 비율",
-   "statement": "학생 성적 데이터는 학생 한 명이 한 행이며, `club` 열에 학생의 동아리(동아리가 없는 학생은 비어 있음), `math` 열에 수학 점수가 들어 있습니다. `club`이 coding 또는 science인 학생들 가운데 수학 점수가 80점 이상인 학생의 비율을 구하려고 합니다. 참고로 예시 데이터에서 `club`이 sports 또는 music인 학생 중 수학 점수가 80점 이상인 학생의 비율은 0.175입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 비율의 분모는 club이 coding 또는 science인 학생 수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
-   "answerFormat": "0.12",
-   "data": {
-    "files": [
-     "student_scores.csv"
-    ]
-   },
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    sub = df[df[\"club\"].isin([\"coding\", \"science\"])]\n    answer = round((sub[\"math\"] >= 80).mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 0.26
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 0.29
-    },
-    {
-     "data": 2,
-     "expected": 0.3
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
-     "kind": "mcq",
-     "q": "수학 점수가 정확히 80점인 coding 동아리 학생은 어떻게 셀까요?",
-     "options": [
-      "분모에만 들어가요",
-      "분자와 분모에 모두 들어가요",
-      "분자와 분모 모두에서 빠져요"
-     ],
-     "answer": 1,
-     "explain": "'80점 이상'은 80을 포함해요. 그래서 비교식은 >= 80이고, 80점 학생은 분자에도 들어가요. 고른 동아리 학생은 모두 분모에 들어가요."
-    },
-    {
-     "id": "s2",
-     "kind": "mcq",
-     "q": "동아리가 없어 `club`이 비어 있는(결측, NaN) 학생에게 `df[\"club\"].isin([\"coding\", \"science\"])`를 계산하면 어떻게 될까요?",
-     "options": [
-      "True가 되어 함께 골라져요",
-      "오류가 나요",
-      "False가 되어 골라지지 않아요",
-      "NaN이 그대로 남아요"
-     ],
-     "answer": 2,
-     "explain": "결측(NaN)은 값이 비어 있다는 뜻이에요. 비어 있는 값은 목록 안의 어떤 값과도 같지 않으니 isin은 False를 돌려주고, 그 학생은 고르지 않아요."
-    },
-    {
-     "id": "s3",
-     "kind": "table",
-     "title": "작은 표로 따라가기",
-     "prompt": "학생 7명의 club과 math가 아래와 같아요(NaN은 동아리 없음). 분모(coding·science 학생)와 분자(그중 80점 이상)에 들어가는지 True/False로 채워 보세요.",
-     "columns": [
-      "club",
-      "math",
-      "분모에 들어가나요?",
-      "분자에 들어가나요?"
-     ],
-     "rows": [
-      [
-       "coding",
-       "85",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "NaN",
-       "92",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "science",
-       "80",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "sports",
-       "88",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "science",
-       "64",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "coding",
-       "79",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "science",
-       "95",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ]
-     ],
-     "check": "def answers():\n    rows = [('coding', 85), (None, 92), ('science', 80), ('sports', 88), ('science', 64), ('coding', 79), ('science', 95)]\n    out = []\n    for c, m in rows:\n        pick = c in [\"coding\", \"science\"]\n        out += [pick, pick and m >= 80]\n    return out",
-     "explain": "분모는 coding·science 학생 5명이에요. 그중 80점 이상(85, 80, 95)인 3명이 분자예요. 92점·88점 학생은 점수가 높아도 두 동아리가 아니라서 세지 않아요."
-    },
-    {
-     "id": "s4",
-     "kind": "short",
-     "q": "위 7명에서 구하는 비율은 얼마일까요? 소수로 답해 보세요.",
-     "a": "0.6",
-     "alts": [
-      "0.60",
-      ".6"
-     ],
-     "check": "def answers():\n    return [3 / 5]",
-     "explain": "분자 3명 ÷ 분모 5명 = 0.6이에요. 7명 전체로 나누거나 79점 학생을 넣으면 값이 달라져요."
-    },
-    {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "`sub`가 coding·science 학생만 고른 표일 때, 비율을 구하는 식으로 알맞은 것은?",
-     "options": [
-      "(sub[\"math\"] >= 80).mean()",
-      "(sub[\"math\"] > 80).mean()",
-      "sub[\"math\"].mean() / 80",
-      "(df[\"math\"] >= 80).mean()"
+      "조건에 맞는 행을 찾는 속도가 빨라질 수 있다(결과는 같다)",
+      "쿼리 결과의 행 수가 줄어든다",
+      "테이블에 열이 하나 늘어난다",
+      "빠진 값이 자동으로 채워진다"
      ],
      "answer": 0,
-     "explain": "(sub[\"math\"] >= 80)은 학생마다 True/False를 만들고, mean()이 True의 비율을 구해요. > 80은 80점 학생을 빼 버리고, 평균 점수를 80으로 나누는 것은 비율이 아니에요. df를 쓰면 모든 학생의 비율이 돼요."
-    }
-   ],
-   "explain": "isin으로 두 동아리 학생만 고른 뒤 그 안에서 (math >= 80)의 평균을 구하면 비율이에요. '이상'이라 >=를 쓰고, 동아리가 없는 학생(결측)은 isin에서 저절로 빠져요. 동아리 이름을 sports·music으로 바꿔 참고 값 0.175가 나오는지 확인해 볼 수 있어요."
-  },
-  {
-   "id": "d2-t07-e",
-   "version": 1,
-   "title": "매물 많은 두 제조사의 사고 차 비율",
-   "statement": "중고차 매물 데이터는 매물 한 대가 한 행이며, `brand` 열에 제조사, `accident` 열에 사고 이력(Y: 있음, N: 없음)이 들어 있습니다. 매물 수가 가장 많은 제조사 2곳을 찾아 이 두 제조사의 매물만 골랐을 때, 그중 사고 이력이 있는 매물의 비율을 구하려고 합니다. 참고로 예시 데이터에서 BMW와 Benz 두 제조사의 매물 중 사고 이력이 있는 매물의 비율은 0.185입니다. solution 함수를 완성해 주세요.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 비율의 분모는 매물 수가 가장 많은 제조사 2곳의 매물 수로 하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
-   "answerFormat": "0.12",
-   "data": {
-    "files": [
-     "used_cars.csv"
-    ]
-   },
-   "code": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    answer = 1\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "solution": "import pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    top = df[\"brand\"].value_counts().index[:2]\n    sub = df[df[\"brand\"].isin(top)]\n    answer = round((sub[\"accident\"] == \"Y\").mean(), 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
-   "examples": [
-    {
-     "data": 0,
-     "expected": 0.21
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": 0.19
+     "explain": "인덱스는 책의 찾아보기처럼 위치를 빨리 찾게 도와줄 뿐, 어떤 행이 조건에 맞는지는 바꾸지 않아요. 테이블에 열을 더하지도 않아요."
     },
     {
-     "data": 2,
-     "expected": 0.19
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
+     "id": "s7",
      "kind": "mcq",
-     "q": "이 문제를 푸는 순서로 알맞은 것은?",
+     "q": "(가)~(라)처럼 형태가 서로 다른 데이터가 함께 있다는 것은 빅데이터의 어떤 특징일까요?",
      "options": [
-      "전체 매물의 사고 비율 구하기 → 상위 2개 제조사 찾기 → 두 값을 곱하기",
-      "상위 2개 제조사 이름 찾기 → 두 제조사의 매물만 고르기 → 고른 매물 중 사고 이력(Y) 비율 구하기",
-      "사고 이력(Y) 매물만 고르기 → 그중 상위 2개 제조사의 매물 수 세기 → 전체 매물 수로 나누기",
-      "상위 2개 제조사 이름 찾기 → 전체 사고 매물 수 세기 → 전체 매물 수로 나누기"
+      "다양성(Variety)",
+      "속도(Velocity)",
+      "규모(Volume)",
+      "정확성(Veracity)"
      ],
-     "answer": 1,
-     "explain": "분모가 상위 2개 제조사의 매물 수이므로 먼저 두 제조사를 찾아 그 매물을 골라야 해요. 전체 매물 수로 나누는 방법은 분모가 달라서 다른 값이 나와요."
+     "answer": 0,
+     "explain": "표·JSON·글·영상처럼 형태가 여러 가지인 것은 다양성이에요. 속도는 빠르기, 규모는 양, 정확성은 믿을 수 있는지를 말해요."
     },
     {
-     "id": "s2",
+     "id": "s8",
      "kind": "table",
-     "title": "작은 표로 따라가기",
-     "prompt": "매물 7대가 아래와 같아요. 매물 수는 Kia 3대, Hyundai 2대, BMW 1대, Benz 1대라서 상위 2개 제조사는 Kia와 Hyundai예요. 분모와 분자에 들어가는지 True/False로 채워 보세요.",
+     "title": "전체 정리",
+     "prompt": "앞에서 확인한 내용으로 문제의 ㄱ~ㅁ이 옳으면 **O**, 틀리면 **X**로 채워 보세요.",
      "columns": [
-      "brand",
-      "accident",
-      "분모에 들어가나요?",
-      "분자에 들어가나요?"
+      "설명",
+      "옳은가"
      ],
      "rows": [
       [
-       "Kia",
-       "Y",
+       "ㄱ. (가) 정형, (나) 반정형",
        {
-        "a": "True",
+        "a": "O",
         "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "True",
-        "alts": [
-         "true"
+         "o",
+         "'O'",
+         "○"
         ]
        }
       ],
       [
-       "BMW",
-       "Y",
+       "ㄴ. (다)·(라) 비정형",
        {
-        "a": "False",
+        "a": "O",
         "alts": [
-         "false"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
+         "o",
+         "'O'",
+         "○"
         ]
        }
       ],
       [
-       "Hyundai",
-       "N",
+       "ㄷ. 표로 펼쳐 합치기는 데이터 준비",
        {
-        "a": "True",
+        "a": "O",
         "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
+         "o",
+         "'O'",
+         "○"
         ]
        }
       ],
       [
-       "Kia",
-       "N",
+       "ㄹ. 인덱스를 만들면 결과 행 수가 줄어듦",
        {
-        "a": "True",
+        "a": "X",
         "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
+         "x",
+         "'X'",
+         "×"
         ]
        }
       ],
       [
-       "Hyundai",
-       "Y",
+       "ㅁ. 형태가 다른 데이터는 다양성",
        {
-        "a": "True",
+        "a": "O",
         "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       }
-      ],
-      [
-       "Kia",
-       "N",
-       {
-        "a": "True",
-        "alts": [
-         "true"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       }
-      ],
-      [
-       "Benz",
-       "Y",
-       {
-        "a": "False",
-        "alts": [
-         "false"
-        ]
-       },
-       {
-        "a": "False",
-        "alts": [
-         "false"
+         "o",
+         "'O'",
+         "○"
         ]
        }
       ]
      ],
-     "check": "def answers():\n    import pandas as pd\n    rows = [('Kia', 'Y'), ('BMW', 'Y'), ('Hyundai', 'N'), ('Kia', 'N'), ('Hyundai', 'Y'), ('Kia', 'N'), ('Benz', 'Y')]\n    top = list(pd.Series([b for b, a in rows]).value_counts().index[:2])\n    out = []\n    for b, a in rows:\n        pick = b in top\n        out += [pick, pick and a == \"Y\"]\n    return out",
-     "explain": "BMW와 Benz는 사고 이력이 있어도 상위 2개 제조사가 아니라서 세지 않아요. 분모 5대 중 사고 이력이 있는 매물은 2대라 비율은 0.4예요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "`cnt = df[\"brand\"].value_counts()`일 때, 매물 수 상위 2개 제조사의 **이름**을 꺼내는 코드로 알맞은 것은?",
-     "options": [
-      "cnt[:2]",
-      "cnt.values[:2]",
-      "cnt.index[:2]",
-      "df[\"brand\"][:2]"
-     ],
-     "answer": 2,
-     "explain": "value_counts()의 결과에서 제조사 이름은 index(이름표)에, 매물 수는 values(값)에 있어요. cnt[:2]를 isin에 넣으면 이름이 아니라 개수와 비교해 아무 매물도 골라지지 않고, df[\"brand\"][:2]는 데이터의 맨 앞 두 행일 뿐이에요."
-    },
-    {
-     "id": "s4",
-     "kind": "short",
-     "q": "예시 데이터(used_cars.csv)에서 매물 수 상위 2개 제조사의 매물을 모두 합하면 몇 대일까요? print로 확인해 보세요.",
-     "a": "870",
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"used_cars.csv\")\n    return [df[\"brand\"].value_counts()[:2].sum()]",
-     "explain": "예시 데이터에서는 Kia와 Hyundai가 435대씩으로 가장 많아요. 둘 다 상위 2개에 들어가니 순서가 바뀌어도 고르는 매물은 같고, 이 870대가 분모예요."
-    },
-    {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "`top`이 상위 2개 제조사의 이름일 때, 비율을 구하는 코드로 알맞은 것은?",
-     "options": [
-      "(df[\"accident\"] == \"Y\").mean()",
-      "(df[df[\"brand\"].isin(top)][\"accident\"] == \"Y\").mean()",
-      "(df[df[\"brand\"].isin(top)][\"accident\"] == \"Y\").sum() / len(df)",
-      "df[df[\"brand\"].isin(top)][\"accident\"].count()"
-     ],
-     "answer": 1,
-     "explain": "isin(top)으로 두 제조사의 매물만 고르고 그 안에서 accident == \"Y\"의 평균을 구해야 분모가 두 제조사의 매물 수가 돼요. len(df)로 나누면 분모가 전체 매물이 되고, count()는 비어 있지 않은 값의 개수일 뿐이에요."
+     "check": "def answers():\n    rows = [[1, \"S1\", \"08:05\", 12], [2, \"S3\", \"08:20\", 25], [3, \"S2\", \"09:10\", 8], [4, \"S3\", \"12:40\", 31], [5, \"S1\", \"17:55\", 15], [6, \"S3\", \"18:30\", 9]]\n    n_before = sum(1 for r in rows if r[1] == 'S3')\n    n_after = n_before  # 인덱스는 결과를 바꾸지 않음\n    right = [True, True, True, n_after < n_before, True]\n    return ['O' if v else 'X' for v in right]",
+     "explain": "ㄹ만 틀렸어요. 인덱스는 찾는 속도에만 영향을 주고 쿼리 결과는 그대로예요."
     }
    ],
-   "explain": "value_counts().index[:2]로 매물 수가 가장 많은 제조사 두 곳의 이름을 얻고, isin으로 그 매물만 골라요. 고른 매물에서 (accident == \"Y\")의 평균을 구하면 사고 이력 비율이에요. index를 빼먹고 cnt[:2]를 넣으면 개수와 비교하게 되어 아무 매물도 골라지지 않아요."
+   "explain": "(가)는 열이 정해진 정형, (나)는 키로 구조를 담았지만 기록마다 키가 다른 반정형, (다)·(라)는 비정형이에요. 여러 데이터를 표로 바꾸어 합치는 일은 데이터 준비 단계이고, 형태가 다른 데이터가 섞인 것은 다양성이에요. 인덱스는 찾는 속도만 빠르게 할 뿐 쿼리 결과(행 수)는 바꾸지 않으므로 ㄹ만 틀렸어요."
   }
  ]
 }

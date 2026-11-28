@@ -8,7 +8,7 @@ import type { CourseId } from '../../content/types';
 import { isSupabaseConfigured } from '../../lib/config';
 import { learnerPrefix, readJson, removeRaw, UNSYNCED_SUFFIX, writeJson, writeRaw } from '../../lib/storage';
 import { supabase } from '../auth/supabase';
-import { emptyProb, emptyState, mergeState, sameState, sanitize, type CourseState, type MockState, type ProbState } from './model';
+import { addLock, emptyProb, emptyState, mergeState, sameState, sanitize, type CourseState, type MockState, type ProbState } from './model';
 
 export type SyncStatus = 'local' | 'loading' | 'saving' | 'saved' | 'offline' | 'not-ready';
 
@@ -75,6 +75,9 @@ function friendly(msg: string): { status: SyncStatus; text: string } {
   return { status: 'offline', text: '서버에 저장하지 못했어요(인터넷 확인). 기록은 이 기기에 남아 있어요.' };
 }
 
+/** 서버에 저장할 기록이 있는지(빈 기록으로 행을 만들지 않게) */
+const hasAny = (s: CourseState) => Object.keys(s.probs).length > 0 || !!s.mocks || !!s.locks || !!s.resets || !!s.advOpen;
+
 async function loadRemote(e: Entry) {
   const sb = supabase();
   if (!sb) return;
@@ -92,11 +95,12 @@ async function loadRemote(e: Entry) {
   const merged = mergeState(server, e.state);
   e.state = merged;
   const differs = !data || !sameState(merged, server);
-  persistLocal(e, differs && Object.keys(merged.probs).length > 0);
+  const any = hasAny(merged);
+  persistLocal(e, differs && any);
   e.sync = 'saved';
   e.syncError = undefined;
   emit(e);
-  if (differs && Object.keys(merged.probs).length > 0) schedule(e, 0);
+  if (differs && any) schedule(e, 0);
 }
 
 function schedule(e: Entry, ms = 1200) {
@@ -184,6 +188,11 @@ export interface CourseProgress {
   updateMock: (key: string, fn: (m: MockState | undefined) => MockState) => void;
   /** [심화] 열기(유형 t01~t10) */
   openAdv: (tkey: string) => void;
+  /**
+   * 유형 집중 풀이 잠김 1회(이 기기에 바로 저장: 창을 닫는 중일 수도 있으므로). 세 번째면 그 유형 기록을 지우고
+   * 그 유형 문제(pids)의 코드 초안도 지운다. 몇 번째인지와 초기화했는지를 돌려준다
+   */
+  addLock: (tkey: string, pids: string[]) => { count: number; reset: boolean };
   retry: () => void;
 }
 
@@ -223,6 +232,20 @@ export function useCourseProgress(learnerKey: string, course: CourseId, remote: 
       persistLocal(e, e.remote);
       emit(e);
       schedule(e);
+    },
+    addLock: (tkey, pids) => {
+      const r = addLock(e.state, tkey);
+      e.state = r.state;
+      persistLocal(e, e.remote);
+      if (r.reset) for (const pid of pids) clearDraft(learnerKey, pid);
+      emit(e);
+      // 잠김은 곧 창을 닫는 중(pagehide)일 수도 있어 서버에도 바로 보낸다
+      if (e.remote) {
+        clearTimeout(e.timer);
+        e.timer = undefined;
+        void save(e);
+      }
+      return { count: r.count, reset: r.reset };
     },
     retry: () => {
       if (!e.loaded) void loadRemote(e);

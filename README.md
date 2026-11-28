@@ -3,10 +3,11 @@
 COS Pro Python·C 시험 유형을 **중간 점검(표 채우기·객관식) → 코드 풀이(자동 채점)** 순서로 연습하는 사이트.
 
 - 주소: https://zongik-sai.github.io/saicerti/
-- 과정: 프로그래밍 Python 기본(2급 유형 10개 × 5문제), 프로그래밍 Python 심화(1급 유형 10개 × 5문제), 프로그래밍 C 기본(COS Pro 2급 C 유형 10개 × 5문제), Data 분석 2급(YBM DAT 2급 Python: 객관식 이론 4유형 + pandas 데이터 코드 6유형, 안내: `docs/D2_BRIEF.md`)
+- 과정: 프로그래밍 Python 기본(2급 유형 10개 × 5문제), 프로그래밍 Python 심화(1급 유형 10개 × 5문제), 프로그래밍 C 기본(COS Pro 2급 C 유형 10개 × 5문제), Data 분석 2급(YBM DAT 2급 Python: 시험 1~20번 문항 유형 × 연습 5문제를 영역 5개로 묶음 — 객관식 이론 12유형 + pandas 작업형 8유형, 안내: `docs/D2_BRIEF.md`)
 - Data 분석 2급: 객관식은 보기 4개 + 보기별 풀이, 코드 문제는 지어낸 연습용 CSV(`public/data/d2/`, 만들기: `python3 tools/gen_d2_data.py`)를 브라우저 안 Pyodide의 pandas·matplotlib·scipy·scikit-learn으로 실행해 `solution()`의 반환값(그래프 문제는 막대·선의 값)을 예시 데이터 + 숨은 데이터 2개에서 채점. 패키지 wheel은 빌드 때 Pyodide 공식 배포처에서 받아 SHA-256을 확인한 뒤 사이트에 함께 올린다(`.pyodide-pkgs/`, 저장소에는 넣지 않음)
-- 유형마다 [기본] 1~5(필수)와 [심화] 1~5(선택, 주황색): 심화는 1→5로 점점 어렵고 중간 점검 6~9단계, 그 유형의 기본 5문제를 모두 푼 뒤 '심화 열기'로 들어감 — `src/content/<과정>/adv/tNN.json`(안내: `docs/ADV_BRIEF.md`)
-- 모의고사: 기본 50문제를 모두 풀면 열림(과정 화면 맨 아래), 과정마다 1~3회(원본 기출 10문항과 같은 유형·코드, 예시·숨은 테스트만 다름; Data 2급은 원본 20문항 1회 — `src/content/d2/mock/m1.json`), 중간 점검 없이 풀고 시험을 끝내면 결과·해설 공개 — `src/content/<과정>/mock/tNN.json`(안내: `docs/MOCK_BRIEF.md`)
+- COS Pro 과정은 유형마다 [기본] 1~5(필수)와 [심화] 1~5(선택, 주황색): 심화는 1→5로 점점 어렵고 중간 점검 6~9단계, 그 유형의 기본 5문제를 모두 푼 뒤 '심화 열기'로 들어감 — `src/content/<과정>/adv/tNN.json`(안내: `docs/ADV_BRIEF.md`)
+- 유형 집중 풀이: 문제는 전체화면으로 풀고, 다른 창으로 가거나 전체화면을 나가면 잠김. 한 유형에서 3번 잠기면 그 유형 기록·코드 초안만 처음으로(모의고사·다른 유형은 그대로) — `src/features/focus/`
+- 모의고사: 기본 문제(Data 2급은 연습 100문제)를 모두 풀면 열림(과정 화면 맨 아래), 과정마다 1~3회(원본 기출 10문항과 같은 유형·코드, 예시·숨은 테스트만 다름; Data 2급은 원본 20문항 1회 — `src/content/d2/mock/m1.json`), 중간 점검 없이 풀고 시험을 끝내면 결과·해설 공개 — `src/content/<과정>/mock/tNN.json`(안내: `docs/MOCK_BRIEF.md`)
 - 채점: 브라우저 안의 파이썬(Pyodide 0.29.5, 사이트에 직접 올림). 예시 + 숨은 테스트(문제마다 10개 이상). 코드는 서버로 가지 않음
 - C 채점: 같은 워커에서 C 인터프리터(`src/grader/cinterp.py`, pycparser 3.12)로 실행 — 범위 밖 접근·초기화 안 한 값·무한 반복을 한국어로 알려 줌. 검수 도구가 gcc(-fsanitize)와 결과를 대조
 - 그림: 시험지의 이미지(배열 칸·격자·표·도형)는 사진 대신 `figures` 데이터로 다시 그림(확대·다크 모드·화면 읽기 대응) — `src/components/Figure.tsx`

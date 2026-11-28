@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { TypeFile } from '../../src/content/types';
+import { D2_AREAS } from '../../src/content';
 import { cellOk, cRepr, normCell, pyRepr } from '../../src/lib/pyrepr';
 import { cleanSvg } from '../../src/components/Figure';
 import { countBlanks, fillBlanks } from '../../src/components/BlankCode';
@@ -185,17 +186,20 @@ describe('Data 분석 2급(d2)', () => {
   const all = [...base, ...adv];
   const kindOf = (f: TypeFile, p: TypeFile['problems'][number]) => p.kind ?? f.kind;
 
-  it('10유형 × [기본] 5 + [심화] 5, 심화는 기본과 같은 형식·이름', () => {
-    expect(base.map((f) => f.type)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    expect(adv.map((f) => f.type)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    for (const f of base) expect(f.problems.map((p) => p.id)).toEqual('abcde'.split('').map((l) => `d2-t${String(f.type).padStart(2, '0')}-${l}`));
-    for (const f of adv) {
-      const b = base.find((x) => x.type === f.type)!;
-      expect(f.kind).toBe(b.kind);
-      expect(f.typeTitle).toBe(b.typeTitle);
-      expect(f.problems.map((p) => p.id)).toEqual([1, 2, 3, 4, 5].map((n) => `d2-t${String(f.type).padStart(2, '0')}-adv${n}`));
-      for (const p of f.problems) expect(p.steps.length, p.id).toBeGreaterThanOrEqual(6);
+  it('시험 1~20번 유형 × 연습 5문제, 1~12번 객관식·13~20번 작업형, 영역·개념 정리, [심화] 없음(선생님 요청 2026-11-28)', () => {
+    expect(base.map((f) => f.type)).toEqual(Array.from({ length: 20 }, (_, i) => i + 1));
+    expect(adv).toEqual([]);
+    const areas = new Set(D2_AREAS.map((a) => a.id));
+    for (const f of base) {
+      expect(f.problems.map((p) => p.id)).toEqual('abcde'.split('').map((l) => `d2-t${String(f.type).padStart(2, '0')}-${l}`));
+      expect(f.kind === 'choice', `${f.type}`).toBe(f.type <= 12);
+      expect(areas.has(f.area!), `${f.type} ${f.area}`).toBe(true);
+      expect(f.concept?.text.length ?? 0, `${f.type}`).toBeGreaterThan(60);
+      // 예전 판(version 1) 기록이 새 문제에 붙지 않게(진도 모델 MIN_VER)
+      for (const p of f.problems) expect(p.version, p.id).toBeGreaterThanOrEqual(2);
     }
+    // 영역마다 유형이 있고, 모든 유형이 어느 영역에 들어 있다
+    for (const a of D2_AREAS) expect(base.some((f) => f.area === a.id), a.id).toBe(true);
     expect(new Set(all.flatMap((f) => f.problems.map((p) => p.id))).size).toBe(100);
   });
 
@@ -252,7 +256,8 @@ describe('Data 분석 2급(d2)', () => {
     m.items.forEach((it, i) => {
       expect(it.problem.id).toBe(`d2-m1-q${String(i + 1).padStart(2, '0')}`);
       expect(it.problem.steps).toEqual([]);
-      expect(base.map((f) => f.type)).toContain(it.type);
+      expect(it.type).toBe(i + 1);
+      expect(base.find((f) => f.type === it.type)!.kind === 'choice', it.problem.id).toBe(it.kind === 'choice');
     });
     expect(m.items.filter((it) => it.kind === 'choice').length).toBe(12);
   });

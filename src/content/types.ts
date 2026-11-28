@@ -100,6 +100,16 @@ export interface TypeFile {
   problems: Problem[];
   /** [심화] 1~5(불러올 때 adv 파일에서 붙임) */
   adv?: AdvSet;
+  /** Data 2급: 시험 영역 id(CourseMeta.areas) */
+  area?: string;
+  /** Data 2급: 유형의 핵심 개념(2~4문장 + 작은 표 예시)과 더 배울 배움 숲 Data 단원 */
+  concept?: Concept;
+}
+
+export interface Concept {
+  text: string;
+  table?: { head: string[]; rows: (string | number)[][] };
+  saiedu?: { unit: number; title: string };
 }
 
 /** 모의고사 한 회: 원본 유형 1~10이 한 문제씩(같은 유형의 1·2·3회는 예시·테스트만 다름) */

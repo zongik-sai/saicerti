@@ -1,5 +1,12 @@
 import type { Course, CourseId, MockFile, MockSet, Problem, TypeFile } from './types';
 
+/** 시험 영역(Data 2급: 교재 단원·시험 문항을 묶는 큰 갈래) */
+export interface AreaMeta {
+  id: string;
+  name: string;
+  desc: string;
+}
+
 export interface CourseMeta {
   id: CourseId;
   name: string;
@@ -8,7 +15,25 @@ export interface CourseMeta {
   path: string;
   /** 실제 시험 시간(분). 시험 화면에서 확인한 것만 적는다 */
   examMinutes?: number;
+  /** 필수 연습 문제 수(홈 진도 막대) */
+  total: number;
+  /**
+   * exam: 시험 문항 번호별 유형을 영역으로 묶어 보여 주고, [심화] 없이 유형마다 연습 5문제.
+   * 답(코드) 풀이를 먼저 보여 주고 중간 점검은 '풀이 도움'(선택)으로 둔다(Data 2급, 선생님 요청 2026-11-28)
+   */
+  style?: 'exam';
+  /** style exam: 영역 목록(유형 파일의 area가 이 id) */
+  areas?: AreaMeta[];
 }
+
+/** Data 2급 영역: YBM DATA 2급 Python 교재 단원(빅데이터·데이터 수집 및 전처리·데이터 탐색과 이해·데이터 분석·데이터 시각화) 순서 */
+export const D2_AREAS: AreaMeta[] = [
+  { id: 'A1', name: '빅데이터 이해', desc: '빅데이터의 특징과 데이터 분석 절차를 묻는 객관식이에요(시험 1·2번).' },
+  { id: 'A2', name: '데이터 수집·전처리', desc: '데이터를 꺼내고 합치고 다듬는 일: 쿼리, 데이터 합치기, 극단치, 자료형·날짜, 파생 변수, 결측치(5·7·8·9·17·19번).' },
+  { id: 'A3', name: '데이터 탐색과 이해', desc: '통계량과 분포로 데이터를 살피고, 세고 비율을 구해요(3·4·6·14·15·18번).' },
+  { id: 'A4', name: '데이터 분석', desc: '머신러닝 기초와 평가 지표, t-검정, 군집 분석(10·11·12·16·20번).' },
+  { id: 'A5', name: '데이터 시각화', desc: '데이터를 묶어 센 결과를 그래프로 그려요(13번).' },
+];
 
 /** 과정 목록. ID(pyb·pya)는 진도 저장 키라 바꾸지 않는다. */
 export const COURSES: CourseMeta[] = [
@@ -18,6 +43,7 @@ export const COURSES: CourseMeta[] = [
     exam: 'COS Pro 2급 Python 대비',
     blurb: '반복문·조건문·리스트로 푸는 10가지 시험 유형. 빈칸 채우기, 한 줄 수정, 함수 작성을 단계별로 연습해요.',
     path: '/basic',
+    total: 50,
   },
   {
     id: 'pya',
@@ -25,6 +51,7 @@ export const COURSES: CourseMeta[] = [
     exam: 'COS Pro 1급 Python 대비',
     blurb: '정렬 기준, 슬라이싱, 함수 나누기, 시뮬레이션처럼 한 단계 깊은 10가지 시험 유형을 연습해요.',
     path: '/advanced',
+    total: 50,
   },
   {
     id: 'cb',
@@ -33,14 +60,18 @@ export const COURSES: CourseMeta[] = [
     blurb: '반복문·조건문·배열·문자열을 C로 다루는 10가지 시험 유형. 빈칸 채우기, 한 줄 수정, 함수 작성을 단계별로 연습해요.',
     path: '/c-basic',
     examMinutes: 50,
+    total: 50,
   },
   {
     id: 'd2',
     name: 'Data 분석 2급',
     exam: 'YBM DAT 2급(Python) 대비',
-    blurb: '데이터 분석 이론(객관식)과 pandas로 CSV 데이터를 다루는 코드 문제를 연습해요. 집계·비율·결측치·그래프·t-검정·군집 분석까지.',
+    blurb: '실제 시험 20문항의 유형을 5개 영역으로 묶어 유형마다 5문제씩 연습해요. 객관식 이론 12유형과 pandas로 CSV 데이터를 다루는 작업형 8유형.',
     path: '/data2',
     examMinutes: 50,
+    total: 100,
+    style: 'exam',
+    areas: D2_AREAS,
   },
 ];
 
@@ -69,7 +100,8 @@ const advLoaders: Record<CourseId, Record<string, () => Promise<TypeFile>>> = {
   pyb: import.meta.glob<TypeFile>('./pyb/adv/t*.json', { import: 'default' }),
   pya: import.meta.glob<TypeFile>('./pya/adv/t*.json', { import: 'default' }),
   cb: import.meta.glob<TypeFile>('./cb/adv/t*.json', { import: 'default' }),
-  d2: import.meta.glob<TypeFile>('./d2/adv/t*.json', { import: 'default' }),
+  // Data 2급은 [심화] 없이 유형마다 연습 5문제(style exam)
+  d2: {},
 };
 
 /** Data 과정 문제는 객관식·데이터 문제에 없는 칸(매개변수·예시 등)을 빈 값으로 채워 같은 모양으로 쓴다 */

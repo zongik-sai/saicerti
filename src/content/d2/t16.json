@@ -1,0 +1,814 @@
+{
+ "course": "d2",
+ "type": 16,
+ "typeTitle": "두 집단 평균 비교(t-검정)",
+ "kind": "blank",
+ "area": "A4",
+ "skills": [
+  "귀무가설·대립가설",
+  "ttest_ind(집단1, 집단2)",
+  "p-value와 유의수준 0.05",
+  "조건으로 집단 나누기"
+ ],
+ "intro": "두 집단의 평균이 다른지 scipy.stats의 `ttest_ind`로 독립 2표본 t-검정을 하고, t 통계량·p-value를 구해 판단하는 작업형이에요.",
+ "concept": {
+  "text": "t-검정은 두 집단의 평균 차이가 우연인지 확인하는 방법이에요. 귀무가설은 '두 평균은 같다'이고, `ttest_ind(a, b)`가 돌려준 p-value가 유의수준 0.05보다 작으면 귀무가설을 버리고 차이가 있다고 판단해요.",
+  "table": {
+   "head": [
+    "p-value",
+    "판단(유의수준 0.05)"
+   ],
+   "rows": [
+    [
+     "0.012",
+     "0.05보다 작음 → 차이가 있다"
+    ],
+    [
+     "0.380",
+     "0.05 이상 → 차이가 있다고 할 수 없다"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 10,
+   "title": "통계 분석: 가설 검정과 회귀"
+  }
+ },
+ "problems": [
+  {
+   "id": "d2-t16-a",
+   "version": 2,
+   "title": "남녀 학생의 수학 점수 비교",
+   "statement": "학생 성적 데이터에서 남학생(gender가 M)과 여학생(gender가 F)의 수학 점수(math) 평균에 차이가 있는지 독립 2표본 t-검정으로 알아보려고 합니다. 남학생의 수학 점수를 첫 번째 집단, 여학생의 수학 점수를 두 번째 집단으로 하여 검정했을 때의 p-value를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 넷째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.1234",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\nmale = df.loc[df[\"gender\"] == ⟦1⟧, \"math\"]\nfemale = df.loc[df[\"gender\"] == \"F\", \"math\"]\n\ndef solution():\n    stat, p = ⟦2⟧(male, female)\n    answer = round(p, ⟦3⟧)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "\"M\"",
+     "alts": [
+      "'M'"
+     ]
+    },
+    {
+     "answer": "ttest_ind"
+    },
+    {
+     "answer": "4"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\nmale = df.loc[df[\"gender\"] == \"M\", \"math\"]\nfemale = df.loc[df[\"gender\"] == \"F\", \"math\"]\n\ndef solution():\n    stat, p = ttest_ind(male, female)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.6061
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.2491
+    },
+    {
+     "data": 2,
+     "expected": 0.8842
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "남학생과 여학생의 수학 점수 평균이 정말 다른지, 아니면 우연히 조금 다르게 나온 것인지 확인하려고 해요. 알맞은 방법은?",
+     "options": [
+      "독립 2표본 t-검정(ttest_ind)",
+      "k-means 군집 분석",
+      "value_counts()로 학생 수 세기",
+      "수학 점수를 오름차순으로 정렬하기"
+     ],
+     "answer": 0,
+     "explain": "서로 다른 두 집단(남학생·여학생)의 평균을 비교해 그 차이가 우연인지 따지는 방법이 독립 2표본 t-검정이에요. scipy.stats의 ttest_ind 함수로 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "t-검정은 먼저 귀무가설을 세워요. 귀무가설은 '차이가 없다'는 기본 가정이에요. 이 문제의 귀무가설로 알맞은 것은?",
+     "options": [
+      "남학생의 수학 점수 평균이 더 높다",
+      "여학생의 수학 점수 평균이 더 높다",
+      "남학생과 여학생의 수학 점수 평균은 같다",
+      "남학생과 여학생의 수가 같다"
+     ],
+     "answer": 2,
+     "explain": "귀무가설은 '두 평균은 같다(차이가 없다)'예요. 데이터가 이 가정과 많이 어긋나면 귀무가설을 버리고 '차이가 있다'고 판단해요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 수로 평균 비교",
+     "prompt": "남학생 3명의 수학 점수가 70, 80, 90이고, 여학생 3명의 점수가 60, 75, 75라고 해요. 집단마다 평균을 구하고 평균의 차를 채워 보세요.",
+     "columns": [
+      "집단",
+      "점수",
+      "평균"
+     ],
+     "rows": [
+      [
+       "남학생",
+       "70, 80, 90",
+       {
+        "a": "80",
+        "alts": [
+         "80.0"
+        ]
+       }
+      ],
+      [
+       "여학생",
+       "60, 75, 75",
+       {
+        "a": "70",
+        "alts": [
+         "70.0"
+        ]
+       }
+      ],
+      [
+       "평균의 차(남 − 여)",
+       "-",
+       {
+        "a": "10",
+        "alts": [
+         "10.0"
+        ]
+       }
+      ]
+     ],
+     "check": "def answers():\n    m = [70, 80, 90]\n    f = [60, 75, 75]\n    mm = sum(m) // len(m)\n    fm = sum(f) // len(f)\n    return [mm, fm, mm - fm]",
+     "explain": "평균이 10점 차이 나도 학생 수가 적고 점수가 많이 흩어져 있으면 우연일 수 있어요. t-검정은 평균의 차를 점수가 흩어진 정도와 학생 수까지 함께 따져서 판단해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "어떤 t-검정에서 p-value가 0.32로 나왔어요. 유의수준 0.05에서 알맞은 판단은?",
+     "options": [
+      "0.32는 0.05보다 크므로 두 평균에 차이가 있다",
+      "p-value가 0보다 크면 언제나 차이가 있다",
+      "두 평균이 정확히 같다는 것이 증명되었다",
+      "0.32는 0.05보다 크므로 두 평균에 차이가 있다고 말할 수 없다"
+     ],
+     "answer": 3,
+     "explain": "p-value는 '정말 차이가 없다면 지금만큼 큰 차이가 우연히 나올 확률'이에요. 유의수준(판단 기준, 보통 0.05)보다 작을 때만 '차이가 있다'고 하고, 크면 차이가 있다고 말할 수 없을 뿐 같다고 증명한 것은 아니에요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "`stat, p = ttest_ind(male, female)`이라고 쓰면 p에 p-value가 들어가요. p가 0.123456이라면 소수점 넷째 자리까지 반올림한 값은?",
+     "a": "0.1235",
+     "alts": [],
+     "check": "def answers():\n    return [round(0.123456, 4)]",
+     "explain": "넷째 자리까지 남기고 다섯째 자리에서 반올림해요. round(값, 자리 수)의 두 번째 값이 남길 소수 자리 수예요."
+    }
+   ],
+   "explain": "df.loc[조건, \"math\"]로 두 집단의 수학 점수를 고른 뒤 stat, p = ttest_ind(첫 번째, 두 번째)로 검정해요. 돌려받는 두 값 중 두 번째가 p-value이고, round(p, 4)로 넷째 자리까지 반올림해요. p-value가 0.05보다 크면 두 평균에 차이가 있다고 말할 수 없어요."
+  },
+  {
+   "id": "d2-t16-b",
+   "version": 2,
+   "title": "2010년 전후 영화의 평점",
+   "statement": "영화 정보 데이터에서 평점(rating)이 결측이 아닌 영화만 고른 뒤, 개봉 연도(release_year)가 2010년 미만인 영화와 2010년 이상인 영화의 평점 평균에 차이가 있는지 독립 2표본 t-검정으로 알아보려고 합니다. 2010년 미만 영화의 평점을 첫 번째 집단, 2010년 이상 영화의 평점을 두 번째 집단으로 하여 검정했을 때의 p-value를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 넷째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.1234",
+   "data": {
+    "files": [
+     "movies.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ndf_sub = df.loc[df[\"rating\"].⟦1⟧(), ]\nbefore = df_sub.loc[df_sub[\"release_year\"] ⟦2⟧ 2010, \"rating\"]\nafter = df_sub.loc[df_sub[\"release_year\"] >= 2010, \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(before, after)\n    answer = round(⟦3⟧, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "notna"
+    },
+    {
+     "answer": "<"
+    },
+    {
+     "answer": "p"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ndf_sub = df.loc[df[\"rating\"].notna(), ]\nbefore = df_sub.loc[df_sub[\"release_year\"] < 2010, \"rating\"]\nafter = df_sub.loc[df_sub[\"release_year\"] >= 2010, \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(before, after)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.9621
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.6024
+    },
+    {
+     "data": 2,
+     "expected": 0.3993
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "평점이 빈 값(NaN, 결측)인 영화가 섞인 채로 ttest_ind를 하면 어떻게 될까요?",
+     "options": [
+      "빈 값을 0점으로 여기고 계산한다",
+      "결과가 nan(숫자 아님)으로 나와 p-value를 얻을 수 없다",
+      "빈 값이 있는 집단은 통째로 빼고 계산한다",
+      "빈 값만 저절로 빼고 계산한다"
+     ],
+     "answer": 1,
+     "explain": "ttest_ind는 기본 설정에서 빈 값이 하나라도 있으면 결과를 nan으로 돌려줘요. 그래서 먼저 notna()로 평점이 있는 영화만 골라 두어야 해요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 따라가기",
+     "prompt": "영화 6편의 개봉 연도와 평점이에요(NaN은 빈 값). rating.notna()의 값과 들어가는 집단(before: 2010년 미만, after: 2010년 이상, 제외: 평점 없음)을 채워 보세요.",
+     "columns": [
+      "release_year",
+      "rating",
+      "rating.notna()",
+      "집단"
+     ],
+     "rows": [
+      [
+       "2005",
+       "7.2",
+       {
+        "a": "True"
+       },
+       {
+        "a": "before"
+       }
+      ],
+      [
+       "2012",
+       "NaN",
+       {
+        "a": "False"
+       },
+       {
+        "a": "제외"
+       }
+      ],
+      [
+       "2010",
+       "6.5",
+       {
+        "a": "True"
+       },
+       {
+        "a": "after"
+       }
+      ],
+      [
+       "2008",
+       "NaN",
+       {
+        "a": "False"
+       },
+       {
+        "a": "제외"
+       }
+      ],
+      [
+       "2019",
+       "8.1",
+       {
+        "a": "True"
+       },
+       {
+        "a": "after"
+       }
+      ],
+      [
+       "2009",
+       "5.9",
+       {
+        "a": "True"
+       },
+       {
+        "a": "before"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import numpy as np\n    import pandas as pd\n    t = pd.DataFrame({\"release_year\": [2005, 2012, 2010, 2008, 2019, 2009], \"rating\": [7.2, np.nan, 6.5, np.nan, 8.1, 5.9]})\n    out = []\n    for y, ok in zip(t[\"release_year\"], t[\"rating\"].notna()):\n        g = (\"before\" if y < 2010 else \"after\") if ok else \"제외\"\n        out += [bool(ok), g]\n    return out",
+     "explain": "평점이 없는 영화는 어느 집단에도 넣지 않아요. 2010년 영화는 '2010년 이상'이므로 after에 들어가요. 미만은 <, 이상은 >=예요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "ttest_ind(a, b)는 값 두 개를 돌려줘요. 돌려주는 차례대로 바르게 쓴 것은?",
+     "options": [
+      "t 통계량, p-value",
+      "p-value, t 통계량",
+      "a의 평균, b의 평균",
+      "평균의 차, 표준편차"
+     ],
+     "answer": 0,
+     "explain": "stat, p = ttest_ind(a, b)라고 쓰면 첫 번째 값(t 통계량)은 stat에, 두 번째 값(p-value)은 p에 들어가요. 이 문제는 p-value를 반올림해 돌려줘요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(movies.csv)에서 평점이 결측이 아닌 영화는 모두 몇 편일까요?",
+     "a": "1410",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [int(df[\"rating\"].notna().sum())]",
+     "explain": "df[\"rating\"].notna().sum()으로 셀 수 있어요. True를 1로 세어 더하기 때문이에요. 이 영화들만 두 집단으로 나누어 검정해요."
+    },
+    {
+     "id": "s5",
+     "kind": "mcq",
+     "q": "검정 결과 p-value가 0.05보다 크게 나왔다면, 결과를 바르게 말한 것은?",
+     "options": [
+      "2010년 이후 영화의 평점이 더 높다",
+      "2010년 이전 영화의 평점이 더 높다",
+      "두 집단의 영화 수가 같다",
+      "2010년 전후 영화의 평점 평균에 차이가 있다고 말할 수 없다"
+     ],
+     "answer": 3,
+     "explain": "p-value가 유의수준 0.05보다 크면 귀무가설(평균이 같다)을 버리지 못해요. 그래서 '차이가 있다고 말할 수 없다'고 판단해요."
+    }
+   ],
+   "explain": "먼저 df[\"rating\"].notna()로 평점이 있는 영화만 남겨야 ttest_ind가 nan을 내지 않아요. 2010년 미만은 <, 이상은 >=로 나누고, stat, p 중 p를 round(p, 4)로 반올림해요. 결측을 빼지 않으면 p-value가 nan이 되는 것이 흔한 실수예요."
+  },
+  {
+   "id": "d2-t16-c",
+   "version": 2,
+   "title": "회원과 비회원의 별점 t 통계량",
+   "statement": "카페 주문 데이터에서 별점(rating)이 결측인 주문을 빼고, 회원(member가 Y) 주문과 비회원(member가 Y가 아닌) 주문의 별점 평균을 독립 2표본 t-검정으로 비교하려고 합니다. 회원의 별점을 첫 번째 집단, 비회원의 별점을 두 번째 집단으로 하여 검정했을 때의 t 통계량(검정 통계량)을 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 별점이 결측인 행은 dropna 함수로 제외하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.",
+   "answerFormat": "1.23",
+   "data": {
+    "files": [
+     "cafe_orders.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.⟦1⟧(subset=[\"rating\"])\nmember = df_sub.loc[df_sub[\"member\"] == \"Y\", \"rating\"]\nguest = df_sub.loc[df_sub[\"member\"] ⟦2⟧ \"Y\", \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(⟦3⟧, guest)\n    answer = round(⟦4⟧, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "dropna"
+    },
+    {
+     "answer": "!="
+    },
+    {
+     "answer": "member"
+    },
+    {
+     "answer": "stat"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndf_sub = df.dropna(subset=[\"rating\"])\nmember = df_sub.loc[df_sub[\"member\"] == \"Y\", \"rating\"]\nguest = df_sub.loc[df_sub[\"member\"] != \"Y\", \"rating\"]\n\ndef solution():\n    stat, p = ttest_ind(member, guest)\n    answer = round(stat, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 9.77
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 8.4
+    },
+    {
+     "data": 2,
+     "expected": 7.05
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`df.dropna(subset=[\"rating\"])`는 어떤 일을 할까요?",
+     "options": [
+      "어느 열이든 빈 값이 하나라도 있는 행을 모두 지운다",
+      "rating 열을 통째로 지운다",
+      "rating 열이 빈 행만 지운다",
+      "빈 별점을 0으로 바꾼다"
+     ],
+     "answer": 2,
+     "explain": "subset에 적은 열만 보고, 그 열이 빈 행을 지운 새 표를 돌려줘요. df.loc[df[\"rating\"].notna(), ]로 고른 것과 결과가 같아요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "작은 표로 평균 비교",
+     "prompt": "주문 7건의 (member, rating)이 (Y, 5), (N, 3), (Y, 빈 값), (N, 4), (Y, 4), (N, 빈 값), (N, 2)예요. 빈 별점을 뺀 뒤 집단마다 주문 수와 별점 평균을 채우고, 평균의 차를 구해 보세요.",
+     "columns": [
+      "집단",
+      "주문 수",
+      "별점 평균"
+     ],
+     "rows": [
+      [
+       "회원(Y)",
+       {
+        "a": "2"
+       },
+       {
+        "a": "4.5"
+       }
+      ],
+      [
+       "비회원(N)",
+       {
+        "a": "3"
+       },
+       {
+        "a": "3.0",
+        "alts": [
+         "3"
+        ]
+       }
+      ],
+      [
+       "평균의 차(회원 − 비회원)",
+       "-",
+       {
+        "a": "1.5"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import numpy as np\n    import pandas as pd\n    t = pd.DataFrame({\"member\": [\"Y\", \"N\", \"Y\", \"N\", \"Y\", \"N\", \"N\"], \"rating\": [5, 3, np.nan, 4, 4, np.nan, 2]})\n    t = t.dropna(subset=[\"rating\"])\n    m = t.loc[t[\"member\"] == \"Y\", \"rating\"]\n    g = t.loc[t[\"member\"] != \"Y\", \"rating\"]\n    return [len(m), float(m.mean()), len(g), float(g.mean()), float(m.mean() - g.mean())]",
+     "explain": "빈 별점 2건을 빼면 회원 2건(5, 4), 비회원 3건(3, 4, 2)이 남아요. 회원 평균이 1.5점 더 높으니, 회원을 첫 번째로 넣으면 t 통계량은 양수가 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "ttest_ind(회원 별점, 비회원 별점)의 t 통계량(stat)이 양수(+)라면 무엇을 뜻할까요?",
+     "options": [
+      "비회원의 별점 평균이 회원보다 높다",
+      "회원의 별점 평균이 비회원보다 높다",
+      "p-value가 0.05보다 작다",
+      "두 집단의 주문 수가 같다"
+     ],
+     "answer": 1,
+     "explain": "t 통계량은 (첫 번째 집단 평균 − 두 번째 집단 평균)을 흩어진 정도로 나눈 값이에요. 첫 번째 집단의 평균이 크면 양수, 작으면 음수가 되고, 0에서 멀수록 차이가 뚜렷해요."
+    },
+    {
+     "id": "s4",
+     "kind": "mcq",
+     "q": "문제에서 말한 부호대로 t 통계량을 얻으려면 ttest_ind에 두 집단을 어떤 차례로 넣어야 할까요?",
+     "options": [
+      "비회원 별점을 먼저, 회원 별점을 나중에",
+      "차례는 상관없다(부호도 늘 같다)",
+      "두 집단을 합친 별점 하나만 넣는다",
+      "회원 별점을 먼저, 비회원 별점을 나중에"
+     ],
+     "answer": 3,
+     "explain": "문제에서 회원을 첫 번째 집단으로 정했어요. 차례를 바꾸면 p-value는 같지만 t 통계량의 부호가 반대로 나와요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "예시 데이터(cafe_orders.csv)에서 별점이 결측이 아닌 비회원 주문(member가 Y가 아님)은 몇 건일까요?",
+     "a": "1033",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"cafe_orders.csv\")\n    return [int(((df[\"rating\"].notna()) & (df[\"member\"] != \"Y\")).sum())]",
+     "explain": "비회원은 member가 Y가 아닌 주문이라 != \"Y\"로 골라요. 조건 두 개를 &로 묶어 세면 돼요."
+    }
+   ],
+   "explain": "dropna(subset=[\"rating\"])로 별점이 빈 주문을 먼저 빼요. 비회원은 member != \"Y\"로 고르고, ttest_ind(member, guest)처럼 회원을 첫 번째로 넣어야 t 통계량의 부호가 문제와 맞아요. 이번에는 p가 아니라 stat을 round(stat, 2)로 돌려줘요."
+  },
+  {
+   "id": "d2-t16-d",
+   "version": 2,
+   "title": "해마다 개봉한 영화 수 비교",
+   "statement": "영화 데이터로 해마다 개봉한 영화 수가 2010년을 기준으로 달라졌는지 알아보려고 합니다. 개봉 연도(release_year)별 영화 수를 구한 뒤, 2010년 이전(2009년까지) 연도들의 영화 수를 첫 번째 집단, 2010년부터 최근까지 연도들의 영화 수를 두 번째 집단으로 하여 독립 2표본 t-검정의 t 통계량을 구합니다.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 t 통계량을 반올림하여 소수점 둘째 자리까지 반환하도록 하시오.\n\n빈칸을 채워 전체 코드를 완성해 주세요.",
+   "answerFormat": "1.23",
+   "data": {
+    "files": [
+     "movies.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ncnt = df[\"release_year\"].⟦1⟧()\nbefore = cnt[cnt.index < 2010]\nafter = cnt[cnt.index ⟦2⟧ 2010]\n\ndef solution():\n    stat, p = ⟦3⟧(before, after)\n    answer = round(stat, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"movies.csv\")\n\ncnt = df[\"release_year\"].value_counts()\nbefore = cnt[cnt.index < 2010]\nafter = cnt[cnt.index >= 2010]\n\ndef solution():\n    stat, p = ttest_ind(before, after)\n    answer = round(stat, 2)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 1.2
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": -0.5
+    },
+    {
+     "data": 2,
+     "expected": -1.8
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "table",
+     "prompt": "개봉 연도만 적은 작은 예 `y = pd.Series([2008, 2010, 2008, 2011, 2010, 2008])`로 연습해요. `y.value_counts()`의 결과를 채워 보세요.",
+     "columns": [
+      "연도(이름표)",
+      "영화 수"
+     ],
+     "rows": [
+      [
+       "2008",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "2010",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "2011",
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "import pandas as pd\ny = pd.Series([2008, 2010, 2008, 2011, 2010, 2008])\ndef answers():\n    vc = y.value_counts()\n    return [int(vc[2008]), int(vc[2010]), int(vc[2011])]",
+     "explain": "value_counts()는 연도마다 몇 번 나왔는지 세어요. 이름표(index)가 연도, 값이 그해 영화 수인 Series가 돼요.",
+     "title": "연도별로 세기"
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "`cnt`의 이름표(index)는 연도예요. 2010년부터 최근까지의 연도만 고르는 조건은 무엇일까요?",
+     "options": [
+      "`cnt.index >= 2010`",
+      "`cnt.index > 2010`",
+      "`cnt >= 2010`"
+     ],
+     "answer": 0,
+     "explain": "2010년을 포함해야 하므로 >= 를 써요. `cnt >= 2010`은 연도가 아니라 영화 수(값)를 비교해서 틀려요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`stat, p = ttest_ind(before, after)`에서 stat과 p는 무엇일까요?",
+     "options": [
+      "t 통계량과 p-value",
+      "두 집단의 평균",
+      "두 집단의 개수"
+     ],
+     "answer": 0,
+     "explain": "ttest_ind는 t 통계량과 p-value를 차례로 돌려줘요. 이 문제는 t 통계량(stat)을 답해요."
+    }
+   ],
+   "explain": "value_counts()로 연도별 영화 수를 세면 이름표가 연도인 Series가 돼요. 이름표로 2010년 이전과 이후를 나눈 뒤 ttest_ind로 t 통계량을 구해요.",
+   "blanks": [
+    {
+     "answer": "value_counts"
+    },
+    {
+     "answer": ">="
+    },
+    {
+     "answer": "ttest_ind"
+    }
+   ]
+  },
+  {
+   "id": "d2-t16-e",
+   "version": 2,
+   "title": "3학년 동아리와 과학 점수",
+   "statement": "학생 성적 데이터에서 3학년(grade가 3)이면서 과학 점수(science)가 결측이 아닌(결시하지 않은) 학생만 고릅니다. 이 학생들을 동아리가 있는 학생(club이 결측 아님)과 동아리가 없는 학생(club이 결측)으로 나누어, 과학 점수 평균에 차이가 있는지 독립 2표본 t-검정으로 알아보려고 합니다. 동아리가 있는 학생의 과학 점수를 첫 번째 집단, 없는 학생의 과학 점수를 두 번째 집단으로 하여 p-value를 구합니다. 빈칸을 채워 코드를 완성해 주세요.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ t-검정은 scipy.stats의 ttest_ind 함수를 기본 설정으로 사용하시오.\n※ 정답은 사용자 정의 함수 solution()을 통하여 반환되도록 하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 정답은 반올림하여 소수점 넷째 자리까지 반환하도록 하시오.",
+   "answerFormat": "0.1234",
+   "data": {
+    "files": [
+     "student_scores.csv"
+    ]
+   },
+   "code": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf_sub = df.loc[(df[\"grade\"] == ⟦1⟧) ⟦2⟧ (df[\"science\"].⟦3⟧()), ]\nclub_yes = df_sub.loc[df_sub[\"club\"].notna(), \"science\"]\nclub_no = df_sub.loc[df_sub[\"club\"].⟦4⟧(), \"science\"]\n\ndef solution():\n    stat, p = ttest_ind(club_yes, club_no)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "blanks": [
+    {
+     "answer": "3"
+    },
+    {
+     "answer": "&"
+    },
+    {
+     "answer": "notna"
+    },
+    {
+     "answer": "isna"
+    }
+   ],
+   "solution": "import pandas as pd\nfrom scipy.stats import ttest_ind\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndf_sub = df.loc[(df[\"grade\"] == 3) & (df[\"science\"].notna()), ]\nclub_yes = df_sub.loc[df_sub[\"club\"].notna(), \"science\"]\nclub_no = df_sub.loc[df_sub[\"club\"].isna(), \"science\"]\n\ndef solution():\n    stat, p = ttest_ind(club_yes, club_no)\n    answer = round(p, 4)\n    print(\"solution 함수의 반환 값은 \" + str(answer) + \"입니다.\")\n    return answer",
+   "examples": [
+    {
+     "data": 0,
+     "expected": 0.2224
+    }
+   ],
+   "tests": [
+    {
+     "data": 1,
+     "expected": 0.0288
+    },
+    {
+     "data": 2,
+     "expected": 0.8631
+    }
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "이 문제에서 t-검정으로 비교하는 두 집단은?",
+     "options": [
+      "3학년 학생과 다른 학년 학생",
+      "과학 시험을 본 학생과 결시한 학생",
+      "3학년이면서 과학 점수가 있는 학생 가운데 동아리가 있는 학생과 없는 학생",
+      "학년과 상관없이 동아리가 있는 학생 전체와 없는 학생 전체"
+     ],
+     "answer": 2,
+     "explain": "먼저 두 조건(3학년, 과학 점수 있음)으로 학생을 고르고, 그 안에서 club이 결측인지 아닌지로 나눠요. 이 데이터에서 club이 비어 있으면 동아리가 없다는 뜻이에요."
+    },
+    {
+     "id": "s2",
+     "kind": "mcq",
+     "q": "pandas에서 두 조건을 '그리고'로 묶는 바른 식은?",
+     "options": [
+      "df[\"grade\"] == 3 and df[\"science\"].notna()",
+      "(df[\"grade\"] == 3) & (df[\"science\"].notna())",
+      "(df[\"grade\"] == 3) | (df[\"science\"].notna())",
+      "df[\"grade\"] == 3 & df[\"science\"].notna()"
+     ],
+     "answer": 1,
+     "explain": "조건 열끼리는 and 대신 &(그리고), |(또는)를 쓰고, 조건마다 괄호로 감싸요. and를 쓰면 오류가 나고, 괄호가 없으면 &가 먼저 계산되어 엉뚱한 식이 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "table",
+     "title": "작은 표로 고르고 나누기",
+     "prompt": "학생 6명의 학년·동아리·과학 점수예요(NaN은 빈 값). df_sub에 남는지(3학년이면서 과학 점수 있음)와 들어가는 집단(있음: 동아리 있음, 없음: 동아리 없음, 제외: df_sub에 없음)을 채워 보세요.",
+     "columns": [
+      "grade",
+      "club",
+      "science",
+      "df_sub에 남나?",
+      "집단"
+     ],
+     "rows": [
+      [
+       "3",
+       "sports",
+       "72",
+       {
+        "a": "True"
+       },
+       {
+        "a": "있음"
+       }
+      ],
+      [
+       "2",
+       "art",
+       "80",
+       {
+        "a": "False"
+       },
+       {
+        "a": "제외"
+       }
+      ],
+      [
+       "3",
+       "NaN",
+       "65",
+       {
+        "a": "True"
+       },
+       {
+        "a": "없음"
+       }
+      ],
+      [
+       "3",
+       "music",
+       "NaN",
+       {
+        "a": "False"
+       },
+       {
+        "a": "제외"
+       }
+      ],
+      [
+       "1",
+       "NaN",
+       "50",
+       {
+        "a": "False"
+       },
+       {
+        "a": "제외"
+       }
+      ],
+      [
+       "3",
+       "NaN",
+       "58",
+       {
+        "a": "True"
+       },
+       {
+        "a": "없음"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import numpy as np\n    import pandas as pd\n    t = pd.DataFrame({\"grade\": [3, 2, 3, 3, 1, 3], \"club\": [\"sports\", \"art\", np.nan, \"music\", np.nan, np.nan], \"science\": [72, 80, 65, np.nan, 50, 58]})\n    keep = (t[\"grade\"] == 3) & (t[\"science\"].notna())\n    out = []\n    for k, c in zip(keep, t[\"club\"].notna()):\n        out += [bool(k), (\"있음\" if c else \"없음\") if k else \"제외\"]\n    return out",
+     "explain": "과학 점수가 빈 학생(결시)은 동아리가 있어도 빼요. 남은 학생만 club.notna()면 '있음', club.isna()면 '없음'으로 나눠요."
+    },
+    {
+     "id": "s4",
+     "kind": "short",
+     "q": "예시 데이터(student_scores.csv)에서 3학년이면서 과학 점수가 결측이 아닌 학생은 몇 명일까요?",
+     "a": "310",
+     "alts": [],
+     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"student_scores.csv\")\n    return [int(((df[\"grade\"] == 3) & (df[\"science\"].notna())).sum())]",
+     "explain": "조건 두 개를 &로 묶은 True/False 열을 sum()하면 행 수가 나와요. 이 학생들이 두 집단으로 나뉘어요."
+    },
+    {
+     "id": "s5",
+     "kind": "table",
+     "title": "p-value로 판단하기",
+     "prompt": "유의수준 0.05에서는 p-value가 0.05보다 작을 때 귀무가설(두 평균이 같다)을 버리고 '차이 있음'으로, 아니면 '차이 없음'으로 판단해요. 표를 채워 보세요.",
+     "columns": [
+      "p-value",
+      "p < 0.05",
+      "판단"
+     ],
+     "rows": [
+      [
+       "0.003",
+       {
+        "a": "True"
+       },
+       {
+        "a": "차이 있음"
+       }
+      ],
+      [
+       "0.21",
+       {
+        "a": "False"
+       },
+       {
+        "a": "차이 없음"
+       }
+      ],
+      [
+       "0.049",
+       {
+        "a": "True"
+       },
+       {
+        "a": "차이 있음"
+       }
+      ],
+      [
+       "0.65",
+       {
+        "a": "False"
+       },
+       {
+        "a": "차이 없음"
+       }
+      ]
+     ],
+     "check": "def answers():\n    out = []\n    for p in [0.003, 0.21, 0.049, 0.65]:\n        out += [p < 0.05, \"차이 있음\" if p < 0.05 else \"차이 없음\"]\n    return out",
+     "explain": "p-value는 '정말 차이가 없을 때 지금만큼 큰 차이가 우연히 나올 확률'이에요. 이 확률이 0.05보다 작을 만큼 드물면 우연으로 보기 어렵다고 판단해요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "동아리가 없는 학생(club이 빈 값)을 고르는 식으로 알맞은 것은?",
+     "options": [
+      "df_sub[\"club\"].notna()",
+      "df_sub[\"club\"] == \"없음\"",
+      "df_sub[\"club\"] == 0",
+      "df_sub[\"club\"].isna()"
+     ],
+     "answer": 3,
+     "explain": "빈 값은 글자 '없음'이나 숫자 0이 아니라 NaN이라서 ==로는 찾을 수 없어요. isna()는 빈 칸에서 True, notna()는 값이 있는 칸에서 True예요."
+    }
+   ],
+   "explain": "(조건1) & (조건2)로 3학년이면서 과학 점수가 있는 학생을 고르고, club.notna()와 club.isna()로 두 집단을 나눠요. stat, p = ttest_ind(...) 뒤 round(p, 4)를 돌려줘요. 과학 점수 결측을 빼지 않으면 p-value가 nan이 되니 조심해요."
+  }
+ ]
+}

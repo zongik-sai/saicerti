@@ -1,948 +1,1063 @@
 {
  "course": "d2",
  "type": 5,
- "typeTitle": "집계해서 그래프 그리기",
- "kind": "write",
+ "typeTitle": "데이터 합치기",
+ "kind": "choice",
+ "area": "A2",
  "skills": [
-  "구간 열 만들기(값 // 단위 * 단위)",
-  "value_counts·sort_index",
-  "groupby·sum",
-  "plot(kind=\"bar\")",
-  "plt.show()"
+  "concat axis=0·1",
+  "인덱스·열 이름 맞추기",
+  "ignore_index",
+  "merge on·how"
  ],
- "intro": "자료를 구간(10점 단위, 5년 단위 등)으로 묶은 새 열을 만들고, 구간별 개수나 합계를 세어 막대그래프로 그려요. `값 // 단위 * 단위`, value_counts·groupby, sort_index, plot(kind=\"bar\")와 plt.show()를 연습해요.",
+ "intro": "`pd.concat()`으로 표를 아래·옆으로 이어 붙이고, `pd.merge()`로 키 열을 기준으로 합칠 때 결과의 모양과 NaN이 생기는 까닭을 묻는 객관식이에요.",
+ "concept": {
+  "text": "`pd.concat()`은 아래로(axis=0) 붙일 때 열 이름을, 옆으로(axis=1) 붙일 때 인덱스를 맞춰 붙여요. 짝이 없는 칸은 NaN(값 없음)이 돼요. `pd.merge()`는 키 열의 값이 같은 행끼리 합치고, how로 짝 없는 행을 남길지 정해요.",
+  "table": {
+   "head": [
+    "코드",
+    "붙이는 방향",
+    "맞추는 기준"
+   ],
+   "rows": [
+    [
+     "`pd.concat([a, b])`",
+     "아래로",
+     "열 이름"
+    ],
+    [
+     "`pd.concat([a, b], axis=1)`",
+     "옆으로",
+     "인덱스"
+    ],
+    [
+     "`pd.merge(a, b, on=\"id\")`",
+     "옆으로",
+     "id 열의 값"
+    ]
+   ]
+  },
+  "saiedu": {
+   "unit": 7,
+   "title": "그룹 집계와 데이터 결합"
+  }
+ },
  "problems": [
   {
    "id": "d2-t05-a",
-   "version": 1,
-   "title": "수학 점수 구간별 학생 수",
-   "statement": "어느 고등학교의 학생 성적 데이터에서 수학 점수가 어떻게 퍼져 있는지 보려고 합니다. 수학 점수(math)를 10점 단위로 묶은 math_bin 변수를 `df[\"math\"] // 10 * 10`으로 만들고(예: 57점 → 50, 100점 → 100), math_bin 값별 학생 수를 막대그래프로 시각화하시오.\n\n- 막대 하나가 math_bin 값 하나이고, 막대 높이는 그 구간에 속한 학생 수입니다.\n- x축은 math_bin 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"student_scores.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
-   "data": {
-    "files": [
-     "student_scores.csv"
+   "version": 2,
+   "title": "아래로 붙인 표의 크기",
+   "statement": "1학기 독서 기록 표 `s1`(4행, 열 `name`·`books`)과 2학기 독서 기록 표 `s2`(3행, 열 `name`·`books`)가 있습니다. 두 표의 열 이름은 같습니다.\n\n`total = pd.concat([s1, s2])`를 실행한 결과 `total.shape`는 무엇입니까?",
+   "choice": {
+    "options": [
+     "`(7, 2)`",
+     "`(4, 4)`",
+     "`(2, 7)`",
+     "`(7, 4)`"
     ],
-    "plot": true
+    "answer": 0,
+    "why": [
+     "아래로(axis=0) 이어 붙이면 행이 4 + 3 = 7개가 되고, 열 이름이 같아 열은 그대로 2개예요(정답).",
+     "옆으로(axis=1) 붙였을 때처럼 열이 늘어난 모양이에요. concat의 기본 방향은 아래(axis=0)예요.",
+     "shape는 (행 수, 열 수) 순서예요. 행과 열이 바뀌었어요.",
+     "열 이름이 같아 같은 열끼리 맞춰 붙으므로 열이 4개로 늘지 않아요."
+    ]
    },
-   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
-   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"student_scores.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"math_bin\"] = df[\"math\"] // 10 * 10\n    counts = df[\"math_bin\"].value_counts().sort_index()\n    print(counts)\n    counts.plot(kind=\"bar\")\n    plt.show()",
-   "examples": [
-    {
-     "data": 0,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "10",
-       "20",
-       "30",
-       "40",
-       "50",
-       "60",
-       "70",
-       "80",
-       "90",
-       "100"
-      ],
-      "y": [
-       2,
-       13,
-       43,
-       100,
-       154,
-       199,
-       207,
-       102,
-       57,
-       23
-      ]
-     }
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "10",
-       "20",
-       "30",
-       "40",
-       "50",
-       "60",
-       "70",
-       "80",
-       "90",
-       "100"
-      ],
-      "y": [
-       4,
-       12,
-       38,
-       96,
-       145,
-       194,
-       201,
-       107,
-       46,
-       17
-      ]
-     }
-    },
-    {
-     "data": 2,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "10",
-       "20",
-       "30",
-       "40",
-       "50",
-       "60",
-       "70",
-       "80",
-       "90",
-       "100"
-      ],
-      "y": [
-       3,
-       13,
-       31,
-       97,
-       164,
-       228,
-       208,
-       120,
-       51,
-       25
-      ]
-     }
-    }
-   ],
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "`//`는 나눈 몫만 남기는 나눗셈(소수점 아래를 버림)이에요. `57 // 10 * 10`의 값은 무엇일까요?",
+     "q": "`pd.concat([s1, s2])`처럼 axis를 쓰지 않으면 표를 어느 방향으로 붙일까요?",
      "options": [
-      "5",
-      "50",
-      "57",
-      "60"
-     ],
-     "answer": 1,
-     "explain": "57 // 10은 몫 5이고, 5 × 10 = 50이에요. 그래서 50~59점은 모두 50이라는 같은 구간 값이 돼요."
-    },
-    {
-     "id": "s2",
-     "kind": "table",
-     "title": "점수를 구간 값으로",
-     "prompt": "학생 6명의 수학 점수를 `math // 10 * 10`으로 바꾼 math_bin 값을 채워 보세요.",
-     "columns": [
-      "math",
-      "math_bin"
-     ],
-     "rows": [
-      [
-       "57",
-       {
-        "a": "50"
-       }
-      ],
-      [
-       "63",
-       {
-        "a": "60"
-       }
-      ],
-      [
-       "68",
-       {
-        "a": "60"
-       }
-      ],
-      [
-       "90",
-       {
-        "a": "90"
-       }
-      ],
-      [
-       "100",
-       {
-        "a": "100"
-       }
-      ],
-      [
-       "49",
-       {
-        "a": "40"
-       }
-      ]
-     ],
-     "check": "def answers():\n    return [x // 10 * 10 for x in [57, 63, 68, 90, 100, 49]]",
-     "explain": "63점과 68점은 둘 다 60이 되어 같은 막대에 들어가요. 100점은 100 // 10 * 10 = 100이라 100 구간 막대가 따로 생겨요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "math_bin별 학생 수를 math_bin 오름차순으로 얻으려고 해요. 알맞은 코드는?",
-     "options": [
-      "`df[\"math_bin\"].value_counts().sort_index()`",
-      "`df[\"math_bin\"].value_counts()`",
-      "`df[\"math_bin\"].sum()`",
-      "`df[\"math_bin\"].sort_values()`"
+      "아래로(axis=0)",
+      "옆으로(axis=1)",
+      "붙이지 않고 오류가 난다"
      ],
      "answer": 0,
-     "explain": "value_counts()는 값마다 몇 번 나왔는지(개수) 세어 주지만, 개수가 많은 값부터 보여 줘요. sort_index()를 붙여야 구간 값(인덱스) 순서가 돼요. sum()은 모두 더한 수 하나이고, sort_values()는 열의 값을 늘어놓기만 해요."
-    },
-    {
-     "id": "s4",
-     "kind": "short",
-     "q": "예시 데이터(student_scores.csv)에서 100점을 받아 math_bin이 100인 학생은 몇 명일까요? 그래프 맨 오른쪽 막대의 높이예요.",
-     "a": "23",
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"student_scores.csv\")\n    return [int((df[\"math\"] // 10 * 10 == 100).sum())]",
-     "explain": "`(df[\"math\"] // 10 * 10 == 100).sum()`처럼 조건의 True 개수를 더해도 되고, 그래프를 그리기 전에 print(counts)로 확인해도 돼요."
-    },
-    {
-     "id": "s5",
-     "kind": "mcq",
-     "q": "구간별 학생 수가 담긴 Series `counts`로 세로 막대그래프를 그리는 코드는?",
-     "options": [
-      "`counts.plot(kind=\"barh\")`",
-      "`counts.plot(kind=\"line\")`",
-      "`counts.plot(kind=\"bar\")`",
-      "`counts.plot(kind=\"pie\")`"
-     ],
-     "answer": 2,
-     "explain": "kind=\"bar\"는 세로 막대, \"barh\"는 가로 막대(h는 horizontal, 가로), \"line\"은 선 그래프, \"pie\"는 원그래프예요. 그린 뒤 plt.show()로 화면에 보여 줘요."
+     "explain": "concat의 기본값은 axis=0이라 표를 아래로 이어 붙여요. 옆으로 붙이려면 axis=1을 써요."
     }
    ],
-   "explain": "`값 // 10 * 10`은 값을 10 단위 구간의 시작 값으로 바꿔 줘요. value_counts()로 구간마다 개수를 세고 sort_index()로 구간 순서를 맞춘 뒤 plot(kind=\"bar\")로 그려요. sort_index()를 빼면 개수가 많은 구간부터 놓여 x축 순서가 달라져요."
+   "explain": "`pd.concat()`은 axis를 쓰지 않으면 표를 아래로(axis=0) 이어 붙이고, 이름이 같은 열끼리 맞춰요. 열 이름이 서로 다르면 열이 늘고 짝이 없는 칸은 NaN이 돼요."
   },
   {
    "id": "d2-t05-b",
-   "version": 1,
-   "title": "5년 단위 개봉 영화 수",
-   "statement": "영화 데이터에서 시기별로 영화가 몇 편 개봉했는지 보려고 합니다. 개봉 연도(release_year)를 5년 단위로 묶은 period 변수를 만들고(예: 2003년 → 2000, 2015년 → 2015, 2019년 → 2015), period별 영화 수를 막대그래프로 시각화하시오.\n\n- 막대 하나가 period 값 하나이고, 막대 높이는 그 시기에 개봉한 영화 수(행의 개수)입니다.\n- x축은 period 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"movies.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
-   "data": {
-    "files": [
-     "movies.csv"
-    ],
-    "plot": true
-   },
-   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
-   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"movies.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"period\"] = df[\"release_year\"] // 5 * 5\n    counts = df[\"period\"].value_counts().sort_index()\n    print(counts)\n    counts.plot(kind=\"bar\")\n    plt.show()",
-   "examples": [
+   "version": 2,
+   "title": "옆으로 붙였더니 생긴 NaN",
+   "statement": "기온 표 `temp`와 습도 표 `hum`을 `pd.concat([temp, hum], axis=1)`로 옆으로 이어 붙였습니다. 두 표는 아래와 같고, 맨 왼쪽 열은 인덱스(행 이름표)입니다.\n\n{{fig:f1}}\n{{fig:f2}}\n\n그랬더니 결과가 4행이 되고 몇몇 칸에 `NaN`(값 없음)이 생겼습니다. 이렇게 된 까닭으로 가장 알맞은 것은 무엇입니까?",
+   "figures": [
     {
-     "data": 0,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "2000",
-       "2005",
-       "2010",
-       "2015",
-       "2020"
-      ],
-      "y": [
-       307,
-       320,
-       323,
-       259,
-       291
-      ]
-     }
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "2000",
-       "2005",
-       "2010",
-       "2015",
-       "2020"
-      ],
-      "y": [
-       298,
-       273,
-       290,
-       297,
-       292
-      ]
-     }
-    },
-    {
-     "data": 2,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "2000",
-       "2005",
-       "2010",
-       "2015",
-       "2020"
-      ],
-      "y": [
-       299,
-       289,
-       301,
-       336,
-       325
-      ]
-     }
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
+     "id": "f1",
      "kind": "table",
-     "title": "5년 단위로 묶기",
-     "prompt": "개봉 연도 5개를 `release_year // 5`와 `release_year // 5 * 5`로 계산한 값을 채워 보세요.",
-     "columns": [
-      "release_year",
-      "release_year // 5",
-      "release_year // 5 * 5"
+     "alt": "기온 표 temp입니다. 인덱스 0, 1, 2에 temp 값 12, 15, 9가 있습니다.",
+     "head": [
+      "인덱스",
+      "temp"
      ],
      "rows": [
       [
-       "2003",
-       {
-        "a": "400"
-       },
-       {
-        "a": "2000"
-       }
+       0,
+       12
       ],
       [
-       "2005",
-       {
-        "a": "401"
-       },
-       {
-        "a": "2005"
-       }
+       1,
+       15
       ],
       [
-       "2009",
-       {
-        "a": "401"
-       },
-       {
-        "a": "2005"
-       }
-      ],
-      [
-       "2014",
-       {
-        "a": "402"
-       },
-       {
-        "a": "2010"
-       }
-      ],
-      [
-       "2024",
-       {
-        "a": "404"
-       },
-       {
-        "a": "2020"
-       }
+       2,
+       9
       ]
      ],
-     "check": "def answers():\n    out = []\n    for y in [2003, 2005, 2009, 2014, 2024]:\n        out += [y // 5, y // 5 * 5]\n    return out",
-     "explain": "// 5는 \"5년 묶음이 몇 개 지났는지\"(몫)만 알려 줘요. 다시 5를 곱해야 2000, 2005처럼 구간의 첫 연도가 돼요. 2005~2009년은 모두 2005가 돼요."
+     "caption": "temp"
+    },
+    {
+     "id": "f2",
+     "kind": "table",
+     "alt": "습도 표 hum입니다. 인덱스 1, 2, 3에 hum 값 60, 55, 70이 있습니다.",
+     "head": [
+      "인덱스",
+      "hum"
+     ],
+     "rows": [
+      [
+       1,
+       60
+      ],
+      [
+       2,
+       55
+      ],
+      [
+       3,
+       70
+      ]
+     ],
+     "caption": "hum"
+    }
+   ],
+   "choice": {
+    "options": [
+     "두 표의 열 이름(`temp`, `hum`)이 서로 달라서",
+     "두 표의 인덱스가 서로 달라서, 같은 인덱스끼리 맞춰 붙였기 때문에",
+     "`axis=1`은 표를 아래로 이어 붙이는 방향이라서",
+     "두 표의 행 개수가 서로 달라서"
+    ],
+    "answer": 1,
+    "why": [
+     "옆으로 붙일 때 열 이름이 다른 것은 자연스러워요. 열이 하나씩 나란히 붙을 뿐이에요.",
+     "concat은 같은 인덱스끼리 한 줄로 맞춰요. 0은 temp에만, 3은 hum에만 있어 빈 칸이 NaN이 돼요(정답).",
+     "`axis=1`은 옆(열 방향)으로 붙여요. 아래로 붙이는 것은 `axis=0`(기본값)이에요.",
+     "두 표는 모두 3행이라 행 개수는 같아요. 어긋난 것은 인덱스 값이에요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "DataFrame의 **인덱스(index)**는 무엇일까요?",
+     "options": [
+      "각 행에 붙은 이름표(표 맨 왼쪽의 0, 1, 2…)예요",
+      "각 열의 이름(temp, hum)이에요",
+      "표에 든 값의 개수예요",
+      "표를 저장한 파일 이름이에요"
+     ],
+     "answer": 0,
+     "explain": "인덱스는 행마다 붙은 이름표예요. 처음 만들면 보통 0, 1, 2…지만, 행을 골라내거나 정렬하면 1, 2, 3처럼 달라질 수 있어요."
     },
     {
      "id": "s2",
      "kind": "mcq",
-     "q": "period를 만드는 식으로 알맞은 것은?",
+     "q": "`pd.concat([표1, 표2], axis=…)`에서 axis 값과 붙이는 방향이 바르게 짝지어진 것은?",
      "options": [
-      "`df[\"release_year\"] // 5`",
-      "`df[\"release_year\"] % 5`",
-      "`df[\"release_year\"] // 5 * 5`",
-      "`df[\"release_year\"] / 5 * 5`"
+      "axis=0은 아래로(행이 늘어요), axis=1은 옆으로(열이 늘어요)",
+      "axis=0은 옆으로, axis=1은 아래로 붙여요",
+      "axis=0과 axis=1 모두 아래로 붙여요",
+      "axis는 두 표를 붙이는 순서를 정해요"
      ],
-     "answer": 2,
-     "explain": "// 5만 하면 400, 401처럼 묶음 번호만 남아요. % 5는 나머지(0~4)이고, / 5 * 5는 소수점 아래를 버리지 않아 원래 연도로 돌아와요. // 5 * 5를 해야 구간의 첫 연도가 돼요."
+     "answer": 0,
+     "explain": "axis=0(기본값)은 표를 아래로 이어 행이 늘고, axis=1은 옆으로 이어 열이 늘어요. 옆으로 붙일 때는 같은 인덱스끼리 한 줄로 맞춰요."
     },
     {
      "id": "s3",
-     "kind": "mcq",
-     "q": "period별 영화 수를 period 오름차순으로 얻는 코드는?",
-     "options": [
-      "`df.groupby(\"period\")[\"audience\"].sum()`",
-      "`df[\"period\"].value_counts().sort_index()`",
-      "`df[\"period\"].value_counts().sort_values()`",
-      "`df[\"period\"].unique()`"
+     "kind": "table",
+     "title": "붙인 결과 채우기",
+     "prompt": "`pd.concat([temp, hum], axis=1)`의 결과를 인덱스마다 채워 보세요. 값이 없는 칸은 `NaN`이라고 써요.\n\n{{fig:f1}}\n{{fig:f2}}",
+     "columns": [
+      "인덱스",
+      "temp",
+      "hum"
      ],
-     "answer": 1,
-     "explain": "value_counts()가 period마다 행(영화)의 개수를 세고, sort_index()가 period 값 순서로 정렬해요. 첫 번째는 관객 수 합계, 세 번째는 개수가 적은 순서, 네 번째는 서로 다른 값 목록이에요."
+     "rows": [
+      [
+       "0",
+       {
+        "a": "12"
+       },
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "15"
+       },
+       {
+        "a": "60"
+       }
+      ],
+      [
+       "2",
+       {
+        "a": "9"
+       },
+       {
+        "a": "55"
+       }
+      ],
+      [
+       "3",
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
+       },
+       {
+        "a": "70"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    temp = pd.DataFrame({\"temp\": [12, 15, 9]}, index=[0, 1, 2])\n    hum = pd.DataFrame({\"hum\": [60, 55, 70]}, index=[1, 2, 3])\n    res = pd.concat([temp, hum], axis=1)\n    out = []\n    for i in res.index:\n        for c in [\"temp\", \"hum\"]:\n            v = res.loc[i, c]\n            out.append(\"NaN\" if pd.isna(v) else int(v))\n    return out",
+     "explain": "인덱스 0은 temp에만, 3은 hum에만 있어요. 상대 표에 없는 칸은 채울 값이 없어 NaN(결측치)이 돼요."
     },
     {
      "id": "s4",
      "kind": "short",
-     "q": "예시 데이터(movies.csv)에서 period가 2020인 영화(2020~2024년 개봉)는 몇 편일까요?",
-     "a": "291",
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"movies.csv\")\n    return [int((df[\"release_year\"] // 5 * 5 == 2020).sum())]",
-     "explain": "그래프 맨 오른쪽 막대의 높이예요. print(counts)로 구간별 개수를 먼저 확인하면 그래프가 맞는지 살피기 쉬워요."
+     "q": "이 결과 표에 `NaN`은 모두 몇 개일까요?",
+     "a": "2",
+     "check": "def answers():\n    import pandas as pd\n    temp = pd.DataFrame({\"temp\": [12, 15, 9]}, index=[0, 1, 2])\n    hum = pd.DataFrame({\"hum\": [60, 55, 70]}, index=[1, 2, 3])\n    return [int(pd.concat([temp, hum], axis=1).isna().sum().sum())]",
+     "explain": "인덱스 0의 hum 칸, 인덱스 3의 temp 칸 두 곳이에요. 인덱스가 서로 맞지 않는 행에서 NaN이 생겨요."
     }
    ],
-   "explain": "`연도 // 5 * 5`로 5년 단위 구간 열을 만들고, value_counts().sort_index()로 구간별 영화 수를 시기 순서대로 얻어 막대그래프로 그려요. 구간 단위(5년)를 10년으로 잘못 쓰거나 sort_index()를 빼면 막대가 달라져요."
+   "explain": "`pd.concat(..., axis=1)`은 두 표를 옆으로 붙이면서 같은 인덱스끼리 한 줄에 맞춰요. 인덱스가 서로 다르면 한쪽에만 있는 행이 생기고, 빈 칸은 NaN이 돼요. 그래서 붙이기 전에 두 표의 인덱스가 같은지 꼭 확인해요."
   },
   {
    "id": "d2-t05-c",
-   "version": 1,
-   "title": "시간대별 자전거 대여 건수",
-   "statement": "공공 자전거 대여 데이터에서 하루 중 어느 때에 자전거를 많이 빌리는지 보려고 합니다. 대여 시각(hour, 0~23)을 4시간 단위로 묶은 time_slot 변수를 만들고(0~3시 → 0, 4~7시 → 4, …, 20~23시 → 20), time_slot별 대여 건수를 막대그래프로 시각화하시오.\n\n- 데이터의 한 행이 대여 1건입니다. 막대 높이는 그 시간대의 대여 건수(행의 개수)입니다.\n- x축은 time_slot 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"bike_rentals.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
-   "data": {
-    "files": [
-     "bike_rentals.csv"
-    ],
-    "plot": true
-   },
-   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
-   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"bike_rentals.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"time_slot\"] = df[\"hour\"] // 4 * 4\n    counts = df[\"time_slot\"].value_counts().sort_index()\n    print(counts)\n    counts.plot(kind=\"bar\")\n    plt.show()",
-   "examples": [
+   "version": 2,
+   "title": "아래로 붙일 때 열 이름이 다르면",
+   "statement": "1반 성적 표 `c1`과 2반 성적 표 `c2`를 아래로 이어 붙이려 합니다. 1반은 수학(`math`)을, 2반은 영어(`eng`)를 기록해서 두 표의 열 이름이 서로 다릅니다.\n\n{{fig:f1}}\n{{fig:f2}}\n\n`res = pd.concat([c1, c2], ignore_index=True)`를 실행한 결과 `res`에 대한 설명으로 옳은 것은 무엇입니까?",
+   "figures": [
     {
-     "data": 0,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "0",
-       "4",
-       "8",
-       "12",
-       "16",
-       "20"
+     "id": "f1",
+     "kind": "table",
+     "alt": "1반 표 c1입니다. 인덱스 0~2, 열은 name, math이고 값은 (A, 70), (B, 85), (C, 90)입니다.",
+     "head": [
+      "인덱스",
+      "name",
+      "math"
+     ],
+     "rows": [
+      [
+       0,
+       "A",
+       70
       ],
-      "y": [
-       160,
-       423,
-       833,
-       312,
-       1008,
-       264
-      ]
-     }
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "0",
-       "4",
-       "8",
-       "12",
-       "16",
-       "20"
+      [
+       1,
+       "B",
+       85
       ],
-      "y": [
-       170,
-       399,
-       794,
-       304,
-       983,
-       250
+      [
+       2,
+       "C",
+       90
       ]
-     }
+     ],
+     "caption": "c1 (1반)"
     },
     {
-     "data": 2,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "0",
-       "4",
-       "8",
-       "12",
-       "16",
-       "20"
+     "id": "f2",
+     "kind": "table",
+     "alt": "2반 표 c2입니다. 인덱스 0~1, 열은 name, eng이고 값은 (D, 88), (E, 92)입니다.",
+     "head": [
+      "인덱스",
+      "name",
+      "eng"
+     ],
+     "rows": [
+      [
+       0,
+       "D",
+       88
       ],
-      "y": [
-       166,
-       412,
-       790,
-       356,
-       1117,
-       259
+      [
+       1,
+       "E",
+       92
       ]
-     }
+     ],
+     "caption": "c2 (2반)"
     }
    ],
+   "choice": {
+    "options": [
+     "`res.shape`는 `(5, 2)`이다.",
+     "`res`의 인덱스는 `0, 1, 2, 0, 1`이다.",
+     "`res.shape`는 `(5, 3)`이고, NaN은 2개이다.",
+     "`res.shape`는 `(5, 3)`이고, NaN은 5개이다."
+    ],
+    "answer": 3,
+    "why": [
+     "열 이름 name·math·eng가 모두 모여 열이 3개가 되므로 (5, 3)이에요.",
+     "`ignore_index=True`라서 인덱스를 0, 1, 2, 3, 4로 새로 매겨요.",
+     "1반 3행은 eng 칸이, 2반 2행은 math 칸이 비어 NaN은 2개가 아니라 5개예요.",
+     "5행 3열이고, 1반의 eng 3칸과 2반의 math 2칸이 NaN이라 모두 5개예요(정답)."
+    ]
+   },
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "4시간 단위 time_slot을 만드는 식은?",
+     "q": "`pd.concat([c1, c2])`처럼 `axis`를 쓰지 않으면 표를 어느 방향으로 붙일까요?",
      "options": [
-      "`df[\"hour\"] // 4 * 4`",
-      "`df[\"hour\"] // 4`",
-      "`df[\"hour\"] % 4`",
-      "`df[\"hour\"] * 4 // 4`"
+      "아래로 붙여 행이 늘어나요",
+      "옆으로 붙여 열이 늘어나요",
+      "두 표에 함께 있는 행만 남겨요",
+      "방향을 정하지 않아 오류가 나요"
      ],
      "answer": 0,
-     "explain": "// 4로 몫을 구한 뒤 4를 곱하면 0, 4, 8, …, 20이 돼요. // 4만 하면 0~5의 묶음 번호, % 4는 나머지, * 4 // 4는 원래 시각 그대로예요."
+     "explain": "axis의 기본값은 0이라 아래로 이어 붙여 행이 늘어요. 옆으로 붙이려면 axis=1을 써요."
     },
     {
      "id": "s2",
+     "kind": "mcq",
+     "q": "아래로 붙일 때 두 표의 **열 이름**이 서로 다르면 concat은 어떻게 할까요?",
+     "options": [
+      "두 표의 열 이름을 모두 모아 열을 만들고, 그 열이 없던 표의 칸은 NaN으로 채워요",
+      "두 표에 함께 있는 열만 남기고 나머지 열은 버려요",
+      "열 이름이 다르면 오류가 나서 붙이지 못해요",
+      "두 번째 표의 열 이름을 첫 번째 표에 맞춰 바꿔요"
+     ],
+     "answer": 0,
+     "explain": "concat은 기본으로 열 이름을 모두 합쳐요(join=\"outer\"). 아래로 붙일 때는 이름이 같은 열끼리 한 열에 맞추고, 한쪽 표에 없던 열의 칸은 NaN이 돼요."
+    },
+    {
+     "id": "s3",
+     "kind": "mcq",
+     "q": "`ignore_index=True`를 넣으면 결과의 인덱스는 어떻게 될까요?",
+     "options": [
+      "원래 인덱스를 버리고 0부터 차례로 새로 매겨요(0, 1, 2, 3, 4)",
+      "두 표의 원래 인덱스를 그대로 써요(0, 1, 2, 0, 1)",
+      "인덱스가 모두 NaN이 돼요",
+      "첫 번째 표의 인덱스만 남고 나머지 행은 빠져요"
+     ],
+     "answer": 0,
+     "explain": "ignore_index는 원래 인덱스를 무시하라는 뜻이에요. 넣지 않으면 0, 1, 2, 0, 1처럼 같은 이름표가 겹쳐요."
+    },
+    {
+     "id": "s4",
      "kind": "table",
-     "title": "대여 8건을 묶어 세기",
-     "prompt": "대여 시각이 7, 8, 9, 13, 17, 18, 18, 22시인 대여 8건을 time_slot으로 묶어, 시간대별 대여 건수를 세어 보세요.",
+     "title": "붙인 결과 따라가기",
+     "prompt": "`res = pd.concat([c1, c2], ignore_index=True)`의 결과를 채워 보세요. 값이 없는 칸은 `NaN`이라고 써요.\n\n{{fig:f1}}\n{{fig:f2}}",
      "columns": [
-      "time_slot",
-      "대여 건수"
+      "인덱스",
+      "name",
+      "math",
+      "eng"
      ],
      "rows": [
       [
-       "4",
+       "0",
+       "A",
        {
-        "a": "1"
+        "a": "70"
+       },
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
        }
       ],
       [
-       "8",
+       "1",
+       "B",
+       {
+        "a": "85"
+       },
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
+       }
+      ],
+      [
+       "2",
+       "C",
+       {
+        "a": "90"
+       },
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
+       }
+      ],
+      [
+       "3",
+       "D",
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
+       },
+       {
+        "a": "88"
+       }
+      ],
+      [
+       "4",
+       "E",
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
+       },
+       {
+        "a": "92"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    c1 = pd.DataFrame({\"name\": [\"A\", \"B\", \"C\"], \"math\": [70, 85, 90]})\n    c2 = pd.DataFrame({\"name\": [\"D\", \"E\"], \"eng\": [88, 92]})\n    res = pd.concat([c1, c2], ignore_index=True)\n    out = []\n    for i in res.index:\n        for k in [\"math\", \"eng\"]:\n            v = res.loc[i, k]\n            out.append(\"NaN\" if pd.isna(v) else int(v))\n    return out",
+     "explain": "1반 행(0~2)에는 eng 값이, 2반 행(3~4)에는 math 값이 없어서 NaN이 돼요."
+    },
+    {
+     "id": "s5",
+     "kind": "short",
+     "q": "`res.shape`는 무엇일까요? `(행 수, 열 수)` 모양으로 써 보세요.",
+     "a": "(5, 3)",
+     "check": "def answers():\n    import pandas as pd\n    c1 = pd.DataFrame({\"name\": [\"A\", \"B\", \"C\"], \"math\": [70, 85, 90]})\n    c2 = pd.DataFrame({\"name\": [\"D\", \"E\"], \"eng\": [88, 92]})\n    return [pd.concat([c1, c2], ignore_index=True).shape]",
+     "explain": "행은 3 + 2 = 5개, 열은 name·math·eng 3개예요. 열 이름이 하나만 겹쳐서 열이 늘었어요."
+    },
+    {
+     "id": "s6",
+     "kind": "short",
+     "q": "`res.isna().sum().sum()`(표 전체의 NaN 개수)은 얼마일까요?",
+     "a": "5",
+     "check": "def answers():\n    import pandas as pd\n    c1 = pd.DataFrame({\"name\": [\"A\", \"B\", \"C\"], \"math\": [70, 85, 90]})\n    c2 = pd.DataFrame({\"name\": [\"D\", \"E\"], \"eng\": [88, 92]})\n    return [int(pd.concat([c1, c2], ignore_index=True).isna().sum().sum())]",
+     "explain": "isna().sum()은 열마다 NaN 수(name 0, math 2, eng 3)를 세고, 한 번 더 sum()하면 표 전체 5개예요."
+    },
+    {
+     "id": "s7",
+     "kind": "table",
+     "title": "다른 방법으로 붙이면",
+     "prompt": "같은 표들을 다른 방법으로 붙인 결과의 shape와 NaN 개수를 채워 보세요. 옆으로(axis=1) 붙일 때는 인덱스끼리 맞춰요.",
+     "columns": [
+      "코드",
+      "shape",
+      "NaN 개수"
+     ],
+     "rows": [
+      [
+       "pd.concat([c1, c2], axis=1)",
+       {
+        "a": "(3, 4)"
+       },
        {
         "a": "2"
        }
       ],
       [
-       "12",
+       "pd.concat([c1, c1])",
        {
-        "a": "1"
-       }
-      ],
-      [
-       "16",
+        "a": "(6, 2)"
+       },
        {
-        "a": "3"
-       }
-      ],
-      [
-       "20",
-       {
-        "a": "1"
+        "a": "0"
        }
       ]
      ],
-     "check": "def answers():\n    hours = [7, 8, 9, 13, 17, 18, 18, 22]\n    return [sum(1 for h in hours if h // 4 * 4 == t) for t in [4, 8, 12, 16, 20]]",
-     "explain": "7시는 4 구간, 8·9시는 8 구간, 17·18·18시는 16 구간이에요. 이렇게 같은 구간 값끼리 세는 일을 value_counts()가 해 줘요."
-    },
-    {
-     "id": "s3",
-     "kind": "mcq",
-     "q": "`df[\"time_slot\"].value_counts()`를 정렬하지 않고 그대로 그리면 x축은 어떤 순서가 될까요?",
-     "options": [
-      "time_slot 값이 작은 것부터",
-      "대여 건수가 많은 것부터",
-      "데이터에 처음 나온 순서대로",
-      "time_slot 값이 큰 것부터"
-     ],
-     "answer": 1,
-     "explain": "value_counts()는 많이 나온 값부터 보여 줘요. 문제는 time_slot 오름차순이므로 sort_index()를 붙여 인덱스(구간 값) 순서로 바꿔야 해요."
-    },
-    {
-     "id": "s4",
-     "kind": "short",
-     "q": "예시 데이터(bike_rentals.csv)에서 가장 높은 막대의 time_slot 값은 무엇일까요?",
-     "a": "16",
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"bike_rentals.csv\")\n    return [int((df[\"hour\"] // 4 * 4).value_counts().idxmax())]",
-     "explain": "16 구간(16~19시)은 퇴근 시간이 들어 있어 대여가 가장 많아요. 그다음은 출근 시간이 든 8 구간이에요."
+     "check": "def answers():\n    import pandas as pd\n    c1 = pd.DataFrame({\"name\": [\"A\", \"B\", \"C\"], \"math\": [70, 85, 90]})\n    c2 = pd.DataFrame({\"name\": [\"D\", \"E\"], \"eng\": [88, 92]})\n    a = pd.concat([c1, c2], axis=1)\n    b = pd.concat([c1, c1])\n    return [a.shape, int(a.isna().sum().sum()), b.shape, int(b.isna().sum().sum())]",
+     "explain": "옆으로 붙이면 인덱스 0~2에 맞춰 열이 name·math·name·eng 4개가 되고, c2에 없는 인덱스 2의 두 칸이 NaN이에요. 열 이름이 같은 표끼리 아래로 붙이면 NaN이 생기지 않아요."
     }
    ],
-   "explain": "시각을 `hour // 4 * 4`로 4시간 구간 값으로 바꾼 열을 만들고, value_counts()로 구간마다 행 수(대여 건수)를 세요. sort_index()로 구간 순서를 맞춘 뒤 plot(kind=\"bar\")와 plt.show()로 그려요."
+   "explain": "`concat`은 기본으로 아래로 붙이면서 이름이 같은 열끼리 맞추고, 열 이름을 모두 모아요. 그래서 열은 name·math·eng 3개, 행은 5개가 되고, 각 반에 없던 과목 칸 5개가 NaN이에요. `ignore_index=True`라 인덱스는 0~4로 새로 매겨져요."
   },
   {
    "id": "d2-t05-d",
-   "version": 1,
-   "title": "시간대별 판매 수량 합계",
-   "statement": "카페 주문 데이터에서 시간대별로 메뉴가 몇 개 팔렸는지 보려고 합니다. 주문 시각(hour)을 2시간 단위로 묶은 slot 변수를 만들고(예: 8·9시 → 8, 10·11시 → 10), slot별 **판매 수량(qty)의 합계**를 막대그래프로 시각화하시오.\n\n- 한 주문(행)에서 같은 메뉴를 여러 개 살 수 있으므로, 주문 건수가 아니라 qty를 더한 값이 막대 높이입니다.\n- x축은 slot 값이 작은 것부터(오름차순) 놓습니다.\n\n※ 데이터는 \"cafe_orders.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
-   "data": {
-    "files": [
-     "cafe_orders.csv"
-    ],
-    "plot": true
-   },
-   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
-   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"cafe_orders.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"slot\"] = df[\"hour\"] // 2 * 2\n    total = df.groupby(\"slot\")[\"qty\"].sum()\n    print(total)\n    total.plot(kind=\"bar\")\n    plt.show()",
-   "examples": [
+   "version": 2,
+   "title": "이어 붙인 표에서 loc과 iloc",
+   "statement": "학교 매점 1층의 판매 기록 `a`(3행)와 2층의 판매 기록 `b`(2행)를 `t = pd.concat([a, b])`로 아래로 이어 붙였습니다. 두 표의 열은 모두 `item`, `qty`이고, 인덱스는 각각 0부터 매겨져 있습니다.\n\n{{fig:f1}}\n{{fig:f2}}\n\n다음 설명 중 옳은 것을 **모두** 고른 것은 무엇입니까?\n\nㄱ. `t.shape`는 `(5, 2)`이다.\nㄴ. `t.loc[1]`은 `a`의 두 번째 행 하나만 돌려준다.\nㄷ. `t.iloc[3]`은 `b`의 첫 번째 행이다.\nㄹ. `ignore_index=True`를 넣어 붙였다면, `t.loc[4]`와 `t.iloc[4]`는 같은 행이다.",
+   "figures": [
     {
-     "data": 0,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "8",
-       "10",
-       "12",
-       "14",
-       "16",
-       "18",
-       "20"
-      ],
-      "y": [
-       897,
-       370,
-       880,
-       313,
-       280,
-       497,
-       315
-      ]
-     }
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "8",
-       "10",
-       "12",
-       "14",
-       "16",
-       "18",
-       "20"
-      ],
-      "y": [
-       814,
-       318,
-       871,
-       288,
-       302,
-       491,
-       305
-      ]
-     }
-    },
-    {
-     "data": 2,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "8",
-       "10",
-       "12",
-       "14",
-       "16",
-       "18",
-       "20"
-      ],
-      "y": [
-       895,
-       359,
-       937,
-       345,
-       314,
-       552,
-       330
-      ]
-     }
-    }
-   ],
-   "steps": [
-    {
-     "id": "s1",
+     "id": "f1",
      "kind": "table",
-     "title": "건수와 합계 비교",
-     "prompt": "주문 6건의 (hour, qty)가 (8, 1), (9, 2), (10, 1), (12, 3), (13, 1), (13, 2)예요. slot별 주문 건수와 qty 합계를 채워 보세요.",
-     "columns": [
-      "slot",
-      "주문 건수",
-      "qty 합계"
+     "alt": "1층 판매 표 a입니다. 인덱스 0~2, 열은 item, qty이고 값은 (bread, 5), (milk, 3), (gimbap, 2)입니다.",
+     "head": [
+      "인덱스",
+      "item",
+      "qty"
      ],
      "rows": [
       [
-       "8",
+       0,
+       "bread",
+       5
+      ],
+      [
+       1,
+       "milk",
+       3
+      ],
+      [
+       2,
+       "gimbap",
+       2
+      ]
+     ],
+     "caption": "a (1층)"
+    },
+    {
+     "id": "f2",
+     "kind": "table",
+     "alt": "2층 판매 표 b입니다. 인덱스 0~1, 열은 item, qty이고 값은 (juice, 4), (bread, 6)입니다.",
+     "head": [
+      "인덱스",
+      "item",
+      "qty"
+     ],
+     "rows": [
+      [
+       0,
+       "juice",
+       4
+      ],
+      [
+       1,
+       "bread",
+       6
+      ]
+     ],
+     "caption": "b (2층)"
+    }
+   ],
+   "choice": {
+    "options": [
+     "ㄱ, ㄷ",
+     "ㄱ, ㄷ, ㄹ",
+     "ㄴ, ㄷ, ㄹ",
+     "ㄱ, ㄴ, ㄷ, ㄹ"
+    ],
+    "answer": 1,
+    "why": [
+     "ㄹ도 옳아요. 인덱스를 0~4로 새로 매기면 이름표 4와 자리 4가 같은 행이에요.",
+     "ㄱ·ㄷ·ㄹ은 옳고, ㄴ은 이름표 1이 두 번 있어 행 2개가 나오므로 틀려요(정답).",
+     "ㄱ도 옳고 ㄴ은 틀렸어요. 이름표가 1인 행이 a와 b에 하나씩 있어요.",
+     "ㄴ이 틀렸어요. `t.loc[1]`은 이름표가 1인 행을 모두(2개) 돌려줘요."
+    ]
+   },
+   "steps": [
+    {
+     "id": "s1",
+     "kind": "mcq",
+     "q": "`loc`과 `iloc`이 행을 찾는 기준으로 옳은 것은?",
+     "options": [
+      "loc은 인덱스 이름표로, iloc은 위에서부터 0, 1, 2…로 세는 자리로 찾아요",
+      "loc은 자리로, iloc은 인덱스 이름표로 찾아요",
+      "둘 다 인덱스 이름표로 찾아요",
+      "둘 다 위에서부터 센 자리로 찾아요"
+     ],
+     "answer": 0,
+     "explain": "loc은 이름표(label), iloc은 자리(위치)예요. 이름표가 0, 1, 2…로 자리와 같을 때는 차이가 안 보이지만, 이름표가 겹치거나 섞이면 결과가 달라져요."
+    },
+    {
+     "id": "s2",
+     "kind": "table",
+     "title": "붙인 표의 이름표와 자리",
+     "prompt": "`t = pd.concat([a, b])`에서 자리(iloc 번호)마다 인덱스 이름표(loc에 쓰는 값)와 item을 채워 보세요.\n\n{{fig:f1}}\n{{fig:f2}}",
+     "columns": [
+      "자리(iloc)",
+      "인덱스 이름표(loc)",
+      "item"
+     ],
+     "rows": [
+      [
+       "0",
+       {
+        "a": "0"
+       },
+       {
+        "a": "'bread'",
+        "alts": [
+         "bread"
+        ]
+       }
+      ],
+      [
+       "1",
+       {
+        "a": "1"
+       },
+       {
+        "a": "'milk'",
+        "alts": [
+         "milk"
+        ]
+       }
+      ],
+      [
+       "2",
        {
         "a": "2"
        },
        {
-        "a": "3"
+        "a": "'gimbap'",
+        "alts": [
+         "gimbap"
+        ]
        }
       ],
       [
-       "10",
+       "3",
+       {
+        "a": "0"
+       },
+       {
+        "a": "'juice'",
+        "alts": [
+         "juice"
+        ]
+       }
+      ],
+      [
+       "4",
        {
         "a": "1"
        },
        {
-        "a": "1"
-       }
-      ],
-      [
-       "12",
-       {
-        "a": "3"
-       },
-       {
-        "a": "6"
+        "a": "'bread'",
+        "alts": [
+         "bread"
+        ]
        }
       ]
      ],
-     "check": "def answers():\n    orders = [(8, 1), (9, 2), (10, 1), (12, 3), (13, 1), (13, 2)]\n    out = []\n    for s in [8, 10, 12]:\n        g = [q for h, q in orders if h // 2 * 2 == s]\n        out += [len(g), sum(g)]\n    return out",
-     "explain": "12 구간은 주문이 3건이지만 팔린 개수는 3 + 1 + 2 = 6개예요. 이 문제의 막대 높이는 주문 건수가 아니라 qty 합계예요."
-    },
-    {
-     "id": "s2",
-     "kind": "mcq",
-     "q": "이 문제에서 막대 높이로 알맞은 것은?",
-     "options": [
-      "slot별 주문 건수(행의 개수)",
-      "slot별 qty 합계",
-      "slot별 qty 평균",
-      "slot별 price 합계"
-     ],
-     "answer": 1,
-     "explain": "문제는 \"몇 개 팔렸는지\"를 물어요. 한 주문에 2개를 사면 qty가 2이므로, 행을 세지 않고 qty를 더해야 해요."
+     "check": "def answers():\n    import pandas as pd\n    a = pd.DataFrame({\"item\": [\"bread\", \"milk\", \"gimbap\"], \"qty\": [5, 3, 2]})\n    b = pd.DataFrame({\"item\": [\"juice\", \"bread\"], \"qty\": [4, 6]})\n    t = pd.concat([a, b])\n    out = []\n    for i in range(len(t)):\n        out += [t.index[i], t.iloc[i][\"item\"]]\n    return out",
+     "explain": "concat은 기본으로 원래 인덱스를 그대로 가져와서 이름표가 0, 1, 2, 0, 1이 돼요. 자리는 위에서부터 0~4로 하나씩이에요."
     },
     {
      "id": "s3",
-     "kind": "mcq",
-     "q": "slot별 qty 합계를 구하는 코드는?",
-     "options": [
-      "`df.groupby(\"slot\")[\"qty\"].count()`",
-      "`df[\"slot\"].value_counts()`",
-      "`df.groupby(\"qty\")[\"slot\"].sum()`",
-      "`df.groupby(\"slot\")[\"qty\"].sum()`"
-     ],
-     "answer": 3,
-     "explain": "groupby(\"slot\")은 slot 값이 같은 행끼리 묶고, [\"qty\"].sum()은 묶음마다 qty를 더해요. count()와 value_counts()는 행의 개수(주문 건수)를 세고, groupby(\"qty\")는 묶는 기준이 거꾸로예요."
+     "kind": "short",
+     "q": "`t.shape`는 무엇일까요? `(행 수, 열 수)` 모양으로 써 보세요.",
+     "a": "(5, 2)",
+     "check": "def answers():\n    import pandas as pd\n    a = pd.DataFrame({\"item\": [\"bread\", \"milk\", \"gimbap\"], \"qty\": [5, 3, 2]})\n    b = pd.DataFrame({\"item\": [\"juice\", \"bread\"], \"qty\": [4, 6]})\n    return [pd.concat([a, b]).shape]",
+     "explain": "a 3행 + b 2행 = 5행이고, 열 이름이 같아 열은 item·qty 2개예요(NaN도 생기지 않아요)."
     },
     {
      "id": "s4",
-     "kind": "mcq",
-     "q": "`df.groupby(\"slot\")[\"qty\"].sum()`의 결과는 어떤 순서로 나올까요?",
-     "options": [
-      "합계가 큰 slot부터",
-      "slot 값이 작은 것부터",
-      "데이터에 처음 나온 slot부터"
-     ],
-     "answer": 1,
-     "explain": "groupby는 기본으로 묶는 기준 값(slot)을 오름차순으로 정렬해 결과를 내요. 그래서 value_counts()와 달리 sort_index()를 붙이지 않아도 돼요(붙여도 결과는 같아요)."
+     "kind": "short",
+     "q": "`t.loc[1]`은 몇 개의 행을 돌려줄까요? 숫자로 써 보세요.",
+     "a": "2",
+     "check": "def answers():\n    import pandas as pd\n    a = pd.DataFrame({\"item\": [\"bread\", \"milk\", \"gimbap\"], \"qty\": [5, 3, 2]})\n    b = pd.DataFrame({\"item\": [\"juice\", \"bread\"], \"qty\": [4, 6]})\n    return [len(pd.concat([a, b]).loc[1])]",
+     "explain": "이름표 1은 a의 milk 행과 b의 bread 행, 두 곳에 있어요. loc은 이름표가 맞는 행을 모두 돌려주므로 2개(표 모양)가 나와요."
     },
     {
      "id": "s5",
-     "kind": "short",
-     "q": "예시 데이터(cafe_orders.csv)에서 slot이 20인 시간대(20·21시)의 판매 수량 합계는 몇 개일까요?",
-     "a": "315",
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"cafe_orders.csv\")\n    return [int(df.loc[df[\"hour\"] // 2 * 2 == 20, \"qty\"].sum())]",
-     "explain": "그래프 맨 오른쪽 막대의 높이예요. print(total)로 slot별 합계를 먼저 확인해 보세요."
+     "kind": "table",
+     "title": "같은 숫자, 다른 행",
+     "prompt": "`t`에서 각 코드의 결과를 채워 보세요. 값이 여러 개면 리스트로 써요.",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "t.iloc[1, 0]",
+       {
+        "a": "'milk'",
+        "alts": [
+         "milk"
+        ]
+       }
+      ],
+      [
+       "t.iloc[3, 0]",
+       {
+        "a": "'juice'",
+        "alts": [
+         "juice"
+        ]
+       }
+      ],
+      [
+       "t.loc[2, \"qty\"]",
+       {
+        "a": "2"
+       }
+      ],
+      [
+       "t.loc[1, \"qty\"].tolist()",
+       {
+        "a": "[3, 6]"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    a = pd.DataFrame({\"item\": [\"bread\", \"milk\", \"gimbap\"], \"qty\": [5, 3, 2]})\n    b = pd.DataFrame({\"item\": [\"juice\", \"bread\"], \"qty\": [4, 6]})\n    t = pd.concat([a, b])\n    return [t.iloc[1, 0], t.iloc[3, 0], t.loc[2, \"qty\"], t.loc[1, \"qty\"].tolist()]",
+     "explain": "iloc은 자리라서 늘 한 행만 가리켜요. 이름표 2는 한 번만 있어 값 하나지만, 이름표 1은 두 번 있어 qty 값이 2개(3과 6) 나와요."
+    },
+    {
+     "id": "s6",
+     "kind": "mcq",
+     "q": "`t.loc[4]`를 실행하면 어떻게 될까요?",
+     "options": [
+      "이름표가 4인 행이 없어서 오류(KeyError)가 나요",
+      "다섯 번째 행(b의 bread)이 나와요",
+      "빈 표가 나와요",
+      "마지막 행이 나와요"
+     ],
+     "answer": 0,
+     "explain": "t의 이름표는 0, 1, 2, 0, 1뿐이라 4가 없어요. 다섯 번째 자리의 행을 원하면 t.iloc[4]를 써야 해요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "`u = pd.concat([a, b], ignore_index=True)`로 붙이면 `u`의 인덱스는 어떻게 될까요?",
+     "options": [
+      "0, 1, 2, 3, 4로 새로 매겨져 이름표와 자리가 같아져요",
+      "0, 1, 2, 0, 1 그대로예요",
+      "1, 2, 3, 4, 5가 돼요",
+      "인덱스가 없어져서 loc을 쓸 수 없어요"
+     ],
+     "answer": 0,
+     "explain": "ignore_index=True는 원래 이름표를 버리고 0부터 새로 매겨요. 그래서 u.loc[4]와 u.iloc[4]가 같은 행(b의 bread)이에요."
+    },
+    {
+     "id": "s8",
+     "kind": "table",
+     "title": "전체 정리",
+     "prompt": "`u = pd.concat([a, b], ignore_index=True)`에서 각 코드의 결과를 채워 보세요.",
+     "columns": [
+      "코드",
+      "결과"
+     ],
+     "rows": [
+      [
+       "u.loc[4, \"item\"]",
+       {
+        "a": "'bread'",
+        "alts": [
+         "bread"
+        ]
+       }
+      ],
+      [
+       "u.iloc[4, 0]",
+       {
+        "a": "'bread'",
+        "alts": [
+         "bread"
+        ]
+       }
+      ],
+      [
+       "u.loc[1, \"qty\"]",
+       {
+        "a": "3"
+       }
+      ],
+      [
+       "u.shape",
+       {
+        "a": "(5, 2)"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    a = pd.DataFrame({\"item\": [\"bread\", \"milk\", \"gimbap\"], \"qty\": [5, 3, 2]})\n    b = pd.DataFrame({\"item\": [\"juice\", \"bread\"], \"qty\": [4, 6]})\n    u = pd.concat([a, b], ignore_index=True)\n    return [u.loc[4, \"item\"], u.iloc[4, 0], u.loc[1, \"qty\"], u.shape]",
+     "explain": "인덱스를 새로 매기면 이름표 1은 한 번만 있어 값 하나(3)가 나와요. 표 크기는 ignore_index와 상관없이 (5, 2)예요."
     }
    ],
-   "explain": "구간 열(slot)을 만든 뒤 groupby(\"slot\")[\"qty\"].sum()으로 구간마다 수량을 더해요. value_counts()로 세면 주문 건수가 되어 막대 높이가 달라져요. groupby 결과는 slot 순서로 나오므로 그대로 plot(kind=\"bar\")로 그리면 돼요."
+   "explain": "concat은 기본으로 원래 인덱스를 그대로 가져와 이름표 0, 1이 겹쳐요. 그래서 `t.loc[1]`은 이름표가 1인 행 2개를 돌려주고, `t.iloc[3]`은 자리 3인 b의 첫 행이에요. `ignore_index=True`로 이름표를 0~4로 새로 매기면 loc과 iloc이 같은 행을 가리키므로 옳은 것은 ㄱ, ㄷ, ㄹ이에요."
   },
   {
    "id": "d2-t05-e",
-   "version": 1,
-   "title": "주행거리 구간별 매물 수",
-   "statement": "중고차 매물 데이터에서 주행거리에 따라 매물이 얼마나 있는지 보려고 합니다. 주행거리(mileage_km)를 5만 km 단위로 묶은 mileage_bin 변수를 만들되, 그 값은 **만 km 단위의 숫자**로 나타내시오(예: 30,000km → 0, 73,000km → 5, 128,000km → 10). 그리고 mileage_bin별 매물 수를 막대그래프로 시각화하시오.\n\n- 막대 높이는 그 구간의 매물 수(행의 개수)입니다.\n- x축은 mileage_bin 값이 작은 것부터(오름차순) 놓습니다. x축 이름표는 0, 5, 10, …처럼 만 km 단위 숫자여야 합니다.\n\n※ 데이터는 \"used_cars.csv\"를 사용하시오.\n※ 그래프는 세로 막대그래프로 그리시오.\n※ 그래프는 사용자 정의 함수 solution() 안에서 그리고, plt.show()로 출력하시오.\n※ 중간 결과물 출력은 solution() 함수 내 print() 함수를 활용하여 확인하시오.\n※ 그래프 제목·축 이름은 넣지 않아도 되며, 넣는다면 영어로 쓰시오.",
-   "data": {
-    "files": [
-     "used_cars.csv"
-    ],
-    "plot": true
-   },
-   "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    # 시각화 코드\n    \n    plt.show()",
-   "solution": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\"used_cars.csv\")\n\ndef solution():\n    # 시각화 코드\n    df[\"mileage_bin\"] = df[\"mileage_km\"] // 50000 * 5\n    counts = df[\"mileage_bin\"].value_counts().sort_index()\n    print(counts)\n    counts.plot(kind=\"bar\")\n    plt.show()",
-   "examples": [
+   "version": 2,
+   "title": "키로 합칠 때 생기는 빈칸",
+   "statement": "도서관 대출 표 `loans`와 회원 표 `members`를 회원 번호 열 `mid`를 키(두 표를 이어 주는 기준 열)로 합치려 합니다.\n\n{{fig:f1}}\n{{fig:f2}}\n\n다음 설명 중 옳은 것을 **모두** 고른 것은 무엇입니까?\n\nㄱ. `pd.merge(loans, members, on=\"mid\")`의 결과는 4행이다.\nㄴ. `pd.merge(loans, members, on=\"mid\", how=\"left\")`의 결과는 5행이고, 104번 회원 대출의 `name` 칸은 NaN이다.\nㄷ. 합친 결과에는 `mid` 열이 `mid_x`, `mid_y` 두 개로 나뉘어 나온다.\nㄹ. `members`에 101번 회원이 두 줄 있었다면, `pd.merge(loans, members, on=\"mid\")`의 결과는 그대로 4행이다.",
+   "figures": [
     {
-     "data": 0,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "0",
-       "5",
-       "10",
-       "15",
-       "20",
-       "25"
+     "id": "f1",
+     "kind": "table",
+     "alt": "대출 표 loans입니다. 인덱스 0~4, 열은 loan_id, mid이고 값은 (1, 101), (2, 102), (3, 101), (4, 104), (5, 103)입니다.",
+     "head": [
+      "인덱스",
+      "loan_id",
+      "mid"
+     ],
+     "rows": [
+      [
+       0,
+       1,
+       101
       ],
-      "y": [
-       393,
-       519,
-       388,
-       211,
-       76,
-       13
-      ]
-     }
-    }
-   ],
-   "tests": [
-    {
-     "data": 1,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "0",
-       "5",
-       "10",
-       "15",
-       "20",
-       "25"
+      [
+       1,
+       2,
+       102
       ],
-      "y": [
-       378,
-       488,
-       384,
-       205,
-       83,
-       12
+      [
+       2,
+       3,
+       101
+      ],
+      [
+       3,
+       4,
+       104
+      ],
+      [
+       4,
+       5,
+       103
       ]
-     }
+     ],
+     "caption": "loans"
     },
     {
-     "data": 2,
-     "expected": {
-      "kind": "bar",
-      "x": [
-       "0",
-       "5",
-       "10",
-       "15",
-       "20",
-       "25"
+     "id": "f2",
+     "kind": "table",
+     "alt": "회원 표 members입니다. 인덱스 0~2, 열은 mid, name이고 값은 (101, 민수), (102, 지아), (103, 서준)입니다.",
+     "head": [
+      "인덱스",
+      "mid",
+      "name"
+     ],
+     "rows": [
+      [
+       0,
+       101,
+       "민수"
       ],
-      "y": [
-       412,
-       510,
-       380,
-       266,
-       76,
-       6
+      [
+       1,
+       102,
+       "지아"
+      ],
+      [
+       2,
+       103,
+       "서준"
       ]
-     }
+     ],
+     "caption": "members"
     }
    ],
+   "choice": {
+    "options": [
+     "ㄱ, ㄷ",
+     "ㄱ, ㄴ",
+     "ㄴ, ㄹ",
+     "ㄱ, ㄴ, ㄹ"
+    ],
+    "answer": 1,
+    "why": [
+     "ㄷ이 틀렸어요. on으로 정한 키 열은 결과에 한 번만(mid) 나와요.",
+     "ㄱ(짝 있는 대출 4개)과 ㄴ(왼쪽 표를 모두 남김)만 옳아요(정답).",
+     "ㄱ도 옳고 ㄹ은 틀렸어요. 키 값이 두 번 있으면 짝이 늘어 행도 늘어요.",
+     "ㄹ이 틀렸어요. 101번 대출 2개가 회원 줄 2개와 각각 짝지어 4행이 되어 모두 6행이에요."
+    ]
+   },
    "steps": [
     {
      "id": "s1",
      "kind": "mcq",
-     "q": "주행거리 128,000km인 차의 mileage_bin은 무엇일까요?",
+     "q": "`pd.merge()`에서 **키(key)**는 무엇일까요?",
      "options": [
-      "2",
-      "10",
-      "12",
-      "100000"
+      "두 표에서 같은 값끼리 행을 짝지어 줄 기준이 되는 열이에요",
+      "표의 맨 위 행이에요",
+      "두 표의 인덱스(행 이름표)예요",
+      "합친 뒤 정렬할 순서예요"
      ],
-     "answer": 1,
-     "explain": "128,000 // 50,000 = 2(5만 km 묶음 2개가 지남)이고, 만 km 단위로 나타내면 2 × 5 = 10이에요. 100000은 km 단위로 쓴 구간 값이라 문제와 달라요."
+     "answer": 0,
+     "explain": "키는 두 표를 이어 주는 열이에요. on=\"mid\"라고 쓰면 mid 값이 같은 행끼리 한 줄로 합쳐요."
     },
     {
      "id": "s2",
-     "kind": "table",
-     "title": "주행거리를 구간 값으로",
-     "prompt": "주행거리 6개를 `mileage_km // 50000`과 mileage_bin(만 km 단위)으로 바꿔 보세요.",
-     "columns": [
-      "mileage_km",
-      "mileage_km // 50000",
-      "mileage_bin"
+     "kind": "mcq",
+     "q": "`concat`과 `merge`의 차이로 옳은 것은?",
+     "options": [
+      "concat은 인덱스나 열 이름에 맞춰 이어 붙이고, merge는 키 열의 값이 같은 행끼리 짝지어 합쳐요",
+      "concat은 키 열로 짝짓고, merge는 표를 위아래로 이어 붙여요",
+      "둘은 완전히 같은 일을 해요",
+      "merge는 숫자 열만 합칠 수 있어요"
      ],
-     "rows": [
-      [
-       "7,900",
-       {
-        "a": "0"
-       },
-       {
-        "a": "0"
-       }
-      ],
-      [
-       "49,999",
-       {
-        "a": "0"
-       },
-       {
-        "a": "0"
-       }
-      ],
-      [
-       "50,000",
-       {
-        "a": "1"
-       },
-       {
-        "a": "5"
-       }
-      ],
-      [
-       "73,000",
-       {
-        "a": "1"
-       },
-       {
-        "a": "5"
-       }
-      ],
-      [
-       "128,000",
-       {
-        "a": "2"
-       },
-       {
-        "a": "10"
-       }
-      ],
-      [
-       "259,900",
-       {
-        "a": "5"
-       },
-       {
-        "a": "25"
-       }
-      ]
-     ],
-     "check": "def answers():\n    out = []\n    for k in [7900, 49999, 50000, 73000, 128000, 259900]:\n        out += [k // 50000, k // 50000 * 5]\n    return out",
-     "explain": "49,999km는 아직 5만 km가 안 되어 0 구간, 50,000km부터 5 구간이에요. 묶음 번호(// 50000)에 5를 곱하면 만 km 단위 구간 값이 돼요."
+     "answer": 0,
+     "explain": "concat은 표를 그대로 이어 붙이는 풀칠이고, merge는 같은 키 값을 찾아 옆에 정보를 붙이는 짝 맞추기예요."
     },
     {
      "id": "s3",
-     "kind": "mcq",
-     "q": "mileage_bin을 만드는 식으로 알맞은 것은?",
-     "options": [
-      "`df[\"mileage_km\"] // 50000 * 50000`",
-      "`df[\"mileage_km\"] // 50000 * 5`",
-      "`df[\"mileage_km\"] // 10000`",
-      "`df[\"mileage_km\"] / 50000 * 5`"
+     "kind": "table",
+     "title": "대출마다 짝 찾기",
+     "prompt": "대출마다 members에서 mid가 같은 행의 name을 찾아 채우고, 짝이 없으면 `NaN`이라고 써요. 그리고 기본 merge(how를 쓰지 않음: 두 표에 모두 있는 키만 남김)에 그 대출이 남는지 True/False로 써요.\n\n{{fig:f1}}\n{{fig:f2}}",
+     "columns": [
+      "loan_id",
+      "mid",
+      "짝이 되는 name",
+      "기본 merge에 남나?"
      ],
-     "answer": 1,
-     "explain": "첫 번째는 구간 값이 0, 50000, 100000처럼 km 단위로 나와요. 세 번째는 만 km 단위지만 1만 km씩 묶어요. 네 번째는 / 가 소수점 아래를 버리지 않아 구간으로 묶이지 않아요."
+     "rows": [
+      [
+       "1",
+       "101",
+       {
+        "a": "'민수'",
+        "alts": [
+         "민수"
+        ]
+       },
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "2",
+       "102",
+       {
+        "a": "'지아'",
+        "alts": [
+         "지아"
+        ]
+       },
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "3",
+       "101",
+       {
+        "a": "'민수'",
+        "alts": [
+         "민수"
+        ]
+       },
+       {
+        "a": "True"
+       }
+      ],
+      [
+       "4",
+       "104",
+       {
+        "a": "NaN",
+        "alts": [
+         "nan"
+        ]
+       },
+       {
+        "a": "False"
+       }
+      ],
+      [
+       "5",
+       "103",
+       {
+        "a": "'서준'",
+        "alts": [
+         "서준"
+        ]
+       },
+       {
+        "a": "True"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    loans = pd.DataFrame({\"loan_id\": [1, 2, 3, 4, 5], \"mid\": [101, 102, 101, 104, 103]})\n    members = pd.DataFrame({\"mid\": [101, 102, 103], \"name\": [\"민수\", \"지아\", \"서준\"]})\n    left = pd.merge(loans, members, on=\"mid\", how=\"left\")\n    inner_ids = set(pd.merge(loans, members, on=\"mid\")[\"loan_id\"])\n    out = []\n    for _, row in left.iterrows():\n        out += [\"NaN\" if pd.isna(row[\"name\"]) else row[\"name\"], row[\"loan_id\"] in inner_ids]\n    return out",
+     "explain": "104번 회원은 members에 없어 짝이 없어요. 기본 merge(how=\"inner\")는 두 표에 모두 있는 키의 행만 남기므로 104번 대출이 빠져요."
     },
     {
      "id": "s4",
-     "kind": "mcq",
-     "q": "mileage_bin별 매물 수를 mileage_bin 오름차순으로 얻는 코드는?",
-     "options": [
-      "`df[\"mileage_bin\"].value_counts()`",
-      "`df.groupby(\"mileage_bin\")[\"price\"].sum()`",
-      "`df[\"mileage_bin\"].value_counts().sort_index()`",
-      "`df[\"mileage_bin\"].sort_values()`"
-     ],
-     "answer": 2,
-     "explain": "value_counts()로 구간마다 행 수를 세고 sort_index()로 구간 순서를 맞춰요. 두 번째는 가격 합계, 네 번째는 열 값을 정렬만 해요."
+     "kind": "short",
+     "q": "`pd.merge(loans, members, on=\"mid\")`의 결과는 몇 행일까요?",
+     "a": "4",
+     "check": "def answers():\n    import pandas as pd\n    loans = pd.DataFrame({\"loan_id\": [1, 2, 3, 4, 5], \"mid\": [101, 102, 101, 104, 103]})\n    members = pd.DataFrame({\"mid\": [101, 102, 103], \"name\": [\"민수\", \"지아\", \"서준\"]})\n    return [len(pd.merge(loans, members, on=\"mid\"))]",
+     "explain": "대출 5개 중 짝이 있는 4개만 남아요. inner는 두 표의 공통 키만 남긴다는 뜻이에요."
     },
     {
      "id": "s5",
+     "kind": "mcq",
+     "q": "`how=\"left\"`를 넣으면 어떻게 될까요?",
+     "options": [
+      "왼쪽 표(loans)의 행을 모두 남기고, 짝이 없는 칸은 NaN으로 채워요",
+      "오른쪽 표(members)의 행만 남겨요",
+      "짝이 없는 행은 지워요",
+      "왼쪽 표를 오른쪽 표 아래에 이어 붙여요"
+     ],
+     "answer": 0,
+     "explain": "how=\"left\"는 왼쪽 표가 기준이에요. 짝이 없는 104번 대출도 남고, 가져올 name이 없어 NaN이 돼요."
+    },
+    {
+     "id": "s6",
+     "kind": "table",
+     "title": "how에 따른 결과 크기",
+     "prompt": "각 merge 결과의 행 수와 표 전체 NaN 개수를 채워 보세요.",
+     "columns": [
+      "코드",
+      "행 수",
+      "NaN 개수"
+     ],
+     "rows": [
+      [
+       "pd.merge(loans, members, on=\"mid\")",
+       {
+        "a": "4"
+       },
+       {
+        "a": "0"
+       }
+      ],
+      [
+       "pd.merge(loans, members, on=\"mid\", how=\"left\")",
+       {
+        "a": "5"
+       },
+       {
+        "a": "1"
+       }
+      ]
+     ],
+     "check": "def answers():\n    import pandas as pd\n    loans = pd.DataFrame({\"loan_id\": [1, 2, 3, 4, 5], \"mid\": [101, 102, 101, 104, 103]})\n    members = pd.DataFrame({\"mid\": [101, 102, 103], \"name\": [\"민수\", \"지아\", \"서준\"]})\n    a = pd.merge(loans, members, on=\"mid\")\n    b = pd.merge(loans, members, on=\"mid\", how=\"left\")\n    return [len(a), int(a.isna().sum().sum()), len(b), int(b.isna().sum().sum())]",
+     "explain": "inner는 짝 있는 4행만, left는 loans 5행을 모두 남기고 104번의 name 한 칸이 NaN이에요."
+    },
+    {
+     "id": "s7",
+     "kind": "mcq",
+     "q": "`pd.merge(loans, members, on=\"mid\")` 결과의 열 이름으로 옳은 것은?",
+     "options": [
+      "loan_id, mid, name",
+      "loan_id, mid_x, mid_y, name",
+      "loan_id, name",
+      "mid, name"
+     ],
+     "answer": 0,
+     "explain": "on으로 정한 키 열은 두 표에서 값이 같으니 한 번만 나와요. mid_x·mid_y처럼 나뉘는 것은 키가 아닌 같은 이름의 열이 두 표에 모두 있을 때예요."
+    },
+    {
+     "id": "s8",
      "kind": "short",
-     "q": "예시 데이터(used_cars.csv)에서 가장 높은 막대의 mileage_bin 값은 무엇일까요?",
-     "a": "5",
-     "check": "def answers():\n    import pandas as pd\n    df = pd.read_csv(\"used_cars.csv\")\n    return [int((df[\"mileage_km\"] // 50000 * 5).value_counts().idxmax())]",
-     "explain": "5만~10만 km 구간(mileage_bin 5)의 매물이 가장 많아요. print(counts)로 확인할 수 있어요."
+     "q": "만약 members에 101번 회원이 두 줄(민수, 민수2) 있다면, `pd.merge(loans, members, on=\"mid\")`의 결과는 몇 행일까요?",
+     "a": "6",
+     "check": "def answers():\n    import pandas as pd\n    loans = pd.DataFrame({\"loan_id\": [1, 2, 3, 4, 5], \"mid\": [101, 102, 101, 104, 103]})\n    members = pd.DataFrame({\"mid\": [101, 102, 103], \"name\": [\"민수\", \"지아\", \"서준\"]})\n    members = pd.DataFrame({\"mid\": [101, 101, 102, 103], \"name\": [\"민수\", \"민수2\", \"지아\", \"서준\"]})\n    return [len(pd.merge(loans, members, on=\"mid\"))]",
+     "explain": "101번 대출 2개가 회원 줄 2개와 하나씩 모두 짝지어 2 × 2 = 4행, 102·103번이 1행씩이라 모두 6행이에요. 키 값이 겹치면 행이 늘어나요."
     }
    ],
-   "explain": "`mileage_km // 50000`으로 5만 km 묶음 번호를 구하고 5를 곱해 만 km 단위 구간 값을 만들어요. value_counts().sort_index()로 구간별 매물 수를 세어 막대그래프로 그려요. km 단위(× 50000)로 두면 x축 이름표가 문제와 달라져요."
+   "explain": "merge는 키 열(mid)의 값이 같은 행끼리 짝지어요. 기본(inner)은 두 표에 모두 있는 키만 남겨 4행, how=\"left\"는 왼쪽 표를 모두 남겨 5행이고 짝 없는 칸은 NaN이에요. 키 열은 한 번만 나오고, 키 값이 겹치면 짝의 수만큼 행이 늘어나므로 옳은 것은 ㄱ, ㄴ이에요."
   }
  ]
 }

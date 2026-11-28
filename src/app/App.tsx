@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { HashRouter, Link, Navigate, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { HashRouter, Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { allProblems, COURSES, courseMeta, findProblem, loadCourse, typeKey, type CourseMeta } from '../content';
 import type { Course } from '../content/types';
 import { useAuth } from '../features/auth/AuthContext';
@@ -11,7 +11,9 @@ import { MockPage } from './MockPage';
 import { TeacherPage } from '../features/teacher/TeacherPage';
 import { AdminPage } from '../features/admin/AdminPage';
 import { useRoles } from '../features/admin/roles';
-import { advGate, isAdvId, mockGate, tally } from '../features/progress/model';
+import { advGate, isAdvId, LOCK_LIMIT, lockCount, mockGate, tally } from '../features/progress/model';
+import { FocusGate, FocusProvider, type StrictScope } from '../features/focus/FocusContext';
+import { suspendLearning } from '../features/focus/fullscreen';
 
 /** 로그인하지 않은 사람도 문제를 풀 수 있다(선생님 요청 2026-11-27). 기록은 이 브라우저에만(접두사 saicerti:v1:guest:), 서버·선생님 화면에는 가지 않는다 */
 const GUEST_KEY = 'guest';
@@ -86,7 +88,10 @@ function Shell({ children }: { children: ReactNode }) {
               </button>
             )}
             {!identity && status !== 'loading' && isSupabaseConfigured && (
-              <button className="btn small" onClick={() => void signIn(loc.pathname)}>
+              <button className="btn small" onClick={() => {
+                suspendLearning();
+                void signIn(loc.pathname);
+              }}>
                 로그인
               </button>
             )}
@@ -157,7 +162,7 @@ function Home() {
       <section className="hero">
         <h1>자격증 코딩, 손으로 따라가고 코드로 확인해요</h1>
         <p className="muted" style={{ maxWidth: '44rem' }}>
-          COS Pro Python·C, YBM DAT(Data 분석) 2급 시험 유형마다 기본 연습 문제 5개와 도전용 심화 문제 5개, 그리고 모의고사. 먼저 표를 채우며 코드를 손으로 따라가 보고, 그다음 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
+          COS Pro Python·C는 시험 유형마다 기본 연습 문제 5개와 도전용 심화 문제 5개, YBM DAT(Data 분석) 2급은 시험 20문항 유형마다 연습 5문제, 그리고 모의고사. 표를 채우며 코드를 손으로 따라가 보고, 직접 코드를 고치거나 작성해 자동 채점을 받아요. 코드는 내 브라우저 안에서만 실행돼요.
         </p>
       </section>
       <div className="courses">
@@ -218,10 +223,11 @@ function CourseBar({ meta, learnerKey, remote }: { meta: CourseMeta; learnerKey:
   return (
     <div>
       <div className="faint">
-        기본 해결 {solved} / 50{adv > 0 && <span className="adv-count"> · 심화 {adv}</span>}
+        {meta.style === 'exam' ? '' : '기본 '}해결 {Math.min(solved, meta.total)} / {meta.total}
+        {adv > 0 && <span className="adv-count"> · 심화 {adv}</span>}
       </div>
       <div className="bar" aria-hidden>
-        <i style={{ width: `${(solved / 50) * 100}%` }} />
+        <i style={{ width: `${(Math.min(solved, meta.total) / meta.total) * 100}%` }} />
       </div>
     </div>
   );
@@ -271,7 +277,10 @@ function GuestBar() {
           {expired ? '로그인이 만료되었어요. 지금부터의 기록은 이 브라우저에만 남아요. 다시 로그인해 주세요.' : '로그인하지 않고 푸는 중이에요. 기록은 이 브라우저에만 남고 선생님 화면에는 보이지 않아요.'}
         </span>
         {isSupabaseConfigured && (
-          <button className="btn small primary" onClick={() => void signIn(loc.pathname)}>
+          <button className="btn small primary" onClick={() => {
+                suspendLearning();
+                void signIn(loc.pathname);
+              }}>
             Google 계정으로 로그인
           </button>
         )}
@@ -312,8 +321,11 @@ function MockRoute({ course, learnerKey, remote, preview }: RouteProps) {
 function ProblemRoute({ course, learnerKey, remote, preview }: RouteProps) {
   const { pid = '' } = useParams();
   const prog = useCourseProgress(learnerKey, course.id, remote);
+  const navigate = useNavigate();
   const f = findProblem(course, pid);
   if (!f) return <Navigate to={courseMeta(course.id)!.path} replace />;
+  const meta = courseMeta(course.id)!;
+  const tkey = typeKey(f.type);
   if (f.adv) {
     const basicIds = f.type.problems.map((p) => p.id);
     const gate = advGate(prog.state, typeKey(f.type), basicIds, preview);
@@ -329,8 +341,28 @@ function ProblemRoute({ course, learnerKey, remote, preview }: RouteProps) {
       );
     }
   }
-  // 문제마다 새로 그린다(앞 문제의 단계 위치·탭이 남지 않게: 단계 수가 다른 문제로 옮길 때 안전)
-  return <ProblemPage key={f.problem.id} course={course} type={f.type} problem={f.problem} index={f.index} adv={f.adv} learnerKey={learnerKey} remote={remote} />;
+  // 유형 집중 풀이(선생님 요청 2026-11-28): 전체화면으로 풀고, 다른 창으로 가거나 전체화면을 나가면 잠긴다. 한 유형에서 3번 잠기면 그 유형 기록을 처음으로
+  const typePids = [...f.type.problems, ...(f.type.adv?.problems ?? [])].map((p) => p.id);
+  const strict: StrictScope = {
+    key: `${course.id}:${tkey}`,
+    label: course.id === 'd2' ? `시험 ${f.type.type}번 유형` : `유형 ${f.type.type}`,
+    locks: lockCount(prog.state, tkey),
+    limit: LOCK_LIMIT,
+    onLock: () => {
+      const r = prog.addLock(tkey, typePids);
+      if (r.reset) navigate(`${meta.path}/${f.type.problems[0].id}`, { replace: true });
+      return r;
+    },
+  };
+  const resetN = prog.state.resets?.[tkey]?.n ?? 0;
+  // 문제마다 새로 그린다(앞 문제의 단계 위치·탭이 남지 않게). 초기화되면 풀던 화면도 새로
+  return (
+    <FocusProvider strict={strict}>
+      <FocusGate exit={{ to: meta.path, label: '과정 화면으로 나가기' }}>
+        <ProblemPage key={`${f.problem.id}:${resetN}`} course={course} type={f.type} problem={f.problem} index={f.index} adv={f.adv} learnerKey={learnerKey} remote={remote} />
+      </FocusGate>
+    </FocusProvider>
+  );
 }
 
 /** 아직 잠긴 곳(심화·모의고사)에 주소로 바로 들어왔을 때 */
